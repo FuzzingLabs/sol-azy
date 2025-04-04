@@ -1,11 +1,87 @@
 use crate::helpers::static_dir;
 use crate::state::sast_state::SynAst;
-use log::error;
+use log::{error, info};
+use serde::{Deserialize, Serialize};
 use starlark::environment::{FrozenModule, Globals, GlobalsBuilder, LibraryExtension, Module};
 use starlark::eval::{Evaluator, ReturnFileLoader};
 use starlark::syntax::{AstModule, Dialect, DialectTypes};
 use std::collections::HashMap;
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum StarlarkRuleType {
+    Syn,
+    Mir,
+    LlvmIr,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StarlarkRule {
+    pub filename: String,
+    pub content: String,
+    pub rule_type: StarlarkRuleType,
+}
+
+pub type StarlarkRulesDir = Vec<StarlarkRule>;
+
+pub trait StarlarkRuleDirExt
+where
+    Self: Sized,
+{
+    fn new_from_dir(rules_dir: &String) -> anyhow::Result<Self>;
+}
+
+impl StarlarkRuleDirExt for StarlarkRulesDir {
+    fn new_from_dir(rules_dir: &String) -> anyhow::Result<Self> {
+        let path = std::path::Path::new(rules_dir);
+
+        if !path.exists() {
+            error!("Rules directory does not exist: {}", rules_dir);
+            return Err(anyhow::anyhow!(
+                "Rules directory does not exist: {}",
+                rules_dir
+            ));
+        }
+
+        if !path.is_dir() {
+            error!("Path is not a directory: {}", rules_dir);
+            return Err(anyhow::anyhow!("Path is not a directory: {}", rules_dir));
+        }
+
+        std::fs::read_dir(path)?
+            .filter_map(Result::ok)
+            .map(|entry| entry.path())
+            .filter(|path| {
+                path.is_file() && path.extension().and_then(|ext| ext.to_str()) == Some("star")
+            })
+            .map(|path| {
+                let filename = path
+                    .file_name()
+                    .and_then(|name| name.to_str())
+                    .ok_or_else(|| anyhow::anyhow!("Invalid filename"))?
+                    .to_string();
+
+                let content = std::fs::read_to_string(&path)?;
+
+                // TODO: get rule_type
+                let rule_type = StarlarkRuleType::Syn;
+
+                info!(
+                    "Loaded rule {} from directory {}",
+                    filename,
+                    rules_dir
+                );
+
+                Ok(StarlarkRule {
+                    filename,
+                    content,
+                    rule_type,
+                })
+            })
+            .collect::<Result<Vec<_>, anyhow::Error>>()
+    }
+}
+
+#[derive(Debug, Clone)]
 pub struct StarlarkEngine {
     pub dialect: Dialect,
     pub globals: Globals,
@@ -22,7 +98,7 @@ impl StarlarkEngine {
             },
             // ? https://github.com/facebook/starlark-rust/blob/main/starlark/src/stdlib.rs#L131
             globals: GlobalsBuilder::extended_by(&[
-                LibraryExtension::Json,   // ? To communicate with the Rust parts easily
+                LibraryExtension::Json,       // ? To communicate with the Rust parts easily
                 LibraryExtension::Map, // ? For `map(lambda x: x * 2, [1, 2, 3, 4]) == [2, 4, 6, 8]`
                 LibraryExtension::Filter, // ? For `filter(lambda x: x > 2, [1, 2, 3, 4]) == [3, 4]`
                 LibraryExtension::Typing, // ? Type annotation and strict type checking
@@ -34,14 +110,37 @@ impl StarlarkEngine {
         }
     }
 
+    fn wrap_syn_rule(code: String) -> String {
+        format!(
+            r#"# ! GENERATED
+load("syn_ast.star", "syn_ast")
+# ! GENERATED
+
+{}
+
+# ! GENERATED
+def syn_rule_loader(ast: str) -> dict:
+    return {{
+        "matches": syn_ast_rule(syn_ast.prepare_ast(json.decode(ast)["items"])),
+        "metadata": RULE_METADATA,
+    }}
+
+
+syn_rule_loader
+# ! GENERATED
+"#,
+            code
+        )
+    }
+
     pub fn eval_syn_rule(
         &self,
         filename: &str,
         code: String,
         syn_ast: &SynAst,
     ) -> anyhow::Result<String> {
-        let starlark_ast =
-            AstModule::parse(filename, code, &self.dialect).map_err(|e| e.into_anyhow())?;
+        let starlark_ast = AstModule::parse(filename, Self::wrap_syn_rule(code), &self.dialect)
+            .map_err(|e| e.into_anyhow())?;
 
         let binding = starlark_ast.clone();
         let modules_owned = self.load_modules(&binding)?;
@@ -79,7 +178,8 @@ impl StarlarkEngine {
                 return Err(e.into());
             }
         };
-        let starlark_ast = match AstModule::parse(filename, code, &self.dialect).map_err(|e| e.into_anyhow()) {
+        let starlark_ast =
+            match AstModule::parse(filename, code, &self.dialect).map_err(|e| e.into_anyhow()) {
                 Ok(ast) => ast,
                 Err(e) => {
                     error!("Failed to parse Starlark module {}: {}", filename, e);

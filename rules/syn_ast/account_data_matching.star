@@ -1,7 +1,3 @@
-# ! THIS WILL BE GENERATED
-load("syn_ast.star", "syn_ast")
-# ! THIS WILL BE GENERATED
-
 RULE_METADATA = {
     "version": "0.1.0",
     "author": "forefy",
@@ -26,15 +22,3 @@ def syn_ast_rule(root: dict) -> list[dict]:
             continue
         matches.append(syn_ast.to_result(assigned_var))
     return matches
-
-
-# ! THIS WILL BE GENERATED
-def syn_rule_loader(ast: str) -> str:
-    return json.encode({
-        "matches": syn_ast_rule(syn_ast.prepare_ast(json.decode(ast)["items"])),
-        "rule_metadata": RULE_METADATA,
-    })
-
-
-syn_rule_loader
-# ! THIS WILL BE GENERATED

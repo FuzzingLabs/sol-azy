@@ -6,7 +6,7 @@ use crate::helpers::{
 };
 use crate::parsers::syn_ast;
 use crate::state::build_state::BuildState;
-use crate::state::sast_state::{SastState, SynAstMap};
+use crate::state::sast_state::{SastState, SynAstMap, SynAstMapExt};
 use log::{debug, error, info};
 use std::process::{Command, Stdio};
 
@@ -57,25 +57,26 @@ pub fn run(
     }
 }
 
-fn perform_syn_scan(
-    syn_ast_map: &mut SynAstMap,
-    rules_dir: &String,
-) -> anyhow::Result<()> {
-    todo!()
-}
-
 fn sast_anchor_project(
     target_dir: &String,
     rules_dir: &String,
     syn_scan_only: bool,
 ) -> anyhow::Result<SastState> {
     // ? FUTURE: Use Anchor.toml to get programs paths?
-    let syn_ast_map = syn_ast::get_syn_ast_recursive(&format!("{}/programs", target_dir))?;
-    //  TODO: perform syn scan
-    if syn_scan_only {
-        return Ok(SastState { syn_ast_map });
+    let mut sast_state = SastState::new(
+        syn_ast::get_syn_ast_recursive(&format!("{}/programs", target_dir))?,
+        rules_dir
+    )?;
+
+    if !sast_state.apply_rules()? {
+        error!("Cannot apply rules to the project: {}", target_dir);
+        return Err(anyhow::anyhow!("Cannot apply rules to the project: {}", target_dir));
     }
-    Ok(SastState { syn_ast_map })
+
+    if syn_scan_only {
+        return Ok(sast_state);
+    }
+    Ok(sast_state)
 }
 
 fn sast_sbf_project(
@@ -84,9 +85,21 @@ fn sast_sbf_project(
     syn_scan_only: bool,
 ) -> anyhow::Result<SastState> {
     // ? FUTURE: Use Cargo.toml to get programs paths?
-    let syn_ast_map = syn_ast::get_syn_ast_recursive(&format!("{}/src", target_dir))?;
-    if syn_scan_only {
-        return Ok(SastState { syn_ast_map });
+    let mut sast_state = SastState::new(
+        syn_ast::get_syn_ast_recursive(&format!("{}/src", target_dir))?,
+        rules_dir
+    )?;
+
+    match sast_state.apply_rules() {
+        Ok(_) => {}
+        Err(e) => {
+            error!("Cannot apply rules to the project: {}", target_dir);
+            return Err(anyhow::anyhow!("Cannot apply rules to the project: {}", target_dir));
+        }
     }
-    Ok(SastState { syn_ast_map })
+
+    if syn_scan_only {
+        return Ok(sast_state);
+    }
+    Ok(sast_state)
 }
