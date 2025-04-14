@@ -77,7 +77,7 @@ impl StarlarkRuleDirExt for StarlarkRulesDir {
                     rule_type,
                 })
             })
-            .collect::<Result<Vec<_>, anyhow::Error>>()
+            .collect::<Result<Vec<StarlarkRule>, anyhow::Error>>()
     }
 }
 
@@ -98,13 +98,13 @@ impl StarlarkEngine {
             },
             // ? https://github.com/facebook/starlark-rust/blob/main/starlark/src/stdlib.rs#L131
             globals: GlobalsBuilder::extended_by(&[
-                LibraryExtension::Json,       // ? To communicate with the Rust parts easily
-                LibraryExtension::Map, // ? For `map(lambda x: x * 2, [1, 2, 3, 4]) == [2, 4, 6, 8]`
-                LibraryExtension::Filter, // ? For `filter(lambda x: x > 2, [1, 2, 3, 4]) == [3, 4]`
-                LibraryExtension::Typing, // ? Type annotation and strict type checking
-                LibraryExtension::StructType, // ? For export in a pythonic way
-                LibraryExtension::Print, // ? Access to `print`
-                LibraryExtension::SetType, // ? Access to `set`
+                LibraryExtension::Json,         // ? To communicate with the Rust parts easily
+                LibraryExtension::Map,          // ? For `map(lambda x: x * 2, [1, 2, 3, 4]) == [2, 4, 6, 8]`
+                LibraryExtension::Filter,       // ? For `filter(lambda x: x > 2, [1, 2, 3, 4]) == [3, 4]`
+                LibraryExtension::Typing,       // ? Type annotation and strict type checking
+                LibraryExtension::StructType,   // ? For export in a pythonic way
+                LibraryExtension::Print,        // ? Access to `print`
+                LibraryExtension::SetType,      // ? Access to `set`
             ])
             .build(),
         }
@@ -265,7 +265,7 @@ mod tests {
                 Ok(result) => {
                     assert!(!result.is_empty(), "The result should not be empty.");
                     println!("Evaluation successful with result: {}", result);
-                    println!("Enriched AST: {:?}", syn_ast.enriched_ast);
+                    println!("Enriched AST: {:?}", syn_ast.ast_positions);
                 }
                 Err(e) => panic!("Evaluation failed: {}", e),
             }

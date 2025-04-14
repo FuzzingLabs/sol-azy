@@ -4,6 +4,8 @@ use log::{debug, error};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt;
+use crate::parsers::syn_ast::{AstPositions};
+use crate::printers::sast_printer::SastPrinter;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum Severity {
@@ -119,7 +121,7 @@ impl SynAstResult {
 #[derive(Clone)]
 pub struct SynAst {
     pub ast: syn::File,
-    pub enriched_ast: HashMap<String, serde_json::Value>,
+    pub ast_positions: AstPositions,
     pub results: Vec<SynAstResult>,
 }
 
@@ -127,7 +129,7 @@ impl fmt::Debug for SynAst {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("SynAst")
             .field("ast", &"<syn::File AST omitted>")
-            .field("enriched_ast", &self.enriched_ast)
+            .field("enriched_ast", &self.ast_positions)
             .field("results", &self.results)
             .finish()
     }
@@ -138,6 +140,7 @@ impl SynAst {
         rules_dir
             .iter()
             .map(|rule| {
+                debug!("Applying rule {}", rule.filename);
                 let res = match starlark_engine.eval_syn_rule(
                     rule.filename.as_str(),
                     rule.content.clone(),
@@ -151,6 +154,7 @@ impl SynAst {
                 };
                 match SynAstResult::new_from_json(rule.filename.clone(), res.clone()) {
                     Ok(result) => {
+                        debug!("Matches num: {}", result.matches.len());
                         self.results.push(result);
                         true
                     }
@@ -160,7 +164,7 @@ impl SynAst {
                     }
                 }
             })
-            .any(|applied| applied)
+            .all(|res| res)
     }
 }
 
@@ -208,5 +212,9 @@ impl SastState {
 
     pub fn apply_rules(&mut self) -> Result<bool> {
         self.syn_ast_map.apply_rules(&self.starlark_rules_dir, &self.starlark_engine)
+    }
+
+    pub fn print_results(&self) -> Result<()> {
+        SastPrinter::print_sast_state(self)
     }
 }

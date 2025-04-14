@@ -68,10 +68,15 @@ fn sast_anchor_project(
         rules_dir
     )?;
 
-    if !sast_state.apply_rules()? {
-        error!("Cannot apply rules to the project: {}", target_dir);
-        return Err(anyhow::anyhow!("Cannot apply rules to the project: {}", target_dir));
+    match sast_state.apply_rules() {
+        Ok(_) => {}
+        Err(e) => {
+            error!("Cannot apply rules to the project: {}", target_dir);
+            return Err(anyhow::anyhow!("Cannot apply rules to the project: {}", target_dir));
+        }
     }
+
+    sast_state.print_results()?;
 
     if syn_scan_only {
         return Ok(sast_state);
@@ -97,6 +102,8 @@ fn sast_sbf_project(
             return Err(anyhow::anyhow!("Cannot apply rules to the project: {}", target_dir));
         }
     }
+
+    sast_state.print_results()?;
 
     if syn_scan_only {
         return Ok(sast_state);

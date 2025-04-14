@@ -1,12 +1,18 @@
+use std::any::TypeId;
 use crate::state;
 use crate::state::sast_state::{SynAst, SynAstMap};
 use anyhow::{Context, Result};
 use log::error;
 use regex::Regex;
+use serde::{Deserialize, Serialize};
 use serde_json::json;
 use std::collections::HashMap;
-use std::fs;
+use std::{fmt, fs};
+use std::fmt::Formatter;
+use std::hash::{DefaultHasher, Hash, Hasher};
 use std::path::Path;
+use proc_macro2::Span;
+use syn::visit;
 use syn::visit::Visit;
 
 pub fn get_syn_ast_recursive(dir: &str) -> Result<SynAstMap> {
@@ -65,7 +71,7 @@ pub fn parse_rust_file(path: &Path, ast_map: &mut SynAstMap) -> Result<()> {
                 filename,
                 SynAst {
                     ast: ast.clone(),
-                    enriched_ast: enrich_ast_with_source_lines(&ast, &file_content, path),
+                    ast_positions: enrich_ast_with_source_lines(&ast, &file_content, path),
                     results: vec![],
                 },
             );
@@ -77,46 +83,95 @@ pub fn parse_rust_file(path: &Path, ast_map: &mut SynAstMap) -> Result<()> {
     Ok(())
 }
 
-fn find_ident_positions(
-    code: &str,
-    ident: &str,
-    source_file_path: &Path,
-) -> Vec<serde_json::Value> {
-    let mut positions = Vec::new();
-    let pattern = format!(r"\b{}\b", regex::escape(ident));
-    let re = Regex::new(&pattern).unwrap();
-    for mat in re.find_iter(code) {
-        let start_pos = mat.start();
-        let line_num = code[..start_pos].matches('\n').count() + 1;
-        let line_start = code[..start_pos].rfind('\n').map(|i| i + 1).unwrap_or(0);
-        let end_pos = mat.end();
-        let start_col = start_pos - line_start + 1;
-        let end_col = end_pos - line_start + 1;
-        positions.push(json!({
-            "file": source_file_path.to_string_lossy().to_string(),
-            "line": line_num,
-            "start_col": start_col,
-            "end_col": end_col
-        }));
-    }
-    positions
+#[derive(Eq)]
+pub struct NodeRef {
+    ptr: *const (),
+    type_id: TypeId,
 }
 
-struct IdentCollector<'a> {
+impl Clone for NodeRef {
+    fn clone(&self) -> Self {
+        NodeRef {
+            ptr: self.ptr,
+            type_id: self.type_id,
+        }
+    }
+}
+
+impl fmt::Debug for NodeRef {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("NodeRef")
+            .field("ptr", &(self.ptr as usize))
+            .field("type_id", &self.type_id)
+            .finish()
+    }
+}
+
+impl PartialEq for NodeRef {
+    fn eq(&self, other: &Self) -> bool {
+        self.ptr == other.ptr && self.type_id == other.type_id
+    }
+}
+
+impl Hash for NodeRef {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        (self.ptr as usize).hash(state);
+        self.type_id.hash(state);
+    }
+}
+
+
+pub fn node_to_ref<T: 'static>(node: &T) -> NodeRef {
+    NodeRef {
+        ptr: node as *const T as *const (),
+        type_id: TypeId::of::<T>(),
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct SourcePosition {
+    pub node_span: Span,
+}
+
+impl fmt::Display for SourcePosition {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "Span: {:?}", self.node_span)
+    }
+}
+
+
+#[derive(Debug, Clone)]
+pub struct AstPositions {
+    pub positions: HashMap<NodeRef, SourcePosition>,
+}
+
+impl AstPositions {
+    pub fn new() -> Self {
+        Self { positions: HashMap::new() }
+    }
+
+    pub fn add_position<T: 'static>(&mut self, node: &T, position: SourcePosition) {
+        self.positions.insert(node_to_ref(node), position);
+    }
+
+    pub fn get_position<T: 'static>(&self, node: &T) -> Option<&SourcePosition> {
+        self.positions.get(&node_to_ref(node))
+    }
+}
+
+
+struct SpanCollector<'a> {
     rust_code: &'a str,
     source_file_path: &'a Path,
-    scanned_idents: HashMap<String, serde_json::Value>,
+    positions: AstPositions,
 }
 
-impl<'a, 'ast> Visit<'ast> for IdentCollector<'a> {
-    fn visit_ident(&mut self, i: &'ast syn::Ident) {
-        let ident = i.to_string();
-        if !self.scanned_idents.contains_key(&ident) {
-            let positions = find_ident_positions(self.rust_code, &ident, self.source_file_path);
-            if !positions.is_empty() {
-                self.scanned_idents.insert(ident, positions[0].clone());
-            }
-        }
+impl<'a, 'ast> Visit<'ast> for SpanCollector<'a> {
+    fn visit_ident(&mut self, node: &'ast syn::Ident) {
+        self.positions.add_position(node, SourcePosition {
+            node_span: node.span(),
+        });
+        visit::visit_ident(self, node);
     }
 }
 
@@ -124,12 +179,12 @@ pub fn enrich_ast_with_source_lines(
     ast: &syn::File,
     rust_code: &str,
     source_file_path: &Path,
-) -> HashMap<String, serde_json::Value> {
-    let mut collector = IdentCollector {
+) -> AstPositions {
+    let mut collector = SpanCollector {
         rust_code,
         source_file_path,
-        scanned_idents: HashMap::new(),
+        positions: AstPositions::new(),
     };
     collector.visit_file(ast);
-    collector.scanned_idents
+    collector.positions
 }

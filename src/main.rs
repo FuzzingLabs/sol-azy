@@ -3,6 +3,7 @@ mod state;
 mod helpers;
 mod parsers;
 mod engines;
+mod printers;
 
 use clap::{Parser, Subcommand};
 use tracing_subscriber::fmt;

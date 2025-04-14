@@ -16,6 +16,15 @@ pub mod base_anchor {
     pub fn log_message(ctx: Context<LogMessage>) -> Result<()> {
         let token = SplTokenAccount::unpack(&ctx.accounts.token.data.borrow())?;
         msg!("Your account balance is: {}", token.amount);
+        SplTokenAccount::unpack(&ctx.accounts.token.data.borrow())?;
+        Ok(())
+    }
+
+    pub fn log_message2(ctx: Context<LogMessage>) -> Result<()> {
+        let token = SplTokenAccount::unpack(&ctx.accounts.token.data.borrow())?;
+        msg!("Your account balance is: {}", token.amount);
+        SplTokenAccount::unpack(&ctx.accounts.token.data.borrow())?;
+        SplTokenAccount::unpack(&ctx.accounts.token.data.borrow())?;
         Ok(())
     }
 }

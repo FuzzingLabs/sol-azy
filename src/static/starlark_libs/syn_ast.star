@@ -16,6 +16,18 @@ def _sum(lists: list[list], start: list[dict]) -> list[dict]:
     # TODO: Investigate why need to filter, can be due to starlark-rust typing considering empty array as [None]
     return list(filter(lambda l: type(l) == 'dict', map(start.extend, lists))) or start
 
+def _deduplicate(nodes: list[dict]) -> list[dict]:
+    unique_items = []
+    seen = set()
+
+    for item in nodes:
+        item_id = str(to_result(item))
+        if item_id not in seen:
+            seen.add(item_id)
+            unique_items.append(item)
+
+    return unique_items
+
 
 def new_ast_node(syn_ast_node: dict, metadata: dict, access_path: str) -> dict:
     children = syn_ast_node.get("children", [])
@@ -91,7 +103,8 @@ def find_chained_calls(self: dict, *idents: tuple[str, ...]) -> list[dict]:
         matches.extend(_sum(list(map(lambda i: children[i:i + length], indices)), []))
 
     list(map(check_node, flatten_tree(self)))
-    return matches
+    return _deduplicate(matches)
+
 
 
 # def find_by_access_path(self: dict, access_path_part: str):
