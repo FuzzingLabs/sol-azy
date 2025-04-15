@@ -4,6 +4,7 @@ mod helpers;
 mod parsers;
 mod engines;
 mod printers;
+mod reverse;
 
 use clap::{Parser, Subcommand};
 use tracing_subscriber::fmt;

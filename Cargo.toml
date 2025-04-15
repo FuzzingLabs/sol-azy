@@ -22,3 +22,5 @@ include_dir = "0.7.4"
 serde = { version = "1.0.219", features = ["derive"] }
 prettytable-rs = "0.10.0"
 proc-macro2 = { version = "1.0.94", features = ["span-locations"] }
+solana-sbpf = { git = "https://github.com/FuzzingLabs/sbpf-solana", branch = "main" }
+test_utils = { git = "https://github.com/FuzzingLabs/sbpf-solana", branch = "main" }
