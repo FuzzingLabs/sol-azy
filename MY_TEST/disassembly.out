@@ -1,0 +1,2783 @@
+entrypoint:
+    rsh64 r5, r4
+    unknown opcode=0x0
+    unknown opcode=0x3
+    unknown opcode=0x38
+    unknown opcode=0x40
+    unknown opcode=0x20
+    unknown opcode=0x0
+    add32 r0, 524297
+    unknown opcode=0x1
+    unknown opcode=0x20
+    unknown opcode=0x20
+    unknown opcode=0x20
+    unknown opcode=0xb0
+    unknown opcode=0xb0
+    unknown opcode=0x0
+    unknown opcode=0x1
+    unknown opcode=0xd0
+    unknown opcode=0xd0
+    unknown opcode=0xd0
+    unknown opcode=0xe0
+    unknown opcode=0xe0
+    unknown opcode=0x0
+    unknown opcode=0x1
+    unknown opcode=0x60
+    unknown opcode=0x60
+    unknown opcode=0x60
+    unknown opcode=0x78
+    unknown opcode=0x78
+    unknown opcode=0x0
+    unknown opcode=0x2
+    unknown opcode=0xb0
+    unknown opcode=0xb0
+    unknown opcode=0xb0
+    unknown opcode=0xb0
+    unknown opcode=0xb0
+    unknown opcode=0x8
+    unknown opcode=0x79
+    call [invalid]
+    syscall 0
+    mov64 r2, r1
+    mov64 r1, r10
+    add64 r1, -96
+    call [invalid]
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r2, 8
+    jgt r2, r1, lbb_127
+    unknown opcode=0x79
+    unknown opcode=0x61
+    unknown opcode=0x63
+    unknown opcode=0x61
+    unknown opcode=0x63
+    mov64 r1, 0
+    unknown opcode=0x7b
+    lddw r1, 0x4610
+    unknown opcode=0x7b
+    mov64 r1, 2
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -136
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -164
+    unknown opcode=0x7b
+    lddw r1, 0x4210
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -168
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -160
+    mov64 r2, r10
+    add64 r2, -96
+    call [invalid]
+    unknown opcode=0x79
+    unknown opcode=0x79
+    call [invalid]
+    unknown opcode=0x61
+    unknown opcode=0x61
+    add64 r2, r1
+    lsh64 r2, 32
+    rsh64 r2, 32
+    jne r2, 1337, lbb_94
+    lddw r1, 0x43e0
+    mov64 r2, 8
+    call [invalid]
+    mov64 r1, 987654321
+    ja lbb_99
+lbb_94:
+    lddw r1, 0x43e8
+    mov64 r2, 9
+    call [invalid]
+    mov64 r1, 123456789
+lbb_99:
+    unknown opcode=0x7b
+    lddw r1, 0x4630
+    unknown opcode=0x7b
+    mov64 r1, 1
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -160
+    unknown opcode=0x7b
+    lddw r1, 0x4238
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -104
+    unknown opcode=0x7b
+    mov64 r6, 0
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -136
+    mov64 r2, r10
+    add64 r2, -96
+    call [invalid]
+    unknown opcode=0x79
+    unknown opcode=0x79
+    call [invalid]
+    jeq r7, 0, lbb_143
+    ja lbb_138
+lbb_127:
+    lddw r1, 0x43f4
+    mov64 r2, 37
+    call [invalid]
+    mov64 r1, 2
+    unknown opcode=0x63
+    mov64 r1, r10
+    add64 r1, -200
+    call [invalid]
+    mov64 r6, r0
+    jeq r7, 0, lbb_143
+lbb_138:
+    add64 r8, 16
+    ja lbb_145
+lbb_140:
+    add64 r8, 48
+    add64 r7, -1
+    jne r7, 0, lbb_145
+lbb_143:
+    mov64 r0, r6
+    syscall 0
+lbb_145:
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    add64 r3, -1
+    unknown opcode=0x7b
+    jne r3, 0, lbb_154
+    unknown opcode=0x79
+    add64 r3, -1
+    unknown opcode=0x7b
+lbb_154:
+    unknown opcode=0x79
+    add64 r2, -1
+    unknown opcode=0x7b
+    jne r2, 0, lbb_140
+    unknown opcode=0x79
+    add64 r2, -1
+    unknown opcode=0x7b
+    ja lbb_140
+
+function_162:
+    lddw r3, 0x300000000
+    unknown opcode=0x79
+    lddw r4, 0x300008000
+    jeq r3, 0, lbb_169
+    mov64 r4, r3
+lbb_169:
+    mov64 r3, r4
+    sub64 r3, r1
+    mov64 r0, 0
+    mov64 r5, 1
+    jgt r3, r4, lbb_175
+    mov64 r5, 0
+lbb_175:
+    mov64 r1, 0
+    jne r5, 0, lbb_178
+    mov64 r1, r3
+lbb_178:
+    stw [r2+0x0], 0
+    and64 r1, r2
+    lddw r2, 0x300000008
+    jgt r2, r1, lbb_187
+    lddw r2, 0x300000000
+    unknown opcode=0x7b
+    mov64 r0, r1
+lbb_187:
+    syscall 0
+    syscall 0
+    mov64 r5, r2
+    mov64 r2, r1
+    lddw r1, 0x300000000
+    unknown opcode=0x79
+    lddw r6, 0x300008000
+    jeq r1, 0, lbb_198
+    mov64 r6, r1
+lbb_198:
+    mov64 r1, r6
+    sub64 r1, r4
+    mov64 r0, 0
+    mov64 r7, 1
+    jgt r1, r6, lbb_204
+    mov64 r7, 0
+lbb_204:
+    mov64 r6, 0
+    jne r7, 0, lbb_207
+    mov64 r6, r1
+lbb_207:
+    stw [r3+0x0], 0
+    and64 r6, r3
+    lddw r1, 0x300000008
+    jgt r1, r6, lbb_221
+    lddw r1, 0x300000000
+    unknown opcode=0x7b
+    jgt r4, r5, lbb_217
+    mov64 r5, r4
+lbb_217:
+    mov64 r1, r6
+    mov64 r3, r5
+    call [invalid]
+    mov64 r0, r6
+lbb_221:
+    syscall 0
+    unknown opcode=0x7b
+    mov64 r1, 0
+    unknown opcode=0x7b
+    lddw r1, 0x4640
+    unknown opcode=0x7b
+    mov64 r1, 1
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -64
+    unknown opcode=0x7b
+    lddw r1, 0x120
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -144
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -136
+    mov64 r2, r10
+    add64 r2, -112
+    call [invalid]
+    unknown opcode=0x79
+    unknown opcode=0x79
+    call [invalid]
+    syscall 0
+    call [invalid]
+    syscall 0
+    mov64 r7, r3
+    mov64 r8, r2
+    mov64 r6, r1
+    jeq r8, 0, lbb_265
+    unknown opcode=0x79
+    jeq r1, 0, lbb_275
+    unknown opcode=0x79
+    jne r2, 0, lbb_269
+    jeq r7, 0, lbb_285
+    mov64 r1, r7
+    mov64 r2, r8
+    call [invalid]
+    jeq r0, 0, lbb_281
+    ja lbb_287
+lbb_265:
+    unknown opcode=0x7b
+    mov64 r1, 0
+    unknown opcode=0x7b
+    ja lbb_283
+lbb_269:
+    unknown opcode=0x79
+    mov64 r3, r8
+    mov64 r4, r7
+    call [invalid]
+    jeq r0, 0, lbb_281
+    ja lbb_287
+lbb_275:
+    jeq r7, 0, lbb_285
+    mov64 r1, r7
+    mov64 r2, r8
+    call [invalid]
+    jeq r0, 0, lbb_281
+    ja lbb_287
+lbb_281:
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+lbb_283:
+    mov64 r1, 1
+    ja lbb_290
+lbb_285:
+    mov64 r7, 0
+    mov64 r0, r8
+lbb_287:
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r1, 0
+lbb_290:
+    unknown opcode=0x7b
+    syscall 0
+    mov64 r6, r1
+    add64 r2, 1
+    mov64 r1, 1
+    jeq r2, 0, lbb_297
+    mov64 r1, 0
+lbb_297:
+    and64 r1, 1
+    jne r1, 0, lbb_339
+    unknown opcode=0x79
+    mov64 r7, r1
+    lsh64 r7, 1
+    jgt r7, r2, lbb_304
+    mov64 r7, r2
+lbb_304:
+    jgt r7, 4, lbb_306
+    mov64 r7, 4
+lbb_306:
+    mov64 r2, 1
+    lddw r3, 0x2aaaaaaaaaaaaab
+    jgt r3, r7, lbb_311
+    mov64 r2, 0
+lbb_311:
+    mov64 r3, r7
+    stb [r3+0x0], 48
+    lsh64 r2, 3
+    jne r1, 0, lbb_318
+    mov64 r1, 0
+    unknown opcode=0x7b
+    ja lbb_324
+lbb_318:
+    unknown opcode=0x79
+    stb [r1+0x0], 48
+    unknown opcode=0x7b
+    mov64 r1, 8
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+lbb_324:
+    mov64 r1, r10
+    add64 r1, -48
+    mov64 r4, r10
+    add64 r4, -24
+    call [invalid]
+    unknown opcode=0x79
+    unknown opcode=0x79
+    jne r2, 0, lbb_335
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+lbb_334:
+    syscall 0
+lbb_335:
+    lddw r2, 0x8000000000000001
+    jeq r1, r2, lbb_334
+    jne r1, 0, lbb_341
+lbb_339:
+    call [invalid]
+    call [invalid]
+lbb_341:
+    unknown opcode=0x79
+    call [invalid]
+    call [invalid]
+    mov64 r4, r2
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    jne r6, 0, lbb_372
+    mov64 r1, 0
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r8, 8
+    unknown opcode=0x7b
+lbb_353:
+    mov64 r1, r4
+    add64 r1, r8
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    add64 r8, 8
+    mov64 r2, r4
+    add64 r2, r8
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    add64 r1, r8
+    add64 r4, r1
+    unknown opcode=0x7b
+    syscall 0
+lbb_372:
+    lddw r1, 0x2aaaaaaaaaaaaab
+    jgt r1, r6, lbb_377
+    call [invalid]
+    call [invalid]
+lbb_377:
+    mov64 r7, r6
+    stb [r7+0x0], 48
+    mov64 r8, 8
+    mov64 r0, 8
+    unknown opcode=0x7b
+    jeq r7, 0, lbb_392
+    mov64 r1, r7
+    mov64 r2, 8
+    call [invalid]
+    unknown opcode=0x79
+    jne r0, 0, lbb_392
+    mov64 r1, 8
+    mov64 r2, r7
+    call [invalid]
+    call [invalid]
+lbb_392:
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r1, 0
+    unknown opcode=0x7b
+    mov64 r2, 0
+    mov64 r3, 0
+    unknown opcode=0x7b
+    ja lbb_429
+lbb_400:
+    mov64 r1, r2
+    stb [r1+0x0], 48
+    mov64 r3, r0
+    add64 r3, r1
+    unknown opcode=0x79
+    unknown opcode=0x73
+    unknown opcode=0x79
+    unknown opcode=0x73
+    unknown opcode=0x79
+    unknown opcode=0x73
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x61
+    unknown opcode=0x63
+    unknown opcode=0x71
+    unknown opcode=0x73
+lbb_421:
+    add64 r2, 1
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    add64 r3, 1
+    add64 r8, 8
+    unknown opcode=0x79
+    jgt r1, r3, lbb_429
+    ja lbb_353
+lbb_429:
+    mov64 r1, r4
+    add64 r1, r8
+    unknown opcode=0x71
+    unknown opcode=0x7b
+    jeq r1, 255, lbb_485
+    jgt r2, r1, lbb_436
+    ja lbb_586
+lbb_436:
+    mov64 r5, r2
+    stb [r1+0x0], 48
+    mov64 r2, r0
+    add64 r2, r1
+    unknown opcode=0x79
+    unknown opcode=0x79
+    add64 r3, 1
+    mov64 r4, 1
+    jeq r3, 0, lbb_446
+    mov64 r4, 0
+lbb_446:
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    jne r4, 1, lbb_451
+lbb_449:
+    call [invalid]
+    call [invalid]
+lbb_451:
+    mov64 r2, r0
+    add64 r2, r1
+    unknown opcode=0x79
+    unknown opcode=0x79
+    add64 r2, 1
+    mov64 r3, 1
+    jeq r2, 0, lbb_459
+    mov64 r3, 0
+lbb_459:
+    unknown opcode=0x7b
+    jne r3, 1, lbb_462
+    ja lbb_449
+lbb_462:
+    mov64 r2, r0
+    add64 r2, r1
+    unknown opcode=0x71
+    unknown opcode=0x7b
+    unknown opcode=0x71
+    unknown opcode=0x7b
+    unknown opcode=0x71
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    mov64 r2, r5
+    unknown opcode=0x79
+    jne r2, r1, lbb_400
+    mov64 r1, r10
+    add64 r1, -32
+    call [invalid]
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    ja lbb_400
+lbb_485:
+    unknown opcode=0x7b
+    mov64 r6, r8
+    add64 r6, r4
+    unknown opcode=0x71
+    unknown opcode=0x7b
+    unknown opcode=0x71
+    unknown opcode=0x7b
+    unknown opcode=0x71
+    unknown opcode=0x7b
+    mov64 r1, 32
+    mov64 r2, 8
+    call [invalid]
+    jne r0, 0, lbb_502
+    mov64 r1, 8
+    mov64 r2, 32
+    call [invalid]
+    call [invalid]
+lbb_502:
+    mov64 r1, 0
+    unknown opcode=0x7b
+    mov64 r1, 1
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r1, r6
+    add64 r1, 72
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    unknown opcode=0x63
+    mov64 r1, 40
+    mov64 r2, 8
+    call [invalid]
+    mov64 r7, r0
+    jne r7, 0, lbb_522
+    mov64 r1, 8
+    mov64 r2, 40
+    call [invalid]
+    call [invalid]
+lbb_522:
+    unknown opcode=0x79
+    mov64 r3, r1
+    mov64 r2, 0
+    mov64 r1, 1
+    mov64 r5, 1
+    unknown opcode=0x79
+    jne r3, 0, lbb_530
+    mov64 r5, 0
+lbb_530:
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    mov64 r2, 1
+    jne r3, 0, lbb_535
+    mov64 r2, 0
+lbb_535:
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    mov64 r3, 1
+    jne r2, 0, lbb_540
+    mov64 r3, 0
+lbb_540:
+    unknown opcode=0x7b
+    mov64 r2, r6
+    add64 r2, 40
+    unknown opcode=0x7b
+    add64 r6, 8
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r1, r8
+    add64 r1, r4
+    add64 r1, 88
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    add64 r8, r9
+    add64 r8, 10335
+    and64 r8, -8
+    mov64 r1, r4
+    add64 r1, r8
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    jne r2, r1, lbb_568
+    mov64 r1, r10
+    add64 r1, -32
+    unknown opcode=0x7b
+    call [invalid]
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+lbb_568:
+    mov64 r1, r2
+    stb [r1+0x0], 48
+    unknown opcode=0x79
+    mov64 r3, r0
+    add64 r3, r1
+    unknown opcode=0x73
+    unknown opcode=0x79
+    unknown opcode=0x73
+    unknown opcode=0x79
+    unknown opcode=0x73
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    ja lbb_421
+lbb_586:
+    lddw r3, 0x4650
+    call [invalid]
+    call [invalid]
+    unknown opcode=0x61
+    jsgt r2, 11, lbb_601
+    jsgt r2, 5, lbb_608
+    jsgt r2, 2, lbb_620
+    jeq r2, 0, lbb_640
+    lddw r6, 0x200000000
+    jeq r2, 1, lbb_687
+    lddw r6, 0x300000000
+    ja lbb_687
+lbb_601:
+    jsgt r2, 17, lbb_614
+    jsgt r2, 14, lbb_625
+    jeq r2, 12, lbb_646
+    jeq r2, 13, lbb_649
+    lddw r6, 0xf00000000
+    ja lbb_687
+lbb_608:
+    jsgt r2, 8, lbb_630
+    jeq r2, 6, lbb_652
+    jeq r2, 7, lbb_655
+    lddw r6, 0x900000000
+    ja lbb_687
+lbb_614:
+    jsgt r2, 20, lbb_635
+    jeq r2, 18, lbb_658
+    jeq r2, 19, lbb_661
+    lddw r6, 0x1500000000
+    ja lbb_687
+lbb_620:
+    jeq r2, 3, lbb_664
+    jeq r2, 4, lbb_667
+    lddw r6, 0x600000000
+    ja lbb_687
+lbb_625:
+    jeq r2, 15, lbb_670
+    jeq r2, 16, lbb_673
+    lddw r6, 0x1200000000
+    ja lbb_687
+lbb_630:
+    jeq r2, 9, lbb_676
+    jeq r2, 10, lbb_679
+    lddw r6, 0xc00000000
+    ja lbb_687
+lbb_635:
+    jeq r2, 21, lbb_682
+    jeq r2, 22, lbb_685
+    lddw r6, 0x1800000000
+    ja lbb_687
+lbb_640:
+    lddw r6, 0x100000000
+    unknown opcode=0x61
+    jeq r3, 0, lbb_687
+    mov64 r6, r3
+    ja lbb_687
+lbb_646:
+    lddw r6, 0xd00000000
+    ja lbb_687
+lbb_649:
+    lddw r6, 0xe00000000
+    ja lbb_687
+lbb_652:
+    lddw r6, 0x700000000
+    ja lbb_687
+lbb_655:
+    lddw r6, 0x800000000
+    ja lbb_687
+lbb_658:
+    lddw r6, 0x1300000000
+    ja lbb_687
+lbb_661:
+    lddw r6, 0x1400000000
+    ja lbb_687
+lbb_664:
+    lddw r6, 0x400000000
+    ja lbb_687
+lbb_667:
+    lddw r6, 0x500000000
+    ja lbb_687
+lbb_670:
+    lddw r6, 0x1000000000
+    ja lbb_687
+lbb_673:
+    lddw r6, 0x1100000000
+    ja lbb_687
+lbb_676:
+    lddw r6, 0xa00000000
+    ja lbb_687
+lbb_679:
+    lddw r6, 0xb00000000
+    ja lbb_687
+lbb_682:
+    lddw r6, 0x1600000000
+    ja lbb_687
+lbb_685:
+    lddw r6, 0x1700000000
+lbb_687:
+    jne r2, 14, lbb_693
+    unknown opcode=0x79
+    jeq r2, 0, lbb_693
+    unknown opcode=0x79
+    mov64 r3, 1
+    call [invalid]
+lbb_693:
+    mov64 r0, r6
+    syscall 0
+    call [invalid]
+    call [invalid]
+    call [invalid]
+    call [invalid]
+    call [invalid]
+    syscall 0
+    call [invalid]
+    call [invalid]
+    call [invalid]
+    call [invalid]
+    call [invalid]
+    lddw r1, 0x442a
+    mov64 r2, 46
+    call [invalid]
+    call [invalid]
+    call [invalid]
+    call [invalid]
+    call [invalid]
+    mov64 r3, r2
+    lddw r2, 0x4668
+    call [invalid]
+    syscall 0
+    syscall 0
+    unknown opcode=0x79
+    jeq r2, 0, lbb_725
+    unknown opcode=0x79
+    mov64 r3, 1
+    call [invalid]
+lbb_725:
+    syscall 0
+    mov64 r1, r2
+    lddw r2, 0x4458
+    mov64 r3, 5
+    call [invalid]
+    syscall 0
+    mov64 r6, r1
+    mov64 r4, r2
+    add64 r4, r3
+    mov64 r1, 1
+    jgt r2, r4, lbb_738
+    mov64 r1, 0
+lbb_738:
+    and64 r1, 1
+    jne r1, 0, lbb_775
+    unknown opcode=0x79
+    mov64 r7, r1
+    lsh64 r7, 1
+    jgt r7, r4, lbb_745
+    mov64 r7, r4
+lbb_745:
+    jgt r7, 8, lbb_747
+    mov64 r7, 8
+lbb_747:
+    mov64 r2, r7
+    xor64 r2, -1
+    rsh64 r2, 63
+    jne r1, 0, lbb_754
+    mov64 r1, 0
+    unknown opcode=0x7b
+    ja lbb_759
+lbb_754:
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    mov64 r1, 1
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+lbb_759:
+    mov64 r1, r10
+    add64 r1, -48
+    mov64 r4, r10
+    add64 r4, -24
+    mov64 r3, r7
+    call [invalid]
+    unknown opcode=0x79
+    unknown opcode=0x79
+    jne r2, 0, lbb_771
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+lbb_770:
+    syscall 0
+lbb_771:
+    lddw r2, 0x8000000000000001
+    jeq r1, r2, lbb_770
+    jne r1, 0, lbb_777
+lbb_775:
+    call [invalid]
+    call [invalid]
+lbb_777:
+    unknown opcode=0x79
+    call [invalid]
+    call [invalid]
+    mov64 r6, r1
+    add64 r2, 1
+    mov64 r1, 1
+    jeq r2, 0, lbb_785
+    mov64 r1, 0
+lbb_785:
+    and64 r1, 1
+    jne r1, 0, lbb_822
+    unknown opcode=0x79
+    mov64 r7, r1
+    lsh64 r7, 1
+    jgt r7, r2, lbb_792
+    mov64 r7, r2
+lbb_792:
+    jgt r7, 8, lbb_794
+    mov64 r7, 8
+lbb_794:
+    mov64 r2, r7
+    xor64 r2, -1
+    rsh64 r2, 63
+    jne r1, 0, lbb_801
+    mov64 r1, 0
+    unknown opcode=0x7b
+    ja lbb_806
+lbb_801:
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    mov64 r1, 1
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+lbb_806:
+    mov64 r1, r10
+    add64 r1, -48
+    mov64 r4, r10
+    add64 r4, -24
+    mov64 r3, r7
+    call [invalid]
+    unknown opcode=0x79
+    unknown opcode=0x79
+    jne r2, 0, lbb_818
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+lbb_817:
+    syscall 0
+lbb_818:
+    lddw r2, 0x8000000000000001
+    jeq r1, r2, lbb_817
+    jne r1, 0, lbb_824
+lbb_822:
+    call [invalid]
+    call [invalid]
+lbb_824:
+    unknown opcode=0x79
+    call [invalid]
+    call [invalid]
+    mov64 r7, r3
+    mov64 r6, r1
+    jeq r2, 0, lbb_843
+    unknown opcode=0x79
+    jeq r1, 0, lbb_859
+    unknown opcode=0x79
+    jne r2, 0, lbb_848
+    mov64 r1, 0
+    mov64 r0, 1
+    jeq r7, 0, lbb_867
+    mov64 r1, r7
+    mov64 r2, 1
+    call [invalid]
+    mov64 r1, r7
+    jeq r0, 0, lbb_855
+    ja lbb_867
+lbb_843:
+    unknown opcode=0x7b
+    mov64 r1, 0
+    unknown opcode=0x7b
+    mov64 r1, 1
+    ja lbb_870
+lbb_848:
+    unknown opcode=0x79
+    mov64 r3, 1
+    mov64 r4, r7
+    call [invalid]
+    mov64 r1, r7
+    jeq r0, 0, lbb_855
+    ja lbb_867
+lbb_855:
+    unknown opcode=0x7b
+    mov64 r1, 1
+    unknown opcode=0x7b
+    ja lbb_870
+lbb_859:
+    mov64 r1, 0
+    mov64 r0, 1
+    jeq r7, 0, lbb_867
+    mov64 r1, r7
+    mov64 r2, 1
+    call [invalid]
+    mov64 r1, r7
+    jeq r0, 0, lbb_855
+lbb_867:
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r1, 0
+lbb_870:
+    unknown opcode=0x7b
+    syscall 0
+    mov64 r1, 1
+    unknown opcode=0x7b
+    lddw r1, 0x4698
+    unknown opcode=0x7b
+    mov64 r1, 0
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    lddw r1, 0x4458
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -48
+    lddw r2, 0x46a8
+    call [invalid]
+    call [invalid]
+    mov64 r3, r1
+    mov64 r1, r2
+    mov64 r2, r3
+    call [invalid]
+    call [invalid]
+    mov64 r7, r2
+    mov64 r6, r1
+    unknown opcode=0x79
+    jeq r2, 0, lbb_939
+    unknown opcode=0x79
+    mov64 r4, 0
+    mov64 r3, r1
+    add64 r3, 8
+lbb_902:
+    unknown opcode=0x79
+    add64 r8, r4
+    add64 r3, 16
+    add64 r2, -1
+    mov64 r4, r8
+    jne r2, 0, lbb_902
+    unknown opcode=0x79
+    jeq r2, 0, lbb_924
+    mov64 r4, 0
+    mov64 r3, 1
+    mov64 r5, 16
+    mov64 r2, 1
+    jgt r5, r8, lbb_916
+    mov64 r2, 0
+lbb_916:
+    unknown opcode=0x79
+    jeq r1, 0, lbb_919
+    mov64 r3, 0
+lbb_919:
+    jsgt r4, r8, lbb_943
+    and64 r2, r3
+    and64 r2, 1
+    jne r2, 0, lbb_943
+lbb_923:
+    lsh64 r8, 1
+lbb_924:
+    mov64 r0, 1
+    mov64 r1, 0
+    jeq r8, 0, lbb_945
+    jsgt r8, -1, lbb_930
+    call [invalid]
+    call [invalid]
+lbb_930:
+    mov64 r1, r8
+    mov64 r2, 1
+    call [invalid]
+    mov64 r1, r8
+    jne r0, 0, lbb_945
+    mov64 r1, 1
+    mov64 r2, r8
+    call [invalid]
+    call [invalid]
+lbb_939:
+    mov64 r8, 0
+    unknown opcode=0x79
+    jeq r1, 0, lbb_943
+    ja lbb_923
+lbb_943:
+    mov64 r0, 1
+    mov64 r1, 0
+lbb_945:
+    mov64 r2, 0
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -32
+    lddw r2, 0x4668
+    mov64 r3, r7
+    call [invalid]
+    jne r0, 0, lbb_963
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    syscall 0
+lbb_963:
+    mov64 r3, r10
+    add64 r3, -1
+    lddw r1, 0x448a
+    mov64 r2, 51
+    lddw r4, 0x46c0
+    lddw r5, 0x46e0
+    call [invalid]
+    call [invalid]
+    mov64 r7, r2
+    mov64 r6, r1
+    mov64 r1, r7
+    lsh64 r1, 32
+    rsh64 r1, 32
+    mov64 r2, 128
+    jgt r2, r1, lbb_1005
+    mov64 r2, 0
+    unknown opcode=0x63
+    mov64 r2, 2048
+    jgt r2, r1, lbb_1017
+    mov64 r1, r7
+    lsh64 r1, 32
+    rsh64 r1, 32
+    mov64 r2, 65536
+    jgt r2, r1, lbb_991
+    ja lbb_1026
+lbb_991:
+    mov64 r1, r7
+    and64 r1, 63
+    or64 r1, 128
+    unknown opcode=0x73
+    mov64 r1, r7
+    rsh64 r1, 12
+    or64 r1, 224
+    unknown opcode=0x73
+    rsh64 r7, 6
+    and64 r7, 63
+    or64 r7, 128
+    unknown opcode=0x73
+    mov64 r7, 3
+    ja lbb_1045
+lbb_1005:
+    unknown opcode=0x79
+    unknown opcode=0x79
+    jne r2, r1, lbb_1011
+    mov64 r1, r6
+    call [invalid]
+    unknown opcode=0x79
+lbb_1011:
+    unknown opcode=0x79
+    add64 r1, r2
+    unknown opcode=0x73
+    add64 r2, 1
+    unknown opcode=0x7b
+    ja lbb_1062
+lbb_1017:
+    mov64 r1, r7
+    and64 r1, 63
+    or64 r1, 128
+    unknown opcode=0x73
+    rsh64 r7, 6
+    or64 r7, 192
+    unknown opcode=0x73
+    mov64 r7, 2
+    ja lbb_1045
+lbb_1026:
+    mov64 r1, r7
+    and64 r1, 63
+    or64 r1, 128
+    unknown opcode=0x73
+    mov64 r1, r7
+    rsh64 r1, 6
+    and64 r1, 63
+    or64 r1, 128
+    unknown opcode=0x73
+    mov64 r1, r7
+    rsh64 r1, 12
+    and64 r1, 63
+    or64 r1, 128
+    unknown opcode=0x73
+    rsh64 r7, 18
+    and64 r7, 7
+    or64 r7, 240
+    unknown opcode=0x73
+    mov64 r7, 4
+lbb_1045:
+    unknown opcode=0x79
+    unknown opcode=0x79
+    sub64 r1, r8
+    jge r1, r7, lbb_1054
+    mov64 r1, r6
+    mov64 r2, r8
+    mov64 r3, r7
+    call [invalid]
+    unknown opcode=0x79
+lbb_1054:
+    unknown opcode=0x79
+    add64 r1, r8
+    mov64 r2, r10
+    add64 r2, -4
+    mov64 r3, r7
+    call [invalid]
+    add64 r8, r7
+    unknown opcode=0x7b
+lbb_1062:
+    syscall 0
+    mov64 r6, r3
+    mov64 r8, r2
+    mov64 r7, r1
+    unknown opcode=0x79
+    unknown opcode=0x79
+    sub64 r1, r9
+    jge r1, r6, lbb_1075
+    mov64 r1, r7
+    mov64 r2, r9
+    mov64 r3, r6
+    call [invalid]
+    unknown opcode=0x79
+lbb_1075:
+    unknown opcode=0x79
+    add64 r1, r9
+    mov64 r2, r8
+    mov64 r3, r6
+    call [invalid]
+    add64 r9, r6
+    unknown opcode=0x7b
+    mov64 r0, 0
+    syscall 0
+    call [invalid]
+    mov64 r0, 0
+    syscall 0
+    unknown opcode=0x79
+lbb_1088:
+    ja lbb_1088
+
+function_1089:
+    syscall 0
+    lddw r2, 0xbf0032581df6855a
+    unknown opcode=0x7b
+    lddw r2, 0xf6c0e91a5cd6f8ca
+    unknown opcode=0x7b
+    syscall 0
+    mov64 r8, r1
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r1, r6
+    lddw r2, 0x4520
+    mov64 r3, 12
+    callx r0
+    mov64 r1, r0
+    mov64 r0, 1
+    jne r1, 0, lbb_1196
+    unknown opcode=0x79
+    mov64 r2, 0
+    unknown opcode=0x7b
+    lddw r2, 0x4708
+    unknown opcode=0x7b
+    mov64 r2, 3
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r2, r10
+    add64 r2, -96
+    unknown opcode=0x7b
+    mov64 r2, r1
+    add64 r2, 20
+    unknown opcode=0x7b
+    lddw r2, 0x4210
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r2, r1
+    add64 r2, 16
+    unknown opcode=0x7b
+    lddw r2, 0x4290
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r3, r10
+    add64 r3, -144
+    mov64 r1, r6
+    mov64 r2, r7
+    call [invalid]
+    mov64 r1, r0
+    mov64 r0, 1
+    jne r1, 0, lbb_1196
+    unknown opcode=0x79
+    jeq r1, 0, lbb_1165
+    unknown opcode=0x7b
+    mov64 r1, r6
+    lddw r2, 0x452c
+    mov64 r3, 2
+    callx r0
+    mov64 r1, r0
+    mov64 r0, 1
+    jne r1, 0, lbb_1196
+    mov64 r8, r10
+    add64 r8, -96
+    mov64 r1, r8
+    unknown opcode=0x79
+    mov64 r3, 48
+    call [invalid]
+    mov64 r1, r6
+    mov64 r2, r7
+    mov64 r3, r8
+    call [invalid]
+    ja lbb_1196
+lbb_1165:
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r1, r10
+    add64 r1, -160
+    mov64 r2, r7
+    callx r0
+    lddw r1, 0xfdbc168100b1ef64
+    unknown opcode=0x79
+    xor64 r2, r1
+    lddw r1, 0xc1a2c89ccd1e7bc1
+    unknown opcode=0x79
+    xor64 r3, r1
+    or64 r3, r2
+    mov64 r0, 0
+    jeq r3, 0, lbb_1184
+    ja lbb_1196
+lbb_1184:
+    mov64 r1, r6
+    lddw r2, 0x452c
+    mov64 r3, 2
+    callx r0
+    mov64 r1, r0
+    mov64 r0, 1
+    jne r1, 0, lbb_1196
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r1, r6
+    callx r0
+lbb_1196:
+    syscall 0
+    mov64 r3, 1
+    unknown opcode=0x6b
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    lddw r1, 0x4738
+    unknown opcode=0x7b
+    lddw r1, 0x44d8
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -40
+    call [invalid]
+    call [invalid]
+    mov64 r6, r3
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -96
+    unknown opcode=0x7b
+    lddw r1, 0x4238
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -88
+    unknown opcode=0x7b
+    mov64 r7, r10
+    add64 r7, -80
+    mov64 r4, r10
+    add64 r4, -32
+    mov64 r1, r7
+    lddw r2, 0x4758
+    mov64 r3, 2
+    mov64 r5, 2
+    call [invalid]
+    mov64 r1, r7
+    mov64 r2, r6
+    call [invalid]
+    call [invalid]
+    mov64 r6, r5
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    lddw r1, 0x4260
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -96
+    unknown opcode=0x7b
+    lddw r1, 0x4290
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -112
+    unknown opcode=0x7b
+    mov64 r7, r10
+    add64 r7, -80
+    mov64 r4, r10
+    add64 r4, -32
+    mov64 r1, r7
+    lddw r2, 0x4778
+    mov64 r3, 2
+    mov64 r5, 2
+    call [invalid]
+    mov64 r1, r7
+    mov64 r2, r6
+    call [invalid]
+    call [invalid]
+    mov64 r0, r5
+    add64 r0, 1
+    jgt r3, r0, lbb_1280
+    jgt r5, r3, lbb_1280
+    mov64 r0, 0
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    syscall 0
+lbb_1280:
+    mov64 r1, 1
+    unknown opcode=0x7b
+    lddw r1, 0x46f8
+    unknown opcode=0x7b
+    mov64 r1, 0
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    lddw r1, 0x44d8
+    unknown opcode=0x7b
+    mov64 r1, r10
+    add64 r1, -48
+    lddw r2, 0x4798
+    call [invalid]
+    call [invalid]
+    mov64 r4, 3
+    unknown opcode=0x73
+    mov64 r4, 32
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    mov64 r7, 0
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    jne r8, 0, lbb_1338
+    unknown opcode=0x79
+    jeq r1, 0, lbb_1418
+    unknown opcode=0x79
+    unknown opcode=0x79
+    lsh64 r1, 4
+    mov64 r8, r6
+    add64 r8, r1
+    unknown opcode=0x79
+    add64 r9, 8
+    ja lbb_1335
+lbb_1319:
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    callx r0
+    jne r0, 0, lbb_1435
+lbb_1325:
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r2, r10
+    add64 r2, -64
+    callx r0
+    jne r0, 0, lbb_1435
+    add64 r7, 1
+    add64 r9, 16
+    add64 r6, 16
+    jeq r6, r8, lbb_1418
+lbb_1335:
+    unknown opcode=0x79
+    jeq r3, 0, lbb_1325
+    ja lbb_1319
+lbb_1338:
+    unknown opcode=0x79
+    jeq r9, 0, lbb_1418
+    add64 r8, 24
+    stb [r9+0x0], 56
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    add64 r6, 8
+    ja lbb_1365
+lbb_1348:
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    lsh64 r1, 4
+    unknown opcode=0x79
+    add64 r2, r1
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r2, r10
+    add64 r2, -64
+    callx r0
+    jne r0, 0, lbb_1435
+    add64 r7, 1
+    add64 r8, 56
+    add64 r6, 16
+    add64 r9, -56
+    jeq r9, 0, lbb_1418
+lbb_1365:
+    unknown opcode=0x79
+    jeq r3, 0, lbb_1373
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    callx r0
+    jne r0, 0, lbb_1435
+lbb_1373:
+    unknown opcode=0x61
+    unknown opcode=0x63
+    unknown opcode=0x71
+    unknown opcode=0x73
+    unknown opcode=0x61
+    unknown opcode=0x63
+    unknown opcode=0x79
+    unknown opcode=0x79
+    jeq r3, 0, lbb_1385
+    mov64 r2, 0
+    jeq r3, 1, lbb_1387
+    ja lbb_1397
+lbb_1385:
+    mov64 r2, 1
+    ja lbb_1397
+lbb_1387:
+    lsh64 r1, 4
+    unknown opcode=0x79
+    add64 r3, r1
+    unknown opcode=0x79
+    lddw r5, 0x21f8
+    jne r4, r5, lbb_1397
+    mov64 r2, 1
+    unknown opcode=0x79
+    unknown opcode=0x79
+lbb_1397:
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    unknown opcode=0x79
+    jeq r3, 0, lbb_1405
+    mov64 r2, 0
+    jeq r3, 1, lbb_1407
+    ja lbb_1348
+lbb_1405:
+    mov64 r2, 1
+    ja lbb_1348
+lbb_1407:
+    lsh64 r1, 4
+    unknown opcode=0x79
+    add64 r3, r1
+    unknown opcode=0x79
+    lddw r5, 0x21f8
+    jne r4, r5, lbb_1348
+    mov64 r2, 1
+    unknown opcode=0x79
+    unknown opcode=0x79
+    ja lbb_1348
+lbb_1418:
+    unknown opcode=0x79
+    unknown opcode=0x79
+    jgt r1, r7, lbb_1422
+    ja lbb_1433
+lbb_1422:
+    lsh64 r7, 4
+    unknown opcode=0x79
+    unknown opcode=0x79
+    add64 r1, r7
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    callx r0
+    jne r0, 0, lbb_1435
+lbb_1433:
+    mov64 r0, 0
+    ja lbb_1436
+lbb_1435:
+    mov64 r0, 1
+lbb_1436:
+    syscall 0
+    mov64 r0, r4
+    mov64 r8, r1
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    jne r2, 0, lbb_1447
+    mov64 r1, 45
+    unknown opcode=0x7b
+    unknown opcode=0x61
+    add64 r9, 1
+    ja lbb_1453
+lbb_1447:
+    mov64 r1, 1114112
+    unknown opcode=0x7b
+    unknown opcode=0x61
+    mov64 r1, r7
+    and64 r1, 1
+    jne r1, 0, lbb_1513
+lbb_1453:
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    mov64 r4, 0
+    mov64 r1, r7
+    and64 r1, 4
+    jeq r1, 0, lbb_1460
+    ja lbb_1487
+lbb_1460:
+    unknown opcode=0x79
+    jne r1, 0, lbb_1472
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r1, r6
+    mov64 r2, r9
+    unknown opcode=0x79
+    mov64 r5, r0
+    call [invalid]
+    mov64 r7, 1
+    jne r0, 0, lbb_1510
+    ja lbb_1504
+lbb_1472:
+    unknown opcode=0x79
+    jgt r6, r9, lbb_1475
+    ja lbb_1495
+lbb_1475:
+    and64 r7, 8
+    jeq r7, 0, lbb_1478
+    ja lbb_1541
+lbb_1478:
+    sub64 r6, r9
+    unknown opcode=0x71
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    jsgt r9, 1, lbb_1568
+    jeq r9, 0, lbb_1587
+lbb_1484:
+    mov64 r9, r6
+    mov64 r6, 0
+    ja lbb_1587
+lbb_1487:
+    mov64 r1, 32
+    unknown opcode=0x7b
+    jgt r1, r0, lbb_1518
+    mov64 r1, r3
+    mov64 r6, r0
+    mov64 r2, r0
+    call [invalid]
+    ja lbb_1529
+lbb_1495:
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r1, r6
+    mov64 r2, r9
+    unknown opcode=0x79
+    mov64 r5, r0
+    call [invalid]
+    mov64 r7, 1
+    jne r0, 0, lbb_1510
+lbb_1504:
+    unknown opcode=0x79
+    mov64 r1, r6
+    unknown opcode=0x79
+    unknown opcode=0x79
+    callx r0
+    mov64 r7, r0
+lbb_1510:
+    and64 r7, 1
+    mov64 r0, r7
+    syscall 0
+lbb_1513:
+    mov64 r1, 43
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    add64 r9, 1
+    ja lbb_1453
+lbb_1518:
+    mov64 r1, r0
+    mov64 r0, 0
+    mov64 r6, r1
+    jeq r1, 0, lbb_1529
+    unknown opcode=0x79
+    mov64 r2, r6
+    ja lbb_1534
+lbb_1525:
+    add64 r0, r3
+    add64 r1, 1
+    add64 r2, -1
+    jne r2, 0, lbb_1534
+lbb_1529:
+    add64 r0, r9
+    unknown opcode=0x79
+    mov64 r9, r0
+    mov64 r0, r6
+    ja lbb_1460
+lbb_1534:
+    unknown opcode=0x71
+    lsh64 r4, 56
+    arsh64 r4, 56
+    mov64 r3, 1
+    jsgt r4, -65, lbb_1525
+    mov64 r3, 0
+    ja lbb_1525
+lbb_1541:
+    unknown opcode=0x61
+    unknown opcode=0x7b
+    mov64 r1, 48
+    unknown opcode=0x63
+    unknown opcode=0x71
+    unknown opcode=0x7b
+    mov64 r7, 1
+    unknown opcode=0x73
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    mov64 r5, r0
+    call [invalid]
+    jne r0, 0, lbb_1510
+    sub64 r6, r9
+    add64 r6, 1
+lbb_1559:
+    add64 r6, -1
+    jeq r6, 0, lbb_1570
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r2, 48
+    callx r0
+    jne r0, 0, lbb_1510
+    ja lbb_1559
+lbb_1568:
+    jeq r9, 2, lbb_1583
+    ja lbb_1484
+lbb_1570:
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    callx r0
+    jne r0, 0, lbb_1510
+    unknown opcode=0x79
+    unknown opcode=0x73
+    unknown opcode=0x79
+    unknown opcode=0x63
+    mov64 r7, 0
+    ja lbb_1510
+lbb_1583:
+    mov64 r9, r6
+    rsh64 r9, 1
+    add64 r6, 1
+    rsh64 r6, 1
+lbb_1587:
+    add64 r9, 1
+    unknown opcode=0x61
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    unknown opcode=0x79
+    mov64 r7, 1
+lbb_1594:
+    add64 r9, -1
+    jeq r9, 0, lbb_1603
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r1, r8
+    unknown opcode=0x79
+    callx r0
+    jne r0, 0, lbb_1510
+    ja lbb_1594
+lbb_1603:
+    mov64 r1, r8
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    call [invalid]
+    mov64 r7, 1
+    jne r0, 0, lbb_1510
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r1, r8
+    unknown opcode=0x79
+    unknown opcode=0x79
+    callx r0
+    jne r0, 0, lbb_1510
+    mov64 r7, 0
+lbb_1619:
+    mov64 r1, r6
+    jeq r6, r7, lbb_1630
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r1, r8
+    unknown opcode=0x79
+    callx r0
+    add64 r7, 1
+    jeq r0, 0, lbb_1619
+    add64 r7, -1
+    mov64 r1, r7
+lbb_1630:
+    mov64 r7, 1
+    jgt r6, r1, lbb_1510
+    mov64 r7, 0
+    ja lbb_1510
+
+function_1634:
+    mov64 r6, r5
+    mov64 r7, r4
+    mov64 r9, r2
+    mov64 r8, r1
+    mov64 r1, r3
+    lsh64 r1, 32
+    rsh64 r1, 32
+    jeq r1, 1114112, lbb_1649
+    unknown opcode=0x79
+    mov64 r1, r8
+    mov64 r2, r3
+    callx r0
+    mov64 r1, r0
+    mov64 r0, 1
+    jne r1, 0, lbb_1651
+lbb_1649:
+    mov64 r0, 0
+    jne r7, 0, lbb_1652
+lbb_1651:
+    syscall 0
+lbb_1652:
+    unknown opcode=0x79
+    mov64 r1, r8
+    mov64 r2, r7
+    mov64 r3, r6
+    callx r0
+    ja lbb_1651
+
+function_1658:
+    mov64 r8, r1
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r4, r1
+    or64 r4, r5
+    jeq r4, 0, lbb_1715
+    unknown opcode=0x7b
+    unknown opcode=0x7b
+    jeq r5, 0, lbb_1735
+    unknown opcode=0x79
+    mov64 r3, r7
+    unknown opcode=0x79
+    add64 r3, r2
+    mov64 r2, 0
+    unknown opcode=0x79
+    jeq r4, 0, lbb_1700
+    mov64 r6, 0
+    unknown opcode=0x79
+lbb_1676:
+    mov64 r9, r7
+    jeq r9, r3, lbb_1735
+    mov64 r7, r9
+    add64 r7, 1
+    unknown opcode=0x71
+    mov64 r0, r5
+    lsh64 r0, 56
+    arsh64 r0, 56
+    jsgt r0, -1, lbb_1696
+    mov64 r7, r9
+    add64 r7, 2
+    mov64 r0, r5
+    mov64 r5, 224
+    jgt r5, r0, lbb_1696
+    mov64 r7, r9
+    add64 r7, 3
+    mov64 r5, 240
+    jgt r5, r0, lbb_1696
+    mov64 r7, r9
+    add64 r7, 4
+lbb_1696:
+    add64 r6, 1
+    sub64 r2, r9
+    add64 r2, r7
+    jgt r4, r6, lbb_1676
+lbb_1700:
+    jeq r7, r3, lbb_1735
+    unknown opcode=0x71
+    mov64 r4, r3
+    lsh64 r4, 56
+    arsh64 r4, 56
+    jsgt r4, -1, lbb_1708
+    mov64 r4, 224
+    jgt r4, r3, lbb_1708
+lbb_1708:
+    unknown opcode=0x79
+    unknown opcode=0x79
+    jeq r2, 0, lbb_1728
+    jgt r0, r2, lbb_1720
+    mov64 r3, 0
+    jeq r2, r0, lbb_1728
+    ja lbb_1729
+lbb_1715:
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    callx r0
+    ja lbb_1829
+lbb_1720:
+    mov64 r4, r6
+    add64 r4, r2
+    mov64 r3, 0
+    unknown opcode=0x71
+    lsh64 r4, 56
+    arsh64 r4, 56
+    mov64 r5, -64
+    jsgt r5, r4, lbb_1729
+lbb_1728:
+    mov64 r3, r6
+lbb_1729:
+    jeq r3, 0, lbb_1731
+    mov64 r0, r2
+lbb_1731:
+    unknown opcode=0x7b
+    jeq r3, 0, lbb_1734
+    mov64 r6, r3
+lbb_1734:
+    unknown opcode=0x7b
+lbb_1735:
+    jne r1, 0, lbb_1743
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    callx r0
+    ja lbb_1829
+lbb_1743:
+    unknown opcode=0x79
+    mov64 r1, 32
+    unknown opcode=0x79
+    unknown opcode=0x79
+    jgt r1, r6, lbb_1752
+    mov64 r1, r7
+    mov64 r2, r6
+    call [invalid]
+    ja lbb_1761
+lbb_1752:
+    mov64 r0, 0
+    jeq r6, 0, lbb_1761
+    mov64 r1, r7
+    mov64 r2, r6
+    ja lbb_1770
+lbb_1757:
+    add64 r0, r3
+    add64 r1, 1
+    add64 r2, -1
+    jne r2, 0, lbb_1770
+lbb_1761:
+    jge r0, r9, lbb_1777
+    sub64 r9, r0
+    mov64 r6, 0
+    unknown opcode=0x71
+    jsgt r1, 1, lbb_1784
+    jeq r1, 0, lbb_1790
+    mov64 r6, r9
+    mov64 r9, 0
+    ja lbb_1790
+lbb_1770:
+    unknown opcode=0x71
+    lsh64 r4, 56
+    arsh64 r4, 56
+    mov64 r3, 1
+    jsgt r4, -65, lbb_1757
+    mov64 r3, 0
+    ja lbb_1757
+lbb_1777:
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r2, r7
+    mov64 r3, r6
+    callx r0
+    ja lbb_1829
+lbb_1784:
+    jeq r1, 2, lbb_1786
+    ja lbb_1790
+lbb_1786:
+    mov64 r6, r9
+    rsh64 r6, 1
+    add64 r9, 1
+    rsh64 r9, 1
+lbb_1790:
+    unknown opcode=0x7b
+    add64 r6, 1
+    unknown opcode=0x61
+    unknown opcode=0x79
+    unknown opcode=0x79
+lbb_1795:
+    add64 r6, -1
+    jeq r6, 0, lbb_1805
+    unknown opcode=0x79
+    mov64 r1, r8
+    mov64 r2, r9
+    callx r0
+    mov64 r1, r0
+    mov64 r0, 1
+    jne r1, 0, lbb_1829
+    ja lbb_1795
+lbb_1805:
+    unknown opcode=0x79
+    mov64 r1, r8
+    unknown opcode=0x79
+    unknown opcode=0x79
+    callx r0
+    mov64 r1, r0
+    mov64 r0, 1
+    jne r1, 0, lbb_1829
+    mov64 r6, 0
+lbb_1814:
+    unknown opcode=0x79
+    mov64 r1, r2
+    jeq r2, r6, lbb_1825
+    unknown opcode=0x79
+    mov64 r1, r8
+    mov64 r2, r9
+    callx r0
+    add64 r6, 1
+    jeq r0, 0, lbb_1814
+    add64 r6, -1
+    mov64 r1, r6
+lbb_1825:
+    mov64 r0, 1
+    unknown opcode=0x79
+    jgt r2, r1, lbb_1829
+    mov64 r0, 0
+lbb_1829:
+    and64 r0, 1
+    syscall 0
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r1, r4
+    callx r0
+    syscall 0
+    mov64 r7, r1
+    add64 r7, 7
+    and64 r7, -8
+    mov64 r4, r7
+    sub64 r4, r1
+    jgt r4, r2, lbb_1981
+    mov64 r5, r2
+    sub64 r5, r4
+    mov64 r3, 8
+    jgt r3, r5, lbb_1981
+    unknown opcode=0x7b
+    mov64 r2, r5
+    and64 r2, 7
+    mov64 r0, 0
+    mov64 r3, 0
+    jeq r7, r1, lbb_1860
+    mov64 r6, r1
+    sub64 r6, r7
+    mov64 r7, r1
+    ja lbb_1869
+lbb_1857:
+    add64 r3, r9
+    add64 r7, 1
+    jne r8, 1, lbb_1869
+lbb_1860:
+    unknown opcode=0x79
+    add64 r1, r4
+    jeq r2, 0, lbb_1884
+    mov64 r0, r5
+    and64 r0, -8
+    mov64 r4, r1
+    add64 r4, r0
+    mov64 r0, 0
+    ja lbb_1889
+lbb_1869:
+    unknown opcode=0x71
+    lsh64 r4, 56
+    arsh64 r4, 56
+    mov64 r8, 1
+    mov64 r9, 1
+    jsgt r4, -65, lbb_1876
+    mov64 r9, 0
+lbb_1876:
+    add64 r6, 1
+    jeq r6, 0, lbb_1857
+    mov64 r8, 0
+    ja lbb_1857
+lbb_1880:
+    add64 r0, r6
+    add64 r4, 1
+    add64 r2, -1
+    jne r2, 0, lbb_1889
+lbb_1884:
+    rsh64 r5, 3
+    add64 r0, r3
+    lddw r6, 0x101010101010101
+    ja lbb_1962
+lbb_1889:
+    unknown opcode=0x71
+    lsh64 r7, 56
+    arsh64 r7, 56
+    mov64 r6, 1
+    jsgt r7, -65, lbb_1880
+    mov64 r6, 0
+    ja lbb_1880
+lbb_1896:
+    unknown opcode=0x79
+    mov64 r7, r8
+    rsh64 r7, 6
+    xor64 r8, -1
+    rsh64 r8, 7
+    or64 r8, r7
+    and64 r8, r6
+    add64 r8, r4
+    unknown opcode=0x79
+    mov64 r7, r4
+    rsh64 r7, 6
+    xor64 r4, -1
+    rsh64 r4, 7
+    or64 r4, r7
+    and64 r4, r6
+    add64 r4, r8
+    unknown opcode=0x79
+    mov64 r7, r8
+    rsh64 r7, 6
+    xor64 r8, -1
+    rsh64 r8, 7
+    or64 r8, r7
+    and64 r8, r6
+    add64 r8, r4
+    unknown opcode=0x79
+    mov64 r7, r4
+    rsh64 r7, 6
+    xor64 r4, -1
+    rsh64 r4, 7
+    or64 r4, r7
+    and64 r4, r6
+    add64 r4, r8
+    add64 r2, 32
+    jne r2, r1, lbb_1896
+lbb_1930:
+    mov64 r1, r9
+    add64 r1, r5
+    unknown opcode=0x79
+    mov64 r2, r8
+    and64 r2, 3
+    mov64 r5, r3
+    sub64 r5, r8
+    mov64 r7, r4
+    unknown opcode=0x7b
+    mov64 r9, r3
+    lddw r3, 0xff00ff00ff00ff
+    and64 r7, r3
+    rsh64 r4, 8
+    and64 r4, r3
+    add64 r4, r7
+    lddw r7, 0x1000100010001
+    stxb [r4+0x0], r7
+    rsh64 r4, 48
+    add64 r4, r0
+    mov64 r0, r4
+    jeq r2, 0, lbb_1962
+    mov64 r0, 0
+    unknown opcode=0x79
+    jeq r2, 0, lbb_2013
+    and64 r8, 252
+    lsh64 r8, 3
+    mov64 r1, 192
+    jgt r1, r9, lbb_1994
+    mov64 r9, 192
+    ja lbb_1994
+lbb_1962:
+    mov64 r3, r5
+    mov64 r9, r1
+    jeq r3, 0, lbb_2025
+    mov64 r1, 192
+    mov64 r2, r3
+    jgt r1, r3, lbb_1969
+    mov64 r2, 192
+lbb_1969:
+    mov64 r5, r2
+    lsh64 r5, 3
+    mov64 r4, 0
+    mov64 r1, 4
+    unknown opcode=0x7b
+    jgt r1, r2, lbb_1930
+    mov64 r2, r5
+    and64 r2, 2016
+    mov64 r1, r9
+    add64 r1, r2
+    mov64 r2, r9
+    ja lbb_1896
+lbb_1981:
+    mov64 r0, 0
+    jeq r2, 0, lbb_2025
+lbb_1983:
+    unknown opcode=0x71
+    lsh64 r4, 56
+    arsh64 r4, 56
+    mov64 r3, 1
+    jsgt r4, -65, lbb_1989
+    mov64 r3, 0
+lbb_1989:
+    add64 r0, r3
+    add64 r1, 1
+    add64 r2, -1
+    jeq r2, 0, lbb_2025
+    ja lbb_1983
+lbb_1994:
+    add64 r6, r8
+    mov64 r2, 0
+    and64 r9, 3
+    lsh64 r9, 3
+    lddw r1, 0x101010101010101
+lbb_2000:
+    unknown opcode=0x79
+    mov64 r5, r0
+    rsh64 r5, 6
+    xor64 r0, -1
+    rsh64 r0, 7
+    or64 r0, r5
+    and64 r0, r1
+    add64 r0, r2
+    add64 r6, 8
+    add64 r9, -8
+    mov64 r2, r0
+    jeq r9, 0, lbb_2013
+    ja lbb_2000
+lbb_2013:
+    lddw r1, 0xff00ff00ff00ff
+    mov64 r2, r0
+    and64 r2, r1
+    rsh64 r0, 8
+    and64 r0, r1
+    add64 r0, r2
+    lddw r1, 0x1000100010001
+    stxb [r0+0x0], r1
+    rsh64 r0, 48
+    add64 r0, r4
+lbb_2025:
+    syscall 0
+    mov64 r4, 39
+    mov64 r5, 10000
+    jgt r5, r1, lbb_2061
+    mov64 r4, 0
+lbb_2030:
+    mov64 r5, r1
+    sth [r1+0x0], 10000
+    mov64 r6, r1
+    stb [r6+0x0], 10000
+    mov64 r0, r5
+    sub64 r0, r6
+    mov64 r6, r0
+    and64 r6, 65535
+    sth [r6+0x0], 100
+    mov64 r7, r6
+    stb [r7+0x0], 100
+    sub64 r0, r7
+    mov64 r7, r10
+    add64 r7, -39
+    add64 r7, r4
+    lsh64 r6, 1
+    lddw r8, 0x4542
+    add64 r8, r6
+    unknown opcode=0x69
+    unknown opcode=0x6b
+    lsh64 r0, 1
+    and64 r0, 65534
+    lddw r6, 0x4542
+    add64 r6, r0
+    unknown opcode=0x69
+    unknown opcode=0x6b
+    add64 r4, -4
+    jgt r5, 99999999, lbb_2030
+    add64 r4, 39
+lbb_2061:
+    jgt r1, 99, lbb_2063
+    ja lbb_2081
+lbb_2063:
+    mov64 r5, r1
+    and64 r5, 65535
+    sth [r5+0x0], 100
+    mov64 r0, r5
+    stb [r0+0x0], 100
+    sub64 r1, r0
+    lsh64 r1, 1
+    and64 r1, 65534
+    lddw r0, 0x4542
+    add64 r0, r1
+    add64 r4, -2
+    mov64 r1, r10
+    add64 r1, -39
+    add64 r1, r4
+    unknown opcode=0x69
+    unknown opcode=0x6b
+    mov64 r1, r5
+lbb_2081:
+    mov64 r5, 10
+    jgt r5, r1, lbb_2094
+    lsh64 r1, 1
+    lddw r5, 0x4542
+    add64 r5, r1
+    add64 r4, -2
+    mov64 r1, r10
+    add64 r1, -39
+    add64 r1, r4
+    unknown opcode=0x69
+    unknown opcode=0x6b
+    ja lbb_2100
+lbb_2094:
+    add64 r4, -1
+    mov64 r5, r10
+    add64 r5, -39
+    add64 r5, r4
+    add64 r1, 48
+    unknown opcode=0x73
+lbb_2100:
+    mov64 r1, r10
+    add64 r1, -39
+    add64 r1, r4
+    unknown opcode=0x7b
+    mov64 r1, 39
+    sub64 r1, r4
+    unknown opcode=0x7b
+    mov64 r5, r10
+    mov64 r1, r3
+    lddw r3, 0x44d8
+    mov64 r4, 0
+    call [invalid]
+    syscall 0
+    mov64 r3, r2
+    unknown opcode=0x61
+    mov64 r2, 1
+    call [invalid]
+    syscall 0
+    mov64 r3, r2
+    unknown opcode=0x79
+    mov64 r2, 1
+    call [invalid]
+    syscall 0
+    unknown opcode=0x79
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r1, r3
+    callx r0
+    syscall 0
+    mov64 r4, r2
+    unknown opcode=0x79
+    unknown opcode=0x79
+    mov64 r1, r4
+    call [invalid]
+    syscall 0
+    mov64 r6, r1
+    mov64 r4, r3
+    rsh64 r4, 3
+    mov64 r1, r4
+    stb [r1+0x0], -7
+    add64 r1, r3
+    jgt r1, 15, lbb_2167
+    mov64 r1, 0
+    mov64 r5, 8
+    jgt r5, r3, lbb_2156
+    mov64 r5, 0
+lbb_2147:
+    mov64 r0, r6
+    add64 r0, r1
+    mov64 r7, r2
+    add64 r7, r1
+    unknown opcode=0x79
+    unknown opcode=0x7b
+    add64 r1, 8
+    add64 r5, 1
+    jgt r4, r5, lbb_2147
+lbb_2156:
+    jsge r1, r3, lbb_2165
+lbb_2157:
+    mov64 r4, r6
+    add64 r4, r1
+    mov64 r5, r2
+    add64 r5, r1
+    unknown opcode=0x71
+    unknown opcode=0x73
+    add64 r1, 1
+    jsgt r3, r1, lbb_2157
+lbb_2165:
+    mov64 r0, r6
+    syscall 0
+lbb_2167:
+    mov64 r1, r6
+    call [invalid]
+    ja lbb_2165
+
+function_2170:
+    unknown opcode=0x49
+    unknown opcode=0x52
+    unknown opcode=0x59
+    unknown opcode=0x59
+    unknown opcode=0x21
+    jsgt r14, 1679845479, [invalid]
+    unknown opcode=0x61
+    lsh32 r0, 863314031
+    unknown opcode=0x32
+    unknown opcode=0x2e
+    unknown opcode=0x72
+    unknown opcode=0x72
+    unknown opcode=0x20
+    unknown opcode=0x61
+    lsh64 r14, r6
+    lsh32 r12, 1864397941
+    urem32 r0, 2037542765
+    jset r2, 1651076210, [invalid]
+    unknown opcode=0x72
+    lsh64 r3, r6
+    unknown opcode=0x61
+    unknown opcode=0x73
+    unknown opcode=0x79
+    lsh64 r7, r7
+    unknown opcode=0x61
+    unknown opcode=0x72
+    lsh32 r5, r6
+    unknown opcode=0x69
+    unknown opcode=0x72
+    jsgt r2, 1651076210, [invalid]
+    unknown opcode=0x72
+    lsh64 r3, r6
+    jsgt r4, r7, [invalid]
+    unknown opcode=0x69
+    unknown opcode=0x61
+    unknown opcode=0x61
+    stxb [r3+0x6372], r7
+    stxb [r13+0x646f], r6
+    urem32 r4, r6
+    unknown opcode=0x20
+    lsh32 r3, 543516788
+    lsh32 r5, r6
+    unknown opcode=0x70
+    unknown opcode=0x20
+    jsge r4, 1763730792, [invalid]
+    urem32 r4, r6
+    unknown opcode=0x3a
+    unknown opcode=0x30
+    unknown opcode=0x30
+    unknown opcode=0x31
+    unknown opcode=0x31
+    unknown opcode=0x31
+    unknown opcode=0x32
+    unknown opcode=0x32
+    unknown opcode=0x33
+    unknown opcode=0x33
+    unknown opcode=0x33
+    unknown opcode=0x34
+    unknown opcode=0x34
+    jge r1, 875901749, [invalid]
+    jge r5, 943011637, [invalid]
+    jge r9, 842412342, [invalid]
+    uhmul64 r3, 909522230
+    uhmul64 r7, 808925494
+    sth [r1+0x3237], 876032823
+    sth [r5+0x3637], 943142711
+    sth [r9+0x3038], 842543416
+    unknown opcode=0x38
+    unknown opcode=0x38
+    unknown opcode=0x39
+    unknown opcode=0x39
+    unknown opcode=0x39
+    unknown opcode=0x0
+    unknown opcode=0x8
+    unknown opcode=0x0
+    unknown opcode=0x3
+    unknown opcode=0x0
+    unknown opcode=0x8
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x11
+    unknown opcode=0x61
+    unknown opcode=0x0
+    lddw r0, 0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x11
+    unknown opcode=0x0
+    sub32 r0, r0
+    unknown opcode=0x21
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x1
+    unknown opcode=0x0
+    unknown opcode=0x0
+    lddw r0, 0x2000000000
+    unknown opcode=0x0
+    add32 r0, r0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x1
+    unknown opcode=0x0
+    unknown opcode=0x1
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x1
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x20
+    unknown opcode=0x0
+    unknown opcode=0x12
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x2
+    unknown opcode=0x0
+    unknown opcode=0x1b
+    jset r1, r0, lbb_2294
+lbb_2294:
+    unknown opcode=0x1e
+    add32 r0, 0
+    unknown opcode=0x11
+    unknown opcode=0x28
+    unknown opcode=0x12
+    unknown opcode=0xb0
+    unknown opcode=0x13
+    unknown opcode=0x10
+    unknown opcode=0xfa
+    or32 r0, 0
+    unknown opcode=0x6
+    unknown opcode=0x60
+    unknown opcode=0xb
+    lddw r0, 0x0
+    unknown opcode=0xf0
+    unknown opcode=0xa
+    unknown opcode=0x34
+    unknown opcode=0x16
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x1
+    unknown opcode=0xf0
+    unknown opcode=0xd8
+    unknown opcode=0xe
+    unknown opcode=0x38
+    unknown opcode=0xd8
+    unknown opcode=0x19
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x22
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x28
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x70
+    rsh32 r2, 1953393007
+    unknown opcode=0x0
+    and64 r0, r0
+    unknown opcode=0x73
+    unknown opcode=0x70
+    unknown opcode=0xb8
+    unknown opcode=0x8
+    lddw r2, 0x0
+    unknown opcode=0xc0
+    unknown opcode=0x8
+    unknown opcode=0xf0
+    unknown opcode=0x8
+    unknown opcode=0x20
+    unknown opcode=0x8
+    unknown opcode=0x68
+    unknown opcode=0x8
+    unknown opcode=0xf8
+    unknown opcode=0x8
+    unknown opcode=0x8
+    unknown opcode=0x8
+    unknown opcode=0x50
+    unknown opcode=0x8
+    unknown opcode=0x50
+    unknown opcode=0x8
+    unknown opcode=0x10
+    unknown opcode=0x8
+    unknown opcode=0x58
+    unknown opcode=0x8
+    unknown opcode=0xb8
+    unknown opcode=0x8
+    unknown opcode=0x50
+    unknown opcode=0x8
+    unknown opcode=0x80
+    unknown opcode=0x8
+    unknown opcode=0xa8
+    unknown opcode=0x8
+    unknown opcode=0xb8
+    unknown opcode=0x8
+    unknown opcode=0x28
+    unknown opcode=0x8
+    unknown opcode=0x40
+    unknown opcode=0x8
+    unknown opcode=0x50
+    unknown opcode=0x8
+    unknown opcode=0x70
+    unknown opcode=0x8
+    unknown opcode=0xc0
+    unknown opcode=0x8
+    unknown opcode=0x20
+    unknown opcode=0x8
+    unknown opcode=0x58
+    unknown opcode=0x8
+    unknown opcode=0xd8
+    unknown opcode=0x8
+    unknown opcode=0x8
+    unknown opcode=0x8
+    unknown opcode=0x88
+    unknown opcode=0x8
+    unknown opcode=0xa0
+    unknown opcode=0x8
+    unknown opcode=0x8
+    unknown opcode=0x8
+    unknown opcode=0x68
+    unknown opcode=0x8
+    unknown opcode=0xd8
+    unknown opcode=0x8
+    unknown opcode=0x8
+    unknown opcode=0x8
+    unknown opcode=0x60
+    unknown opcode=0x8
+    unknown opcode=0x10
+    unknown opcode=0x8
+    unknown opcode=0x40
+    unknown opcode=0x8
+    unknown opcode=0x68
+    unknown opcode=0x8
+    unknown opcode=0x78
+    unknown opcode=0x8
+    lddw r12, 0x0
+    unknown opcode=0xf0
+    unknown opcode=0x8
+    unknown opcode=0x28
+    unknown opcode=0x8
+    unknown opcode=0xb8
+    unknown opcode=0x8
+    unknown opcode=0x20
+    unknown opcode=0x8
+    unknown opcode=0xe8
+    unknown opcode=0x8
+    unknown opcode=0x10
+    unknown opcode=0x8
+    unknown opcode=0x20
+    unknown opcode=0x8
+    unknown opcode=0x30
+    unknown opcode=0x8
+    unknown opcode=0x40
+    unknown opcode=0x8
+    unknown opcode=0x50
+    unknown opcode=0x8
+    unknown opcode=0x68
+    unknown opcode=0x8
+    unknown opcode=0x80
+    unknown opcode=0x8
+    unknown opcode=0x88
+    unknown opcode=0x8
+    unknown opcode=0x90
+    unknown opcode=0x8
+    unknown opcode=0x98
+    unknown opcode=0x8
+    unknown opcode=0xa8
+    unknown opcode=0x8
+    unknown opcode=0xc0
+    unknown opcode=0x8
+    unknown opcode=0xd8
+    unknown opcode=0x8
+    unknown opcode=0xe0
+    unknown opcode=0x8
+    unknown opcode=0xf8
+    unknown opcode=0x8
+    unknown opcode=0x8
+    unknown opcode=0x8
+    lddw r7, 0x0
+    unknown opcode=0x28
+    unknown opcode=0x8
+    unknown opcode=0x38
+    unknown opcode=0x8
+    unknown opcode=0x50
+    unknown opcode=0x8
+    unknown opcode=0x58
+    unknown opcode=0x8
+    unknown opcode=0x68
+    unknown opcode=0x8
+    unknown opcode=0x78
+    unknown opcode=0x8
+    unknown opcode=0x88
+    unknown opcode=0x8
+    unknown opcode=0x98
+    unknown opcode=0x8
+    unknown opcode=0xe8
+    unknown opcode=0xa
+    unknown opcode=0x88
+    unknown opcode=0xa
+    unknown opcode=0xd8
+    unknown opcode=0xa
+    unknown opcode=0x8
+    unknown opcode=0xa
+    unknown opcode=0xe0
+    unknown opcode=0xa
+    unknown opcode=0x10
+    unknown opcode=0xa
+    unknown opcode=0xb8
+    unknown opcode=0xa
+    unknown opcode=0xd8
+    unknown opcode=0xa
+    unknown opcode=0xa0
+    unknown opcode=0xa
+    unknown opcode=0xb8
+    unknown opcode=0xa
+    unknown opcode=0xc0
+    unknown opcode=0xa
+    unknown opcode=0x38
+    unknown opcode=0xa
+    unknown opcode=0x8
+    unknown opcode=0xa
+    unknown opcode=0x10
+    unknown opcode=0xa
+    unknown opcode=0xa8
+    unknown opcode=0xa
+    unknown opcode=0x48
+    unknown opcode=0xa
+    unknown opcode=0x68
+    unknown opcode=0xa
+    unknown opcode=0xc0
+    unknown opcode=0xa
+    unknown opcode=0xd0
+    unknown opcode=0xa
+    unknown opcode=0xf0
+    unknown opcode=0xa
+    unknown opcode=0xf8
+    unknown opcode=0xa
+    unknown opcode=0x0
+    unknown opcode=0xa
+    unknown opcode=0x8
+    unknown opcode=0xa
+    unknown opcode=0x38
+    unknown opcode=0xa
+    unknown opcode=0x48
+    unknown opcode=0xa
+    unknown opcode=0x40
+    unknown opcode=0xa
+    unknown opcode=0x58
+    unknown opcode=0xa
+    unknown opcode=0xb8
+    unknown opcode=0xa
+    unknown opcode=0xd0
+    unknown opcode=0xa
+    unknown opcode=0xc0
+    unknown opcode=0xa
+    unknown opcode=0xe8
+    unknown opcode=0xa
+    unknown opcode=0x8
+    unknown opcode=0xa
+    unknown opcode=0x50
+    unknown opcode=0xa
+    unknown opcode=0x68
+    unknown opcode=0xa
+    unknown opcode=0xd0
+    unknown opcode=0xa
+    unknown opcode=0xa8
+    unknown opcode=0xa
+    unknown opcode=0xa0
+    unknown opcode=0xa
+    unknown opcode=0x80
+    unknown opcode=0xa
+    unknown opcode=0xc0
+    unknown opcode=0xa
+    unknown opcode=0x0
+    lsh32 r9, 771781236
+    lsh32 r1, 1818587694
+    unknown opcode=0x2e
+    unknown opcode=0x2e
+    urem32 r3, r7
+    urem32 r1, r6
+    unknown opcode=0x68
+    unknown opcode=0x2e
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0x1
+    unknown opcode=0x6
+    unknown opcode=0x20
+    unknown opcode=0x20
+    unknown opcode=0xb0
+    unknown opcode=0x0
+    unknown opcode=0x8
+    unknown opcode=0x0
+    unknown opcode=0x40
+    unknown opcode=0x12
+    unknown opcode=0xd0
+    unknown opcode=0xd0
+    unknown opcode=0x3a
+    unknown opcode=0x0
+    unknown opcode=0x8
+    unknown opcode=0x0
+    add64 r0, r0
+    unknown opcode=0x3
+    unknown opcode=0x10
+    unknown opcode=0x10
+    unknown opcode=0xa0
+    unknown opcode=0x0
+    unknown opcode=0x8
+    unknown opcode=0x0
+    jgt r0, r0, lbb_2597
+lbb_2597:
+    unknown opcode=0x3
+    unknown opcode=0xb0
+    unknown opcode=0xb0
+    unknown opcode=0xb0
+    unknown opcode=0x6
+    unknown opcode=0x8
+    unknown opcode=0x10
+    jgt r0, 11, lbb_2605
+lbb_2605:
+    unknown opcode=0x2
+    unknown opcode=0x60
+    unknown opcode=0x60
+    unknown opcode=0x90
+    unknown opcode=0x6
+    unknown opcode=0x8
+    lddw r0, 0x300000000
+    unknown opcode=0x2
+    unknown opcode=0xf0
+    unknown opcode=0xf0
+    unknown opcode=0x34
+    unknown opcode=0x0
+    unknown opcode=0x1
+    unknown opcode=0x0
+    sub32 r0, r0
+    unknown opcode=0x2
+    unknown opcode=0x28
+    unknown opcode=0x28
+    unknown opcode=0xb0
+    ja lbb_2626
+lbb_2626:
+    unknown opcode=0x8
+    unknown opcode=0x10
+    uhmul64 r0, 3
+    unknown opcode=0x0
+    unknown opcode=0x0
+    unknown opcode=0xd8
+    unknown opcode=0x48
+    unknown opcode=0x0
+    unknown opcode=0x1
+    unknown opcode=0x0
