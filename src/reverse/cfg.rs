@@ -11,13 +11,20 @@ use std::path::{Path, PathBuf};
 const MAX_BYTES_TO_READ_FOR_IMMUTABLE_STRING_REPR: u8 = 50;
 
 fn get_string_repr(
-    program: &'static [u8],
+    program: &[u8],
     insn: &Insn,
     next_insn_wrapped: Option<&Insn>,
 ) -> String {
     match insn.opc {
         solana_sbpf::ebpf::LD_DW_IMM => {
-            let start = insn.imm as usize;
+            
+
+            let offset_base = solana_sbpf::ebpf::MM_RODATA_START as usize;
+            let start = if insn.imm > 0 && insn.imm as usize > offset_base {
+                insn.imm as usize - offset_base
+            } else {
+                return "".to_string();
+            };
 
             // Make sure we don't read out of bounds
             if start >= program.len() {
@@ -50,7 +57,7 @@ fn get_string_repr(
 
 // modified version of "visualize_graphically" from sbpf-solana for full static analysis
 pub fn export_cfg_to_dot<P: AsRef<Path>>(
-    program: &'static [u8],
+    program: &[u8],
     analysis: &mut Analysis,
     path: P,
 ) -> std::io::Result<()> {
@@ -66,7 +73,7 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
             .replace('\"', "&quot;")
     }
     fn emit_cfg_node<W: std::io::Write>(
-        program: &'static [u8],
+        program: &[u8],
         output: &mut W,
         analysis: &Analysis,
         function_range: std::ops::Range<usize>,

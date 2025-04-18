@@ -40,6 +40,21 @@ enum Commands {
     },
     Clean {
     },
+    Reverse {
+        #[clap(long = "mode", value_parser = clap::builder::PossibleValuesParser::new(["disass", "cfg", "both", "rusteq"]))]
+        mode: String,
+
+        #[clap(long = "out-dir")]
+        out_dir: String,
+
+        #[clap(long = "bytecodes-file")]
+        bytecodes_file: String,
+
+        #[clap(long = "is-stripped", action)]
+        is_stripped: bool,
+
+        // Note: rusteq mode is not supported yet
+    }
 }
 
 fn main() {

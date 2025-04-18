@@ -40,7 +40,7 @@ fn disassemble<P: AsRef<Path>>(
 }
 
 pub fn disassemble_wrapper<P: AsRef<Path>>(
-    program: &'static [u8],
+    program: &[u8],
     analysis: &mut Analysis,
     mut imm_tracker_wrapped: Option<&mut ImmutableTracker>,
     path: P,
@@ -51,14 +51,23 @@ pub fn disassemble_wrapper<P: AsRef<Path>>(
         let mut table_path = PathBuf::from(path.as_ref());
         table_path.push(OutputFile::ImmutableDataTable.default_filename());
         let mut output = File::create(table_path)?;
+        
+        let offset_base = solana_sbpf::ebpf::MM_RODATA_START as usize;
 
         for (&start, &end) in imm_tracker.get_ranges() {
-            if start >= program.len() || end > program.len() || start >= end {
+            assert!(start >= offset_base, "start address and end address should be > than the RODATA MemoryMapping section");
+            let start_idx = start - offset_base;
+            let end_idx = if end > offset_base {
+                end - offset_base
+            } else {
+                end
+            };
+            if start_idx >= program.len() || end_idx > program.len() || start_idx >= end_idx {
                 continue;
             }
-            let slice = &program[start..end];
+            let slice = &program[start_idx..end_idx];
             let repr = format_bytes(slice);
-            writeln!(output, "0x{:x}: {}", start, repr)?;
+            writeln!(output, "0x{:x} (+ 0x{:x}): {}", start, start_idx, repr)?;
         }
     }
 
