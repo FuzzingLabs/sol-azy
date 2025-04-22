@@ -1,12 +1,12 @@
 use std::collections::BTreeMap;
 
 #[derive(Debug)]
-pub struct ImmutableTracker {
+pub struct ImmediateTracker {
     ranges: BTreeMap<usize, usize>, // start => end
     program_len: usize,
 }
 
-impl ImmutableTracker {
+impl ImmediateTracker {
     pub fn new(program_len: usize) -> Self {
         Self {
             ranges: BTreeMap::new(),
@@ -56,7 +56,7 @@ mod tests {
 
     #[test]
     fn test_register_and_truncate() {
-        let mut tracker = ImmutableTracker::new(0x100);
+        let mut tracker = ImmediateTracker::new(0x100);
         tracker.register_offset(0x10);
         assert_eq!(tracker.get_range(0x10), Some((0x10, 0x100)));
 

@@ -8,7 +8,7 @@ use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-const MAX_BYTES_TO_READ_FOR_IMMUTABLE_STRING_REPR: u8 = 50;
+const MAX_BYTES_TO_READ_FOR_IMMEDIATE_STRING_REPR: u8 = 50;
 
 fn get_string_repr(
     program: &[u8],
@@ -32,7 +32,7 @@ fn get_string_repr(
             }
 
             // Default number of bytes to read from the program when no length found
-            let mut length = MAX_BYTES_TO_READ_FOR_IMMUTABLE_STRING_REPR as usize;
+            let mut length = MAX_BYTES_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize;
 
             if let Some(next_insn) = next_insn_wrapped {
                 if next_insn.opc == solana_sbpf::ebpf::MOV64_IMM
@@ -91,7 +91,7 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
                 );
                 // next instruction lookup to gather information (like for string and their length when it uses MOV64_IMM)
                 let next_insn = insns.get(pc + 1);
-                // add immutable string repr if it does exists on bytecode 
+                // add immediate string repr if it does exists on bytecode 
                 let str_repr = get_string_repr(program, insn, next_insn);
                 if str_repr != "" {
                     desc.push_str(" --> ");
@@ -142,7 +142,7 @@ fontname=\"Courier New\";
 ];"
     )?;
     const MAX_CELL_CONTENT_LENGTH: usize =
-        15 + MAX_BYTES_TO_READ_FOR_IMMUTABLE_STRING_REPR as usize;
+        15 + MAX_BYTES_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize;
     let function_iter = &mut analysis.functions.keys().peekable();
     while let Some(function_start) = function_iter.next() {
         let function_end = if let Some(next_function) = function_iter.peek() {

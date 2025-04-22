@@ -1,7 +1,7 @@
 use solana_sbpf::{ebpf::LD_DW_IMM, static_analysis::Analysis};
 use std::u8;
 
-use crate::reverse::immutable_tracker::ImmutableTracker;
+use crate::reverse::immediate_tracker::ImmediateTracker;
 use crate::reverse::utils::format_bytes;
 use crate::reverse::OutputFile;
 use std::fs::File;
@@ -11,7 +11,7 @@ use std::path::{Path, PathBuf};
 // modified version of "disassemble" from sbpf-solana for better static analysis
 fn disassemble<P: AsRef<Path>>(
     analysis: &mut Analysis,
-    mut imm_tracker_wrapped: Option<&mut ImmutableTracker>,
+    mut imm_tracker_wrapped: Option<&mut ImmediateTracker>,
     path: P,
 ) -> std::io::Result<()> {
     let mut disass_path = PathBuf::from(path.as_ref());
@@ -42,14 +42,14 @@ fn disassemble<P: AsRef<Path>>(
 pub fn disassemble_wrapper<P: AsRef<Path>>(
     program: &[u8],
     analysis: &mut Analysis,
-    mut imm_tracker_wrapped: Option<&mut ImmutableTracker>,
+    mut imm_tracker_wrapped: Option<&mut ImmediateTracker>,
     path: P,
 ) -> std::io::Result<()> {
     disassemble(analysis, imm_tracker_wrapped.as_deref_mut(), &path)?;
 
     if let Some(imm_tracker) = imm_tracker_wrapped {
         let mut table_path = PathBuf::from(path.as_ref());
-        table_path.push(OutputFile::ImmutableDataTable.default_filename());
+        table_path.push(OutputFile::ImmediateDataTable.default_filename());
         let mut output = File::create(table_path)?;
         
         let offset_base = solana_sbpf::ebpf::MM_RODATA_START as usize;

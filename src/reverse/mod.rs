@@ -1,12 +1,12 @@
 pub mod cfg;
 pub mod disass;
-pub mod immutable_tracker;
+pub mod immediate_tracker;
 pub mod utils;
 
 use cfg::*;
 
 use disass::disassemble_wrapper;
-use immutable_tracker::ImmutableTracker;
+use immediate_tracker::ImmediateTracker;
 use solana_sbpf::{
     elf::Executable,
     program::{BuiltinProgram, FunctionRegistry, SBPFVersion},
@@ -19,7 +19,7 @@ use std::io::Result;
 
 pub enum OutputFile {
     Disassembly,
-    ImmutableDataTable,
+    ImmediateDataTable,
     Cfg,
 }
 
@@ -27,7 +27,7 @@ impl OutputFile {
     pub fn default_filename(&self) -> &'static str {
         match self {
             OutputFile::Disassembly => "disassembly.out",
-            OutputFile::ImmutableDataTable => "immutable_data_table.out",
+            OutputFile::ImmediateDataTable => "immediate_data_table.out",
             OutputFile::Cfg => "cfg.dot",
         }
     }
@@ -77,8 +77,8 @@ pub fn analyze_program(mode: ReverseOutputMode, target_bytecode: String, is_stri
     // Perform analysis on the executable (e.g., necessary for disassembly, control flow graph, etc..).
     let mut analysis = Analysis::from_executable(&executable).unwrap();
 
-    // Used to track all immutable datas in order to create a table with their possible associated values
-    let mut imm_tracker = ImmutableTracker::new(program.len());
+    // Used to track all immediate datas in order to create a table with their possible associated values
+    let mut imm_tracker = ImmediateTracker::new(program.len());
     let imm_tracker_wrapped = Some(&mut imm_tracker);
 
     match mode {
