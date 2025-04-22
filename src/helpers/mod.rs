@@ -1,6 +1,7 @@
 pub mod static_dir;
 
-use std::{fs, path::Path, process::Command};
+use std::{fmt, fs, path::Path, process::Command};
+use std::fmt::Formatter;
 use toml::Value;
 use log::{debug, error, info};
 use std::process::Stdio;
@@ -22,10 +23,21 @@ pub fn create_dir_if_not_exists(dir: &String) -> bool {
     fs::create_dir_all(path).is_ok()
 }
 
+#[derive(PartialEq, Debug, Clone, Copy, Eq)]
 pub enum ProjectType {
     Anchor,
     Sbf,
     Unknown,
+}
+
+impl fmt::Display for ProjectType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        match self {
+            ProjectType::Anchor => write!(f, "Anchor"),
+            ProjectType::Sbf => write!(f, "Solana BPF"),
+            ProjectType::Unknown => write!(f, "Unknown"),
+        }
+    }
 }
 
 pub fn get_project_type(project_dir: &String) -> ProjectType {

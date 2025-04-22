@@ -6,7 +6,7 @@ use crate::state::sast_state::{
     SynRuleMetadata,
 };
 use anyhow::{Context, Result};
-use prettytable::{format, Cell, Row, Table};
+use prettytable::{format, row, Cell, Row, Table};
 
 #[derive(Debug, Clone)]
 pub struct SastPrinter;
@@ -41,16 +41,6 @@ impl SastPrinter {
     }
 
     pub fn print_rules_summary(results: &[SynAstResult]) -> Result<()> {
-        let filtered_results: Vec<&SynAstResult> = results
-            .iter()
-            .filter(|result| !result.matches.is_empty())
-            .collect();
-
-        if filtered_results.is_empty() {
-            println!("No rule matches found.");
-            return Ok(());
-        }
-
         let mut table = Table::new();
         table.set_format(*format::consts::FORMAT_BOX_CHARS);
 
@@ -58,8 +48,8 @@ impl SastPrinter {
             Cell::new("Rule Name").style_spec("bFc"),
             Cell::new("Severity").style_spec("bFc"),
             Cell::new("Certainty").style_spec("bFc"),
-            Cell::new("File").style_spec("bFc"),
-            Cell::new("Matches").style_spec("bFc"),
+            Cell::new("Files").style_spec("bFc"),
+            Cell::new("Total Matches").style_spec("bFc"),
         ]));
 
         let severity_to_cell = |severity: &Severity| -> Cell {
@@ -81,33 +71,69 @@ impl SastPrinter {
             }
         };
 
-        filtered_results.iter().for_each(|result| {
+        let mut rule_groups: std::collections::HashMap<String, Vec<&SynAstResult>> = std::collections::HashMap::new();
+
+        for result in results {
+            rule_groups
+                .entry(result.rule_metadata.name.clone())
+                .or_default()
+                .push(result);
+        }
+
+        for (rule_name, group_results) in rule_groups {
+            let first_result = &group_results[0];
+
+            let file_count = group_results
+                .iter()
+                .map(|r| &r.rule_filename)
+                .collect::<std::collections::HashSet<_>>()
+                .len();
+
+            let total_matches: usize = group_results
+                .iter()
+                .map(|r| r.matches.len())
+                .sum();
+
+            let file_list = group_results
+                .iter()
+                .map(|r| r.rule_filename.clone())
+                .collect::<std::collections::HashSet<_>>()
+                .into_iter()
+                .collect::<Vec<_>>()
+                .join(", ");
+
             table.add_row(Row::new(vec![
-                Cell::new(&result.rule_metadata.name),
-                severity_to_cell(&result.rule_metadata.severity),
-                certainty_to_cell(&result.rule_metadata.certainty),
-                Cell::new(&result.rule_filename),
-                Cell::new(&result.matches.len().to_string()),
+                Cell::new(&rule_name),
+                severity_to_cell(&first_result.rule_metadata.severity),
+                certainty_to_cell(&first_result.rule_metadata.certainty),
+                Cell::new(&file_list),
+                Cell::new(&total_matches.to_string()),
             ]));
-        });
+        }
 
         table.printstd();
 
         Ok(())
     }
 
+
     pub fn print_result(result: &SynAstResult, syn_ast_map: &SynAstMap) -> Result<()> {
         println!("\n{}", "=".repeat(80));
-        println!("Rule: {}", result.rule_metadata.name);
-        println!("File: {}", result.rule_filename);
-
-        Self::print_metadata(&result.rule_metadata)?;
+        Self::print_rule_metadata(&result.rule_metadata, result.rule_filename.to_string())?;
 
         if !result.matches.is_empty() {
             println!("\nMatches found: {}", result.matches.len());
             for (i, match_result) in result.matches.iter().enumerate() {
-                Self::print_match(match_result, i + 1, 0, syn_ast_map)?;
+                let match_number = i + 1;
+                if let Some(position) = Self::find_source_position(match_result, syn_ast_map) {
+                    println!("{}: ",
+                             position.get_pretty_string()
+                    );
+                } else {
+                    println!("Match #{}: No source position found", match_number);
+                }
             }
+
         } else {
             println!("\nNo matches found.");
         }
@@ -117,9 +143,19 @@ impl SastPrinter {
         Ok(())
     }
 
-    fn print_metadata(metadata: &SynRuleMetadata) -> Result<()> {
+    fn print_rule_metadata(metadata: &SynRuleMetadata, rule_filename: String) -> Result<()> {
         let mut table = Table::new();
         table.set_format(*format::consts::FORMAT_NO_BORDER_LINE_SEPARATOR);
+
+        table.add_row(Row::new(vec![
+            Cell::new("Name:").style_spec("b"),
+            Cell::new(&metadata.name),
+        ]));
+
+        table.add_row(Row::new(vec![
+            Cell::new("File:").style_spec("b"),
+            Cell::new(&rule_filename),
+        ]));
 
         table.add_row(Row::new(vec![
             Cell::new("Version:").style_spec("b"),
@@ -168,61 +204,15 @@ impl SastPrinter {
         Ok(())
     }
 
-    fn print_source_line(code_metadata: &SourcePosition) {
-        println!("{}", code_metadata);
-    }
-
-    fn print_match(
-        match_result: &SynMatchResult,
-        index: usize,
-        indent: usize,
-        syn_ast_map: &SynAstMap,
-    ) -> Result<()> {
-        println!(
-            "{}Match #{}: {} (parent: {})",
-            " ".repeat(indent),
-            index,
-            match_result.ident,
-            match_result.parent
-        );
-
-        if let Some(code_metadata) = Self::find_ident_position(match_result, syn_ast_map) {
-            println!(
-                "{}Location: {}",
-                " ".repeat(indent + 2),
-                code_metadata
-            );
-            Self::print_source_line(code_metadata);
-        } else {
-            println!("{}Source location not found", " ".repeat(indent + 2));
-        }
-
-        if !match_result.metadata.is_empty() {
-            println!("{}Metadata:", " ".repeat(indent + 2));
-            for (key, value) in &match_result.metadata {
-                println!("{}{}: {}", " ".repeat(indent + 4), key, value);
-            }
-        }
-
-        if !match_result.children.is_empty() {
-            println!("{}Children:", " ".repeat(indent + 2));
-            for (child_idx, child) in match_result.children.iter().enumerate() {
-                Self::print_match(child, child_idx + 1, indent + 4, syn_ast_map)?;
-            }
-        }
-
-        Ok(())
-    }
-
-    fn find_ident_position<'a>(
+    fn find_source_position<'a>(
         match_result: &'a SynMatchResult,
         syn_ast_map: &'a SynAstMap,
     ) -> Option<&'a SourcePosition> {
-        // for syn_ast in syn_ast_map.values() {
-        //     if let Some(position) = syn_ast.enriched_ast.get(&match_result.ident) {
-        //         return Some(position);
-        //     }
-        // }
+        for syn_ast in syn_ast_map.values() {
+            if let Some(position) = syn_ast.ast_positions.get_position(match_result) {
+                return Some(position);
+            }
+        }
         None
     }
 

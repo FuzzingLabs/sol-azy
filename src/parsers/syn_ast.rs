@@ -1,17 +1,19 @@
-use std::any::TypeId;
 use crate::state;
 use crate::state::sast_state::{SynAst, SynAstMap};
 use anyhow::{Context, Result};
-use log::error;
+use log::{debug, error};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
+use sha2::digest::Update;
+use sha2::Digest;
+use std::any::TypeId;
 use std::collections::HashMap;
-use std::{fmt, fs};
 use std::fmt::Formatter;
 use std::hash::{DefaultHasher, Hash, Hasher};
 use std::path::Path;
-use proc_macro2::Span;
+use std::{fmt, fs};
+use syn::spanned::Spanned;
 use syn::visit;
 use syn::visit::Visit;
 
@@ -59,8 +61,6 @@ pub fn parse_rust_file(path: &Path, ast_map: &mut SynAstMap) -> Result<()> {
         }
     };
     let filename = path
-        .file_name()
-        .unwrap_or_default()
         .to_str()
         .unwrap_or("")
         .to_string();
@@ -83,54 +83,21 @@ pub fn parse_rust_file(path: &Path, ast_map: &mut SynAstMap) -> Result<()> {
     Ok(())
 }
 
-#[derive(Eq)]
-pub struct NodeRef {
-    ptr: *const (),
-    type_id: TypeId,
-}
-
-impl Clone for NodeRef {
-    fn clone(&self) -> Self {
-        NodeRef {
-            ptr: self.ptr,
-            type_id: self.type_id,
-        }
-    }
-}
-
-impl fmt::Debug for NodeRef {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("NodeRef")
-            .field("ptr", &(self.ptr as usize))
-            .field("type_id", &self.type_id)
-            .finish()
-    }
-}
-
-impl PartialEq for NodeRef {
-    fn eq(&self, other: &Self) -> bool {
-        self.ptr == other.ptr && self.type_id == other.type_id
-    }
-}
-
-impl Hash for NodeRef {
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        (self.ptr as usize).hash(state);
-        self.type_id.hash(state);
-    }
-}
-
-
-pub fn node_to_ref<T: 'static>(node: &T) -> NodeRef {
-    NodeRef {
-        ptr: node as *const T as *const (),
-        type_id: TypeId::of::<T>(),
-    }
-}
-
 #[derive(Debug, Clone)]
 pub struct SourcePosition {
-    pub node_span: Span,
+    pub node_span: proc_macro2::Span,
+    pub start_span: proc_macro2::LineColumn,
+    pub end_span: proc_macro2::LineColumn,
+    pub source_file: String,
+}
+
+impl SourcePosition {
+    pub fn get_pretty_string(&self) -> String {
+        format!(
+            "{}:{}:{}",
+            self.source_file, self.start_span.line, self.start_span.column
+        )
+    }
 }
 
 impl fmt::Display for SourcePosition {
@@ -139,26 +106,42 @@ impl fmt::Display for SourcePosition {
     }
 }
 
-
 #[derive(Debug, Clone)]
 pub struct AstPositions {
-    pub positions: HashMap<NodeRef, SourcePosition>,
+    pub positions: HashMap<[u8; 32], SourcePosition>,
+    pub last_ident_hash: [u8; 32],
 }
 
 impl AstPositions {
     pub fn new() -> Self {
-        Self { positions: HashMap::new() }
+        let mut hasher = sha2::Sha256::new();
+        Digest::update(&mut hasher, "DEFAULT_STATE".as_bytes());
+        let mut hash = [0u8; 32];
+        hash.copy_from_slice(&hasher.finalize()[..32]);
+        Self {
+            positions: HashMap::new(),
+            last_ident_hash: hash,
+        }
     }
 
-    pub fn add_position<T: 'static>(&mut self, node: &T, position: SourcePosition) {
-        self.positions.insert(node_to_ref(node), position);
+    pub fn add_position<T: 'static>(&mut self, node: &T, position: SourcePosition, ident: String) {
+        let mut hasher = sha2::Sha256::new();
+        Digest::update(&mut hasher, &self.last_ident_hash);
+        Digest::update(&mut hasher, ident.as_bytes());
+        let mut hash = [0u8; 32];
+        hash.copy_from_slice(&hasher.finalize()[..32]);
+        self.last_ident_hash = hash;
+        self.positions.insert(self.last_ident_hash, position);
     }
 
     pub fn get_position<T: 'static>(&self, node: &T) -> Option<&SourcePosition> {
-        self.positions.get(&node_to_ref(node))
+        let mut hasher = sha2::Sha256::new();
+        Digest::update(&mut hasher, "DEFAULT_STATE".as_bytes());
+        let mut hash = [0u8; 32];
+        hash.copy_from_slice(&hasher.finalize()[..32]);
+        self.positions.get(&hash)
     }
 }
-
 
 struct SpanCollector<'a> {
     rust_code: &'a str,
@@ -168,9 +151,20 @@ struct SpanCollector<'a> {
 
 impl<'a, 'ast> Visit<'ast> for SpanCollector<'a> {
     fn visit_ident(&mut self, node: &'ast syn::Ident) {
-        self.positions.add_position(node, SourcePosition {
-            node_span: node.span(),
-        });
+        let span = node.span();
+        self.positions.add_position(
+            node,
+            SourcePosition {
+                node_span: span.clone(),
+                start_span: span.start(),
+                end_span: span.end(),
+                source_file: match self.source_file_path.to_str() {
+                    Some(path) => path.to_string(),
+                    None => "no_source_path".to_string(),
+                },
+            },
+            node.to_string(),
+        );
         visit::visit_ident(self, node);
     }
 }

@@ -11,6 +11,8 @@ RULE_METADATA = {
 def syn_ast_rule(root: dict) -> list[dict]:
     matches = []
     for sink in syn_ast.find_chained_calls(root, "SplTokenAccount", "unpack"):
+        if sink.get("ident", "") == "unpack":
+            continue
         assigned_var = syn_ast.first(syn_ast.find_by_similar_access_path(
             root,
             sink.get("access_path"),

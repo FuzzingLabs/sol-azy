@@ -51,7 +51,7 @@ impl SynRuleMetadata {
 pub struct SynMatchResult {
     pub children: Vec<SynMatchResult>,
     pub access_path: String,
-    pub metadata: HashMap<String, String>,
+    pub metadata: HashMap<String, serde_json::Value>,
     pub ident: String,
     pub parent: String,
 }
@@ -68,7 +68,6 @@ impl SynAstResult {
     pub fn new_from_json(rule_filename: String, result: String) -> Result<Self> {
         let parsed: serde_json::Value = serde_json::from_str(&result)
             .with_context(|| format!("Failed to parse JSON result for rule: {}", rule_filename))?;
-
         let matches = match parsed.get("matches") {
             Some(matches_value) => match serde_json::from_value(matches_value.clone()) {
                 Ok(matches) => matches,

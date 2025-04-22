@@ -12,34 +12,34 @@ pub struct AppState {
 impl AppState {
     pub fn run_cli(&mut self) {
         match &self.cli.command {
-            Commands::Build {
-                target_dir,
-                out_dir,
-            } => self.build_project(target_dir.clone(), out_dir.clone()),
-            Commands::Sast {
-                target_dir,
-                rules_dir,
-                syn_scan_only,
-            } => self.run_sast(target_dir.clone(), rules_dir.clone(), syn_scan_only.clone()),
+            cmd @ Commands::Build { .. } => {
+                self.build_project(&commands::build_command::BuildCmd::new_from_clap(cmd))
+            }
+            cmd @ Commands::Sast { .. } => {
+                self.run_sast(&commands::sast_command::SastCmd::new_from_clap(cmd))
+            }
             _ => info!("No command selected"),
         }
     }
 
-    pub fn build_project(&mut self, target_dir: String, out_dir: String) {
-        match commands::build_command::run(&target_dir, &out_dir) {
+    pub fn build_project(&mut self, cmd: &commands::build_command::BuildCmd) {
+        match commands::build_command::run(cmd) {
             Ok(bs) => self.build_states.push(bs),
-            Err(e) => {
-                error!("An error occurred during build of {} {}", target_dir, e);
-            }
+            Err(e) => error!("An error occurred during build of {} {}", cmd.target_dir, e),
         }
     }
 
-    fn run_sast(&mut self, target_dir: String, rules_dir: String, syn_scan_only: bool) {
-        match commands::sast_command::run(&target_dir, &rules_dir, syn_scan_only) {
-            Ok(ss) => self.sast_states.push(ss),
-            Err(e) => {
-                error!("An error occurred during SAST of {} {}", target_dir, e);
-            }
+    fn run_sast(&mut self, cmd: &commands::sast_command::SastCmd) {
+        match commands::sast_command::run(cmd) {
+            Ok(ss) => {
+                ss.iter().for_each(|s| {
+                    if let Err(e) = s.print_results() {
+                        error!("Failed to print results: {}", e);
+                    }
+                });
+                self.sast_states.extend(ss)
+            },
+            Err(e) => error!("An error occurred during SAST of {} {}", cmd.target_dir, e),
         }
     }
 }

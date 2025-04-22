@@ -16,6 +16,7 @@ def _sum(lists: list[list], start: list[dict]) -> list[dict]:
     # TODO: Investigate why need to filter, can be due to starlark-rust typing considering empty array as [None]
     return list(filter(lambda l: type(l) == 'dict', map(start.extend, lists))) or start
 
+
 def _deduplicate(nodes: list[dict]) -> list[dict]:
     unique_items = []
     seen = set()
@@ -35,6 +36,9 @@ def new_ast_node(syn_ast_node: dict, metadata: dict, access_path: str) -> dict:
     root = syn_ast_node.get("root", False)
     args = syn_ast_node.get("args", [])
     ident = syn_ast_node.get("ident", EMPTY_IDENT)
+    # TODO: investigate the"ident": {"ident": "user", "mut": True} case
+    if type(ident) == "dict":
+        ident = ident.get("ident", EMPTY_IDENT)
     return {
         "raw_node": syn_ast_node,
         "access_path": access_path,
@@ -103,16 +107,22 @@ def find_chained_calls(self: dict, *idents: tuple[str, ...]) -> list[dict]:
         matches.extend(_sum(list(map(lambda i: children[i:i + length], indices)), []))
 
     list(map(check_node, flatten_tree(self)))
-    return _deduplicate(matches)
-
+    return matches
 
 
 # def find_by_access_path(self: dict, access_path_part: str):
 #     pass
-#
-#
-# def find_macro_attribute_by_names(self: dict, *idents: tuple[str, ...]):
-#     pass
+
+
+def find_macro_attribute_by_names(self: dict, *idents: tuple[str, ...]) -> list[dict]:
+    matches = []
+
+    def check_node(node: dict):
+        if node.get("ident", "") in idents and ".meta.list.tokens" in node.get("access_path", ""):
+            matches.append(node)
+
+    list(map(check_node, flatten_tree(self)))
+    return matches
 
 
 def find_by_similar_access_path(self: dict, access_path: str, stop_keyword: str) -> list[dict]:
@@ -157,40 +167,133 @@ def find_comparisons(self: dict, ident1: str, ident2: str) -> list[dict]:
     return comparisons
 
 
-# def find_comparison_to_any(self: dict, ident: str):
-#     pass
-#
-#
+def find_comparison_to_any(self: dict, ident: str) -> list[dict]:
+    matches = []
+
+    def check_ident(node: dict, _ident: str) -> bool:
+        return any(filter(lambda n: n.get("ident", "") == _ident, flatten_tree(node)))
+
+
+    def check_node(node: dict):
+        if "cond.binary.left" in node.get("access_path", "") or "cond.binary.right" in node.get("access_path", "") or "cond.unary" in node.get("access_path", ""):
+            if check_ident(node, ident):
+                matches.append(node)
+
+    list(map(check_node, flatten_tree(self)))
+    return matches
+
+
 # def find_negative_of_operation(self: dict, operation_name: str, *args: tuple):
 #     pass
-#
-#
-# def find_functions_by_names(self: dict, *function_names: tuple[str, ...]):
-#     pass
-#
-#
-# def find_by_names(self: dict, *idents: tuple[str, ...]):
-#     pass
-#
-#
-# def find_method_calls(self: dict, caller: str, method: str):
-#     pass
-#
-#
-# def find_assignments(self: dict, ident: str, value_ident: str):
-#     pass
-#
-#
-# def find_mutables(self: dict):
-#     pass
-#
-#
-# def find_account_typed_nodes(self: dict, ident: str):
-#     pass
-#
-#
-# def find_member_accesses(self: dict, ident: str):
-#     pass
+
+
+def find_functions_by_names(self: dict, *function_names: tuple[str, ...]) -> list[dict]:
+    matches = []
+
+    def check_node(node: dict):
+        if node.get("ident", "") in function_names:
+            matches.append(node)
+
+    list(map(check_node, flatten_tree(self)))
+    return matches
+
+
+def find_by_names(self: dict, *idents: tuple[str, ...]) -> list[dict]:
+    matches = []
+
+    def check_node(node: dict):
+        if node.get("ident", "") in idents:
+            matches.append(node)
+
+    list(map(check_node, flatten_tree(self)))
+    return matches
+
+
+def find_method_calls(self: dict, caller: str, method: str) -> list[dict]:
+    matches = []
+
+    def check_node(node: dict):
+        if node.get("access_path", "").endswith("method_call") and node.get("ident", "") == method:
+            if node.get("children", [{"ident": ""}])[0].get("ident", "") == caller:
+                matches.append(node)
+                return
+
+    list(map(check_node, flatten_tree(self)))
+    return matches
+
+
+def find_assignments(self: dict, ident: str, value_ident: str) -> list[dict]:
+    matches = []
+
+    nodes = flatten_tree(self)
+
+    def find_node_by_access_path(access_path: str):
+        filtered_nodes = list(filter(lambda n: access_path in n.get("access_path", ""), nodes))
+        return filtered_nodes[0] if filtered_nodes else None
+
+    def check_conditions(left_node: dict, right_node: dict, _value_ident: str) -> bool:
+        left_access_path = left_node.get("access_path", "").rsplit(".assign.left", 1)[0]
+        right_access_path = right_node.get("access_path", "").rsplit(".assign.right", 1)[0]
+        return (left_access_path == right_access_path
+                and right_node.get("ident", "") == _value_ident)
+
+    def check_node(node: dict):
+        if node.get("ident", "") == ident and ".assign.left" in node.get("access_path", ""):
+            assigment_path = node.get("access_path", "").split(".assign.left")[0] + ".assign"
+            right_node = find_node_by_access_path(assigment_path + ".right")
+            if right_node and check_conditions(node, right_node, value_ident):
+                matches.append(node)
+                return
+
+    list(map(check_node, nodes))
+    return matches
+
+
+def find_mutables(self: dict) -> list[dict]:
+    matches = []
+
+    def check_node(node: dict):
+        if node.get("metadata", {}).get("mut", False):
+            matches.append(node)
+
+    list(map(check_node, flatten_tree(self)))
+    return matches
+
+
+def find_account_typed_nodes(self: dict, ident: str) -> list[dict]:
+    matches = []
+
+    def ends_with_ty_path_segments(access_path: str) -> bool:
+        parts = access_path.split(".")
+        segments_index = -1
+        for i in range(len(parts)):
+            if parts[i] == "ty" and i + 1 < len(parts) and parts[i + 1] == "path":
+                segments_index = i + 2
+                break
+        if segments_index == -1:
+            return False
+        remaining_parts = parts[segments_index:]
+        is_segment = lambda part: part.startswith("segments[") or part == "segments"
+        return all(map(is_segment, remaining_parts))
+
+    def check_node(node: dict):
+        if node.get("parent", EMPTY_NODE).get("ident", "") == ident and ends_with_ty_path_segments(
+                node.get("access_path", "")):
+            matches.append(node)
+
+    list(map(check_node, flatten_tree(self)))
+    return matches
+
+
+def find_member_accesses(self: dict, ident: str) -> list[dict]:
+    matches = []
+
+    def check_node(node: dict):
+        if node.get("ident", "") == ident and ("tokens" in node.get("access_path", "") or "call.args" in node.get("access_path", "")):
+            matches.append(node)
+
+    list(map(check_node, flatten_tree(self)))
+    return matches
 
 def first(nodes: list[dict]) -> dict:
     return nodes[0] if nodes else EMPTY_NODE
@@ -229,12 +332,33 @@ def prepare_syn_ast(ast, access_path, parent) -> list[dict]:
         return nodes
 
     if type(ast) == "dict":
+        # ? Ident node
         if ast.get("ident", False):
             metadata = {}
             if "mut" in ast:
                 metadata["mut"] = ast["mut"]
             node = new_ast_node(ast, metadata, access_path)
             node["parent"] = parent
+            nodes.append(node)
+            parent = node
+        # ? Method node https://github.com/Auditware/radar/blob/main/api/utils/ast.py#L95
+        elif ast.get("method", False):
+            metadata = {}
+            if "mut" in ast:
+                metadata["mut"] = ast["mut"]
+            node = new_ast_node(ast, metadata, access_path)
+            node["parent"] = parent
+            node["ident"] = ast["method"]
+            nodes.append(node)
+            parent = node
+        # ? Int node https://github.com/Auditware/radar/blob/main/api/utils/ast.py#L95
+        elif ast.get("int", False):
+            metadata = {}
+            if "mut" in ast:
+                metadata["mut"] = ast["mut"]
+            node = new_ast_node(ast, metadata, access_path)
+            node["parent"] = parent
+            node["ident"] = str(ast["int"])
             nodes.append(node)
             parent = node
         elif ast.get("mut", False):
@@ -283,8 +407,17 @@ syn_ast = struct(
     traverse_tree=traverse_tree,
     flatten_tree=flatten_tree,
     find_chained_calls=find_chained_calls,
+    find_macro_attribute_by_names=find_macro_attribute_by_names,
     find_by_similar_access_path=find_by_similar_access_path,
     find_comparisons=find_comparisons,
+    find_comparison_to_any=find_comparison_to_any,
+    find_functions_by_names=find_functions_by_names,
+    find_by_names=find_by_names,
+    find_method_calls=find_method_calls,
+    find_assignments=find_assignments,
+    find_mutables=find_mutables,
+    find_account_typed_nodes=find_account_typed_nodes,
+    find_member_accesses=find_member_accesses,
     first=first,
     prepare_ast=prepare_ast,
 )
