@@ -15,7 +15,7 @@ use solana_sbpf::{
 use std::{fs::File, io::Read as _, path::Path, sync::Arc, u8};
 use test_utils::TestContextObject;
 
-use std::io::Result;
+use anyhow::Result;
 
 pub enum OutputFile {
     Disassembly,
@@ -58,20 +58,17 @@ impl ReverseOutputMode {
 
 
 /// Analyzes a given eBPF program according to the specified output mode.
-pub fn analyze_program(mode: ReverseOutputMode, target_bytecode: String, is_stripped: bool) -> Result<()> {
+pub fn analyze_program(mode: ReverseOutputMode, target_bytecode: String, labeling: bool) -> Result<()> {
     // Mocking a loader & create an executable
     let loader = Arc::new(BuiltinProgram::new_loader(Config {
         enable_instruction_tracing: true,
-        enable_symbol_and_section_labels: is_stripped,
+        enable_symbol_and_section_labels: labeling,
         ..Config::default()
     }));
-
     let mut file = File::open(Path::new(&target_bytecode)).unwrap();
     let mut elf = Vec::new();
     file.read_to_end(&mut elf).unwrap();
-
     let program = elf.clone();
-
     let executable = Executable::<TestContextObject>::from_elf(&elf, loader).map_err(|err| format!("Executable constructor failed: {err:?}")).unwrap();
 
     // Perform analysis on the executable (e.g., necessary for disassembly, control flow graph, etc..).

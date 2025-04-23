@@ -40,6 +40,7 @@ enum Commands {
     },
     Clean {
     },
+    // example: cargo run -- reverse --mode both --out-dir test_cases/base_sbf_addition_checker/out1/  --bytecodes-file ./test_cases/base_sbf_addition_checker/bytecodes/addition_checker.so --labeling 
     Reverse {
         #[clap(long = "mode", value_parser = clap::builder::PossibleValuesParser::new(["disass", "cfg", "both", "rusteq"]))]
         mode: String,
@@ -50,8 +51,8 @@ enum Commands {
         #[clap(long = "bytecodes-file")]
         bytecodes_file: String,
 
-        #[clap(long = "is-stripped", action)]
-        is_stripped: bool,
+        #[clap(long = "labeling", action)]
+        labeling: bool,
 
         // Note: rusteq mode is not supported yet
     }
