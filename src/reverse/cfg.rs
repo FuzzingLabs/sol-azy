@@ -8,8 +8,22 @@ use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-const MAX_BYTES_TO_READ_FOR_IMMEDIATE_STRING_REPR: u8 = 50;
+/// Maximum number of bytes used to represents the extracted string representation
+/// from a load immediate instruction (useful if no explicit length is provided).
+const MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR: u8 = 50;
 
+/// Attempts to retrieve a string representation from a `LD_DW_IMM` instruction,
+/// optionally followed by a `MOV64_IMM` or `MOV32_IMM` that gives the string length.
+///
+/// # Arguments
+///
+/// * `program` - Raw program bytes
+/// * `insn` - The instruction to analyze
+/// * `next_insn_wrapped` - Optional next instruction that might contain length info
+///
+/// # Returns
+///
+/// A string representation of the bytes referenced by the instruction, or an empty string.
 fn get_string_repr(
     program: &[u8],
     insn: &Insn,
@@ -17,8 +31,6 @@ fn get_string_repr(
 ) -> String {
     match insn.opc {
         solana_sbpf::ebpf::LD_DW_IMM => {
-            
-
             let offset_base = solana_sbpf::ebpf::MM_RODATA_START as usize;
             let start = if insn.imm > 0 && insn.imm as usize > offset_base {
                 insn.imm as usize - offset_base
@@ -26,13 +38,11 @@ fn get_string_repr(
                 return "".to_string();
             };
 
-            // Make sure we don't read out of bounds
             if start >= program.len() {
                 return "".to_string();
             }
 
-            // Default number of bytes to read from the program when no length found
-            let mut length = MAX_BYTES_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize;
+            let mut length = MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize;
 
             if let Some(next_insn) = next_insn_wrapped {
                 if next_insn.opc == solana_sbpf::ebpf::MOV64_IMM
@@ -46,7 +56,6 @@ fn get_string_repr(
             }
 
             let end = usize::min(start + length, program.len());
-
             let slice = &program[start..end];
             format_bytes(slice)
         }
@@ -55,7 +64,20 @@ fn get_string_repr(
     }
 }
 
-// modified version of "visualize_graphically" from sbpf-solana for full static analysis
+/// Exports the control flow graph (CFG) of a program to a Graphviz-compatible DOT file.
+/// Each function in the program is rendered as a subgraph with basic blocks and instruction-level details.
+///
+/// This is a modified version of the `visualize_graphically` function from `sbpf-solana`.
+///
+/// # Arguments
+///
+/// * `program` - Raw bytecode of the program
+/// * `analysis` - Analysis object containing CFG and instruction metadata
+/// * `path` - Output directory for the DOT file
+///
+/// # Returns
+///
+/// A `Result` indicating success or failure of the write operation.
 pub fn export_cfg_to_dot<P: AsRef<Path>>(
     program: &[u8],
     analysis: &mut Analysis,
@@ -65,6 +87,7 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
     cfg_path.push(OutputFile::Cfg.default_filename());
     let mut output = File::create(cfg_path)?;
 
+    /// Escapes a string for safe inclusion in HTML (used in DOT labels).
     fn html_escape(string: &str) -> String {
         string
             .replace('&', "&amp;")
@@ -72,6 +95,17 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
             .replace('>', "&gt;")
             .replace('\"', "&quot;")
     }
+
+    /// Emits a single CFG node and recursively its children to the DOT output.
+    ///
+    /// # Arguments
+    ///
+    /// * `program` - The bytecode
+    /// * `output` - Output writer
+    /// * `analysis` - Reference to the analysis data
+    /// * `function_range` - Bytecode range of the current function
+    /// * `alias_nodes` - Set of alias node indices
+    /// * `cfg_node_start` - Entry point of the current node
     fn emit_cfg_node<W: std::io::Write>(
         program: &[u8],
         output: &mut W,
@@ -82,13 +116,12 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
     ) -> std::io::Result<()> {
         let cfg_node = &analysis.cfg_nodes[&cfg_node_start];
         let insns = analysis.instructions[cfg_node.instructions.clone()].to_vec();
+
         writeln!(output, "    lbb_{} [label=<<table border=\"0\" cellborder=\"0\" cellpadding=\"3\">{}</table>>];",
             cfg_node_start,
             analysis.instructions[cfg_node.instructions.clone()].iter()
             .enumerate().map(|(pc, insn)| {
-                let mut desc = analysis.disassemble_instruction(
-                    insn, pc
-                );
+                let mut desc = analysis.disassemble_instruction(insn, pc);
                 // next instruction lookup to gather information (like for string and their length when it uses MOV64_IMM)
                 let next_insn = insns.get(pc + 1);
                 // add immediate string repr if it does exists on bytecode 
@@ -107,9 +140,9 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
                 } else {
                     format!("<tr><td align=\"left\">{}</td></tr>", html_escape(&desc))
                 }
-            })
-            .collect::<String>()
+            }).collect::<String>()
         )?;
+
         for child in &cfg_node.dominated_children {
             emit_cfg_node(
                 program,
@@ -120,8 +153,10 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
                 *child,
             )?;
         }
+
         Ok(())
     }
+
     writeln!(
         output,
         "digraph {{
@@ -141,8 +176,10 @@ edge [
 fontname=\"Courier New\";
 ];"
     )?;
+
     const MAX_CELL_CONTENT_LENGTH: usize =
-        15 + MAX_BYTES_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize;
+        15 + MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize;
+
     let function_iter = &mut analysis.functions.keys().peekable();
     while let Some(function_start) = function_iter.next() {
         let function_end = if let Some(next_function) = function_iter.peek() {
@@ -150,7 +187,9 @@ fontname=\"Courier New\";
         } else {
             &analysis.instructions.last().unwrap().ptr + 1
         };
+
         let mut alias_nodes = HashSet::new();
+
         writeln!(output, "  subgraph cluster_{} {{", *function_start)?;
         writeln!(
             output,
@@ -158,6 +197,7 @@ fontname=\"Courier New\";
             html_escape(&analysis.cfg_nodes[function_start].label)
         )?;
         writeln!(output, "    tooltip=lbb_{};", *function_start)?;
+
         emit_cfg_node(
             program,
             &mut output,
@@ -166,6 +206,7 @@ fontname=\"Courier New\";
             &mut alias_nodes,
             *function_start,
         )?;
+
         for alias_node in alias_nodes.iter() {
             writeln!(
                 output,
@@ -177,8 +218,10 @@ fontname=\"Courier New\";
             writeln!(output, "        URL=\"#lbb_{:?}\";", *alias_node)?;
             writeln!(output, "    ];")?;
         }
+
         writeln!(output, "  }}")?;
     }
+
     for (_, cfg_node_start, cfg_node) in analysis.iter_cfg_by_function() {
         if cfg_node_start != cfg_node.dominator_parent {
             writeln!(
@@ -187,12 +230,15 @@ fontname=\"Courier New\";
                 cfg_node_start, cfg_node.dominator_parent,
             )?;
         }
+
         let edges: BTreeMap<usize, usize> = cfg_node
             .destinations
             .iter()
             .map(|destination| (*destination, 0))
             .collect();
+
         let counter_sum: usize = edges.values().sum();
+
         if counter_sum == 0 && !edges.is_empty() {
             writeln!(
                 output,
@@ -206,6 +252,7 @@ fontname=\"Courier New\";
             )?;
         }
     }
+
     writeln!(output, "}}")?;
     Ok(())
 }
