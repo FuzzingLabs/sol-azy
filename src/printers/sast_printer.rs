@@ -8,10 +8,25 @@ use crate::state::sast_state::{
 use anyhow::{Context, Result};
 use prettytable::{format, Cell, Row, Table};
 
+/// Utility responsible for displaying SAST analysis results in a human-readable format.
+///
+/// Supports printing summaries, detailed match reports, and JSON output.
 #[derive(Debug, Clone)]
 pub struct SastPrinter;
 
 impl SastPrinter {
+    /// Displays a full summary and detailed output of the SAST state results.
+    ///
+    /// Outputs number of scanned files, a summary table of rule matches,
+    /// and detailed findings with metadata and source location.
+    ///
+    /// # Arguments
+    ///
+    /// * `state` - The `SastState` containing results to print.
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success or an error if printing fails.
     pub fn print_sast_state(state: &SastState) -> Result<()> {
         println!("Files scanned: {}", state.syn_ast_map.count_files());
 
@@ -40,6 +55,17 @@ impl SastPrinter {
         Ok(())
     }
 
+    /// Displays a summary table of all rule matches across all analyzed files.
+    ///
+    /// Each row includes the rule name, severity, certainty, file name, and match count.
+    ///
+    /// # Arguments
+    ///
+    /// * `results` - A slice of `SynAstResult` entries to summarize.
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success or an error if rendering fails.
     pub fn print_rules_summary(results: &[SynAstResult]) -> Result<()> {
         let filtered_results: Vec<&SynAstResult> = results
             .iter()
@@ -96,6 +122,16 @@ impl SastPrinter {
         Ok(())
     }
 
+    /// Prints detailed information about a single rule result, including all matches.
+    ///
+    /// # Arguments
+    ///
+    /// * `result` - The rule result to display.
+    /// * `syn_ast_map` - A map of syntax trees used to resolve source locations.
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success, or an error if printing fails.
     pub fn print_result(result: &SynAstResult, syn_ast_map: &SynAstMap) -> Result<()> {
         println!("\n{}", "=".repeat(80));
         println!("Rule: {}", result.rule_metadata.name);
@@ -117,6 +153,16 @@ impl SastPrinter {
         Ok(())
     }
 
+    /// Displays the metadata of a given rule, including version, author,
+    /// severity, certainty, and description.
+    ///
+    /// # Arguments
+    ///
+    /// * `metadata` - Metadata object to display.
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success.
     fn print_metadata(metadata: &SynRuleMetadata) -> Result<()> {
         let mut table = Table::new();
         table.set_format(*format::consts::FORMAT_NO_BORDER_LINE_SEPARATOR);
@@ -168,10 +214,27 @@ impl SastPrinter {
         Ok(())
     }
 
+    /// Prints the source position associated with a matched AST node.
+    ///
+    /// # Arguments
+    ///
+    /// * `code_metadata` - Position data for the node.
     fn print_source_line(code_metadata: &SourcePosition) {
         println!("{}", code_metadata);
     }
 
+    /// Recursively prints a match and its children with indentation, metadata, and location.
+    ///
+    /// # Arguments
+    ///
+    /// * `match_result` - The match result to display.
+    /// * `index` - The index of the match (for numbering).
+    /// * `indent` - Current indentation level (used for nesting).
+    /// * `syn_ast_map` - AST map used to resolve positions.
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success, or an error if recursive printing fails.
     fn print_match(
         match_result: &SynMatchResult,
         index: usize,
@@ -214,6 +277,16 @@ impl SastPrinter {
         Ok(())
     }
 
+    /// Attempts to find the source position for a given match's identifier in the AST map.
+    ///
+    /// # Arguments
+    ///
+    /// * `match_result` - The match result to resolve.
+    /// * `syn_ast_map` - Map of syntax trees used for position lookups.
+    ///
+    /// # Returns
+    ///
+    /// An optional reference to a `SourcePosition`, or `None` if not found.
     fn find_ident_position<'a>(
         match_result: &'a SynMatchResult,
         syn_ast_map: &'a SynAstMap,
@@ -226,6 +299,15 @@ impl SastPrinter {
         None
     }
 
+    /// Outputs the entire result set in a prettified JSON format.
+    ///
+    /// # Arguments
+    ///
+    /// * `results` - A slice of `SynAstResult` entries to serialize.
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` if the output was successful, or an error if serialization fails.
     pub fn print_results_as_json(results: &[SynAstResult]) -> Result<()> {
         let json =
             serde_json::to_string_pretty(results).context("Failed to serialize results to JSON")?;
@@ -235,6 +317,7 @@ impl SastPrinter {
 }
 
 impl SynAstResult {
+    /// Converts a `SynAstResult` into a `prettytable::Row` suitable for tabular display.
     pub fn to_table_row(&self) -> Row {
         Row::new(vec![
             Cell::new(&self.rule_metadata.name),

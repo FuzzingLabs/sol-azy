@@ -1,3 +1,16 @@
+//! Static analysis and reverse engineering for Solana eBPF programs.
+//!
+//! This module provides functionality to disassemble compiled bytecode, generate control flow graphs,
+//! and track immediate values from read-only memory segments.
+//!
+//! It includes:
+//! - [`mod@cfg`] — CFG generation and `.dot` export based on instruction analysis.
+//! - [`disass`] — Disassembler with immediate tracking support.
+//! - [`immediate_tracker`] — Tracks offset ranges for immediate data.
+//! - [`utils`] — Low-level utilities used by the analysis engine.
+//!
+//! The main entry point is [`analyze_program`], which drives the analysis based on the selected output mode.
+
 pub mod cfg;
 pub mod disass;
 pub mod immediate_tracker;

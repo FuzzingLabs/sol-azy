@@ -15,6 +15,15 @@ use proc_macro2::Span;
 use syn::visit;
 use syn::visit::Visit;
 
+/// Recursively parses all `.rs` files in a directory into syntax trees and enriches them with position data.
+///
+/// # Arguments
+///
+/// * `dir` - Path to the root directory containing Rust files.
+///
+/// # Returns
+///
+/// A `SynAstMap` mapping filenames to their corresponding enriched syntax trees.
 pub fn get_syn_ast_recursive(dir: &str) -> Result<SynAstMap> {
     let mut ast_map = HashMap::new();
     visit_dir(Path::new(dir), &mut ast_map)?;
@@ -50,6 +59,19 @@ fn visit_dir(dir_path: &Path, ast_map: &mut SynAstMap) -> Result<()> {
     Ok(())
 }
 
+/// Parses a single Rust source file and inserts it into the provided `SynAstMap`.
+///
+/// Each file is converted into a `syn::File` AST and enriched with span metadata
+/// (line and column info) for later analysis.
+///
+/// # Arguments
+///
+/// * `path` - Path to the Rust source file.
+/// * `ast_map` - Mutable reference to the AST map to populate.
+///
+/// # Errors
+///
+/// Returns an error if reading or parsing the file fails.
 pub fn parse_rust_file(path: &Path, ast_map: &mut SynAstMap) -> Result<()> {
     let file_content = match fs::read_to_string(path) {
         Ok(content) => content,
@@ -83,6 +105,10 @@ pub fn parse_rust_file(path: &Path, ast_map: &mut SynAstMap) -> Result<()> {
     Ok(())
 }
 
+/// A reference to a node in the AST, based on pointer and type ID.
+///
+/// This struct allows type-erased comparison and hashing of AST nodes,
+/// enabling them to be stored in maps or used for span tracking.
 #[derive(Eq)]
 pub struct NodeRef {
     ptr: *const (),
@@ -120,7 +146,17 @@ impl Hash for NodeRef {
     }
 }
 
-
+/// Converts a typed AST node into a type-erased `NodeRef` reference.
+///
+/// Used for associating additional metadata (e.g., spans) with AST nodes.
+///
+/// # Arguments
+///
+/// * `node` - A reference to any `'static` type (usually a `syn` AST node).
+///
+/// # Returns
+///
+/// A `NodeRef` uniquely identifying the node by its address and type.
 pub fn node_to_ref<T: 'static>(node: &T) -> NodeRef {
     NodeRef {
         ptr: node as *const T as *const (),
@@ -128,6 +164,9 @@ pub fn node_to_ref<T: 'static>(node: &T) -> NodeRef {
     }
 }
 
+/// Holds the `Span` associated with a specific AST node for source code mapping.
+///
+/// This allows rule engines to provide diagnostics with precise location info.
 #[derive(Debug, Clone)]
 pub struct SourcePosition {
     pub node_span: Span,
@@ -139,21 +178,39 @@ impl fmt::Display for SourcePosition {
     }
 }
 
-
+/// A mapping between `NodeRef` identifiers and their corresponding source code spans.
+///
+/// Used to enrich parsed syntax trees with source location metadata.
 #[derive(Debug, Clone)]
 pub struct AstPositions {
     pub positions: HashMap<NodeRef, SourcePosition>,
 }
 
 impl AstPositions {
+    /// Creates a new, empty `AstPositions` structure.
     pub fn new() -> Self {
         Self { positions: HashMap::new() }
     }
 
+    /// Registers a `SourcePosition` for a given node.
+    ///
+    /// # Arguments
+    ///
+    /// * `node` - The AST node reference.
+    /// * `position` - The source position (span) associated with the node.
     pub fn add_position<T: 'static>(&mut self, node: &T, position: SourcePosition) {
         self.positions.insert(node_to_ref(node), position);
     }
 
+    /// Retrieves the registered `SourcePosition` for a given node, if any.
+    ///
+    /// # Arguments
+    ///
+    /// * `node` - A reference to the AST node to query.
+    ///
+    /// # Returns
+    ///
+    /// An optional `SourcePosition` for the given node.
     pub fn get_position<T: 'static>(&self, node: &T) -> Option<&SourcePosition> {
         self.positions.get(&node_to_ref(node))
     }
@@ -175,6 +232,17 @@ impl<'a, 'ast> Visit<'ast> for SpanCollector<'a> {
     }
 }
 
+/// Traverses an AST and collects span data for identifiers, storing it in an `AstPositions` map.
+///
+/// # Arguments
+///
+/// * `ast` - The parsed syntax tree (`syn::File`) to analyze.
+/// * `rust_code` - Original source code content, used for context.
+/// * `source_file_path` - Path to the source file (used for logging/debugging).
+///
+/// # Returns
+///
+/// An `AstPositions` structure containing span metadata for relevant nodes.
 pub fn enrich_ast_with_source_lines(
     ast: &syn::File,
     rust_code: &str,
