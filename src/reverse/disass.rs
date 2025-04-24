@@ -8,7 +8,26 @@ use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-// modified version of "disassemble" from sbpf-solana for better static analysis
+/// Performs the core disassembly process of the program based on a provided static analysis.
+///
+/// This function prints disassembled instructions into the output file, annotating
+/// each instruction and registering immediate values when encountered via `LD_DW_IMM`.
+///
+/// # Arguments
+///
+/// * `analysis` - The static analysis object containing instructions and metadata.
+/// * `imm_tracker_wrapped` - An optional mutable reference to an `ImmediateTracker`
+///   used to track offsets of immediate values.
+/// * `path` - Base path where the disassembly file should be written.
+///
+/// # Returns
+///
+/// A `Result` indicating the success or failure of the disassembly file write operation.
+///
+/// # Note
+///
+/// This is a modified version of `disassemble` from `sbpf-solana`, adapted to support
+/// enhanced static analysis features.
 fn disassemble<P: AsRef<Path>>(
     analysis: &mut Analysis,
     mut imm_tracker_wrapped: Option<&mut ImmediateTracker>,
@@ -39,6 +58,21 @@ fn disassemble<P: AsRef<Path>>(
     Ok(())
 }
 
+/// Wrapper function that performs disassembly and optionally generates an immediate data table.
+///
+/// The disassembly output is written to its output file. If an `ImmediateTracker` is provided,
+/// an other file is also created, listing readable representations of tracked immediate byte slices.
+///
+/// # Arguments
+///
+/// * `program` - The raw bytecode of the eBPF program.
+/// * `analysis` - The static analysis object containing instructions and metadata.
+/// * `imm_tracker_wrapped` - Optional mutable reference to an `ImmediateTracker` for tracking.
+/// * `path` - Base path for writing output files (`disassembly.out`, `immediate_data_table.out`).
+///
+/// # Returns
+///
+/// A `Result` indicating the success or failure of the disassembly and table exports.
 pub fn disassemble_wrapper<P: AsRef<Path>>(
     program: &[u8],
     analysis: &mut Analysis,

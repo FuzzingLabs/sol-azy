@@ -1,3 +1,10 @@
+//! Entry point for the `sol-azy` CLI application.
+//!
+//! This CLI tool provides commands for building Solana programs, running SAST (static analysis),
+//! and performing reverse engineering (disassembly and CFG generation) on compiled bytecode.
+//!
+//! Commands are parsed using `clap`, and executed through the central `AppState` dispatcher.
+
 mod commands;
 mod state;
 mod helpers;

@@ -1,3 +1,13 @@
+//! General-purpose helper functions and types used across the project.
+//!
+//! This module provides utility functionality for:
+//! - Checking the presence of required binaries (`check_binary_installed`)
+//! - Creating directories (`create_dir_if_not_exists`)
+//! - Detecting project type (Anchor vs SBF)
+//! - Running shell commands with optional environment variables (`run_command`)
+//!
+//! It also defines helper types like `ProjectType` and `BeforeCheck` used in build and analysis workflows.
+
 pub mod static_dir;
 
 use std::{fs, path::Path, process::Command};
@@ -7,6 +17,15 @@ use std::process::Stdio;
 use crate::commands::build_command;
 use crate::state::build_state::BuildState;
 
+/// Checks if a binary is available in the system's `$PATH`.
+///
+/// # Arguments
+///
+/// * `bin_name` - Name of the binary to check (e.g., `"cargo"`, `"anchor"`).
+///
+/// # Returns
+///
+/// `true` if the binary is found, otherwise `false`.
 pub fn check_binary_installed(bin_name: &String) -> bool {
     Command::new("which")
         .arg(bin_name)
@@ -14,6 +33,15 @@ pub fn check_binary_installed(bin_name: &String) -> bool {
         .map_or(false, |output| output.status.success())
 }
 
+/// Ensures a directory exists, creating it if necessary.
+///
+/// # Arguments
+///
+/// * `dir` - Path to the directory.
+///
+/// # Returns
+///
+/// `true` if the directory exists or was created successfully, otherwise `false`.
 pub fn create_dir_if_not_exists(dir: &String) -> bool {
     let path = Path::new(dir);
     if path.exists() {
@@ -22,12 +50,28 @@ pub fn create_dir_if_not_exists(dir: &String) -> bool {
     fs::create_dir_all(path).is_ok()
 }
 
+/// Enum representing the detected type of a Solana-based project.
+///
+/// - `Anchor`: Project contains an `Anchor.toml` file.
+/// - `Sbf`: Project is identified as a native Solana SBF crate.
+/// - `Unknown`: Type could not be determined.
 pub enum ProjectType {
     Anchor,
     Sbf,
     Unknown,
 }
 
+/// Attempts to determine the type of Solana project based on its configuration files.
+///
+/// Checks for presence of `Anchor.toml` or a `Cargo.toml` containing a `solana-program` dependency.
+///
+/// # Arguments
+///
+/// * `project_dir` - Path to the root of the project.
+///
+/// # Returns
+///
+/// A `ProjectType` variant (`Anchor`, `Sbf`, or `Unknown`).
 pub fn get_project_type(project_dir: &String) -> ProjectType {
     let anchor_toml = Path::new(project_dir).join("Anchor.toml");
     if anchor_toml.exists() {
@@ -43,11 +87,26 @@ pub fn get_project_type(project_dir: &String) -> ProjectType {
         .map_or(ProjectType::Unknown, |_| ProjectType::Sbf)
 }
 
+/// Represents a single pre-check step before a build or analysis,
+/// consisting of an error message and a success result.
 pub struct BeforeCheck {
     pub error_msg: String,
     pub result: bool,
 }
 
+/// Executes a command with given arguments and optional environment variables.
+///
+/// Captures and returns the standard output on success, or logs and returns an error on failure.
+///
+/// # Arguments
+///
+/// * `command_name` - Name of the command to run (e.g., `"cargo"`).
+/// * `args` - List of arguments to pass to the command.
+/// * `env_vars` - Optional list of environment variables to set for the command.
+///
+/// # Returns
+///
+/// A `Result<String>` containing the command's stdout if successful, or an error.
 pub fn run_command(command_name: &str, args: &[&str], env_vars: Vec<(&str, &str)>) -> Result<String, anyhow::Error> {
     let mut bind = Command::new(command_name);
     let mut command = bind.args(args)
