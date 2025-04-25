@@ -313,3 +313,6 @@ Cargo.lock
 
 output.json
 .vscode/settings.json
+
+# mdbook docs auto-generated
+docs/book/

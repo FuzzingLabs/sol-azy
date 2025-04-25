@@ -1,0 +1,20 @@
+# Summary
+
+- [Introduction](introduction.md)
+- [Installation](installation.md)
+- [CLI Usage](cli_usage.md)
+  - [Build](cli/build.md)
+  - [SAST](cli/sast.md)
+  - [Reverse](cli/reverse.md)
+- [Static Analysis](static_analysis.md)
+  - [Rule Format](rules/format.md)
+  - [Example Rules](rules/examples.md)
+- [Reverse Engineering](reverse.md)
+  - [Overview](reverse/overview.md)
+  - [Disassembly](reverse/disassembly.md)
+  - [Control Flow Graph (CFG)](reverse/cfg.md)
+  - [Immediate Tracking](reverse/immediates.md)
+  - [Rust-Like Output (WIP)](reverse/rusteq.md)
+- [Architecture](architecture.md)
+  - [App State](architecture/app_state.md)
+
