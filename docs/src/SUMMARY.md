@@ -17,5 +17,4 @@
   - [Rust-Like Output (WIP)](reverse/rusteq.md)
 - [Architecture](architecture.md)
   - [App State](architecture/app_state.md)
-  - [SAST Engine](architecture/sast_engine.md)
 

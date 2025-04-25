@@ -58,10 +58,10 @@ dot -Tpng cfg.dot -o cfg.png
 
 To dive deeper into how reverse analysis works in Sol-azy:
 
-- [Disassembly](disassembly.md)
-- [Control Flow Graph](cfg.md)
-- [Immediate Tracking](immediates.md)
-- [Rust-Like Output (WIP)](rusteq.md)
+- [Disassembly](./reverse/disassembly.md)
+- [Control Flow Graph](./reverse/cfg.md)
+- [Immediate Tracking](./reverse/immediates.md)
+- [Rust-Like Output (WIP)](./reverse/rusteq.md)
 
 ---
 

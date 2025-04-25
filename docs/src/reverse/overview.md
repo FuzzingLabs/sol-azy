@@ -1,6 +1,6 @@
 # Reverse Overview
 
-This section explains how Sol-azy performs static reverse engineering on Solana smart contracts compiled to eBPF.
+This section explains how Sol-azy performs static reverse engineering on Solana programs compiled to eBPF.
 
 The reverse module combines disassembly, control flow analysis, and memory inspection, using a customized static analysis engine adapted from [`sbpf-solana`](https://github.com/anza-xyz/sbpf-solana).
 
@@ -36,10 +36,10 @@ The reverse module combines disassembly, control flow analysis, and memory inspe
 
 ## Internal Components
 
-- [`ImmediateTracker`](../../reverse/immediate_tracker.rs): Tracks memory ranges referenced by LD_DW_IMM
-- [`get_string_repr`](../../reverse/cfg.rs): Converts slices from `.rodata` into readable strings
-- [`export_cfg_to_dot`](../../reverse/cfg.rs): Emits Graphviz-compatible control flow graphs
-- [`disassemble_wrapper`](../../reverse/disass.rs): Main entrypoint for disassembly + data extraction
+- [`ImmediateTracker`](./immediates.md): Tracks memory ranges referenced by LD_DW_IMM
+- [`get_string_repr`](./cfg.html#strings-from-rodata): Converts slices from `.rodata` into readable strings
+- [`export_cfg_to_dot`](./cfg.html#overview): Emits Graphviz-compatible control flow graphs
+- [`disassemble_wrapper`](./immediates.html#behind-the-scenes): Main entrypoint for disassembly + data extraction
 
 ---
 
