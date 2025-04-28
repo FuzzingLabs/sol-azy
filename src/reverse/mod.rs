@@ -22,9 +22,11 @@ use disass::disassemble_wrapper;
 use immediate_tracker::ImmediateTracker;
 use log::{debug, error};
 use solana_sbpf::{
+    ebpf::MM_RODATA_START,
     elf::Executable,
-    program::{BuiltinProgram, FunctionRegistry, SBPFVersion},
-    static_analysis::Analysis, vm::Config,
+    program::BuiltinProgram,
+    static_analysis::Analysis,
+    vm::Config,
 };
 use std::{fs::File, io::Read as _, path::Path, sync::Arc, u8};
 use test_utils::TestContextObject;
@@ -73,7 +75,6 @@ impl ReverseOutputMode {
     }
 }
 
-
 /// Analyzes a compiled eBPF program and generates output depending on the selected `ReverseOutputMode`.
 ///
 /// # Parameters
@@ -85,7 +86,11 @@ impl ReverseOutputMode {
 /// # Returns
 ///
 /// `Ok(())` on success, or an error if the analysis or export fails.
-pub fn analyze_program(mode: ReverseOutputMode, target_bytecode: String, labeling: bool) -> Result<()> {
+pub fn analyze_program(
+    mode: ReverseOutputMode,
+    target_bytecode: String,
+    labeling: bool,
+) -> Result<()> {
     // Mocking a loader & create an executable
     let loader = Arc::new(BuiltinProgram::new_loader(Config {
         enable_instruction_tracing: true,
@@ -106,12 +111,12 @@ pub fn analyze_program(mode: ReverseOutputMode, target_bytecode: String, labelin
             return Err(anyhow::anyhow!("Failed to construct executable: {:?}", err));
         }
     };
-    
+
     // Perform analysis on the executable (e.g., necessary for disassembly, control flow graph, etc..).
     let mut analysis = Analysis::from_executable(&executable).unwrap();
 
     // Used to track all immediate datas in order to create a table with their possible associated values
-    let mut imm_tracker = ImmediateTracker::new(program.len());
+    let mut imm_tracker = ImmediateTracker::new(program.len() + MM_RODATA_START as usize);
     let imm_tracker_wrapped = Some(&mut imm_tracker);
 
     match mode {
@@ -141,9 +146,11 @@ mod tests {
     #[test]
     fn test() {
         let _ = analyze_program(
-            ReverseOutputMode::DisassemblyAndCFG("test_cases/base_sbf_addition_checker/out1/".to_string()),
+            ReverseOutputMode::DisassemblyAndCFG(
+                "test_cases/base_sbf_addition_checker/out1/".to_string(),
+            ),
             "test_cases/base_sbf_addition_checker/bytecodes/addition_checker.so".to_string(),
-            true
+            true,
         );
     }
 
@@ -151,9 +158,12 @@ mod tests {
     #[test]
     fn test2() {
         let _ = analyze_program(
-            ReverseOutputMode::DisassemblyAndCFG("test_cases/base_sbf_addition_checker/out2/".to_string()),
-            "test_cases/base_sbf_addition_checker/bytecodes/addition_checker_sbpf_solana.so".to_string(),
-            false
+            ReverseOutputMode::DisassemblyAndCFG(
+                "test_cases/base_sbf_addition_checker/out2/".to_string(),
+            ),
+            "test_cases/base_sbf_addition_checker/bytecodes/addition_checker_sbpf_solana.so"
+                .to_string(),
+            false,
         );
     }
 }

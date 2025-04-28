@@ -49,21 +49,26 @@ fn disassemble<P: AsRef<Path>>(
             &mut last_basic_block,
         )?;
 
-        if insn.opc == LD_DW_IMM {
+        if insn.opc == LD_DW_IMM
+            && (insn.imm as u64) < solana_sbpf::ebpf::MM_STACK_START
+            && (insn.imm as u64) >= solana_sbpf::ebpf::MM_RODATA_START
+        {
+            // in memory mapping it's: RODATA | STACK | HEAP | INPUTS
             if let Some(ref mut imm_tracker) = imm_tracker_wrapped {
-                imm_tracker.register_offset(insn.imm as usize);
+                imm_tracker.register_offset(insn.imm as usize)
             }
         }
-        
+
         // next instruction lookup to gather information (like for string and their length when it uses MOV64_IMM)
         let next_insn = analysis.instructions.get(pc + 1);
         let mut insn_line = analysis.disassemble_instruction(insn, pc);
-        // add immediate string repr if it does exists on bytecode 
+        // add immediate string repr if it does exists on bytecode
         let str_repr = get_string_repr(program, insn, next_insn);
         if str_repr != "" {
             insn_line.push_str(" --> ");
             insn_line.push_str(&str_repr);
-            if insn_line.len() > 2 * (MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize) + 1 {
+            if insn_line.len() > 2 * (MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize) + 1
+            {
                 insn_line.truncate(2 * (MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize));
                 insn_line = format!("{insn_line}…");
             }
@@ -95,18 +100,24 @@ pub fn disassemble_wrapper<P: AsRef<Path>>(
     path: P,
 ) -> std::io::Result<()> {
     disassemble(program, analysis, imm_tracker_wrapped.as_deref_mut(), &path)?;
-
     if let Some(imm_tracker) = imm_tracker_wrapped {
         let mut table_path = PathBuf::from(path.as_ref());
         table_path.push(OutputFile::ImmediateDataTable.default_filename());
         let mut output = File::create(table_path)?;
-        
+
         let offset_base = solana_sbpf::ebpf::MM_RODATA_START as usize;
 
         for (&start, &end) in imm_tracker.get_ranges() {
-            assert!(start >= offset_base, "start address and end address should be > than the RODATA MemoryMapping section");
+            assert!(
+                start >= offset_base,
+                "start address and end address should be > than the RODATA MemoryMapping section"
+            );
             let start_idx = start.checked_sub(offset_base);
-            let end_idx = end.checked_sub(offset_base);
+            let end_idx = if end > offset_base {
+                end.checked_sub(offset_base)
+            } else {
+                Some(end)
+            };
 
             if let (Some(start_idx), Some(end_idx)) = (start_idx, end_idx) {
                 if start_idx >= program.len() || end_idx > program.len() || start_idx >= end_idx {
