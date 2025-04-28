@@ -8,6 +8,8 @@ use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
+use super::utils::get_string_repr;
+
 /// Performs the core disassembly process of the program based on a provided static analysis.
 ///
 /// This function prints disassembled instructions into the output file, annotating
@@ -29,6 +31,7 @@ use std::path::{Path, PathBuf};
 /// This is a modified version of `disassemble` from `sbpf-solana`, adapted to support
 /// enhanced static analysis features.
 fn disassemble<P: AsRef<Path>>(
+    program: &[u8],
     analysis: &mut Analysis,
     mut imm_tracker_wrapped: Option<&mut ImmediateTracker>,
     path: P,
@@ -51,8 +54,16 @@ fn disassemble<P: AsRef<Path>>(
                 imm_tracker.register_offset(insn.imm as usize);
             }
         }
-
-        let insn_line = analysis.disassemble_instruction(insn, pc);
+        
+        // next instruction lookup to gather information (like for string and their length when it uses MOV64_IMM)
+        let next_insn = analysis.instructions.get(pc + 1);
+        let mut insn_line = analysis.disassemble_instruction(insn, pc);
+        // add immediate string repr if it does exists on bytecode 
+        let str_repr = get_string_repr(program, insn, next_insn);
+        if str_repr != "" {
+            insn_line.push_str(" --> ");
+            insn_line.push_str(&str_repr);
+        }
         writeln!(output, "    {}", insn_line)?;
     }
     Ok(())
@@ -79,7 +90,7 @@ pub fn disassemble_wrapper<P: AsRef<Path>>(
     mut imm_tracker_wrapped: Option<&mut ImmediateTracker>,
     path: P,
 ) -> std::io::Result<()> {
-    disassemble(analysis, imm_tracker_wrapped.as_deref_mut(), &path)?;
+    disassemble(program, analysis, imm_tracker_wrapped.as_deref_mut(), &path)?;
 
     if let Some(imm_tracker) = imm_tracker_wrapped {
         let mut table_path = PathBuf::from(path.as_ref());

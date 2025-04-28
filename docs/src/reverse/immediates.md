@@ -108,7 +108,7 @@ Example:
 
 ```text
 lddw   r1, 0x1000043e0   ; ← This address becomes a key
-mov64  r2, 8             ; ← Length hint (only used in CFG rendering)
+mov64  r2, 8             ; ← Length hint
 ```
 
 This results in:
