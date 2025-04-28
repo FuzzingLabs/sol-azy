@@ -44,19 +44,17 @@ impl ImmediateTracker {
             .map(|(&s, _)| s)
             .next()
             .unwrap_or(self.program_len);
-    
+
         // Update existing ranges if the new_start falls inside
         for (&start, end) in self.ranges.range_mut(..new_start) {
             if *end > new_start {
                 *end = new_start;
             }
         }
-    
+
         // Insert the new range
         self.ranges.insert(new_start, new_end);
     }
-    
-    
 
     /// Retrieves the immediate value range that starts at a given offset.
     ///
