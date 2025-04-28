@@ -105,20 +105,18 @@ pub fn disassemble_wrapper<P: AsRef<Path>>(
 
         for (&start, &end) in imm_tracker.get_ranges() {
             assert!(start >= offset_base, "start address and end address should be > than the RODATA MemoryMapping section");
-            let start_idx = start - offset_base;
-            let end_idx = if end > offset_base {
-                end - offset_base
-            } else {
-                end
-            };
-            if start_idx >= program.len() || end_idx > program.len() || start_idx >= end_idx {
-                continue;
+            let start_idx = start.checked_sub(offset_base);
+            let end_idx = end.checked_sub(offset_base);
+
+            if let (Some(start_idx), Some(end_idx)) = (start_idx, end_idx) {
+                if start_idx >= program.len() || end_idx > program.len() || start_idx >= end_idx {
+                    continue;
+                }
+                let slice = &program[start_idx..end_idx];
+                let repr = format_bytes(slice);
+                writeln!(output, "0x{:x} (+ 0x{:x}): {}", start, start_idx, repr)?;
             }
-            let slice = &program[start_idx..end_idx];
-            let repr = format_bytes(slice);
-            writeln!(output, "0x{:x} (+ 0x{:x}): {}", start, start_idx, repr)?;
         }
     }
-
     Ok(())
 }
