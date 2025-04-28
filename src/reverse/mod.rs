@@ -20,6 +20,7 @@ use cfg::*;
 
 use disass::disassemble_wrapper;
 use immediate_tracker::ImmediateTracker;
+use log::{debug, error};
 use solana_sbpf::{
     elf::Executable,
     program::{BuiltinProgram, FunctionRegistry, SBPFVersion},
@@ -95,8 +96,17 @@ pub fn analyze_program(mode: ReverseOutputMode, target_bytecode: String, labelin
     let mut elf = Vec::new();
     file.read_to_end(&mut elf).unwrap();
     let program = elf.clone();
-    let executable = Executable::<TestContextObject>::from_elf(&elf, loader).map_err(|err| format!("Executable constructor failed: {err:?}")).unwrap();
-
+    let executable = match Executable::<TestContextObject>::from_elf(&elf, loader) {
+        Ok(executable) => executable,
+        Err(err) => {
+            error!("Executable constructor failed: {:?}", err);
+            if labeling {
+                debug!("Hint: Try disabling '--labeling' if your binary is not stripped properly (e.g., contains unexpected symbols).");
+            }
+            return Err(anyhow::anyhow!("Failed to construct executable: {:?}", err));
+        }
+    };
+    
     // Perform analysis on the executable (e.g., necessary for disassembly, control flow graph, etc..).
     let mut analysis = Analysis::from_executable(&executable).unwrap();
 
