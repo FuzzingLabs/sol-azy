@@ -8,7 +8,7 @@ use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-use super::utils::get_string_repr;
+use super::utils::{get_string_repr, MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR};
 
 /// Performs the core disassembly process of the program based on a provided static analysis.
 ///
@@ -63,6 +63,10 @@ fn disassemble<P: AsRef<Path>>(
         if str_repr != "" {
             insn_line.push_str(" --> ");
             insn_line.push_str(&str_repr);
+            if insn_line.len() > 2 * (MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize) + 1 {
+                insn_line.truncate(2 * (MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize));
+                insn_line = format!("{insn_line}…");
+            }
         }
         writeln!(output, "    {}", insn_line)?;
     }
