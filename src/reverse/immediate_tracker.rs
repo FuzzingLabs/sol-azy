@@ -37,31 +37,26 @@ impl ImmediateTracker {
     ///
     /// * `new_start` - The byte offset marking the start of a new immediate value.
     pub fn register_offset(&mut self, new_start: usize) {
+        // Find where the new range should end: the next registered start, or end of program
         let new_end = self
             .ranges
             .range((new_start + 1)..)
             .map(|(&s, _)| s)
             .next()
             .unwrap_or(self.program_len);
-
-        let to_truncate: Vec<usize> = self
-            .ranges
-            .iter()
-            .filter_map(|(&start, &end)| {
-                if start < new_start && end > new_start {
-                    Some(start)
-                } else {
-                    None
-                }
-            })
-            .collect();
-
-        for start in to_truncate {
-            self.ranges.insert(start, new_start);
+    
+        // Update existing ranges if the new_start falls inside
+        for (&start, end) in self.ranges.range_mut(..new_start) {
+            if *end > new_start {
+                *end = new_start;
+            }
         }
-
+    
+        // Insert the new range
         self.ranges.insert(new_start, new_end);
     }
+    
+    
 
     /// Retrieves the immediate value range that starts at a given offset.
     ///
