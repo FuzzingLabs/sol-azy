@@ -20,7 +20,7 @@ entrypoint:
     stxw [r10-0xa4], r1
     mov64 r1, 0
     stxdw [r10-0x40], r1
-    lddw r1, 0x100004610
+    lddw r1, 0x100004610 --> b"\x00\x00\x00\x00\xd0C\x00\x00\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…
     stxdw [r10-0x60], r1
     mov64 r1, 2
     stxdw [r10-0x58], r1
@@ -31,7 +31,7 @@ entrypoint:
     mov64 r1, r10
     add64 r1, -164
     stxdw [r10-0x78], r1
-    lddw r1, 0x100004210
+    lddw r1, 0x100004210 --> b"\xbf#\x00\x00\x00\x00\x00\x00a\x11\x00\x00\x00\x00\x00\x00\xb7\x02\x00\x0…
     stxdw [r10-0x70], r1
     stxdw [r10-0x80], r1
     mov64 r1, r10
@@ -51,19 +51,19 @@ entrypoint:
     lsh64 r2, 32
     rsh64 r2, 32
     jne r2, 1337, lbb_58
-    lddw r1, 0x1000043e0
+    lddw r1, 0x1000043e0 --> b"You win!"
     mov64 r2, 8
     syscall [invalid]
     mov64 r1, 987654321
     ja lbb_63
 lbb_58:
-    lddw r1, 0x1000043e8
+    lddw r1, 0x1000043e8 --> b"You lose!"
     mov64 r2, 9
     syscall [invalid]
     mov64 r1, 123456789
 lbb_63:
     stxdw [r10-0x68], r1
-    lddw r1, 0x100004630
+    lddw r1, 0x100004630 --> b"\x00\x00\x00\x00\xd8C\x00\x00\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…
     stxdw [r10-0x60], r1
     mov64 r1, 1
     stxdw [r10-0x58], r1
@@ -71,7 +71,7 @@ lbb_63:
     mov64 r1, r10
     add64 r1, -160
     stxdw [r10-0x50], r1
-    lddw r1, 0x100004238
+    lddw r1, 0x100004238 --> b"\xbf#\x00\x00\x00\x00\x00\x00y\x11\x00\x00\x00\x00\x00\x00\xb7\x02\x00\x0…
     stxdw [r10-0x98], r1
     mov64 r1, r10
     add64 r1, -104
@@ -89,7 +89,7 @@ lbb_63:
     jeq r7, 0, lbb_107
     ja lbb_102
 lbb_91:
-    lddw r1, 0x1000043f4
+    lddw r1, 0x1000043f4 --> b"Not enough data. Need two u32 values."
     mov64 r2, 37
     syscall [invalid]
     mov64 r1, 2
@@ -200,7 +200,7 @@ custom_panic:
     stxdw [r10-0x90], r1
     mov64 r1, 0
     stxdw [r10-0x50], r1
-    lddw r1, 0x100004640
+    lddw r1, 0x100004640 --> b"\x00\x00\x00\x00\xd0C\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…
     stxdw [r10-0x70], r1
     mov64 r1, 1
     stxdw [r10-0x68], r1
@@ -208,7 +208,7 @@ custom_panic:
     mov64 r1, r10
     add64 r1, -64
     stxdw [r10-0x60], r1
-    lddw r1, 0x100000120
+    lddw r1, 0x100000120 --> b"y\x11\x00\x00\x00\x00\x00\x00\x85\x10\x00\x00#\x04\x00\x00\x95\x00\x00\x0…
     stxdw [r10-0x38], r1
     mov64 r1, r10
     add64 r1, -144
@@ -603,7 +603,7 @@ lbb_532:
     stxdw [r3+0x0], r6
     ja lbb_385
 lbb_550:
-    lddw r3, 0x100004650
+    lddw r3, 0x100004650 --> b"\x00\x00\x00\x00\x19D\x00\x00\x11\x00\x00\x00\x00\x00\x00\x00a\x01\x00\x0…
     call function_1175
     syscall [invalid]
 
@@ -736,7 +736,7 @@ function_668:
     syscall [invalid]
 
 function_670:
-    lddw r1, 0x10000442a
+    lddw r1, 0x10000442a --> b"Error: memory allocation failed, out of memory"
     mov64 r2, 46
     call function_663
     call function_659
@@ -746,7 +746,7 @@ function_676:
     call function_670
     syscall [invalid]
     mov64 r3, r2
-    lddw r2, 0x100004668
+    lddw r2, 0x100004668 --> b"\x00\x00\x00\x00\x80\x16\x00\x00\x18\x00\x00\x00\x00\x00\x00\x00\x08\x00\…
     call function_1261
     exit
 
@@ -764,7 +764,7 @@ lbb_689:
 
 function_690:
     mov64 r1, r2
-    lddw r2, 0x100004458
+    lddw r2, 0x100004458 --> b"Error"
     mov64 r3, 5
     call function_1795
     exit
@@ -940,16 +940,16 @@ lbb_834:
 function_836:
     mov64 r1, 1
     stxdw [r10-0x28], r1
-    lddw r1, 0x100004698
+    lddw r1, 0x100004698 --> b"\x00\x00\x00\x00yD\x00\x00\x11\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0…
     stxdw [r10-0x30], r1
     mov64 r1, 0
     stxdw [r10-0x10], r1
     stxdw [r10-0x18], r1
-    lddw r1, 0x100004458
+    lddw r1, 0x100004458 --> b"Errorlibrary/alloc/src/raw_vec.rscapacity overflow"
     stxdw [r10-0x20], r1
     mov64 r1, r10
     add64 r1, -48
-    lddw r2, 0x1000046a8
+    lddw r2, 0x1000046a8 --> b"\x00\x00\x00\x00]D\x00\x00\x1c\x00\x00\x00\x00\x00\x00\x00!\x02\x00\x00\x…
     call function_1161
     syscall [invalid]
 
@@ -1027,7 +1027,7 @@ lbb_909:
     stxdw [r10-0x20], r0
     mov64 r1, r10
     add64 r1, -32
-    lddw r2, 0x100004668
+    lddw r2, 0x100004668 --> b"\x00\x00\x00\x00\x80\x16\x00\x00\x18\x00\x00\x00\x00\x00\x00\x00\x08\x00\…
     mov64 r3, r7
     call function_1261
     jne r0, 0, lbb_927
@@ -1041,10 +1041,10 @@ lbb_909:
 lbb_927:
     mov64 r3, r10
     add64 r3, -1
-    lddw r1, 0x10000448a
+    lddw r1, 0x10000448a --> b"a formatting trait implementation returned an error"
     mov64 r2, 51
-    lddw r4, 0x1000046c0
-    lddw r5, 0x1000046e0
+    lddw r4, 0x1000046c0 --> b"\x00\x00\x00\x00x\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00…
+    lddw r5, 0x1000046e0 --> b"\x00\x00\x00\x00\xbdD\x00\x00\x18\x00\x00\x00\x00\x00\x00\x00d\x02\x00\x0…
     call function_1202
     syscall [invalid]
 
@@ -1197,7 +1197,7 @@ function_1061:
     ldxdw r7, [r2+0x28]
     ldxdw r9, [r7+0x18]
     mov64 r1, r6
-    lddw r2, 0x100004520
+    lddw r2, 0x100004520 --> b"panicked at "
     mov64 r3, 12
     callx r9
     mov64 r1, r0
@@ -1206,7 +1206,7 @@ function_1061:
     ldxdw r1, [r8+0x18]
     mov64 r2, 0
     stxdw [r10-0x70], r2
-    lddw r2, 0x100004708
+    lddw r2, 0x100004708 --> b"\x00\x00\x00\x00\xd8D\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…
     stxdw [r10-0x90], r2
     mov64 r2, 3
     stxdw [r10-0x88], r2
@@ -1217,13 +1217,13 @@ function_1061:
     mov64 r2, r1
     add64 r2, 20
     stxdw [r10-0x40], r2
-    lddw r2, 0x100004210
+    lddw r2, 0x100004210 --> b"\xbf#\x00\x00\x00\x00\x00\x00a\x11\x00\x00\x00\x00\x00\x00\xb7\x02\x00\x0…
     stxdw [r10-0x38], r2
     stxdw [r10-0x48], r2
     mov64 r2, r1
     add64 r2, 16
     stxdw [r10-0x50], r2
-    lddw r2, 0x100004290
+    lddw r2, 0x100004290 --> b"\xbf$\x00\x00\x00\x00\x00\x00y\x13\x08\x00\x00\x00\x00\x00y\x12\x00\x00\x…
     stxdw [r10-0x58], r2
     stxdw [r10-0x60], r1
     mov64 r3, r10
@@ -1238,7 +1238,7 @@ function_1061:
     jeq r1, 0, lbb_1129
     stxdw [r10-0xa8], r1
     mov64 r1, r6
-    lddw r2, 0x10000452c
+    lddw r2, 0x10000452c --> b":\x0a"
     mov64 r3, 2
     callx r9
     mov64 r1, r0
@@ -1275,7 +1275,7 @@ lbb_1129:
     ja lbb_1160
 lbb_1148:
     mov64 r1, r6
-    lddw r2, 0x10000452c
+    lddw r2, 0x10000452c --> b":\x0a"
     mov64 r3, 2
     callx r9
     mov64 r1, r0
@@ -1293,9 +1293,9 @@ function_1161:
     stxh [r10-0x8], r3
     stxdw [r10-0x10], r2
     stxdw [r10-0x18], r1
-    lddw r1, 0x100004738
+    lddw r1, 0x100004738 --> b"\x00\x00\x00\x00\x08"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00…
     stxdw [r10-0x20], r1
-    lddw r1, 0x1000044d8
+    lddw r1, 0x1000044d8 --> b"invalid argslibrary/core/src/fmt/mod.rsindex out o"
     stxdw [r10-0x28], r1
     mov64 r1, r10
     add64 r1, -40
@@ -1309,7 +1309,7 @@ function_1175:
     mov64 r1, r10
     add64 r1, -96
     stxdw [r10-0x10], r1
-    lddw r1, 0x100004238
+    lddw r1, 0x100004238 --> b"\xbf#\x00\x00\x00\x00\x00\x00y\x11\x00\x00\x00\x00\x00\x00\xb7\x02\x00\x0…
     stxdw [r10-0x8], r1
     stxdw [r10-0x18], r1
     mov64 r1, r10
@@ -1320,7 +1320,7 @@ function_1175:
     mov64 r4, r10
     add64 r4, -32
     mov64 r1, r7
-    lddw r2, 0x100004758
+    lddw r2, 0x100004758 --> b"\x00\x00"
     mov64 r3, 2
     mov64 r5, 2
     call function_1233
@@ -1335,12 +1335,12 @@ function_1202:
     stxdw [r10-0x70], r1
     stxdw [r10-0x58], r4
     stxdw [r10-0x60], r3
-    lddw r1, 0x100004260
+    lddw r1, 0x100004260 --> b"y\x13\x00\x00\x00\x00\x00\x00y\x11\x08\x00\x00\x00\x00\x00y\x14\x18\x00\x…
     stxdw [r10-0x8], r1
     mov64 r1, r10
     add64 r1, -96
     stxdw [r10-0x10], r1
-    lddw r1, 0x100004290
+    lddw r1, 0x100004290 --> b"\xbf$\x00\x00\x00\x00\x00\x00y\x13\x08\x00\x00\x00\x00\x00y\x12\x00\x00\x…
     stxdw [r10-0x18], r1
     mov64 r1, r10
     add64 r1, -112
@@ -1350,7 +1350,7 @@ function_1202:
     mov64 r4, r10
     add64 r4, -32
     mov64 r1, r7
-    lddw r2, 0x100004778
+    lddw r2, 0x100004778 --> b"\x00\x00"
     mov64 r3, 2
     mov64 r5, 2
     call function_1233
@@ -1374,16 +1374,16 @@ function_1233:
 lbb_1244:
     mov64 r1, 1
     stxdw [r10-0x28], r1
-    lddw r1, 0x1000046f8
+    lddw r1, 0x1000046f8 --> b"\x00\x00\x00\x00\xd8D\x00\x00\x0c\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…
     stxdw [r10-0x30], r1
     mov64 r1, 0
     stxdw [r10-0x10], r1
     stxdw [r10-0x18], r1
-    lddw r1, 0x1000044d8
+    lddw r1, 0x1000044d8 --> b"invalid argslibrary/core/src/fmt/mod.rsindex out o"
     stxdw [r10-0x20], r1
     mov64 r1, r10
     add64 r1, -48
-    lddw r2, 0x100004798
+    lddw r2, 0x100004798 --> b"\x00\x00\x00\x00\xe4D\x00\x00\x1b\x00\x00\x00\x00\x00\x00\x00M\x01\x00\x0…
     call function_1161
     syscall [invalid]
 
@@ -1491,7 +1491,7 @@ lbb_1351:
     ldxdw r3, [r10-0x48]
     add64 r3, r1
     ldxdw r4, [r3+0x8]
-    lddw r5, 0x1000021f8
+    lddw r5, 0x1000021f8 --> b"y\x11\x00\x00\x00\x00\x00\x00\x05\x00\xff\xff\x00\x00\x00\x00\x95\x00\x00…
     jne r4, r5, lbb_1361
     mov64 r2, 1
     ldxdw r1, [r3+0x0]
@@ -1513,7 +1513,7 @@ lbb_1371:
     ldxdw r3, [r10-0x48]
     add64 r3, r1
     ldxdw r4, [r3+0x8]
-    lddw r5, 0x1000021f8
+    lddw r5, 0x1000021f8 --> b"y\x11\x00\x00\x00\x00\x00\x00\x05\x00\xff\xff\x00\x00\x00\x00\x95\x00\x00…
     jne r4, r5, lbb_1312
     mov64 r2, 1
     ldxdw r1, [r3+0x0]
@@ -2231,13 +2231,13 @@ lbb_1994:
     add64 r7, -39
     add64 r7, r4
     lsh64 r6, 1
-    lddw r8, 0x100004542
+    lddw r8, 0x100004542 --> b"00010203040506070809101112131415161718192021222324"
     add64 r8, r6
     ldxh r6, [r8+0x0]
     stxh [r7+0x23], r6
     lsh64 r0, 1
     and64 r0, 65534
-    lddw r6, 0x100004542
+    lddw r6, 0x100004542 --> b"00010203040506070809101112131415161718192021222324"
     add64 r6, r0
     ldxh r0, [r6+0x0]
     stxh [r7+0x25], r0
@@ -2256,7 +2256,7 @@ lbb_2027:
     sub64 r1, r0
     lsh64 r1, 1
     and64 r1, 65534
-    lddw r0, 0x100004542
+    lddw r0, 0x100004542 --> b"00010203040506070809101112131415161718192021222324"
     add64 r0, r1
     add64 r4, -2
     mov64 r1, r10
@@ -2269,7 +2269,7 @@ lbb_2045:
     mov64 r5, 10
     jgt r5, r1, lbb_2058
     lsh64 r1, 1
-    lddw r5, 0x100004542
+    lddw r5, 0x100004542 --> b"00010203040506070809101112131415161718192021222324"
     add64 r5, r1
     add64 r4, -2
     mov64 r1, r10
@@ -2295,7 +2295,7 @@ lbb_2064:
     stxdw [r10-0xff8], r1
     mov64 r5, r10
     mov64 r1, r3
-    lddw r3, 0x1000044d8
+    lddw r3, 0x1000044d8 --> b"invalid argslibrary/core/src/fmt/mod.rsindex out o"
     mov64 r4, 0
     call function_1401
     exit
