@@ -12,6 +12,7 @@ mod parsers;
 mod engines;
 mod printers;
 mod reverse;
+mod dotting;
 
 use clap::{Parser, Subcommand};
 use tracing_subscriber::fmt;
@@ -60,6 +61,9 @@ enum Commands {
 
         #[clap(long = "labeling", action)]
         labeling: bool,
+
+        #[clap(long = "reduced", action)]
+        reduced: bool,
 
         // Note: rusteq mode is not supported yet
     }

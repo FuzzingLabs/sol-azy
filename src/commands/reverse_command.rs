@@ -77,7 +77,7 @@ fn checks_before_reverse(bytecodes_file: &String, out_dir: &String) -> bool {
 /// # Errors
 ///
 /// Returns an error if the provided `mode` string does not match any known `ReverseOutputMode`.
-pub fn run(mode: String, out_dir: String, bytecodes_file: String, labeling: bool) -> Result<()> {
+pub fn run(mode: String, out_dir: String, bytecodes_file: String, labeling: bool, reduced: bool) -> Result<()> {
     debug!("Starting reverse process for {}", bytecodes_file);
 
     if !checks_before_reverse(&bytecodes_file, &out_dir) {
@@ -101,7 +101,7 @@ pub fn run(mode: String, out_dir: String, bytecodes_file: String, labeling: bool
         }
     };
 
-    analyze_program(output_mode, bytecodes_file, labeling)
+    analyze_program(output_mode, bytecodes_file, labeling, reduced)
 }
 
 #[cfg(test)]

@@ -90,6 +90,7 @@ pub fn analyze_program(
     mode: ReverseOutputMode,
     target_bytecode: String,
     labeling: bool,
+    reduced: bool,
 ) -> Result<()> {
     // Mocking a loader & create an executable
     let loader = Arc::new(BuiltinProgram::new_loader(Config {
@@ -124,11 +125,11 @@ pub fn analyze_program(
             let _ = disassemble_wrapper(&program, &mut analysis, imm_tracker_wrapped, &path);
         }
         ReverseOutputMode::ControlFlowGraph(path) => {
-            export_cfg_to_dot(&program, &mut analysis, &path)?;
+            export_cfg_to_dot(&program, &mut analysis, &path, reduced)?;
         }
         ReverseOutputMode::DisassemblyAndCFG(path) => {
             let _ = disassemble_wrapper(&program, &mut analysis, imm_tracker_wrapped, &path);
-            export_cfg_to_dot(&program, &mut analysis, &path)?;
+            export_cfg_to_dot(&program, &mut analysis, &path, reduced)?;
         }
         ReverseOutputMode::DisassAndRustEquivalent(path) => {
             println!("Rust equivalent generation is not implemented yet.");
@@ -151,6 +152,7 @@ mod tests {
             ),
             "test_cases/base_sbf_addition_checker/bytecodes/addition_checker.so".to_string(),
             true,
+            false,
         );
     }
 
@@ -163,6 +165,7 @@ mod tests {
             ),
             "test_cases/base_sbf_addition_checker/bytecodes/addition_checker_sbpf_solana.so"
                 .to_string(),
+            false,
             false,
         );
     }

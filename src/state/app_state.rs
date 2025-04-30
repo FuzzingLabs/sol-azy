@@ -38,7 +38,8 @@ impl AppState {
                 out_dir,
                 bytecodes_file,
                 labeling,
-            } => self.run_reverse(mode.clone(), out_dir.clone(), bytecodes_file.clone(), *labeling),            
+                reduced,
+            } => self.run_reverse(mode.clone(), out_dir.clone(), bytecodes_file.clone(), *labeling, *reduced),            
             _ => info!("No command selected"),
         }
     }
@@ -96,8 +97,8 @@ impl AppState {
     /// # Side Effects
     ///
     /// Logs success or error messages based on the result.
-    fn run_reverse(&mut self, mode: String, out_dir: String, bytecodes_file: String, labeling: bool) {
-        match commands::reverse_command::run(mode, out_dir, bytecodes_file, labeling) {
+    fn run_reverse(&mut self, mode: String, out_dir: String, bytecodes_file: String, labeling: bool, reduced: bool) {
+        match commands::reverse_command::run(mode, out_dir, bytecodes_file, labeling, reduced) {
             Ok(_) => info!("Reverse (static analysis) completed."),
             Err(e) => error!("An error occurred during reverse (static analysis): {}", e),
         }

@@ -26,6 +26,7 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
     program: &[u8],
     analysis: &mut Analysis,
     path: P,
+    reduced: bool
 ) -> std::io::Result<()> {
     let mut cfg_path = PathBuf::from(path.as_ref());
     cfg_path.push(OutputFile::Cfg.default_filename());
@@ -56,10 +57,16 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
         analysis: &Analysis,
         function_range: std::ops::Range<usize>,
         alias_nodes: &mut HashSet<usize>,
+        visited_nodes: &mut HashSet<usize>,
         cfg_node_start: usize,
+        reduced:bool,
     ) -> std::io::Result<()> {
         let cfg_node = &analysis.cfg_nodes[&cfg_node_start];
         let insns = analysis.instructions[cfg_node.instructions.clone()].to_vec();
+
+        if reduced { // this will save some memory for not-reduced CFG
+            visited_nodes.insert(cfg_node_start);
+        }
 
         writeln!(output, "    lbb_{} [label=<<table border=\"0\" cellborder=\"0\" cellpadding=\"3\">{}</table>>];",
             cfg_node_start,
@@ -94,7 +101,9 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
                 analysis,
                 function_range.clone(),
                 alias_nodes,
+                visited_nodes,
                 *child,
+                reduced
             )?;
         }
 
@@ -124,8 +133,19 @@ fontname=\"Courier New\";
     const MAX_CELL_CONTENT_LENGTH: usize =
         15 + MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize;
 
+
+    let mut is_entrypoint_visited = false;
     let function_iter = &mut analysis.functions.keys().peekable();
+    let mut visited_nodes = HashSet::new();
+
     while let Some(function_start) = function_iter.next() {
+        let label = &analysis.cfg_nodes[function_start].label;
+        if reduced && !is_entrypoint_visited && label != "entrypoint" {
+            continue;
+        }
+        if label == "entrypoint" {
+            is_entrypoint_visited = true;
+        }
         let function_end = if let Some(next_function) = function_iter.peek() {
             **next_function
         } else {
@@ -148,7 +168,9 @@ fontname=\"Courier New\";
             &analysis,
             *function_start..function_end,
             &mut alias_nodes,
+            &mut visited_nodes,
             *function_start,
+            reduced
         )?;
 
         for alias_node in alias_nodes.iter() {
@@ -167,12 +189,18 @@ fontname=\"Courier New\";
     }
 
     for (_, cfg_node_start, cfg_node) in analysis.iter_cfg_by_function() {
-        if cfg_node_start != cfg_node.dominator_parent {
-            writeln!(
-                output,
-                "  lbb_{} -> lbb_{} [style=dotted; arrowhead=none];",
-                cfg_node_start, cfg_node.dominator_parent,
-            )?;
+
+        if reduced {
+            if !visited_nodes.contains(&cfg_node_start) {
+                continue;
+            }
+            if cfg_node_start != cfg_node.dominator_parent {
+                writeln!(
+                    output,
+                    "  lbb_{} -> lbb_{} [style=dotted; arrowhead=none];",
+                    cfg_node_start, cfg_node.dominator_parent,
+                )?;
+            }
         }
 
         let edges: BTreeMap<usize, usize> = cfg_node
