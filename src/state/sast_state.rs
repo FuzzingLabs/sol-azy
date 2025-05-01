@@ -56,6 +56,45 @@ pub struct SynMatchResult {
     pub parent: String,
 }
 
+impl SynMatchResult {
+    // TODO: Refactor me
+    pub fn get_hash_metadata(&self) -> Result<[u8; 32]> {
+        let value = self
+            .metadata
+            .get("__hash__")
+            .ok_or_else(|| anyhow::anyhow!("No '__hash__' metadata value found in matches"))?;
+
+        if let serde_json::Value::Array(ref bytes_array) = value {
+            if bytes_array.len() != 32 {
+                return Err(anyhow::anyhow!(
+                "Invalid '__hash__' length: expected 32 bytes, got {}",
+                bytes_array.len()
+            ));
+            }
+
+            let mut hash = [0u8; 32];
+            for (i, item) in bytes_array.iter().enumerate() {
+                let byte = item
+                    .as_u64()
+                    .ok_or_else(|| anyhow::anyhow!("Invalid byte value at position {}", i))?;
+                if byte > 255 {
+                    return Err(anyhow::anyhow!(
+                    "Byte value out of range at position {}: {}",
+                    i,
+                    byte
+                ));
+                }
+                hash[i] = byte as u8;
+            }
+            Ok(hash)
+        } else {
+            Err(anyhow::anyhow!(
+            "Unsupported type for '__hash__' metadata. Expected an array of bytes."
+        ))
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SynAstResult {
     pub rule_filename: String,

@@ -110,6 +110,7 @@ impl fmt::Display for SourcePosition {
 pub struct AstPositions {
     pub positions: HashMap<[u8; 32], SourcePosition>,
     pub last_ident_hash: [u8; 32],
+    pub hashes_vec: Vec<[u8; 32]>,
 }
 
 impl AstPositions {
@@ -121,6 +122,7 @@ impl AstPositions {
         Self {
             positions: HashMap::new(),
             last_ident_hash: hash,
+            hashes_vec: vec![],
         }
     }
 
@@ -132,14 +134,15 @@ impl AstPositions {
         hash.copy_from_slice(&hasher.finalize()[..32]);
         self.last_ident_hash = hash;
         self.positions.insert(self.last_ident_hash, position);
+        self.hashes_vec.push(self.last_ident_hash);
     }
 
-    pub fn get_position<T: 'static>(&self, node: &T) -> Option<&SourcePosition> {
-        let mut hasher = sha2::Sha256::new();
-        Digest::update(&mut hasher, "DEFAULT_STATE".as_bytes());
-        let mut hash = [0u8; 32];
-        hash.copy_from_slice(&hasher.finalize()[..32]);
-        self.positions.get(&hash)
+    pub fn get_position(&self, hash: &[u8; 32]) -> Option<&SourcePosition> {
+        self.positions.get(hash)
+    }
+
+    pub fn get_hashes_json(&self) -> String {
+        json!(self.hashes_vec).to_string()
     }
 }
 

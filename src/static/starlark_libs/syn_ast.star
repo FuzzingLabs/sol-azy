@@ -87,10 +87,18 @@ def flatten_tree(root: dict) -> list[dict]:
 
 # def find_by_parent(self: dict, parent_ident: str):
 #     pass
-#
-#
-# def find_by_child(self: dict, child_ident: str):
-#     pass
+
+
+def find_by_child(self: dict, child_ident: str) -> list[dict]:
+    matches = []
+
+    def check_node(node: dict):
+        children = node.get("children", [])
+        if any(map(lambda n: n.get("ident", "") == child_ident, children)):
+            matches.append(node)
+
+    list(map(check_node, flatten_tree(self)))
+    return matches
 
 
 def find_chained_calls(self: dict, *idents: tuple[str, ...]) -> list[dict]:
@@ -322,27 +330,19 @@ def find_ident_src_node(sub_data, sub_access_path: str, metadata: dict) -> dict:
     return EMPTY_NODE
 
 
-def prepare_syn_ast(ast, access_path, parent) -> list[dict]:
+def prepare_syn_ast(ast, access_path, parent, hashes) -> list[dict]:
     nodes = []
 
     if type(ast) == "list":
         for i, item in enumerate(ast):
             new_path = f"{access_path}[{i}]"
-            nodes.extend(prepare_syn_ast(item, new_path, parent))
+            nodes.extend(prepare_syn_ast(item, new_path, parent, hashes))
         return nodes
 
     if type(ast) == "dict":
-        # ? Ident node
-        if ast.get("ident", False):
-            metadata = {}
-            if "mut" in ast:
-                metadata["mut"] = ast["mut"]
-            node = new_ast_node(ast, metadata, access_path)
-            node["parent"] = parent
-            nodes.append(node)
-            parent = node
         # ? Method node https://github.com/Auditware/radar/blob/main/api/utils/ast.py#L95
-        elif ast.get("method", False):
+        if ast.get("method", False):
+            print("method")
             metadata = {}
             if "mut" in ast:
                 metadata["mut"] = ast["mut"]
@@ -353,6 +353,7 @@ def prepare_syn_ast(ast, access_path, parent) -> list[dict]:
             parent = node
         # ? Int node https://github.com/Auditware/radar/blob/main/api/utils/ast.py#L95
         elif ast.get("int", False):
+            print("int")
             metadata = {}
             if "mut" in ast:
                 metadata["mut"] = ast["mut"]
@@ -362,22 +363,39 @@ def prepare_syn_ast(ast, access_path, parent) -> list[dict]:
             nodes.append(node)
             parent = node
         elif ast.get("mut", False):
+            print("mut")
             metadata = {"mut": ast["mut"]}
             node = find_ident_src_node(ast, access_path, metadata)
             if node != EMPTY_NODE:
                 ast_node_add_child(parent, node)
                 nodes.append(node)
                 parent = node
+        # ? Ident node
+        elif ast.get("ident", False):
+            metadata = {
+                "__hash__": hashes.pop(0)
+            }
+            if "mut" in ast:
+                metadata["mut"] = ast["mut"]
+            node = new_ast_node(ast, metadata, access_path)
+            node["parent"] = parent
+            nodes.append(node)
+            parent = node
+        else:
+            nodes.extend(prepare_syn_ast(ast.values(), access_path, parent, hashes))
 
         for key, value in ast.items():
             new_path = f"{access_path}.{key}" if access_path else key
-            nodes.extend(prepare_syn_ast(value, new_path, parent))
+            nodes.extend(prepare_syn_ast(value, new_path, parent, hashes))
 
     return nodes
 
 
-def prepare_ast(ast: list[dict]) -> dict:
-    nodes = prepare_syn_ast(ast, "", EMPTY_NODE)
+def prepare_ast(ast: list[dict], hashes: list[list[int]]) -> dict:
+    print(len(hashes))
+    nodes = prepare_syn_ast(ast, "", EMPTY_NODE, hashes)
+    print(len(hashes))
+    print(len(nodes))
     assigned_children = set()
     path_to_node = {}
     for node in nodes:
@@ -406,6 +424,7 @@ syn_ast = struct(
     to_result=to_result,
     traverse_tree=traverse_tree,
     flatten_tree=flatten_tree,
+    find_by_child=find_by_child,
     find_chained_calls=find_chained_calls,
     find_macro_attribute_by_names=find_macro_attribute_by_names,
     find_by_similar_access_path=find_by_similar_access_path,
