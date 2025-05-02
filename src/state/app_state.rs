@@ -39,7 +39,10 @@ impl AppState {
                 bytecodes_file,
                 labeling,
                 reduced,
-            } => self.run_reverse(mode.clone(), out_dir.clone(), bytecodes_file.clone(), *labeling, *reduced),            
+            } => self.run_reverse(mode.clone(), out_dir.clone(), bytecodes_file.clone(), *labeling, *reduced),    
+            Commands::Dotting { config, reduced_dot_path, full_dot_path } => {
+                self.run_dotting(config.clone(), reduced_dot_path.clone(), full_dot_path.clone())
+            }                 
             _ => info!("No command selected"),
         }
     }
@@ -101,6 +104,13 @@ impl AppState {
         match commands::reverse_command::run(mode, out_dir, bytecodes_file, labeling, reduced) {
             Ok(_) => info!("Reverse (static analysis) completed."),
             Err(e) => error!("An error occurred during reverse (static analysis): {}", e),
+        }
+    }
+
+    fn run_dotting(&mut self, config: String, reduced_dot_path: String, full_dot_path: String) {
+        match commands::dotting_command::run(config, reduced_dot_path, full_dot_path) {
+            Ok(_) => info!("Dotting completed successfully."),
+            Err(e) => error!("Dotting failed: {}", e),
         }
     }
 

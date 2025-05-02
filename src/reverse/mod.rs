@@ -28,7 +28,7 @@ use solana_sbpf::{
     static_analysis::Analysis,
     vm::Config,
 };
-use std::{fs::File, io::Read as _, path::Path, sync::Arc, u8};
+use std::{fs::File, io::Read as _, path::Path, sync::Arc};
 use test_utils::TestContextObject;
 
 use anyhow::Result;

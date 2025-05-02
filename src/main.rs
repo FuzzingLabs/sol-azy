@@ -66,7 +66,17 @@ enum Commands {
         reduced: bool,
 
         // Note: rusteq mode is not supported yet
-    }
+    },
+    Dotting {
+        #[clap(short = 'c', long = "config", help = "Path to the JSON configuration file (e.g. to specify which functions to add)")]
+        config: String,
+    
+        #[clap(short = 'r', long = "reduced-dot-path", help = "Path to the reduced .dot file")]
+        reduced_dot_path: String,
+    
+        #[clap(short = 'f', long = "full-dot-path", help = "Path to the full .dot file")]
+        full_dot_path: String,
+    },    
 }
 
 fn main() {
