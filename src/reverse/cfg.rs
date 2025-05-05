@@ -9,24 +9,31 @@ use std::io::Write;
 use std::path::{Path, PathBuf};
 
 /// Exports the control flow graph (CFG) of a program to a Graphviz-compatible DOT file.
-/// Each function in the program is rendered as a subgraph with basic blocks and instruction-level details.
+/// Each function is rendered as a subgraph showing basic blocks (`lbb_XXX`) and instruction-level content.
 ///
-/// This is a modified version of the `visualize_graphically` function from `sbpf-solana`.
+/// This function is a modified version of `visualize_graphically` from the `sbpf-solana` project,
+/// and supports advanced filtering for cleaner output in complex programs.
 ///
 /// # Arguments
 ///
 /// * `program` - Raw bytecode of the program
-/// * `analysis` - Analysis object containing CFG and instruction metadata
-/// * `path` - Output directory for the DOT file
+/// * `analysis` - A mutable reference to the `Analysis` structure containing disassembly and CFG data.
+/// * `path` - Path to the output directory where the `.dot` file will be saved.
+/// * `reduced` - If `true`, only includes functions defined **after** the program entrypoint in the CFG output.
+///   This is useful to exclude prelude or system/library functions and focus on the main logic.
+/// * `only_entrypoint` - If `true`, only includes the cluster corresponding to the entrypoint function (e.g., `cluster_XX`)
+///   in the DOT output. This enables minimal CFGs that users can extend manually using the `dotting` module.
 ///
 /// # Returns
 ///
-/// A `Result` indicating success or failure of the write operation.
+/// * `Ok(())` if the DOT file was generated successfully.
+/// * `Err(std::io::Error)` if there was a problem writing the file.
 pub fn export_cfg_to_dot<P: AsRef<Path>>(
     program: &[u8],
     analysis: &mut Analysis,
     path: P,
-    reduced: bool
+    reduced: bool,
+    only_entrypoint: bool
 ) -> std::io::Result<()> {
     let mut cfg_path = PathBuf::from(path.as_ref());
     cfg_path.push(OutputFile::Cfg.default_filename());
@@ -140,8 +147,11 @@ fontname=\"Courier New\";
 
     while let Some(function_start) = function_iter.next() {
         let label = &analysis.cfg_nodes[function_start].label;
-        if reduced && !is_entrypoint_visited && label != "entrypoint" {
+        if ( reduced || only_entrypoint ) && !is_entrypoint_visited && label != "entrypoint" {
             continue;
+        }
+        if is_entrypoint_visited && only_entrypoint {
+            break;
         }
         if label == "entrypoint" {
             is_entrypoint_visited = true;
@@ -170,7 +180,7 @@ fontname=\"Courier New\";
             &mut alias_nodes,
             &mut visited_nodes,
             *function_start,
-            reduced
+            reduced || only_entrypoint
         )?;
 
         for alias_node in alias_nodes.iter() {
@@ -189,8 +199,7 @@ fontname=\"Courier New\";
     }
 
     for (_, cfg_node_start, cfg_node) in analysis.iter_cfg_by_function() {
-
-        if reduced {
+        if reduced || only_entrypoint {
             if !visited_nodes.contains(&cfg_node_start) {
                 continue;
             }

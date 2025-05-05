@@ -4,13 +4,17 @@ use log::{error, debug, info};
 use anyhow::Result;
 use std::path::Path;
 
-/// Checks that required files exist and the output directory is ready.
+/// Verifies that all necessary files exist before performing any dotting operation.
 ///
 /// # Arguments
 ///
-/// * `config_path` - Path to the JSON config file listing functions.
-/// * `reduced_path` - Path to the reduced DOT file (to be updated).
-/// * `full_path` - Path to the full DOT file (reference).
+/// * `config_path` - Path to the user-provided JSON config listing functions to be added.
+/// * `reduced_path` - Path to the reduced DOT file that will be updated.
+/// * `full_path` - Path to the full DOT file used as a reference.
+///
+/// # Returns
+///
+/// `true` if all files are present and accessible; `false` otherwise.
 fn checks_before_dotting(config_path: &str, reduced_path: &str, full_path: &str) -> bool {
     [
         BeforeCheck {
@@ -37,9 +41,25 @@ fn checks_before_dotting(config_path: &str, reduced_path: &str, full_path: &str)
     .all(|check| check)
 }
 
-/// Main entry point for running the dotting command.
+/// Runs the dotting command, which updates a reduced `.dot` file with
+/// additional functions specified in a user-supplied configuration file.
 ///
-/// Ensures prerequisites are valid before launching the editing logic.
+/// # Arguments
+///
+/// * `config_path` - Path to the JSON configuration file containing function identifiers.
+/// * `reduced_dot_path` - Path to the reduced DOT file to be edited.
+/// * `full_dot_path` - Path to the full DOT file used to retrieve missing nodes/edges.
+///
+/// # Returns
+///
+/// `Ok(())` if the update is successful, or an error if any step fails.
+///
+/// # Errors
+///
+/// Returns an error if:
+/// - One or more input files are missing.
+/// - The configuration format is invalid.
+/// - The update process fails internally.
 pub fn run(config_path: String, reduced_dot_path: String, full_dot_path: String) -> Result<()> {
     debug!("Starting dotting from config '{}'", config_path);
 

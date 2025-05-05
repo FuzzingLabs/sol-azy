@@ -65,8 +65,12 @@ enum Commands {
         #[clap(long = "reduced", action)]
         reduced: bool,
 
+        #[clap(long = "only-entrypoint", action)]
+        only_entrypoint: bool,
+
         // Note: rusteq mode is not supported yet
     },
+    // example: cargo run -- dotting -c functions.json -f cfg.dot -r cfg_reduced.dot
     Dotting {
         #[clap(short = 'c', long = "config", help = "Path to the JSON configuration file (e.g. to specify which functions to add)")]
         config: String,

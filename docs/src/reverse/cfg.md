@@ -21,6 +21,8 @@ pub fn export_cfg_to_dot(
     program: &[u8],
     analysis: &mut Analysis,
     path: impl AsRef<Path>,
+    reduced: bool,
+    only_entrypoint: bool,
 ) -> std::io::Result<()>
 ```
 
@@ -30,6 +32,11 @@ Sol-azy uses the static `Analysis` engine to:
 2. Segment them into **basic blocks**
 3. Record all **dominators** and **edges**
 4. Render each function as a `subgraph cluster` in Graphviz `.dot` syntax
+
+### Filtering the graph
+
+* `--reduced`: excludes library functions that appear before the program’s entrypoint, reducing noise.
+* `--only-entrypoint`: includes **only** the function where execution starts, allowing for very focused manual exploration (e.g., with [`dotting`](dotting.md)).
 
 ---
 
@@ -164,6 +171,8 @@ dot -Tsvg cfg.dot -o cfg.svg
 xdot cfg.dot         # for interactive navigation
 ```
 
+> ⚠️ For very large programs, even the `--reduced` version of the CFG can take significant time to generate due to the size and complexity of the bytecode being analyzed and rendered by `dot`.
+
 ---
 
 ## Function Grouping
@@ -272,6 +281,6 @@ CFG recovered from bytecode:
 
 ## Related
 
-- [Disassembly](disassembly.md)
-- [Immediate Tracking](immediates.md)
+- [Reduced CFG](reduced_cfg.md)
+- [Editing CFG (Dotting command)](dotting.md)
 - [Reverse CLI Command](../cli/reverse.md)
