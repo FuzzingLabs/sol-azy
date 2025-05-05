@@ -24,3 +24,4 @@ prettytable-rs = "0.10.0"
 proc-macro2 = { version = "1.0.94", features = ["span-locations"] }
 solana-sbpf = { git = "https://github.com/FuzzingLabs/sbpf-solana", branch = "main" }
 test_utils = { git = "https://github.com/FuzzingLabs/sbpf-solana", branch = "main" }
+indicatif = "0.17.11"

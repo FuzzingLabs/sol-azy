@@ -12,9 +12,10 @@
 - [Reverse Engineering](reverse.md)
   - [Overview](reverse/overview.md)
   - [Disassembly](reverse/disassembly.md)
-  - [Control Flow Graph (CFG)](reverse/cfg.md)
   - [Immediate Tracking](reverse/immediates.md)
+  - [Control Flow Graph (CFG)](reverse/cfg.md)
+    - [Reduced / Entry-only CFG](reverse/reduced_cfg.md)
+    - [Manual CFG Editing (Dotting)](reverse/dotting.md)
   - [Rust-Like Output (WIP)](reverse/rusteq.md)
 - [Architecture](architecture.md)
   - [App State](architecture/app_state.md)
-

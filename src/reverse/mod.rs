@@ -28,7 +28,7 @@ use solana_sbpf::{
     static_analysis::Analysis,
     vm::Config,
 };
-use std::{fs::File, io::Read as _, path::Path, sync::Arc, u8};
+use std::{fs::File, io::Read as _, path::Path, sync::Arc};
 use test_utils::TestContextObject;
 
 use anyhow::Result;
@@ -77,19 +77,29 @@ impl ReverseOutputMode {
 
 /// Analyzes a compiled eBPF program and generates output depending on the selected `ReverseOutputMode`.
 ///
+/// This function supports optional configurations to reduce the complexity of the generated Control Flow Graph (CFG),
+/// or to restrict the output to only the entrypoint function for manual extension via tools like `dotting`.
+///
 /// # Parameters
 ///
-/// * `mode` - Output mode to determine what kind of results to generate.
+/// * `mode` - Output mode that determines the type of reverse engineering output to generate (disassembly, CFG, both, or rust equivalent).
 /// * `target_bytecode` - Path to the ELF binary of the eBPF program.
-/// * `labeling` - Enables symbol and section labeling if `true`.
+/// * `labeling` - Enables symbol and section labeling if `true`. Useful for better disassembly readability.
+/// * `reduced` - If `true`, only includes functions defined after the program's entrypoint in the generated CFG, 
+///   omitting system-level or library-defined functions that may not be relevant.
+/// * `only_entrypoint` - If `true`, generates a CFG containing only the entrypoint (`cluster_{entry}`) block,
+///   allowing users to build out a focused CFG incrementally (e.g., with the `dotting` module).
 ///
 /// # Returns
 ///
-/// `Ok(())` on success, or an error if the analysis or export fails.
+/// * `Ok(())` if analysis and output generation completed successfully.
+/// * `Err(anyhow::Error)` if parsing, analysis, or file writing*
 pub fn analyze_program(
     mode: ReverseOutputMode,
     target_bytecode: String,
     labeling: bool,
+    reduced: bool,
+    only_entrypoint: bool,
 ) -> Result<()> {
     // Mocking a loader & create an executable
     let loader = Arc::new(BuiltinProgram::new_loader(Config {
@@ -124,11 +134,11 @@ pub fn analyze_program(
             let _ = disassemble_wrapper(&program, &mut analysis, imm_tracker_wrapped, &path);
         }
         ReverseOutputMode::ControlFlowGraph(path) => {
-            export_cfg_to_dot(&program, &mut analysis, &path)?;
+            export_cfg_to_dot(&program, &mut analysis, &path, reduced, only_entrypoint)?;
         }
         ReverseOutputMode::DisassemblyAndCFG(path) => {
             let _ = disassemble_wrapper(&program, &mut analysis, imm_tracker_wrapped, &path);
-            export_cfg_to_dot(&program, &mut analysis, &path)?;
+            export_cfg_to_dot(&program, &mut analysis, &path, reduced, only_entrypoint)?;
         }
         ReverseOutputMode::DisassAndRustEquivalent(path) => {
             println!("Rust equivalent generation is not implemented yet.");
@@ -151,6 +161,8 @@ mod tests {
             ),
             "test_cases/base_sbf_addition_checker/bytecodes/addition_checker.so".to_string(),
             true,
+            false,
+            false
         );
     }
 
@@ -164,6 +176,8 @@ mod tests {
             "test_cases/base_sbf_addition_checker/bytecodes/addition_checker_sbpf_solana.so"
                 .to_string(),
             false,
+            false,
+            false
         );
     }
 }

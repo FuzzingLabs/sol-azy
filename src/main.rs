@@ -12,6 +12,7 @@ mod parsers;
 mod engines;
 mod printers;
 mod reverse;
+mod dotting;
 
 use clap::{Parser, Subcommand};
 use tracing_subscriber::fmt;
@@ -61,8 +62,25 @@ enum Commands {
         #[clap(long = "labeling", action)]
         labeling: bool,
 
+        #[clap(long = "reduced", action)]
+        reduced: bool,
+
+        #[clap(long = "only-entrypoint", action)]
+        only_entrypoint: bool,
+
         // Note: rusteq mode is not supported yet
-    }
+    },
+    // example: cargo run -- dotting -c functions.json -f cfg.dot -r cfg_reduced.dot
+    Dotting {
+        #[clap(short = 'c', long = "config", help = "Path to the JSON configuration file (e.g. to specify which functions to add)")]
+        config: String,
+    
+        #[clap(short = 'r', long = "reduced-dot-path", help = "Path to the reduced .dot file")]
+        reduced_dot_path: String,
+    
+        #[clap(short = 'f', long = "full-dot-path", help = "Path to the full .dot file")]
+        full_dot_path: String,
+    },    
 }
 
 fn main() {

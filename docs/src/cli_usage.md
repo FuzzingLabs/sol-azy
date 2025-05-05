@@ -47,6 +47,20 @@ cargo run -- reverse --mode both --out-dir ./out --bytecodes-file ./program.so -
 
 ---
 
+### [`dotting`](../reverse/dotting.md)
+
+Allows you to edit a reduced control flow graph (`.dot`) by selectively re-inserting functions from the full graph.
+This is especially useful when working with large binaries where the full CFG is too dense.
+
+```bash
+cargo run -- dotting \
+  -c temp_config.json \
+  -r cfg_reduced.dot \
+  -f cfg.dot
+```
+
+---
+
 ### `test` *(Coming soon)*
 
 Will allow targeted test case execution and integration with test campaign definitions.

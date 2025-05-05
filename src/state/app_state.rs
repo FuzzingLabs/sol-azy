@@ -38,7 +38,12 @@ impl AppState {
                 out_dir,
                 bytecodes_file,
                 labeling,
-            } => self.run_reverse(mode.clone(), out_dir.clone(), bytecodes_file.clone(), *labeling),            
+                reduced,
+                only_entrypoint
+            } => self.run_reverse(mode.clone(), out_dir.clone(), bytecodes_file.clone(), *labeling, *reduced, *only_entrypoint),    
+            Commands::Dotting { config, reduced_dot_path, full_dot_path } => {
+                self.run_dotting(config.clone(), reduced_dot_path.clone(), full_dot_path.clone())
+            }                 
             _ => info!("No command selected"),
         }
     }
@@ -96,10 +101,32 @@ impl AppState {
     /// # Side Effects
     ///
     /// Logs success or error messages based on the result.
-    fn run_reverse(&mut self, mode: String, out_dir: String, bytecodes_file: String, labeling: bool) {
-        match commands::reverse_command::run(mode, out_dir, bytecodes_file, labeling) {
+    fn run_reverse(&mut self, mode: String, out_dir: String, bytecodes_file: String, labeling: bool, reduced: bool, only_entrypoint: bool) {
+        match commands::reverse_command::run(mode, out_dir, bytecodes_file, labeling, reduced, only_entrypoint) {
             Ok(_) => info!("Reverse (static analysis) completed."),
             Err(e) => error!("An error occurred during reverse (static analysis): {}", e),
+        }
+    }
+
+    /// Executes the dotting process to enrich a reduced `.dot` control flow graph file.
+    ///
+    /// This function reads a list of target function clusters from a JSON config,
+    /// and reinserts them (along with valid edges) into the reduced CFG by referencing
+    /// the original full CFG `.dot` file.
+    ///
+    /// # Arguments
+    ///
+    /// * `config` - Path to the JSON file listing the `cluster_<id>` functions to re-add.
+    /// * `reduced_dot_path` - Path to the previously generated reduced CFG file.
+    /// * `full_dot_path` - Path to the full CFG file used as source of truth.
+    ///
+    /// # Behavior
+    ///
+    /// Logs success if the process completes without error, or prints an error otherwise.
+    fn run_dotting(&mut self, config: String, reduced_dot_path: String, full_dot_path: String) {
+        match commands::dotting_command::run(config, reduced_dot_path, full_dot_path) {
+            Ok(_) => info!("Dotting completed successfully."),
+            Err(e) => error!("Dotting failed: {}", e),
         }
     }
 
