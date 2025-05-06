@@ -25,3 +25,9 @@ proc-macro2 = { version = "1.0.94", features = ["span-locations"] }
 solana-sbpf = { git = "https://github.com/FuzzingLabs/sbpf-solana", branch = "main" }
 test_utils = { git = "https://github.com/FuzzingLabs/sbpf-solana", branch = "main" }
 indicatif = "0.17.11"
+
+reqwest = { version = "0.11.27", features = ["json"] }
+tokio = { version = "1", features = ["full"] }
+base64 = "0.21"
+solana-sdk = "1.18"
+thiserror = "1"

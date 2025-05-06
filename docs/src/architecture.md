@@ -7,13 +7,33 @@ It is capable of disassembling, analyzing control flow, decoding embedded `.roda
 
 ## High-Level Design
 
-Sol-azy is structured around **three core engines**:
+Sol-azy is structured around **three main engines**, supported by **auxiliary modules**:
 
-1. **Reverse Engine** (binary-level disassembler + CFG)
-2. **SAST Engine** (source-level AST scanning and pattern rules)
-3. **Build Engine** (project type detection and bytecode compilation)
+### Core Engines
 
-Each engine is triggered via a dedicated CLI subcommand (`reverse`, `sast`, `build`).
+1. **Reverse Engine**
+   Handles binary-level disassembly, control flow graph generation, and `.rodata` analysis.
+   → Triggered via the `reverse` CLI command.
+
+2. **SAST Engine**
+   Performs static source-level analysis using Starlark-based rule evaluation on Rust ASTs.
+   → Triggered via the `sast` CLI command.
+
+3. **Build Engine**
+   Detects the project type (`Anchor`, `SBF`) and compiles the bytecode accordingly.
+   → Triggered via the `build` CLI command.
+
+### Supporting Modules
+
+* **Dotting Module**
+  Allows users to manually reintroduce function clusters into reduced CFGs by editing `.dot` files post-generation.
+  → Useful for large programs or targeted function exploration.
+
+* **Fetcher Module**
+  Retrieves deployed program bytecode directly from on-chain Solana accounts via RPC.
+  → Enables reverse analysis even without access to local source code.
+
+Each component is designed to be **composable and scriptable**, making Sol-azy flexible for both auditing and program analysis workflows.
 
 ---
 
@@ -86,6 +106,32 @@ Utilities to:
 
 ---
 
+### 6. `dotting/`
+
+Post-processing module for `.dot` control flow graphs:
+
+* Allows restoring function subgraphs in reduced or entrypoint-only graphs
+* Takes as input a list of function IDs (clusters) to reinject
+* Outputs an `updated_*.dot` file with the requested functions and edges
+
+This module is especially useful when a full CFG is too large or noisy, letting analysts rebuild targeted graphs incrementally.
+
+→ See [Dotting](reverse/dotting.md)
+
+---
+
+### 7. `fetcher/`
+
+Bytecode retrieval module for on-chain programs:
+
+* Connects to Solana RPC endpoints
+* Downloads the deployed `.so` bytecode of a program ID
+* Saves the ELF file locally for reverse analysis
+
+This feature is useful for audits where source code is unavailable or unverifiable.
+
+→ See [Fetcher](cli/fetcher.md)
+
 ## Output Flow
 
 ```
@@ -127,7 +173,6 @@ Utilities to:
 - [sbpf-solana (anza-xyz)](https://github.com/anza-xyz/sbpf-solana): Disassembly / Analysis core
 - [`syn`](https://docs.rs/syn): Source AST parsing
 - [`starlark-rust`](https://github.com/facebook/starlark-rust): Rule evaluation engine
-- `Graphviz`: For CFG rendering
 
 ---
 

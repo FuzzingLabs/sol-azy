@@ -5,6 +5,8 @@ Sol-azy provides a command-line interface (CLI) for interacting with Solana prog
 - Building programs
 - Running static analysis
 - Reversing compiled bytecode
+- Modifying CFG .dot files
+- Fetching deployed bytecode
 - (Future) Fuzzing and testing support
 
 All commands are accessible via:
@@ -61,15 +63,33 @@ cargo run -- dotting \
 
 ---
 
-### `test` *(Coming soon)*
+### [`fetcher`](../reverse/fetcher.md)
 
-Will allow targeted test case execution and integration with test campaign definitions.
+Fetches an on-chain deployed Solana program’s bytecode (`.so`) using its program ID.
+Useful when you want to analyze a program without having its local source or compiled artifact.
+
+```bash
+cargo run -- fetcher \
+  --program-id 4MEX8vDCZzAxQkuyd6onJCTeFdof6c1HJgznEtCGqA1N \
+  --out-dir ./bytecodes/
+```
+
+Optional RPC override:
+
+```bash
+cargo run -- fetcher \
+  -p 4MEX8vDCZzAxQkuyd6onJCTeFdof6c1HJgznEtCGqA1N \
+  -o ./bytecodes/ \
+  -r https://api.mainnet-beta.solana.com
+```
 
 ---
 
-### `fuzz` *(Coming soon)*
+### `test` *(TO DO)*
 
-Will provide integrations with fuzzing engines.
+---
+
+### `fuzz` *(TO DO)*
 
 ---
 

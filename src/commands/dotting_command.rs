@@ -1,6 +1,6 @@
 use crate::dotting::editor::editor_add_functions;
 use crate::helpers::BeforeCheck;
-use log::{error, debug, info};
+use log::{error, debug};
 use anyhow::Result;
 use std::path::Path;
 
@@ -78,7 +78,6 @@ pub fn run(config_path: String, reduced_dot_path: String, full_dot_path: String)
 mod tests {
     use super::*;
     use std::fs;
-    use std::path::Path;
 
     #[test]
     fn test_checks_before_dotting_success() {

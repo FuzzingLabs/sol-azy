@@ -24,6 +24,15 @@ Sol-azy provides tools for:
   - Tracks and formats immediate data from RODATA
   - (Future) Outputs simplified Rust-like pseudocode
 
+- **Dotting**:
+  - Lets you manually reinsert functions into reduced CFGs from the full `.dot` graph
+  - Useful for selectively exploring large or complex programs
+
+- **Fetcher**:
+  - Retrieves deployed `.so` binaries from Solana RPC endpoints using a program ID
+  - Makes it easy to reverse-engineer or audit programs without local builds
+
+
 ---
 
 ## Why Sol-azy?
@@ -43,11 +52,11 @@ It integrates tightly with Solana's BPF toolchain and `syn` parsing to provide s
 
 Sol-azy is structured into several engines and CLI commands:
 
-- [`build`](cli/build.md) – Compile programs and prepare artifacts
-- [`sast`](cli/sast.md) – Run static analysis with Starlark rules
-- [`reverse`](cli/reverse.md) – Perform bytecode reverse engineering
-- [`test`](#) *(future)* – Run targeted test campaigns
-- [`fuzz`](#) *(future)* – Plug into fuzzing pipelines
+* [`build`](cli/build.md) – Compile programs and prepare artifacts
+* [`sast`](cli/sast.md) – Run static analysis with Starlark rules
+* [`reverse`](cli/reverse.md) – Perform bytecode reverse engineering
+* [`dotting`](reverse/dotting.md) – Post-process `.dot` graphs to manually restore functions in reduced CFGs
+* [`fetcher`](cli/fetcher.md) – Retrieve deployed on-chain bytecode for offline inspection
 
 See the full [CLI Usage](cli_usage.md) section for more details.
 
