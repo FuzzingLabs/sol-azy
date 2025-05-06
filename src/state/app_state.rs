@@ -22,7 +22,7 @@ impl AppState {
     /// # Behavior
     ///
     /// If no command is matched, it logs a message without performing any action.
-    pub fn run_cli(&mut self) {
+    pub async fn run_cli(&mut self) {
         match &self.cli.command {
             Commands::Build {
                 target_dir,
@@ -43,7 +43,10 @@ impl AppState {
             } => self.run_reverse(mode.clone(), out_dir.clone(), bytecodes_file.clone(), *labeling, *reduced, *only_entrypoint),    
             Commands::Dotting { config, reduced_dot_path, full_dot_path } => {
                 self.run_dotting(config.clone(), reduced_dot_path.clone(), full_dot_path.clone())
-            }                 
+            }        
+            Commands::Fetcher { program_id, out_dir, rpc_url } => {
+                self.run_fetcher(program_id.clone(), out_dir.clone(), rpc_url.clone()).await;
+            }         
             _ => info!("No command selected"),
         }
     }
@@ -129,5 +132,41 @@ impl AppState {
             Err(e) => error!("Dotting failed: {}", e),
         }
     }
+
+    /// Fetches the bytecode of a Solana program and writes it to a local file.
+    ///
+    /// This function wraps the `fetcher_command::run` logic with appropriate logging,
+    /// and resolves the default Solana RPC endpoint if none is provided. It writes
+    /// the fetched bytecode to `<output_path>/fetched_program.so`.
+    ///
+    /// # Arguments
+    ///
+    /// * `program_id` - The Solana program ID to fetch from the blockchain.
+    /// * `output_path` - Path to the directory where the program will be saved.
+    /// * `rpc_url` - Optional RPC endpoint; if `None`, defaults to the mainnet RPC (`https://api.mainnet-beta.solana.com`).
+    ///
+    /// # Logging
+    ///
+    /// - Logs the RPC used (and indicates if it's the default).
+    /// - Logs success or failure with output location.
+    ///
+    /// # Errors
+    ///
+    /// This function logs but does not propagate errors. All failure handling is internal.
+    async fn run_fetcher(&mut self, program_id: String, output_path: String, rpc_url: Option<String>) {
+        let display_rpc_url = match &rpc_url {
+            Some(url) => format!("{url}"),
+            None => format!("https://api.mainnet-beta.solana.com (by default)"),
+        };
+    
+        match commands::fetcher_command::run(program_id, output_path.clone(), rpc_url.clone()).await {
+            Ok(_) => info!(
+                "Bytecode successfully fetched from RPC '{}' and saved to '{}/fetched_program.so'",
+                display_rpc_url,
+                output_path
+            ),
+            Err(e) => error!("Fetcher failed: {}", e),
+        }
+    }    
 
 }

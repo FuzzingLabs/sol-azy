@@ -13,6 +13,7 @@ mod engines;
 mod printers;
 mod reverse;
 mod dotting;
+mod fetcher;
 
 use clap::{Parser, Subcommand};
 use tracing_subscriber::fmt;
@@ -81,9 +82,20 @@ enum Commands {
         #[clap(short = 'f', long = "full-dot-path", help = "Path to the full .dot file")]
         full_dot_path: String,
     },    
+    Fetcher {
+        #[clap(short = 'p', long = "program-id", help = "Solana Program ID to fetch bytecode from")]
+        program_id: String,
+
+        #[clap(short = 'o', long = "out-dir", help = "Path to write the program.so file")]
+        out_dir: String,
+
+        #[clap(short = 'r', long = "rpc-url", help = "Optional Solana RPC endpoint (by default it will use https://api.mainnet-beta.solana.com)")]
+        rpc_url: Option<String>,
+    }
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     fmt::Subscriber::builder()
         .with_env_filter("sol_azy=debug")
         .pretty()
@@ -95,5 +107,5 @@ fn main() {
         sast_states: vec![]
     };
 
-    app.run_cli()
+    app.run_cli().await
 }

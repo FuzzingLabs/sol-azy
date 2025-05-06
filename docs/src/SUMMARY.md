@@ -6,6 +6,7 @@
   - [Build](cli/build.md)
   - [SAST](cli/sast.md)
   - [Reverse](cli/reverse.md)
+  - [Fetcher](cli/fetcher.md)
 - [Static Analysis](static_analysis.md)
   - [Rule Format](rules/format.md)
   - [Example Rules](rules/examples.md)
