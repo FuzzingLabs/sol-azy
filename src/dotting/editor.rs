@@ -1,8 +1,8 @@
-use std::{collections::{HashSet, HashMap}, fs, path::PathBuf, path::Path};
+use std::{collections::{HashMap, HashSet}, fs, path::Path, time::Duration};
 use log::debug;
 use regex::Regex;
 use serde::{Serialize, Deserialize};
-use indicatif::{ProgressBar, ProgressIterator};
+use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
 
 #[derive(Debug, Deserialize)]
 struct Config {
@@ -29,11 +29,21 @@ fn load_or_build_cluster_cache(full_dot: &str) -> std::io::Result<ClusterCache> 
         let mut map = HashMap::new();
         let re = Regex::new(r"(?s)subgraph cluster_(\d+)\s*\{.*?\}").unwrap();
 
+        let spinner = ProgressBar::new_spinner();
+        spinner.set_message("Regexing & capturing requested clusters from 'full' .dot file...");
+        spinner.set_style(ProgressStyle::default_spinner()
+            .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"])
+            .template("{spinner} {msg}")
+            .unwrap());
+        spinner.enable_steady_tick(Duration::from_millis(50));
+        
         for cap in re.captures_iter(full_dot) {
             let cluster_id = cap[1].to_string();
             let full_block = cap[0].to_string();
             map.insert(cluster_id, full_block);
         }
+
+        spinner.finish_using_style();
 
         let cluster_cache = ClusterCache { clusters: map };
 
@@ -43,6 +53,38 @@ fn load_or_build_cluster_cache(full_dot: &str) -> std::io::Result<ClusterCache> 
 
         Ok(cluster_cache)
     }
+}
+
+fn is_valid_edge_line(line: &str) -> bool {
+    line.contains(" -> {") && !line.contains("style=dotted")
+}
+
+fn extract_cleaned_edge<'a>(
+    line: &'a str,
+    present_lbbs: &HashSet<String>,
+    lbb_in_rhs_re: &Regex,
+) -> Option<String> {
+    let (lhs, rhs) = line.split_once("->")?;
+    let src = lhs.trim();
+    if !present_lbbs.contains(src) {
+        return None;
+    }
+
+    let rhs_trimmed = rhs.trim();
+    if rhs_trimmed.starts_with('{') && rhs_trimmed.ends_with(';') {
+        let inner = &rhs_trimmed[1..rhs_trimmed.len() - 2]; // remove '{' and '};'
+        let filtered: Vec<&str> = lbb_in_rhs_re
+            .find_iter(inner)
+            .map(|m| m.as_str())
+            .filter(|lbb| present_lbbs.contains(*lbb))
+            .collect();
+
+        if !filtered.is_empty() {
+            return Some(format!("{} -> {{{}}};", src, filtered.join(" ")));
+        }
+    }
+
+    None
 }
 
 /// Modifies a reduced `.dot` control flow graph by adding specific function subgraphs
@@ -113,7 +155,6 @@ pub fn editor_add_functions<P: AsRef<Path> + ToString>(
         present_lbbs.insert(cap[1].to_string());
     }
 
-    // Prepare to collect new edges
     let mut new_edges = Vec::new();
     let reduced_lines: HashSet<&str> = reduced_dot.lines().collect();
     let lbb_in_rhs_re = Regex::new(r"\blbb_\d+\b").unwrap();
@@ -125,28 +166,12 @@ pub fn editor_add_functions<P: AsRef<Path> + ToString>(
             continue;
         }
 
-        if line.contains(" -> {") && !line.contains("style=dotted") {
-            if let Some((lhs, rhs)) = line.split_once("->") {
-                let src = lhs.trim();
-                if present_lbbs.contains(src) {
-                    let rhs_trimmed = rhs.trim();
-                    if rhs_trimmed.starts_with('{') && rhs_trimmed.ends_with(';') {
-                        let inner = &rhs_trimmed[1..rhs_trimmed.len() - 2]; // remove '{' and '};'
-
-                        let filtered: Vec<&str> = lbb_in_rhs_re
-                            .find_iter(inner)
-                            .map(|m| m.as_str())
-                            .filter(|lbb| present_lbbs.contains(*lbb))
-                            .collect();
-
-                        if !filtered.is_empty() {
-                            let cleaned_line = format!("{} -> {{{}}};", src, filtered.join(" "));
-                            new_edges.push(cleaned_line);
-                        }
-                    }
-                }
+        if is_valid_edge_line(line) {
+            if let Some(cleaned_line) = extract_cleaned_edge(line, &present_lbbs, &lbb_in_rhs_re) {
+                new_edges.push(cleaned_line);
             }
         }
+        
     }
 
     // Inject new edges before the last closing brace
@@ -154,7 +179,6 @@ pub fn editor_add_functions<P: AsRef<Path> + ToString>(
         reduced_dot.insert_str(pos, &format!("\n{}\n", new_edges.join("\n")));
     }
 
-    // Save updated reduced dot
     let input_path = Path::new(reduced_path.as_ref());
     let parent = input_path.parent().unwrap_or_else(|| Path::new("."));
     let filename = input_path.file_name().unwrap_or_default();
