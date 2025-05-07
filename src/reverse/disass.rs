@@ -1,3 +1,5 @@
+use indicatif::ProgressIterator;
+use log::debug;
 use solana_sbpf::{ebpf::LD_DW_IMM, static_analysis::Analysis};
 use std::u8;
 
@@ -36,12 +38,13 @@ fn disassemble<P: AsRef<Path>>(
     mut imm_tracker_wrapped: Option<&mut ImmediateTracker>,
     path: P,
 ) -> std::io::Result<()> {
+    debug!("Disassembling...");
     let mut disass_path = PathBuf::from(path.as_ref());
     disass_path.push(OutputFile::Disassembly.default_filename());
     let mut output = File::create(disass_path)?;
     let mut last_basic_block = usize::MAX;
 
-    for (pc, insn) in analysis.instructions.iter().enumerate() {
+    for (pc, insn) in analysis.instructions.iter().enumerate().progress() {
         analysis.disassemble_label(
             &mut output,
             Some(insn) == analysis.instructions.first(),

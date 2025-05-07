@@ -20,6 +20,7 @@ use cfg::*;
 
 use disass::disassemble_wrapper;
 use immediate_tracker::ImmediateTracker;
+use indicatif::{ProgressBar, ProgressStyle};
 use log::{debug, error};
 use solana_sbpf::{
     ebpf::MM_RODATA_START,
@@ -28,7 +29,7 @@ use solana_sbpf::{
     static_analysis::Analysis,
     vm::Config,
 };
-use std::{fs::File, io::Read as _, path::Path, sync::Arc};
+use std::{fs::File, io::Read as _, path::Path, sync::Arc, time::Duration};
 use test_utils::TestContextObject;
 
 use anyhow::Result;
@@ -122,8 +123,18 @@ pub fn analyze_program(
         }
     };
 
+    let spinner = ProgressBar::new_spinner();
+    spinner.set_message("Performing binary analysis...");
+    spinner.set_style(ProgressStyle::default_spinner()
+        .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"])
+        .template("{spinner} {msg}")
+        .unwrap());
+    spinner.enable_steady_tick(Duration::from_millis(50));
+
     // Perform analysis on the executable (e.g., necessary for disassembly, control flow graph, etc..).
     let mut analysis = Analysis::from_executable(&executable).unwrap();
+
+    spinner.finish_using_style();
 
     // Used to track all immediate datas in order to create a table with their possible associated values
     let mut imm_tracker = ImmediateTracker::new(program.len() + MM_RODATA_START as usize);
