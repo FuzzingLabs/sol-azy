@@ -13,11 +13,11 @@
 
 pub mod cfg;
 pub mod disass;
+pub mod rusteq;
 pub mod immediate_tracker;
 pub mod utils;
 
 use cfg::*;
-
 use disass::disassemble_wrapper;
 use immediate_tracker::ImmediateTracker;
 use indicatif::{ProgressBar, ProgressStyle};
