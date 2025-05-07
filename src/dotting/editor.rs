@@ -1,12 +1,48 @@
-use std::{collections::HashSet, fs, path::PathBuf, path::Path};
+use std::{collections::{HashSet, HashMap}, fs, path::PathBuf, path::Path};
 use log::debug;
 use regex::Regex;
-use serde::Deserialize;
+use serde::{Serialize, Deserialize};
 use indicatif::{ProgressBar, ProgressIterator};
 
 #[derive(Debug, Deserialize)]
 struct Config {
     functions: Vec<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+struct ClusterCache {
+    clusters: HashMap<String, String>, // cluster_id -> full block
+}
+
+fn load_or_build_cluster_cache(full_dot: &str) -> std::io::Result<ClusterCache> {
+    let cache_dir = Path::new(".solazy_cache");
+    let cache_path = cache_dir.join("clusters.json");
+
+    if cache_path.exists() {
+        let json = fs::read_to_string(&cache_path)?;
+        let clusters: ClusterCache = serde_json::from_str(&json)?;
+        debug!("Loaded cluster cache from {:?}", cache_path);
+        Ok(clusters)
+    } else {
+        debug!("No cache found. Loading requested clusters & saving it in cluster cache...");
+
+        let mut map = HashMap::new();
+        let re = Regex::new(r"(?s)subgraph cluster_(\d+)\s*\{.*?\}").unwrap();
+
+        for cap in re.captures_iter(full_dot) {
+            let cluster_id = cap[1].to_string();
+            let full_block = cap[0].to_string();
+            map.insert(cluster_id, full_block);
+        }
+
+        let cluster_cache = ClusterCache { clusters: map };
+
+        fs::create_dir_all(cache_dir)?;
+        fs::write(&cache_path, serde_json::to_string_pretty(&cluster_cache)?)?;
+        debug!("Cluster cache saved to {:?}", cache_path);
+
+        Ok(cluster_cache)
+    }
 }
 
 /// Modifies a reduced `.dot` control flow graph by adding specific function subgraphs
@@ -56,17 +92,12 @@ pub fn editor_add_functions<P: AsRef<Path> + ToString>(
     let mut reduced_dot = std::fs::read_to_string(&reduced_path)?;
     let full_dot = std::fs::read_to_string(&full_path)?;
 
-    debug!("Loading clusters...");
-    // Regex to match full subgraph blocks
-    let subgraph_re = Regex::new(r"(?s)subgraph cluster_(\d+)\s*\{.*?\}").unwrap();
-
     debug!("Adding requested subgraphs...");
-    // Add requested subgraphs if not already in reduced
-    for cap in subgraph_re.captures_iter(&full_dot).collect::<Vec<_>>().iter().progress() {
-        let cluster_id = &cap[1];
-        let block = &cap[0];
+    let cluster_cache = load_or_build_cluster_cache(&full_dot)?;
 
-        if requested_clusters.contains(cluster_id) {
+    // Add requested subgraphs if not already in reduced
+    for cluster_id in requested_clusters.iter().progress() {
+        if let Some(block) = cluster_cache.clusters.get(cluster_id) {
             if !reduced_dot.contains(&format!("cluster_{}", cluster_id)) {
                 if let Some(pos) = reduced_dot.rfind('}') {
                     reduced_dot.insert_str(pos, &format!("\n{}\n", block));
