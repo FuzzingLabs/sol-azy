@@ -59,7 +59,7 @@ fn checks_before_reverse(bytecodes_file: &String, out_dir: &String) -> bool {
 
 /// Dispatches the reverse engineering workflow based on a user-specified mode.
 ///
-/// Converts a string-based mode (`"disass"`, `"cfg"`, `"both"`, or `"rusteq"`)
+/// Converts a string-based mode (`"disass"`, `"cfg"`, `"both"`)
 /// into a `ReverseOutputMode` enum and calls `analyze_program` accordingly.
 ///
 /// # Arguments
@@ -100,7 +100,6 @@ pub fn run(mode: String, out_dir: String, bytecodes_file: String, labeling: bool
         "disass" => ReverseOutputMode::Disassembly(out_dir),
         "cfg" => ReverseOutputMode::ControlFlowGraph(out_dir),
         "both" => ReverseOutputMode::DisassemblyAndCFG(out_dir),
-        "rusteq" => ReverseOutputMode::DisassAndRustEquivalent(out_dir),
         other => {
             return Err(anyhow::anyhow!("Unknown reverse mode: {}", other));
         }

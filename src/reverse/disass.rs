@@ -1,11 +1,13 @@
-use indicatif::ProgressIterator;
+use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
 use log::debug;
 use solana_sbpf::{ebpf::LD_DW_IMM, static_analysis::Analysis};
+use std::time::Duration;
 use std::u8;
 
 use crate::reverse::immediate_tracker::ImmediateTracker;
 use crate::reverse::utils::format_bytes;
 use crate::reverse::OutputFile;
+use crate::reverse::rusteq::translate_to_rust;
 use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
@@ -76,7 +78,18 @@ fn disassemble<P: AsRef<Path>>(
                 insn_line = format!("{insn_line}…");
             }
         }
-        writeln!(output, "    {}", insn_line)?;
+
+        // add rust equivalence repr
+        let wrapped_rust_eq = translate_to_rust(insn, analysis.sbpf_version);
+        let mut rust_eq: String = "".to_string();
+        if wrapped_rust_eq != None {
+            rust_eq.push_str("        ");
+            rust_eq.push_str(&wrapped_rust_eq.unwrap());
+        }
+
+        // 40 should be enough to align rust equivalences
+        let to_write = format!("{:<40}{}", insn_line, rust_eq);
+        writeln!(output, "    {}", to_write)?;
     }
     Ok(())
 }
@@ -103,6 +116,16 @@ pub fn disassemble_wrapper<P: AsRef<Path>>(
     path: P,
 ) -> std::io::Result<()> {
     disassemble(program, analysis, imm_tracker_wrapped.as_deref_mut(), &path)?;
+    debug!("Tracking Immediates...");
+
+    let spinner = ProgressBar::new_spinner();
+    spinner.set_message("Performing binary analysis...");
+    spinner.set_style(ProgressStyle::default_spinner()
+            .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"])
+            .template("{spinner} {msg}")
+            .unwrap());
+    spinner.enable_steady_tick(Duration::from_millis(50));
+
     if let Some(imm_tracker) = imm_tracker_wrapped {
         let mut table_path = PathBuf::from(path.as_ref());
         table_path.push(OutputFile::ImmediateDataTable.default_filename());
@@ -131,6 +154,9 @@ pub fn disassemble_wrapper<P: AsRef<Path>>(
                 writeln!(output, "0x{:x} (+ 0x{:x}): {}", start, start_idx, repr)?;
             }
         }
+        
     }
+
+    spinner.finish_using_style();
     Ok(())
 }

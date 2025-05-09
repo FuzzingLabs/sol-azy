@@ -52,7 +52,6 @@ pub enum ReverseOutputMode {
     Disassembly(String),
     ControlFlowGraph(String),
     DisassemblyAndCFG(String),
-    DisassAndRustEquivalent(String), // Not yet implemented
 }
 ```
 

@@ -96,7 +96,7 @@ impl AppState {
     ///
     /// # Arguments
     ///
-    /// * `mode` - The mode of analysis (e.g., disass, cfg, both, rusteq).
+    /// * `mode` - The mode of analysis (e.g., disass, cfg, both).
     /// * `out_dir` - Directory to write output files.
     /// * `bytecodes_file` - Path to the compiled eBPF bytecode (.so).
     /// * `labeling` - Whether to enable symbol and section labeling.

@@ -13,10 +13,9 @@ This tooling is especially useful for:
 
 ## Features
 
-- **Disassembler**: Converts raw bytecode into human-readable SBPF instructions
+- **Disassembler**: Converts raw bytecode into human-readable SBPF instructions + Rust-like comparisons
 - **Control Flow Graph**: Generates `.dot` files representing program structure
 - **Immediate Tracker**: Resolves strings or data loaded from `.rodata`
-- **(Planned)** Rust-like decompilation
 
 Each of these features is accessible through the [`reverse`](../cli/reverse.md) CLI command.
 
@@ -61,7 +60,6 @@ To dive deeper into how reverse analysis works in Sol-azy:
 - [Disassembly](./reverse/disassembly.md)
 - [Control Flow Graph](./reverse/cfg.md)
 - [Immediate Tracking](./reverse/immediates.md)
-- [Rust-Like Output (WIP)](./reverse/rusteq.md)
 
 ---
 
