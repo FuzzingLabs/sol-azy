@@ -51,7 +51,7 @@ enum Commands {
     },
     // example: cargo run -- reverse --mode both --out-dir test_cases/base_sbf_addition_checker/out1/  --bytecodes-file ./test_cases/base_sbf_addition_checker/bytecodes/addition_checker.so --labeling 
     Reverse {
-        #[clap(long = "mode", value_parser = clap::builder::PossibleValuesParser::new(["disass", "cfg", "both", "rusteq"]))]
+        #[clap(long = "mode", value_parser = clap::builder::PossibleValuesParser::new(["disass", "cfg", "both"]))]
         mode: String,
 
         #[clap(long = "out-dir")]
@@ -69,7 +69,6 @@ enum Commands {
         #[clap(long = "only-entrypoint", action)]
         only_entrypoint: bool,
 
-        // Note: rusteq mode is not supported yet
     },
     // example: cargo run -- dotting -c functions.json -f cfg.dot -r cfg_reduced.dot
     Dotting {

@@ -24,7 +24,6 @@ cargo run -- reverse \
   * `disass`: Disassemble the bytecode
   * `cfg`: Export control flow graph
   * `both`: Disassemble and export CFG
-  * `rusteq`: *(Not implemented yet)*
 * `--out-dir`: Output directory for result files.
 * `--bytecodes-file`: Path to the compiled `.so` file.
 * `--labeling`: Enables use of symbol and section labels when available.
@@ -40,7 +39,6 @@ cargo run -- reverse \
 | `disass` | Disassembles bytecode and extracts immediates | `disassembly.out`, `immediate_data_table.out` |
 | `cfg`    | Builds a `.dot` graph from instruction flow   | `cfg.dot`                                     |
 | `both`   | Performs both operations                      | All of the above                              |
-| `rusteq` | (WIP) Generate Rust-like output               | None                                          |
 
 ---
 

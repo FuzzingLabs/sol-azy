@@ -13,11 +13,11 @@
 
 pub mod cfg;
 pub mod disass;
+pub mod rusteq;
 pub mod immediate_tracker;
 pub mod utils;
 
 use cfg::*;
-
 use disass::disassemble_wrapper;
 use immediate_tracker::ImmediateTracker;
 use indicatif::{ProgressBar, ProgressStyle};
@@ -60,8 +60,6 @@ pub enum ReverseOutputMode {
     ControlFlowGraph(String),
     /// Perform both disassembly and CFG generation.
     DisassemblyAndCFG(String),
-    /// Reserved for future use: disassembly and a Rust-like source code output.
-    DisassAndRustEquivalent(String),
 }
 
 impl ReverseOutputMode {
@@ -70,8 +68,7 @@ impl ReverseOutputMode {
         match self {
             ReverseOutputMode::Disassembly(p)
             | ReverseOutputMode::ControlFlowGraph(p)
-            | ReverseOutputMode::DisassemblyAndCFG(p)
-            | ReverseOutputMode::DisassAndRustEquivalent(p) => p,
+            | ReverseOutputMode::DisassemblyAndCFG(p) => p,
         }
     }
 }
@@ -150,9 +147,6 @@ pub fn analyze_program(
         ReverseOutputMode::DisassemblyAndCFG(path) => {
             let _ = disassemble_wrapper(&program, &mut analysis, imm_tracker_wrapped, &path);
             export_cfg_to_dot(&program, &mut analysis, &path, reduced, only_entrypoint)?;
-        }
-        ReverseOutputMode::DisassAndRustEquivalent(path) => {
-            println!("Rust equivalent generation is not implemented yet.");
         }
     }
     Ok(())
