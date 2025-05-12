@@ -312,4 +312,9 @@ Cargo.lock
 # End of https://www.toptal.com/developers/gitignore/api/rust,macos,jetbrains+all,python
 
 output.json
+.vscode/settings.json
+random_test*/
+
+# mdbook docs auto-generated
+docs/book/
 out

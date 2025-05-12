@@ -7,6 +7,7 @@ use std::fmt;
 use crate::parsers::syn_ast::{AstPositions};
 use crate::printers::sast_printer::SastPrinter;
 
+/// Represents the severity level of a rule match in static analysis.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum Severity {
     Unknown,
@@ -16,6 +17,7 @@ pub enum Severity {
     Critical,
 }
 
+/// Indicates how confident the engine is about a rule match.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum Certainty {
     Unknown,
@@ -24,6 +26,7 @@ pub enum Certainty {
     High,
 }
 
+/// Metadata describing a syntactic rule, including severity, certainty, and author info.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SynRuleMetadata {
     pub version: String,
@@ -35,6 +38,7 @@ pub struct SynRuleMetadata {
 }
 
 impl SynRuleMetadata {
+    /// Returns a default metadata instance used when no metadata is provided or parsing fails.
     pub fn default() -> Self {
         Self {
             version: "DEFAULT_RULE_VERSION".to_string(),
@@ -48,6 +52,10 @@ impl SynRuleMetadata {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+/// Represents a single match result from a syntactic rule evaluation.
+///
+/// This includes contextual metadata such as the identifier, access path,
+/// parent node, and any nested matches.
 pub struct SynMatchResult {
     pub children: Vec<SynMatchResult>,
     pub access_path: String,
@@ -56,6 +64,10 @@ pub struct SynMatchResult {
     pub parent: String,
 }
 
+/// Stores the result of evaluating a single syntactic rule against a file's AST.
+///
+/// Contains the original rule filename, raw JSON result string, match results,
+/// and associated rule metadata.
 impl SynMatchResult {
     // TODO: Refactor me
     pub fn get_hash_metadata(&self) -> Result<[u8; 32]> {
@@ -95,6 +107,10 @@ impl SynMatchResult {
     }
 }
 
+/// Stores the result of evaluating a single syntactic rule against a file's AST.
+///
+/// Contains the original rule filename, raw JSON result string, match results,
+/// and associated rule metadata.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SynAstResult {
     pub rule_filename: String,
@@ -104,9 +120,23 @@ pub struct SynAstResult {
 }
 
 impl SynAstResult {
+    /// Constructs a `SynAstResult` from a raw JSON evaluation output string.
+    ///
+    /// This function attempts to deserialize both `matches` and `metadata` fields
+    /// from a JSON string returned by a rule engine.
+    ///
+    /// # Arguments
+    ///
+    /// * `rule_filename` - Name of the rule file that produced this result.
+    /// * `result` - The raw JSON result returned by the rule engine.
+    ///
+    /// # Returns
+    ///
+    /// A parsed `SynAstResult` or an error if JSON deserialization fails.
     pub fn new_from_json(rule_filename: String, result: String) -> Result<Self> {
         let parsed: serde_json::Value = serde_json::from_str(&result)
             .with_context(|| format!("Failed to parse JSON result for rule: {}", rule_filename))?;
+
         let matches = match parsed.get("matches") {
             Some(matches_value) => match serde_json::from_value(matches_value.clone()) {
                 Ok(matches) => matches,
@@ -156,6 +186,8 @@ impl SynAstResult {
     }
 }
 
+/// Represents an enriched syntax tree (`syn::File`) along with AST positions
+/// and a collection of results from rule evaluations.
 #[derive(Clone)]
 pub struct SynAst {
     pub ast: syn::File,
@@ -174,6 +206,16 @@ impl fmt::Debug for SynAst {
 }
 
 impl SynAst {
+    /// Applies all rules in a directory to this syntax tree using the provided engine.
+    ///
+    /// # Arguments
+    ///
+    /// * `rules_dir` - A directory of Starlark-based rule files.
+    /// * `starlark_engine` - The engine used to evaluate rules.
+    ///
+    /// # Returns
+    ///
+    /// `true` if at least one rule was applied successfully, otherwise `false`.
     pub fn scan_ast(&mut self, rules_dir: &StarlarkRulesDir, starlark_engine: &StarlarkEngine) -> bool {
         rules_dir
             .iter()
@@ -206,11 +248,20 @@ impl SynAst {
     }
 }
 
+/// A mapping of file paths to their parsed and enriched syntax trees (`SynAst`).
 pub type SynAstMap = HashMap<String, SynAst>;
 
+/// Provides extension methods on a `SynAstMap` for applying rules and accessing metadata.
 pub trait SynAstMapExt {
+    /// Applies all rules in the directory to each file's AST in the map.
+    ///
+    /// # Returns
+    ///
+    /// `Ok(true)` if at least one rule matched across all files, otherwise `Ok(false)` or an error.
     fn apply_rules(&mut self, rules_dir: &StarlarkRulesDir, starlark_engine: &StarlarkEngine) -> Result<bool>;
+    /// Returns all file paths present in the syntax map.
     fn get_file_paths(&self) -> Vec<&String>;
+    /// Returns the number of syntax trees (files) in the map.
     fn count_files(&self) -> usize;
 }
 
@@ -232,6 +283,8 @@ impl SynAstMapExt for SynAstMap {
     }
 }
 
+/// Represents the global state of a SAST session, including parsed syntax trees,
+/// rule directory, and rule engine.
 #[derive(Debug, Clone)]
 pub struct SastState {
     pub syn_ast_map: SynAstMap,
@@ -240,6 +293,16 @@ pub struct SastState {
 }
 
 impl SastState {
+    /// Initializes a new `SastState` by loading rules and preparing the engine.
+    ///
+    /// # Arguments
+    ///
+    /// * `syn_ast_map` - Map of all parsed source files to their AST representations.
+    /// * `starlark_rules_dir_path` - Path to the directory containing rule files.
+    ///
+    /// # Returns
+    ///
+    /// A new `SastState` instance, or an error if the rule directory couldn't be parsed.
     pub fn new(syn_ast_map: SynAstMap, starlark_rules_dir_path: &String) -> Result<Self> {
         Ok(Self {
             syn_ast_map,
@@ -248,10 +311,20 @@ impl SastState {
         })
     }
 
+    /// Applies all loaded rules to the parsed syntax trees.
+    ///
+    /// # Returns
+    ///
+    /// A boolean indicating whether any rules were successfully applied.
     pub fn apply_rules(&mut self) -> Result<bool> {
         self.syn_ast_map.apply_rules(&self.starlark_rules_dir, &self.starlark_engine)
     }
 
+    /// Delegates printing of the rule evaluation results to a printer component.
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success, or an error if the print operation fails.
     pub fn print_results(&self) -> Result<()> {
         SastPrinter::print_sast_state(self)
     }

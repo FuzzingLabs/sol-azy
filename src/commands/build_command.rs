@@ -1,3 +1,4 @@
+use crate::commands::build_command;
 use crate::helpers::{
     check_binary_installed, create_dir_if_not_exists, get_project_type, BeforeCheck, ProjectType,
 };
@@ -5,6 +6,7 @@ use crate::state::build_state::BuildState;
 use crate::{helpers, Commands};
 use log::{debug, error, info};
 use std::process::{Command, Stdio};
+
 
 pub struct BuildCmd {
     pub target_dir: String,
@@ -26,6 +28,20 @@ impl BuildCmd {
     }
 }
 
+/// Runs a series of preconditions before attempting to build the project.
+///
+/// This includes checking for required binaries (`anchor`, `cargo`),
+/// verifying that the target directory exists, and that the output
+/// directory exists or can be created.
+///
+/// # Arguments
+///
+/// * `target_dir` - The path to the project to be built.
+/// * `out_dir` - The output directory for the build artifacts.
+///
+/// # Returns
+///
+/// `true` if all checks passed, otherwise `false`.
 fn checks_before_build(cmd: &BuildCmd) -> bool {
     [
         BeforeCheck {
@@ -59,6 +75,17 @@ fn checks_before_build(cmd: &BuildCmd) -> bool {
     .all(|check| check)
 }
 
+/// Main entry point to build a project, automatically selecting the build process
+/// based on the project type (Anchor or raw SBF).
+///
+/// # Arguments
+///
+/// * `target_dir` - The path to the project to build.
+/// * `out_dir` - The path to output build artifacts.
+///
+/// # Returns
+///
+/// A `BuildState` on success, or an error if the build fails or the project type is unknown.
 pub fn run(cmd: &BuildCmd) -> anyhow::Result<BuildState> {
     debug!("Starting build process for {}", cmd.target_dir);
 
@@ -74,6 +101,19 @@ pub fn run(cmd: &BuildCmd) -> anyhow::Result<BuildState> {
     }
 }
 
+/// Builds a project using the Anchor framework by running `anchor build`.
+///
+/// This function sets the working directory, cleans previous build artifacts,
+/// and then runs the Anchor CLI tool with appropriate `RUSTFLAGS`.
+///
+/// # Arguments
+///
+/// * `target_dir` - The path to the Anchor project.
+/// * `out_dir` - The output directory for build artifacts.
+///
+/// # Returns
+///
+/// A `BuildState` object if the build is successful, or an error otherwise.
 fn build_anchor_project(cmd: &BuildCmd) -> anyhow::Result<BuildState> {
     debug!("Building anchor project {}", cmd.target_dir);
 
@@ -108,6 +148,19 @@ fn build_anchor_project(cmd: &BuildCmd) -> anyhow::Result<BuildState> {
     })
 }
 
+/// Builds a raw Solana SBF project using `cargo build-sbf`.
+///
+/// Similar to the Anchor build process, this resets the environment,
+/// performs a clean, and invokes the build with specific `RUSTFLAGS`.
+///
+/// # Arguments
+///
+/// * `target_dir` - The path to the SBF project.
+/// * `out_dir` - The output directory for build artifacts.
+///
+/// # Returns
+///
+/// A `BuildState` object if the build is successful, or an error otherwise.
 pub fn build_sbf_project(cmd: &BuildCmd) -> anyhow::Result<BuildState> {
     debug!("Building sbf project {}", cmd.target_dir);
 

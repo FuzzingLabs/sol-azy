@@ -1,0 +1,2372 @@
+function_0:
+    ldxdw r1, [r1+0x0]                      
+    call function_1061                      
+    exit                                    
+
+entrypoint:
+    mov64 r2, r1                                    r2 = r1
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -96                                   r1 += -96   ///  r1 = r1.wrapping_add(-96 as i32 as i64 as u64)
+    call function_308                       
+    ldxdw r7, [r10-0x48]                    
+    ldxdw r8, [r10-0x58]                    
+    ldxdw r1, [r10-0x38]                    
+    mov64 r2, 8                                     r2 = 8 as i32 as i64 as u64
+    jgt r2, r1, lbb_91                              if r2 > r1 { pc += 79 }
+    ldxdw r1, [r10-0x40]                    
+    ldxw r2, [r1+0x0]                       
+    stxw [r10-0xa8], r2                     
+    ldxw r1, [r1+0x4]                       
+    stxw [r10-0xa4], r1                     
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    stxdw [r10-0x40], r1                    
+    lddw r1, 0x100004610 --> b"\x00\x00\x00\x00\xd0C\x00\x00\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…        r1 load str located at 4294985232
+    stxdw [r10-0x60], r1                    
+    mov64 r1, 2                                     r1 = 2 as i32 as i64 as u64
+    stxdw [r10-0x58], r1                    
+    stxdw [r10-0x48], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -136                                  r1 += -136   ///  r1 = r1.wrapping_add(-136 as i32 as i64 as u64)
+    stxdw [r10-0x50], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -164                                  r1 += -164   ///  r1 = r1.wrapping_add(-164 as i32 as i64 as u64)
+    stxdw [r10-0x78], r1                    
+    lddw r1, 0x100004210 --> b"\xbf#\x00\x00\x00\x00\x00\x00a\x11\x00\x00\x00\x00\x00\x00\xb7\x02\x00\x0…        r1 load str located at 4294984208
+    stxdw [r10-0x70], r1                    
+    stxdw [r10-0x80], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -168                                  r1 += -168   ///  r1 = r1.wrapping_add(-168 as i32 as i64 as u64)
+    stxdw [r10-0x88], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -160                                  r1 += -160   ///  r1 = r1.wrapping_add(-160 as i32 as i64 as u64)
+    mov64 r2, r10                                   r2 = r10
+    add64 r2, -96                                   r2 += -96   ///  r2 = r2.wrapping_add(-96 as i32 as i64 as u64)
+    call function_858                       
+    ldxdw r1, [r10-0xa0]                    
+    ldxdw r2, [r10-0x90]                    
+    syscall [invalid]                       
+    ldxw r1, [r10-0xa8]                     
+    ldxw r2, [r10-0xa4]                     
+    add64 r2, r1                                    r2 += r1   ///  r2 = r2.wrapping_add(r1)
+    lsh64 r2, 32                                    r2 <<= 32   ///  r2 = r2.wrapping_shl(32)
+    rsh64 r2, 32                                    r2 >>= 32   ///  r2 = r2.wrapping_shr(32)
+    jne r2, 1337, lbb_58                            if r2 != (1337 as i32 as i64 as u64) { pc += 6 }
+    lddw r1, 0x1000043e0 --> b"You win!"            r1 load str located at 4294984672
+    mov64 r2, 8                                     r2 = 8 as i32 as i64 as u64
+    syscall [invalid]                       
+    mov64 r1, 987654321                             r1 = 987654321 as i32 as i64 as u64
+    ja lbb_63                                       if true { pc += 5 }
+lbb_58:
+    lddw r1, 0x1000043e8 --> b"You lose!"           r1 load str located at 4294984680
+    mov64 r2, 9                                     r2 = 9 as i32 as i64 as u64
+    syscall [invalid]                       
+    mov64 r1, 123456789                             r1 = 123456789 as i32 as i64 as u64
+lbb_63:
+    stxdw [r10-0x68], r1                    
+    lddw r1, 0x100004630 --> b"\x00\x00\x00\x00\xd8C\x00\x00\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…        r1 load str located at 4294985264
+    stxdw [r10-0x60], r1                    
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    stxdw [r10-0x58], r1                    
+    stxdw [r10-0x48], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -160                                  r1 += -160   ///  r1 = r1.wrapping_add(-160 as i32 as i64 as u64)
+    stxdw [r10-0x50], r1                    
+    lddw r1, 0x100004238 --> b"\xbf#\x00\x00\x00\x00\x00\x00y\x11\x00\x00\x00\x00\x00\x00\xb7\x02\x00\x0…        r1 load str located at 4294984248
+    stxdw [r10-0x98], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -104                                  r1 += -104   ///  r1 = r1.wrapping_add(-104 as i32 as i64 as u64)
+    stxdw [r10-0xa0], r1                    
+    mov64 r6, 0                                     r6 = 0 as i32 as i64 as u64
+    stxdw [r10-0x40], r6                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -136                                  r1 += -136   ///  r1 = r1.wrapping_add(-136 as i32 as i64 as u64)
+    mov64 r2, r10                                   r2 = r10
+    add64 r2, -96                                   r2 += -96   ///  r2 = r2.wrapping_add(-96 as i32 as i64 as u64)
+    call function_858                       
+    ldxdw r1, [r10-0x88]                    
+    ldxdw r2, [r10-0x78]                    
+    syscall [invalid]                       
+    jeq r7, 0, lbb_107                              if r7 == (0 as i32 as i64 as u64) { pc += 17 }
+    ja lbb_102                                      if true { pc += 11 }
+lbb_91:
+    lddw r1, 0x1000043f4 --> b"Not enough data. Need two u32 values."        r1 load str located at 4294984692
+    mov64 r2, 37                                    r2 = 37 as i32 as i64 as u64
+    syscall [invalid]                       
+    mov64 r1, 2                                     r1 = 2 as i32 as i64 as u64
+    stxw [r10-0xc8], r1                     
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -200                                  r1 += -200   ///  r1 = r1.wrapping_add(-200 as i32 as i64 as u64)
+    call function_554                       
+    mov64 r6, r0                                    r6 = r0
+    jeq r7, 0, lbb_107                              if r7 == (0 as i32 as i64 as u64) { pc += 5 }
+lbb_102:
+    add64 r8, 16                                    r8 += 16   ///  r8 = r8.wrapping_add(16 as i32 as i64 as u64)
+    ja lbb_109                                      if true { pc += 5 }
+lbb_104:
+    add64 r8, 48                                    r8 += 48   ///  r8 = r8.wrapping_add(48 as i32 as i64 as u64)
+    add64 r7, -1                                    r7 += -1   ///  r7 = r7.wrapping_add(-1 as i32 as i64 as u64)
+    jne r7, 0, lbb_109                              if r7 != (0 as i32 as i64 as u64) { pc += 2 }
+lbb_107:
+    mov64 r0, r6                                    r0 = r6
+    exit                                    
+lbb_109:
+    ldxdw r1, [r8+0x0]                      
+    ldxdw r2, [r8-0x8]                      
+    ldxdw r3, [r2+0x0]                      
+    add64 r3, -1                                    r3 += -1   ///  r3 = r3.wrapping_add(-1 as i32 as i64 as u64)
+    stxdw [r2+0x0], r3                      
+    jne r3, 0, lbb_118                              if r3 != (0 as i32 as i64 as u64) { pc += 3 }
+    ldxdw r3, [r2+0x8]                      
+    add64 r3, -1                                    r3 += -1   ///  r3 = r3.wrapping_add(-1 as i32 as i64 as u64)
+    stxdw [r2+0x8], r3                      
+lbb_118:
+    ldxdw r2, [r1+0x0]                      
+    add64 r2, -1                                    r2 += -1   ///  r2 = r2.wrapping_add(-1 as i32 as i64 as u64)
+    stxdw [r1+0x0], r2                      
+    jne r2, 0, lbb_104                              if r2 != (0 as i32 as i64 as u64) { pc += -18 }
+    ldxdw r2, [r1+0x8]                      
+    add64 r2, -1                                    r2 += -1   ///  r2 = r2.wrapping_add(-1 as i32 as i64 as u64)
+    stxdw [r1+0x8], r2                      
+    ja lbb_104                                      if true { pc += -22 }
+
+function_126:
+    lddw r3, 0x300000000                            r3 load str located at 12884901888
+    ldxdw r3, [r3+0x0]                      
+    lddw r4, 0x300008000                            r4 load str located at 12884934656
+    jeq r3, 0, lbb_133                              if r3 == (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r4, r3                                    r4 = r3
+lbb_133:
+    mov64 r3, r4                                    r3 = r4
+    sub64 r3, r1                                    r3 -= r1   ///  r3 = r3.wrapping_sub(r1)
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    mov64 r5, 1                                     r5 = 1 as i32 as i64 as u64
+    jgt r3, r4, lbb_139                             if r3 > r4 { pc += 1 }
+    mov64 r5, 0                                     r5 = 0 as i32 as i64 as u64
+lbb_139:
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    jne r5, 0, lbb_142                              if r5 != (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r1, r3                                    r1 = r3
+lbb_142:
+    neg64 r2                                        r2 = -r2   ///  r2 = (r2 as i64).wrapping_neg() as u64
+    and64 r1, r2                                    r1 &= r2   ///  r1 = r1.and(r2)
+    lddw r2, 0x300000008                            r2 load str located at 12884901896
+    jgt r2, r1, lbb_151                             if r2 > r1 { pc += 4 }
+    lddw r2, 0x300000000                            r2 load str located at 12884901888
+    stxdw [r2+0x0], r1                      
+    mov64 r0, r1                                    r0 = r1
+lbb_151:
+    exit                                    
+
+function_152:
+    exit                                    
+
+function_153:
+    mov64 r5, r2                                    r5 = r2
+    mov64 r2, r1                                    r2 = r1
+    lddw r1, 0x300000000                            r1 load str located at 12884901888
+    ldxdw r1, [r1+0x0]                      
+    lddw r6, 0x300008000                            r6 load str located at 12884934656
+    jeq r1, 0, lbb_162                              if r1 == (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r6, r1                                    r6 = r1
+lbb_162:
+    mov64 r1, r6                                    r1 = r6
+    sub64 r1, r4                                    r1 -= r4   ///  r1 = r1.wrapping_sub(r4)
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    mov64 r7, 1                                     r7 = 1 as i32 as i64 as u64
+    jgt r1, r6, lbb_168                             if r1 > r6 { pc += 1 }
+    mov64 r7, 0                                     r7 = 0 as i32 as i64 as u64
+lbb_168:
+    mov64 r6, 0                                     r6 = 0 as i32 as i64 as u64
+    jne r7, 0, lbb_171                              if r7 != (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r6, r1                                    r6 = r1
+lbb_171:
+    neg64 r3                                        r3 = -r3   ///  r3 = (r3 as i64).wrapping_neg() as u64
+    and64 r6, r3                                    r6 &= r3   ///  r6 = r6.and(r3)
+    lddw r1, 0x300000008                            r1 load str located at 12884901896
+    jgt r1, r6, lbb_185                             if r1 > r6 { pc += 9 }
+    lddw r1, 0x300000000                            r1 load str located at 12884901888
+    stxdw [r1+0x0], r6                      
+    jgt r4, r5, lbb_181                             if r4 > r5 { pc += 1 }
+    mov64 r5, r4                                    r5 = r4
+lbb_181:
+    mov64 r1, r6                                    r1 = r6
+    mov64 r3, r5                                    r3 = r5
+    call function_2100                      
+    mov64 r0, r6                                    r0 = r6
+lbb_185:
+    exit                                    
+
+custom_panic:
+    stxdw [r10-0x90], r1                    
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    stxdw [r10-0x50], r1                    
+    lddw r1, 0x100004640 --> b"\x00\x00\x00\x00\xd0C\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…        r1 load str located at 4294985280
+    stxdw [r10-0x70], r1                    
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    stxdw [r10-0x68], r1                    
+    stxdw [r10-0x58], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -64                                   r1 += -64   ///  r1 = r1.wrapping_add(-64 as i32 as i64 as u64)
+    stxdw [r10-0x60], r1                    
+    lddw r1, 0x100000120 --> b"y\x11\x00\x00\x00\x00\x00\x00\x85\x10\x00\x00#\x04\x00\x00\x95\x00\x00\x0…        r1 load str located at 4294967584
+    stxdw [r10-0x38], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -144                                  r1 += -144   ///  r1 = r1.wrapping_add(-144 as i32 as i64 as u64)
+    stxdw [r10-0x40], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -136                                  r1 += -136   ///  r1 = r1.wrapping_add(-136 as i32 as i64 as u64)
+    mov64 r2, r10                                   r2 = r10
+    add64 r2, -112                                  r2 += -112   ///  r2 = r2.wrapping_add(-112 as i32 as i64 as u64)
+    call function_858                       
+    ldxdw r1, [r10-0x88]                    
+    ldxdw r2, [r10-0x78]                    
+    syscall [invalid]                       
+    exit                                    
+
+function_213:
+    call function_676                       
+    exit                                    
+
+function_215:
+    mov64 r7, r3                                    r7 = r3
+    mov64 r8, r2                                    r8 = r2
+    mov64 r6, r1                                    r6 = r1
+    jeq r8, 0, lbb_229                              if r8 == (0 as i32 as i64 as u64) { pc += 10 }
+    ldxdw r1, [r4+0x8]                      
+    jeq r1, 0, lbb_239                              if r1 == (0 as i32 as i64 as u64) { pc += 18 }
+    ldxdw r2, [r4+0x10]                     
+    jne r2, 0, lbb_233                              if r2 != (0 as i32 as i64 as u64) { pc += 10 }
+    jeq r7, 0, lbb_249                              if r7 == (0 as i32 as i64 as u64) { pc += 25 }
+    mov64 r1, r7                                    r1 = r7
+    mov64 r2, r8                                    r2 = r8
+    call function_126                       
+    jeq r0, 0, lbb_245                              if r0 == (0 as i32 as i64 as u64) { pc += 17 }
+    ja lbb_251                                      if true { pc += 22 }
+lbb_229:
+    stxdw [r6+0x10], r7                     
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    stxdw [r6+0x8], r1                      
+    ja lbb_247                                      if true { pc += 14 }
+lbb_233:
+    ldxdw r1, [r4+0x0]                      
+    mov64 r3, r8                                    r3 = r8
+    mov64 r4, r7                                    r4 = r7
+    call function_153                       
+    jeq r0, 0, lbb_245                              if r0 == (0 as i32 as i64 as u64) { pc += 7 }
+    ja lbb_251                                      if true { pc += 12 }
+lbb_239:
+    jeq r7, 0, lbb_249                              if r7 == (0 as i32 as i64 as u64) { pc += 9 }
+    mov64 r1, r7                                    r1 = r7
+    mov64 r2, r8                                    r2 = r8
+    call function_126                       
+    jeq r0, 0, lbb_245                              if r0 == (0 as i32 as i64 as u64) { pc += 1 }
+    ja lbb_251                                      if true { pc += 6 }
+lbb_245:
+    stxdw [r6+0x10], r7                     
+    stxdw [r6+0x8], r8                      
+lbb_247:
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    ja lbb_254                                      if true { pc += 5 }
+lbb_249:
+    mov64 r7, 0                                     r7 = 0 as i32 as i64 as u64
+    mov64 r0, r8                                    r0 = r8
+lbb_251:
+    stxdw [r6+0x10], r7                     
+    stxdw [r6+0x8], r0                      
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+lbb_254:
+    stxdw [r6+0x0], r1                      
+    exit                                    
+
+function_256:
+    mov64 r6, r1                                    r6 = r1
+    add64 r2, 1                                     r2 += 1   ///  r2 = r2.wrapping_add(1 as i32 as i64 as u64)
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    jeq r2, 0, lbb_261                              if r2 == (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+lbb_261:
+    and64 r1, 1                                     r1 &= 1   ///  r1 = r1.and(1)
+    jne r1, 0, lbb_303                              if r1 != (0 as i32 as i64 as u64) { pc += 40 }
+    ldxdw r1, [r6+0x8]                      
+    mov64 r7, r1                                    r7 = r1
+    lsh64 r7, 1                                     r7 <<= 1   ///  r7 = r7.wrapping_shl(1)
+    jgt r7, r2, lbb_268                             if r7 > r2 { pc += 1 }
+    mov64 r7, r2                                    r7 = r2
+lbb_268:
+    jgt r7, 4, lbb_270                              if r7 > (4 as i32 as i64 as u64) { pc += 1 }
+    mov64 r7, 4                                     r7 = 4 as i32 as i64 as u64
+lbb_270:
+    mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
+    lddw r3, 0x2aaaaaaaaaaaaab                      r3 load str located at 192153584101141163
+    jgt r3, r7, lbb_275                             if r3 > r7 { pc += 1 }
+    mov64 r2, 0                                     r2 = 0 as i32 as i64 as u64
+lbb_275:
+    mov64 r3, r7                                    r3 = r7
+    mul64 r3, 48                                    r3 *= 48   ///  r3 = r3.wrapping_mul(48 as u64)
+    lsh64 r2, 3                                     r2 <<= 3   ///  r2 = r2.wrapping_shl(3)
+    jne r1, 0, lbb_282                              if r1 != (0 as i32 as i64 as u64) { pc += 3 }
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    stxdw [r10-0x10], r1                    
+    ja lbb_288                                      if true { pc += 6 }
+lbb_282:
+    ldxdw r4, [r6+0x0]                      
+    mul64 r1, 48                                    r1 *= 48   ///  r1 = r1.wrapping_mul(48 as u64)
+    stxdw [r10-0x8], r1                     
+    mov64 r1, 8                                     r1 = 8 as i32 as i64 as u64
+    stxdw [r10-0x10], r1                    
+    stxdw [r10-0x18], r4                    
+lbb_288:
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -48                                   r1 += -48   ///  r1 = r1.wrapping_add(-48 as i32 as i64 as u64)
+    mov64 r4, r10                                   r4 = r10
+    add64 r4, -24                                   r4 += -24   ///  r4 = r4.wrapping_add(-24 as i32 as i64 as u64)
+    call function_215                       
+    ldxdw r1, [r10-0x28]                    
+    ldxdw r2, [r10-0x30]                    
+    jne r2, 0, lbb_299                              if r2 != (0 as i32 as i64 as u64) { pc += 3 }
+    stxdw [r6+0x8], r7                      
+    stxdw [r6+0x0], r1                      
+lbb_298:
+    exit                                    
+lbb_299:
+    lddw r2, 0x8000000000000001                     r2 load str located at -9223372036854775807
+    jeq r1, r2, lbb_298                             if r1 == r2 { pc += -4 }
+    jne r1, 0, lbb_305                              if r1 != (0 as i32 as i64 as u64) { pc += 2 }
+lbb_303:
+    call function_836                       
+    syscall [invalid]                       
+lbb_305:
+    ldxdw r2, [r10-0x20]                    
+    call function_853                       
+    syscall [invalid]                       
+
+function_308:
+    mov64 r4, r2                                    r4 = r2
+    stxdw [r10-0x68], r1                    
+    ldxdw r6, [r4+0x0]                      
+    jne r6, 0, lbb_336                              if r6 != (0 as i32 as i64 as u64) { pc += 24 }
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    stxdw [r10-0x10], r1                    
+    stxdw [r10-0x18], r6                    
+    mov64 r8, 8                                     r8 = 8 as i32 as i64 as u64
+    stxdw [r10-0x20], r8                    
+lbb_317:
+    mov64 r1, r4                                    r1 = r4
+    add64 r1, r8                                    r1 += r8   ///  r1 = r1.wrapping_add(r8)
+    ldxdw r1, [r1+0x0]                      
+    ldxdw r2, [r10-0x10]                    
+    ldxdw r3, [r10-0x68]                    
+    stxdw [r3+0x18], r2                     
+    ldxdw r2, [r10-0x18]                    
+    stxdw [r3+0x10], r2                     
+    ldxdw r2, [r10-0x20]                    
+    stxdw [r3+0x8], r2                      
+    add64 r8, 8                                     r8 += 8   ///  r8 = r8.wrapping_add(8 as i32 as i64 as u64)
+    mov64 r2, r4                                    r2 = r4
+    add64 r2, r8                                    r2 += r8   ///  r2 = r2.wrapping_add(r8)
+    stxdw [r3+0x20], r2                     
+    stxdw [r3+0x28], r1                     
+    add64 r1, r8                                    r1 += r8   ///  r1 = r1.wrapping_add(r8)
+    add64 r4, r1                                    r4 += r1   ///  r4 = r4.wrapping_add(r1)
+    stxdw [r3+0x0], r4                      
+    exit                                    
+lbb_336:
+    lddw r1, 0x2aaaaaaaaaaaaab                      r1 load str located at 192153584101141163
+    jgt r1, r6, lbb_341                             if r1 > r6 { pc += 2 }
+    call function_836                       
+    syscall [invalid]                       
+lbb_341:
+    mov64 r7, r6                                    r7 = r6
+    mul64 r7, 48                                    r7 *= 48   ///  r7 = r7.wrapping_mul(48 as u64)
+    mov64 r8, 8                                     r8 = 8 as i32 as i64 as u64
+    mov64 r0, 8                                     r0 = 8 as i32 as i64 as u64
+    stxdw [r10-0x30], r4                    
+    jeq r7, 0, lbb_356                              if r7 == (0 as i32 as i64 as u64) { pc += 9 }
+    mov64 r1, r7                                    r1 = r7
+    mov64 r2, 8                                     r2 = 8 as i32 as i64 as u64
+    call function_126                       
+    ldxdw r4, [r10-0x30]                    
+    jne r0, 0, lbb_356                              if r0 != (0 as i32 as i64 as u64) { pc += 4 }
+    mov64 r1, 8                                     r1 = 8 as i32 as i64 as u64
+    mov64 r2, r7                                    r2 = r7
+    call function_853                       
+    syscall [invalid]                       
+lbb_356:
+    stxdw [r10-0x18], r6                    
+    stxdw [r10-0x20], r0                    
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    stxdw [r10-0x10], r1                    
+    mov64 r2, 0                                     r2 = 0 as i32 as i64 as u64
+    mov64 r3, 0                                     r3 = 0 as i32 as i64 as u64
+    stxdw [r10-0x60], r6                    
+    ja lbb_393                                      if true { pc += 29 }
+lbb_364:
+    mov64 r1, r2                                    r1 = r2
+    mul64 r1, 48                                    r1 *= 48   ///  r1 = r1.wrapping_mul(48 as u64)
+    mov64 r3, r0                                    r3 = r0
+    add64 r3, r1                                    r3 += r1   ///  r3 = r3.wrapping_add(r1)
+    ldxdw r1, [r10-0x58]                    
+    stxb [r3+0x2a], r1                      
+    ldxdw r1, [r10-0x50]                    
+    stxb [r3+0x29], r1                      
+    ldxdw r1, [r10-0x48]                    
+    stxb [r3+0x28], r1                      
+    ldxdw r1, [r10-0x40]                    
+    stxdw [r3+0x20], r1                     
+    ldxdw r1, [r10-0x38]                    
+    stxdw [r3+0x18], r1                     
+    stxdw [r3+0x10], r9                     
+    stxdw [r3+0x8], r6                      
+    stxdw [r3+0x0], r7                      
+    ldxw r1, [r10-0x5]                      
+    stxw [r3+0x2b], r1                      
+    ldxb r1, [r10-0x1]                      
+    stxb [r3+0x2f], r1                      
+lbb_385:
+    add64 r2, 1                                     r2 += 1   ///  r2 = r2.wrapping_add(1 as i32 as i64 as u64)
+    stxdw [r10-0x10], r2                    
+    ldxdw r3, [r10-0x28]                    
+    add64 r3, 1                                     r3 += 1   ///  r3 = r3.wrapping_add(1 as i32 as i64 as u64)
+    add64 r8, 8                                     r8 += 8   ///  r8 = r8.wrapping_add(8 as i32 as i64 as u64)
+    ldxdw r1, [r10-0x60]                    
+    jgt r1, r3, lbb_393                             if r1 > r3 { pc += 1 }
+    ja lbb_317                                      if true { pc += -76 }
+lbb_393:
+    mov64 r1, r4                                    r1 = r4
+    add64 r1, r8                                    r1 += r8   ///  r1 = r1.wrapping_add(r8)
+    ldxb r1, [r1+0x0]                       
+    stxdw [r10-0x28], r3                    
+    jeq r1, 255, lbb_449                            if r1 == (255 as i32 as i64 as u64) { pc += 51 }
+    jgt r2, r1, lbb_400                             if r2 > r1 { pc += 1 }
+    ja lbb_550                                      if true { pc += 150 }
+lbb_400:
+    mov64 r5, r2                                    r5 = r2
+    mul64 r1, 48                                    r1 *= 48   ///  r1 = r1.wrapping_mul(48 as u64)
+    mov64 r2, r0                                    r2 = r0
+    add64 r2, r1                                    r2 += r1   ///  r2 = r2.wrapping_add(r1)
+    ldxdw r6, [r2+0x8]                      
+    ldxdw r3, [r6+0x0]                      
+    add64 r3, 1                                     r3 += 1   ///  r3 = r3.wrapping_add(1 as i32 as i64 as u64)
+    mov64 r4, 1                                     r4 = 1 as i32 as i64 as u64
+    jeq r3, 0, lbb_410                              if r3 == (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r4, 0                                     r4 = 0 as i32 as i64 as u64
+lbb_410:
+    ldxdw r7, [r2+0x0]                      
+    stxdw [r6+0x0], r3                      
+    jne r4, 1, lbb_415                              if r4 != (1 as i32 as i64 as u64) { pc += 2 }
+lbb_413:
+    syscall [invalid]                       
+    syscall [invalid]                       
+lbb_415:
+    mov64 r2, r0                                    r2 = r0
+    add64 r2, r1                                    r2 += r1   ///  r2 = r2.wrapping_add(r1)
+    ldxdw r9, [r2+0x10]                     
+    ldxdw r2, [r9+0x0]                      
+    add64 r2, 1                                     r2 += 1   ///  r2 = r2.wrapping_add(1 as i32 as i64 as u64)
+    mov64 r3, 1                                     r3 = 1 as i32 as i64 as u64
+    jeq r2, 0, lbb_423                              if r2 == (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r3, 0                                     r3 = 0 as i32 as i64 as u64
+lbb_423:
+    stxdw [r9+0x0], r2                      
+    jne r3, 1, lbb_426                              if r3 != (1 as i32 as i64 as u64) { pc += 1 }
+    ja lbb_413                                      if true { pc += -13 }
+lbb_426:
+    mov64 r2, r0                                    r2 = r0
+    add64 r2, r1                                    r2 += r1   ///  r2 = r2.wrapping_add(r1)
+    ldxb r1, [r2+0x2a]                      
+    stxdw [r10-0x58], r1                    
+    ldxb r1, [r2+0x29]                      
+    stxdw [r10-0x50], r1                    
+    ldxb r1, [r2+0x28]                      
+    stxdw [r10-0x48], r1                    
+    ldxdw r1, [r2+0x20]                     
+    stxdw [r10-0x40], r1                    
+    ldxdw r1, [r2+0x18]                     
+    stxdw [r10-0x38], r1                    
+    ldxdw r1, [r10-0x18]                    
+    mov64 r2, r5                                    r2 = r5
+    ldxdw r4, [r10-0x30]                    
+    jne r2, r1, lbb_364                             if r2 != r1 { pc += -78 }
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -32                                   r1 += -32   ///  r1 = r1.wrapping_add(-32 as i32 as i64 as u64)
+    call function_256                       
+    ldxdw r4, [r10-0x30]                    
+    ldxdw r0, [r10-0x20]                    
+    ldxdw r2, [r10-0x10]                    
+    ja lbb_364                                      if true { pc += -85 }
+lbb_449:
+    stxdw [r10-0x38], r2                    
+    mov64 r6, r8                                    r6 = r8
+    add64 r6, r4                                    r6 += r4   ///  r6 = r6.wrapping_add(r4)
+    ldxb r1, [r6+0x3]                       
+    stxdw [r10-0x50], r1                    
+    ldxb r1, [r6+0x2]                       
+    stxdw [r10-0x48], r1                    
+    ldxb r1, [r6+0x1]                       
+    stxdw [r10-0x40], r1                    
+    mov64 r1, 32                                    r1 = 32 as i32 as i64 as u64
+    mov64 r2, 8                                     r2 = 8 as i32 as i64 as u64
+    call function_126                       
+    jne r0, 0, lbb_466                              if r0 != (0 as i32 as i64 as u64) { pc += 4 }
+    mov64 r1, 8                                     r1 = 8 as i32 as i64 as u64
+    mov64 r2, 32                                    r2 = 32 as i32 as i64 as u64
+    call function_853                       
+    syscall [invalid]                       
+lbb_466:
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    stxdw [r0+0x10], r1                     
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    stxdw [r0+0x8], r1                      
+    stxdw [r0+0x0], r1                      
+    mov64 r1, r6                                    r1 = r6
+    add64 r1, 72                                    r1 += 72   ///  r1 = r1.wrapping_add(72 as i32 as i64 as u64)
+    stxdw [r10-0x58], r0                    
+    stxdw [r0+0x18], r1                     
+    ldxdw r9, [r6+0x50]                     
+    stxw [r6+0x4], r9                       
+    mov64 r1, 40                                    r1 = 40 as i32 as i64 as u64
+    mov64 r2, 8                                     r2 = 8 as i32 as i64 as u64
+    call function_126                       
+    mov64 r7, r0                                    r7 = r0
+    jne r7, 0, lbb_486                              if r7 != (0 as i32 as i64 as u64) { pc += 4 }
+    mov64 r1, 8                                     r1 = 8 as i32 as i64 as u64
+    mov64 r2, 40                                    r2 = 40 as i32 as i64 as u64
+    call function_853                       
+    syscall [invalid]                       
+lbb_486:
+    ldxdw r1, [r10-0x50]                    
+    mov64 r3, r1                                    r3 = r1
+    mov64 r2, 0                                     r2 = 0 as i32 as i64 as u64
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    mov64 r5, 1                                     r5 = 1 as i32 as i64 as u64
+    ldxdw r4, [r10-0x30]                    
+    jne r3, 0, lbb_494                              if r3 != (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r5, 0                                     r5 = 0 as i32 as i64 as u64
+lbb_494:
+    ldxdw r3, [r10-0x48]                    
+    stxdw [r7+0x10], r2                     
+    mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
+    jne r3, 0, lbb_499                              if r3 != (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r2, 0                                     r2 = 0 as i32 as i64 as u64
+lbb_499:
+    stxdw [r10-0x48], r2                    
+    ldxdw r2, [r10-0x40]                    
+    mov64 r3, 1                                     r3 = 1 as i32 as i64 as u64
+    jne r2, 0, lbb_504                              if r2 != (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r3, 0                                     r3 = 0 as i32 as i64 as u64
+lbb_504:
+    stxdw [r10-0x40], r3                    
+    mov64 r2, r6                                    r2 = r6
+    add64 r2, 40                                    r2 += 40   ///  r2 = r2.wrapping_add(40 as i32 as i64 as u64)
+    stxdw [r10-0x50], r2                    
+    add64 r6, 8                                     r6 += 8   ///  r6 = r6.wrapping_add(8 as i32 as i64 as u64)
+    stxdw [r7+0x8], r1                      
+    stxdw [r7+0x0], r1                      
+    mov64 r1, r8                                    r1 = r8
+    add64 r1, r4                                    r1 += r4   ///  r1 = r1.wrapping_add(r4)
+    add64 r1, 88                                    r1 += 88   ///  r1 = r1.wrapping_add(88 as i32 as i64 as u64)
+    stxdw [r7+0x18], r1                     
+    stxdw [r7+0x20], r9                     
+    add64 r8, r9                                    r8 += r9   ///  r8 = r8.wrapping_add(r9)
+    add64 r8, 10335                                 r8 += 10335   ///  r8 = r8.wrapping_add(10335 as i32 as i64 as u64)
+    and64 r8, -8                                    r8 &= -8   ///  r8 = r8.and(-8)
+    mov64 r1, r4                                    r1 = r4
+    add64 r1, r8                                    r1 += r8   ///  r1 = r1.wrapping_add(r8)
+    ldxdw r9, [r1+0x0]                      
+    ldxdw r1, [r10-0x18]                    
+    ldxdw r2, [r10-0x38]                    
+    jne r2, r1, lbb_532                             if r2 != r1 { pc += 7 }
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -32                                   r1 += -32   ///  r1 = r1.wrapping_add(-32 as i32 as i64 as u64)
+    stxdw [r10-0x38], r5                    
+    call function_256                       
+    ldxdw r5, [r10-0x38]                    
+    ldxdw r4, [r10-0x30]                    
+    ldxdw r2, [r10-0x10]                    
+lbb_532:
+    mov64 r1, r2                                    r1 = r2
+    mul64 r1, 48                                    r1 *= 48   ///  r1 = r1.wrapping_mul(48 as u64)
+    ldxdw r0, [r10-0x20]                    
+    mov64 r3, r0                                    r3 = r0
+    add64 r3, r1                                    r3 += r1   ///  r3 = r3.wrapping_add(r1)
+    stxb [r3+0x2a], r5                      
+    ldxdw r1, [r10-0x48]                    
+    stxb [r3+0x29], r1                      
+    ldxdw r1, [r10-0x40]                    
+    stxb [r3+0x28], r1                      
+    stxdw [r3+0x20], r9                     
+    ldxdw r1, [r10-0x50]                    
+    stxdw [r3+0x18], r1                     
+    stxdw [r3+0x10], r7                     
+    ldxdw r1, [r10-0x58]                    
+    stxdw [r3+0x8], r1                      
+    stxdw [r3+0x0], r6                      
+    ja lbb_385                                      if true { pc += -165 }
+lbb_550:
+    lddw r3, 0x100004650 --> b"\x00\x00\x00\x00\x19D\x00\x00\x11\x00\x00\x00\x00\x00\x00\x00a\x01\x00\x0…        r3 load str located at 4294985296
+    call function_1175                      
+    syscall [invalid]                       
+
+function_554:
+    ldxw r2, [r1+0x0]                       
+    jsgt r2, 11, lbb_565                            if (r2 as i64) > (11 as i32 as i64) { pc += 9 }
+    jsgt r2, 5, lbb_572                             if (r2 as i64) > (5 as i32 as i64) { pc += 15 }
+    jsgt r2, 2, lbb_584                             if (r2 as i64) > (2 as i32 as i64) { pc += 26 }
+    jeq r2, 0, lbb_604                              if r2 == (0 as i32 as i64 as u64) { pc += 45 }
+    lddw r6, 0x200000000                            r6 load str located at 8589934592
+    jeq r2, 1, lbb_651                              if r2 == (1 as i32 as i64 as u64) { pc += 89 }
+    lddw r6, 0x300000000                            r6 load str located at 12884901888
+    ja lbb_651                                      if true { pc += 86 }
+lbb_565:
+    jsgt r2, 17, lbb_578                            if (r2 as i64) > (17 as i32 as i64) { pc += 12 }
+    jsgt r2, 14, lbb_589                            if (r2 as i64) > (14 as i32 as i64) { pc += 22 }
+    jeq r2, 12, lbb_610                             if r2 == (12 as i32 as i64 as u64) { pc += 42 }
+    jeq r2, 13, lbb_613                             if r2 == (13 as i32 as i64 as u64) { pc += 44 }
+    lddw r6, 0xf00000000                            r6 load str located at 64424509440
+    ja lbb_651                                      if true { pc += 79 }
+lbb_572:
+    jsgt r2, 8, lbb_594                             if (r2 as i64) > (8 as i32 as i64) { pc += 21 }
+    jeq r2, 6, lbb_616                              if r2 == (6 as i32 as i64 as u64) { pc += 42 }
+    jeq r2, 7, lbb_619                              if r2 == (7 as i32 as i64 as u64) { pc += 44 }
+    lddw r6, 0x900000000                            r6 load str located at 38654705664
+    ja lbb_651                                      if true { pc += 73 }
+lbb_578:
+    jsgt r2, 20, lbb_599                            if (r2 as i64) > (20 as i32 as i64) { pc += 20 }
+    jeq r2, 18, lbb_622                             if r2 == (18 as i32 as i64 as u64) { pc += 42 }
+    jeq r2, 19, lbb_625                             if r2 == (19 as i32 as i64 as u64) { pc += 44 }
+    lddw r6, 0x1500000000                           r6 load str located at 90194313216
+    ja lbb_651                                      if true { pc += 67 }
+lbb_584:
+    jeq r2, 3, lbb_628                              if r2 == (3 as i32 as i64 as u64) { pc += 43 }
+    jeq r2, 4, lbb_631                              if r2 == (4 as i32 as i64 as u64) { pc += 45 }
+    lddw r6, 0x600000000                            r6 load str located at 25769803776
+    ja lbb_651                                      if true { pc += 62 }
+lbb_589:
+    jeq r2, 15, lbb_634                             if r2 == (15 as i32 as i64 as u64) { pc += 44 }
+    jeq r2, 16, lbb_637                             if r2 == (16 as i32 as i64 as u64) { pc += 46 }
+    lddw r6, 0x1200000000                           r6 load str located at 77309411328
+    ja lbb_651                                      if true { pc += 57 }
+lbb_594:
+    jeq r2, 9, lbb_640                              if r2 == (9 as i32 as i64 as u64) { pc += 45 }
+    jeq r2, 10, lbb_643                             if r2 == (10 as i32 as i64 as u64) { pc += 47 }
+    lddw r6, 0xc00000000                            r6 load str located at 51539607552
+    ja lbb_651                                      if true { pc += 52 }
+lbb_599:
+    jeq r2, 21, lbb_646                             if r2 == (21 as i32 as i64 as u64) { pc += 46 }
+    jeq r2, 22, lbb_649                             if r2 == (22 as i32 as i64 as u64) { pc += 48 }
+    lddw r6, 0x1800000000                           r6 load str located at 103079215104
+    ja lbb_651                                      if true { pc += 47 }
+lbb_604:
+    lddw r6, 0x100000000                            r6 load str located at 4294967296
+    ldxw r3, [r1+0x4]                       
+    jeq r3, 0, lbb_651                              if r3 == (0 as i32 as i64 as u64) { pc += 43 }
+    mov64 r6, r3                                    r6 = r3
+    ja lbb_651                                      if true { pc += 41 }
+lbb_610:
+    lddw r6, 0xd00000000                            r6 load str located at 55834574848
+    ja lbb_651                                      if true { pc += 38 }
+lbb_613:
+    lddw r6, 0xe00000000                            r6 load str located at 60129542144
+    ja lbb_651                                      if true { pc += 35 }
+lbb_616:
+    lddw r6, 0x700000000                            r6 load str located at 30064771072
+    ja lbb_651                                      if true { pc += 32 }
+lbb_619:
+    lddw r6, 0x800000000                            r6 load str located at 34359738368
+    ja lbb_651                                      if true { pc += 29 }
+lbb_622:
+    lddw r6, 0x1300000000                           r6 load str located at 81604378624
+    ja lbb_651                                      if true { pc += 26 }
+lbb_625:
+    lddw r6, 0x1400000000                           r6 load str located at 85899345920
+    ja lbb_651                                      if true { pc += 23 }
+lbb_628:
+    lddw r6, 0x400000000                            r6 load str located at 17179869184
+    ja lbb_651                                      if true { pc += 20 }
+lbb_631:
+    lddw r6, 0x500000000                            r6 load str located at 21474836480
+    ja lbb_651                                      if true { pc += 17 }
+lbb_634:
+    lddw r6, 0x1000000000                           r6 load str located at 68719476736
+    ja lbb_651                                      if true { pc += 14 }
+lbb_637:
+    lddw r6, 0x1100000000                           r6 load str located at 73014444032
+    ja lbb_651                                      if true { pc += 11 }
+lbb_640:
+    lddw r6, 0xa00000000                            r6 load str located at 42949672960
+    ja lbb_651                                      if true { pc += 8 }
+lbb_643:
+    lddw r6, 0xb00000000                            r6 load str located at 47244640256
+    ja lbb_651                                      if true { pc += 5 }
+lbb_646:
+    lddw r6, 0x1600000000                           r6 load str located at 94489280512
+    ja lbb_651                                      if true { pc += 2 }
+lbb_649:
+    lddw r6, 0x1700000000                           r6 load str located at 98784247808
+lbb_651:
+    jne r2, 14, lbb_657                             if r2 != (14 as i32 as i64 as u64) { pc += 5 }
+    ldxdw r2, [r1+0x10]                     
+    jeq r2, 0, lbb_657                              if r2 == (0 as i32 as i64 as u64) { pc += 3 }
+    ldxdw r1, [r1+0x8]                      
+    mov64 r3, 1                                     r3 = 1 as i32 as i64 as u64
+    call function_152                       
+lbb_657:
+    mov64 r0, r6                                    r0 = r6
+    exit                                    
+
+function_659:
+    call function_668                       
+    syscall [invalid]                       
+
+function_661:
+    call function_665                       
+    syscall [invalid]                       
+
+function_663:
+    syscall [invalid]                       
+    exit                                    
+
+function_665:
+    call custom_panic                       
+    syscall [invalid]                       
+    syscall [invalid]                       
+
+function_668:
+    syscall [invalid]                       
+    syscall [invalid]                       
+
+function_670:
+    lddw r1, 0x10000442a --> b"Error: memory allocation failed, out of memory"        r1 load str located at 4294984746
+    mov64 r2, 46                                    r2 = 46 as i32 as i64 as u64
+    call function_663                       
+    call function_659                       
+    syscall [invalid]                       
+
+function_676:
+    call function_670                       
+    syscall [invalid]                       
+    mov64 r3, r2                                    r3 = r2
+    lddw r2, 0x100004668 --> b"\x00\x00\x00\x00\x80\x16\x00\x00\x18\x00\x00\x00\x00\x00\x00\x00\x08\x00\…        r2 load str located at 4294985320
+    call function_1261                      
+    exit                                    
+
+function_683:
+    exit                                    
+
+function_684:
+    ldxdw r2, [r1+0x8]                      
+    jeq r2, 0, lbb_689                              if r2 == (0 as i32 as i64 as u64) { pc += 3 }
+    ldxdw r1, [r1+0x0]                      
+    mov64 r3, 1                                     r3 = 1 as i32 as i64 as u64
+    call function_152                       
+lbb_689:
+    exit                                    
+
+function_690:
+    mov64 r1, r2                                    r1 = r2
+    lddw r2, 0x100004458 --> b"Error"               r2 load str located at 4294984792
+    mov64 r3, 5                                     r3 = 5 as i32 as i64 as u64
+    call function_1795                      
+    exit                                    
+
+function_696:
+    mov64 r6, r1                                    r6 = r1
+    mov64 r4, r2                                    r4 = r2
+    add64 r4, r3                                    r4 += r3   ///  r4 = r4.wrapping_add(r3)
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    jgt r2, r4, lbb_702                             if r2 > r4 { pc += 1 }
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+lbb_702:
+    and64 r1, 1                                     r1 &= 1   ///  r1 = r1.and(1)
+    jne r1, 0, lbb_739                              if r1 != (0 as i32 as i64 as u64) { pc += 35 }
+    ldxdw r1, [r6+0x8]                      
+    mov64 r7, r1                                    r7 = r1
+    lsh64 r7, 1                                     r7 <<= 1   ///  r7 = r7.wrapping_shl(1)
+    jgt r7, r4, lbb_709                             if r7 > r4 { pc += 1 }
+    mov64 r7, r4                                    r7 = r4
+lbb_709:
+    jgt r7, 8, lbb_711                              if r7 > (8 as i32 as i64 as u64) { pc += 1 }
+    mov64 r7, 8                                     r7 = 8 as i32 as i64 as u64
+lbb_711:
+    mov64 r2, r7                                    r2 = r7
+    xor64 r2, -1                                    r2 ^= -1   ///  r2 = r2.xor(-1)
+    rsh64 r2, 63                                    r2 >>= 63   ///  r2 = r2.wrapping_shr(63)
+    jne r1, 0, lbb_718                              if r1 != (0 as i32 as i64 as u64) { pc += 3 }
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    stxdw [r10-0x10], r1                    
+    ja lbb_723                                      if true { pc += 5 }
+lbb_718:
+    ldxdw r3, [r6+0x0]                      
+    stxdw [r10-0x8], r1                     
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    stxdw [r10-0x10], r1                    
+    stxdw [r10-0x18], r3                    
+lbb_723:
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -48                                   r1 += -48   ///  r1 = r1.wrapping_add(-48 as i32 as i64 as u64)
+    mov64 r4, r10                                   r4 = r10
+    add64 r4, -24                                   r4 += -24   ///  r4 = r4.wrapping_add(-24 as i32 as i64 as u64)
+    mov64 r3, r7                                    r3 = r7
+    call function_791                       
+    ldxdw r1, [r10-0x28]                    
+    ldxdw r2, [r10-0x30]                    
+    jne r2, 0, lbb_735                              if r2 != (0 as i32 as i64 as u64) { pc += 3 }
+    stxdw [r6+0x8], r7                      
+    stxdw [r6+0x0], r1                      
+lbb_734:
+    exit                                    
+lbb_735:
+    lddw r2, 0x8000000000000001                     r2 load str located at -9223372036854775807
+    jeq r1, r2, lbb_734                             if r1 == r2 { pc += -4 }
+    jne r1, 0, lbb_741                              if r1 != (0 as i32 as i64 as u64) { pc += 2 }
+lbb_739:
+    call function_836                       
+    syscall [invalid]                       
+lbb_741:
+    ldxdw r2, [r10-0x20]                    
+    call function_853                       
+    syscall [invalid]                       
+
+function_744:
+    mov64 r6, r1                                    r6 = r1
+    add64 r2, 1                                     r2 += 1   ///  r2 = r2.wrapping_add(1 as i32 as i64 as u64)
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    jeq r2, 0, lbb_749                              if r2 == (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+lbb_749:
+    and64 r1, 1                                     r1 &= 1   ///  r1 = r1.and(1)
+    jne r1, 0, lbb_786                              if r1 != (0 as i32 as i64 as u64) { pc += 35 }
+    ldxdw r1, [r6+0x8]                      
+    mov64 r7, r1                                    r7 = r1
+    lsh64 r7, 1                                     r7 <<= 1   ///  r7 = r7.wrapping_shl(1)
+    jgt r7, r2, lbb_756                             if r7 > r2 { pc += 1 }
+    mov64 r7, r2                                    r7 = r2
+lbb_756:
+    jgt r7, 8, lbb_758                              if r7 > (8 as i32 as i64 as u64) { pc += 1 }
+    mov64 r7, 8                                     r7 = 8 as i32 as i64 as u64
+lbb_758:
+    mov64 r2, r7                                    r2 = r7
+    xor64 r2, -1                                    r2 ^= -1   ///  r2 = r2.xor(-1)
+    rsh64 r2, 63                                    r2 >>= 63   ///  r2 = r2.wrapping_shr(63)
+    jne r1, 0, lbb_765                              if r1 != (0 as i32 as i64 as u64) { pc += 3 }
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    stxdw [r10-0x10], r1                    
+    ja lbb_770                                      if true { pc += 5 }
+lbb_765:
+    ldxdw r3, [r6+0x0]                      
+    stxdw [r10-0x8], r1                     
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    stxdw [r10-0x10], r1                    
+    stxdw [r10-0x18], r3                    
+lbb_770:
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -48                                   r1 += -48   ///  r1 = r1.wrapping_add(-48 as i32 as i64 as u64)
+    mov64 r4, r10                                   r4 = r10
+    add64 r4, -24                                   r4 += -24   ///  r4 = r4.wrapping_add(-24 as i32 as i64 as u64)
+    mov64 r3, r7                                    r3 = r7
+    call function_791                       
+    ldxdw r1, [r10-0x28]                    
+    ldxdw r2, [r10-0x30]                    
+    jne r2, 0, lbb_782                              if r2 != (0 as i32 as i64 as u64) { pc += 3 }
+    stxdw [r6+0x8], r7                      
+    stxdw [r6+0x0], r1                      
+lbb_781:
+    exit                                    
+lbb_782:
+    lddw r2, 0x8000000000000001                     r2 load str located at -9223372036854775807
+    jeq r1, r2, lbb_781                             if r1 == r2 { pc += -4 }
+    jne r1, 0, lbb_788                              if r1 != (0 as i32 as i64 as u64) { pc += 2 }
+lbb_786:
+    call function_836                       
+    syscall [invalid]                       
+lbb_788:
+    ldxdw r2, [r10-0x20]                    
+    call function_853                       
+    syscall [invalid]                       
+
+function_791:
+    mov64 r7, r3                                    r7 = r3
+    mov64 r6, r1                                    r6 = r1
+    jeq r2, 0, lbb_807                              if r2 == (0 as i32 as i64 as u64) { pc += 13 }
+    ldxdw r1, [r4+0x8]                      
+    jeq r1, 0, lbb_823                              if r1 == (0 as i32 as i64 as u64) { pc += 27 }
+    ldxdw r2, [r4+0x10]                     
+    jne r2, 0, lbb_812                              if r2 != (0 as i32 as i64 as u64) { pc += 14 }
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    mov64 r0, 1                                     r0 = 1 as i32 as i64 as u64
+    jeq r7, 0, lbb_831                              if r7 == (0 as i32 as i64 as u64) { pc += 30 }
+    mov64 r1, r7                                    r1 = r7
+    mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
+    call function_126                       
+    mov64 r1, r7                                    r1 = r7
+    jeq r0, 0, lbb_819                              if r0 == (0 as i32 as i64 as u64) { pc += 13 }
+    ja lbb_831                                      if true { pc += 24 }
+lbb_807:
+    stxdw [r6+0x10], r7                     
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    stxdw [r6+0x8], r1                      
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    ja lbb_834                                      if true { pc += 22 }
+lbb_812:
+    ldxdw r1, [r4+0x0]                      
+    mov64 r3, 1                                     r3 = 1 as i32 as i64 as u64
+    mov64 r4, r7                                    r4 = r7
+    call function_153                       
+    mov64 r1, r7                                    r1 = r7
+    jeq r0, 0, lbb_819                              if r0 == (0 as i32 as i64 as u64) { pc += 1 }
+    ja lbb_831                                      if true { pc += 12 }
+lbb_819:
+    stxdw [r6+0x10], r7                     
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    stxdw [r6+0x8], r1                      
+    ja lbb_834                                      if true { pc += 11 }
+lbb_823:
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    mov64 r0, 1                                     r0 = 1 as i32 as i64 as u64
+    jeq r7, 0, lbb_831                              if r7 == (0 as i32 as i64 as u64) { pc += 5 }
+    mov64 r1, r7                                    r1 = r7
+    mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
+    call function_126                       
+    mov64 r1, r7                                    r1 = r7
+    jeq r0, 0, lbb_819                              if r0 == (0 as i32 as i64 as u64) { pc += -12 }
+lbb_831:
+    stxdw [r6+0x10], r1                     
+    stxdw [r6+0x8], r0                      
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+lbb_834:
+    stxdw [r6+0x0], r1                      
+    exit                                    
+
+function_836:
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    stxdw [r10-0x28], r1                    
+    lddw r1, 0x100004698 --> b"\x00\x00\x00\x00yD\x00\x00\x11\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0…        r1 load str located at 4294985368
+    stxdw [r10-0x30], r1                    
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    stxdw [r10-0x10], r1                    
+    stxdw [r10-0x18], r1                    
+    lddw r1, 0x100004458 --> b"Errorlibrary/alloc/src/raw_vec.rscapacity overflow"        r1 load str located at 4294984792
+    stxdw [r10-0x20], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -48                                   r1 += -48   ///  r1 = r1.wrapping_add(-48 as i32 as i64 as u64)
+    lddw r2, 0x1000046a8 --> b"\x00\x00\x00\x00]D\x00\x00\x1c\x00\x00\x00\x00\x00\x00\x00!\x02\x00\x00\x…        r2 load str located at 4294985384
+    call function_1161                      
+    syscall [invalid]                       
+
+function_853:
+    mov64 r3, r1                                    r3 = r1
+    mov64 r1, r2                                    r1 = r2
+    mov64 r2, r3                                    r2 = r3
+    call function_213                       
+    syscall [invalid]                       
+
+function_858:
+    mov64 r7, r2                                    r7 = r2
+    mov64 r6, r1                                    r6 = r1
+    ldxdw r2, [r7+0x8]                      
+    jeq r2, 0, lbb_903                              if r2 == (0 as i32 as i64 as u64) { pc += 41 }
+    ldxdw r1, [r7+0x0]                      
+    mov64 r4, 0                                     r4 = 0 as i32 as i64 as u64
+    mov64 r3, r1                                    r3 = r1
+    add64 r3, 8                                     r3 += 8   ///  r3 = r3.wrapping_add(8 as i32 as i64 as u64)
+lbb_866:
+    ldxdw r8, [r3+0x0]                      
+    add64 r8, r4                                    r8 += r4   ///  r8 = r8.wrapping_add(r4)
+    add64 r3, 16                                    r3 += 16   ///  r3 = r3.wrapping_add(16 as i32 as i64 as u64)
+    add64 r2, -1                                    r2 += -1   ///  r2 = r2.wrapping_add(-1 as i32 as i64 as u64)
+    mov64 r4, r8                                    r4 = r8
+    jne r2, 0, lbb_866                              if r2 != (0 as i32 as i64 as u64) { pc += -6 }
+    ldxdw r2, [r7+0x18]                     
+    jeq r2, 0, lbb_888                              if r2 == (0 as i32 as i64 as u64) { pc += 14 }
+    mov64 r4, 0                                     r4 = 0 as i32 as i64 as u64
+    mov64 r3, 1                                     r3 = 1 as i32 as i64 as u64
+    mov64 r5, 16                                    r5 = 16 as i32 as i64 as u64
+    mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
+    jgt r5, r8, lbb_880                             if r5 > r8 { pc += 1 }
+    mov64 r2, 0                                     r2 = 0 as i32 as i64 as u64
+lbb_880:
+    ldxdw r1, [r1+0x8]                      
+    jeq r1, 0, lbb_883                              if r1 == (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r3, 0                                     r3 = 0 as i32 as i64 as u64
+lbb_883:
+    jsgt r4, r8, lbb_907                            if (r4 as i64) > (r8 as i64) { pc += 23 }
+    and64 r2, r3                                    r2 &= r3   ///  r2 = r2.and(r3)
+    and64 r2, 1                                     r2 &= 1   ///  r2 = r2.and(1)
+    jne r2, 0, lbb_907                              if r2 != (0 as i32 as i64 as u64) { pc += 20 }
+lbb_887:
+    lsh64 r8, 1                                     r8 <<= 1   ///  r8 = r8.wrapping_shl(1)
+lbb_888:
+    mov64 r0, 1                                     r0 = 1 as i32 as i64 as u64
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    jeq r8, 0, lbb_909                              if r8 == (0 as i32 as i64 as u64) { pc += 18 }
+    jsgt r8, -1, lbb_894                            if (r8 as i64) > (-1 as i32 as i64) { pc += 2 }
+    call function_836                       
+    syscall [invalid]                       
+lbb_894:
+    mov64 r1, r8                                    r1 = r8
+    mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
+    call function_126                       
+    mov64 r1, r8                                    r1 = r8
+    jne r0, 0, lbb_909                              if r0 != (0 as i32 as i64 as u64) { pc += 10 }
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    mov64 r2, r8                                    r2 = r8
+    call function_853                       
+    syscall [invalid]                       
+lbb_903:
+    mov64 r8, 0                                     r8 = 0 as i32 as i64 as u64
+    ldxdw r1, [r7+0x18]                     
+    jeq r1, 0, lbb_907                              if r1 == (0 as i32 as i64 as u64) { pc += 1 }
+    ja lbb_887                                      if true { pc += -20 }
+lbb_907:
+    mov64 r0, 1                                     r0 = 1 as i32 as i64 as u64
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+lbb_909:
+    mov64 r2, 0                                     r2 = 0 as i32 as i64 as u64
+    stxdw [r10-0x10], r2                    
+    stxdw [r10-0x18], r1                    
+    stxdw [r10-0x20], r0                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -32                                   r1 += -32   ///  r1 = r1.wrapping_add(-32 as i32 as i64 as u64)
+    lddw r2, 0x100004668 --> b"\x00\x00\x00\x00\x80\x16\x00\x00\x18\x00\x00\x00\x00\x00\x00\x00\x08\x00\…        r2 load str located at 4294985320
+    mov64 r3, r7                                    r3 = r7
+    call function_1261                      
+    jne r0, 0, lbb_927                              if r0 != (0 as i32 as i64 as u64) { pc += 7 }
+    ldxdw r1, [r10-0x10]                    
+    stxdw [r6+0x10], r1                     
+    ldxdw r1, [r10-0x18]                    
+    stxdw [r6+0x8], r1                      
+    ldxdw r1, [r10-0x20]                    
+    stxdw [r6+0x0], r1                      
+    exit                                    
+lbb_927:
+    mov64 r3, r10                                   r3 = r10
+    add64 r3, -1                                    r3 += -1   ///  r3 = r3.wrapping_add(-1 as i32 as i64 as u64)
+    lddw r1, 0x10000448a --> b"a formatting trait implementation returned an error"        r1 load str located at 4294984842
+    mov64 r2, 51                                    r2 = 51 as i32 as i64 as u64
+    lddw r4, 0x1000046c0 --> b"\x00\x00\x00\x00x\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00…        r4 load str located at 4294985408
+    lddw r5, 0x1000046e0 --> b"\x00\x00\x00\x00\xbdD\x00\x00\x18\x00\x00\x00\x00\x00\x00\x00d\x02\x00\x0…        r5 load str located at 4294985440
+    call function_1202                      
+    syscall [invalid]                       
+
+function_938:
+    mov64 r7, r2                                    r7 = r2
+    mov64 r6, r1                                    r6 = r1
+    mov64 r1, r7                                    r1 = r7
+    lsh64 r1, 32                                    r1 <<= 32   ///  r1 = r1.wrapping_shl(32)
+    rsh64 r1, 32                                    r1 >>= 32   ///  r1 = r1.wrapping_shr(32)
+    mov64 r2, 128                                   r2 = 128 as i32 as i64 as u64
+    jgt r2, r1, lbb_969                             if r2 > r1 { pc += 24 }
+    mov64 r2, 0                                     r2 = 0 as i32 as i64 as u64
+    stxw [r10-0x4], r2                      
+    mov64 r2, 2048                                  r2 = 2048 as i32 as i64 as u64
+    jgt r2, r1, lbb_981                             if r2 > r1 { pc += 32 }
+    mov64 r1, r7                                    r1 = r7
+    lsh64 r1, 32                                    r1 <<= 32   ///  r1 = r1.wrapping_shl(32)
+    rsh64 r1, 32                                    r1 >>= 32   ///  r1 = r1.wrapping_shr(32)
+    mov64 r2, 65536                                 r2 = 65536 as i32 as i64 as u64
+    jgt r2, r1, lbb_955                             if r2 > r1 { pc += 1 }
+    ja lbb_990                                      if true { pc += 35 }
+lbb_955:
+    mov64 r1, r7                                    r1 = r7
+    and64 r1, 63                                    r1 &= 63   ///  r1 = r1.and(63)
+    or64 r1, 128                                    r1 |= 128   ///  r1 = r1.or(128)
+    stxb [r10-0x2], r1                      
+    mov64 r1, r7                                    r1 = r7
+    rsh64 r1, 12                                    r1 >>= 12   ///  r1 = r1.wrapping_shr(12)
+    or64 r1, 224                                    r1 |= 224   ///  r1 = r1.or(224)
+    stxb [r10-0x4], r1                      
+    rsh64 r7, 6                                     r7 >>= 6   ///  r7 = r7.wrapping_shr(6)
+    and64 r7, 63                                    r7 &= 63   ///  r7 = r7.and(63)
+    or64 r7, 128                                    r7 |= 128   ///  r7 = r7.or(128)
+    stxb [r10-0x3], r7                      
+    mov64 r7, 3                                     r7 = 3 as i32 as i64 as u64
+    ja lbb_1009                                     if true { pc += 40 }
+lbb_969:
+    ldxdw r2, [r6+0x10]                     
+    ldxdw r1, [r6+0x8]                      
+    jne r2, r1, lbb_975                             if r2 != r1 { pc += 3 }
+    mov64 r1, r6                                    r1 = r6
+    call function_744                       
+    ldxdw r2, [r6+0x10]                     
+lbb_975:
+    ldxdw r1, [r6+0x0]                      
+    add64 r1, r2                                    r1 += r2   ///  r1 = r1.wrapping_add(r2)
+    stxb [r1+0x0], r7                       
+    add64 r2, 1                                     r2 += 1   ///  r2 = r2.wrapping_add(1 as i32 as i64 as u64)
+    stxdw [r6+0x10], r2                     
+    ja lbb_1026                                     if true { pc += 45 }
+lbb_981:
+    mov64 r1, r7                                    r1 = r7
+    and64 r1, 63                                    r1 &= 63   ///  r1 = r1.and(63)
+    or64 r1, 128                                    r1 |= 128   ///  r1 = r1.or(128)
+    stxb [r10-0x3], r1                      
+    rsh64 r7, 6                                     r7 >>= 6   ///  r7 = r7.wrapping_shr(6)
+    or64 r7, 192                                    r7 |= 192   ///  r7 = r7.or(192)
+    stxb [r10-0x4], r7                      
+    mov64 r7, 2                                     r7 = 2 as i32 as i64 as u64
+    ja lbb_1009                                     if true { pc += 19 }
+lbb_990:
+    mov64 r1, r7                                    r1 = r7
+    and64 r1, 63                                    r1 &= 63   ///  r1 = r1.and(63)
+    or64 r1, 128                                    r1 |= 128   ///  r1 = r1.or(128)
+    stxb [r10-0x1], r1                      
+    mov64 r1, r7                                    r1 = r7
+    rsh64 r1, 6                                     r1 >>= 6   ///  r1 = r1.wrapping_shr(6)
+    and64 r1, 63                                    r1 &= 63   ///  r1 = r1.and(63)
+    or64 r1, 128                                    r1 |= 128   ///  r1 = r1.or(128)
+    stxb [r10-0x2], r1                      
+    mov64 r1, r7                                    r1 = r7
+    rsh64 r1, 12                                    r1 >>= 12   ///  r1 = r1.wrapping_shr(12)
+    and64 r1, 63                                    r1 &= 63   ///  r1 = r1.and(63)
+    or64 r1, 128                                    r1 |= 128   ///  r1 = r1.or(128)
+    stxb [r10-0x3], r1                      
+    rsh64 r7, 18                                    r7 >>= 18   ///  r7 = r7.wrapping_shr(18)
+    and64 r7, 7                                     r7 &= 7   ///  r7 = r7.and(7)
+    or64 r7, 240                                    r7 |= 240   ///  r7 = r7.or(240)
+    stxb [r10-0x4], r7                      
+    mov64 r7, 4                                     r7 = 4 as i32 as i64 as u64
+lbb_1009:
+    ldxdw r8, [r6+0x10]                     
+    ldxdw r1, [r6+0x8]                      
+    sub64 r1, r8                                    r1 -= r8   ///  r1 = r1.wrapping_sub(r8)
+    jge r1, r7, lbb_1018                            if r1 >= r7 { pc += 5 }
+    mov64 r1, r6                                    r1 = r6
+    mov64 r2, r8                                    r2 = r8
+    mov64 r3, r7                                    r3 = r7
+    call function_696                       
+    ldxdw r8, [r6+0x10]                     
+lbb_1018:
+    ldxdw r1, [r6+0x0]                      
+    add64 r1, r8                                    r1 += r8   ///  r1 = r1.wrapping_add(r8)
+    mov64 r2, r10                                   r2 = r10
+    add64 r2, -4                                    r2 += -4   ///  r2 = r2.wrapping_add(-4 as i32 as i64 as u64)
+    mov64 r3, r7                                    r3 = r7
+    call function_2100                      
+    add64 r8, r7                                    r8 += r7   ///  r8 = r8.wrapping_add(r7)
+    stxdw [r6+0x10], r8                     
+lbb_1026:
+    exit                                    
+
+function_1027:
+    mov64 r6, r3                                    r6 = r3
+    mov64 r8, r2                                    r8 = r2
+    mov64 r7, r1                                    r7 = r1
+    ldxdw r9, [r7+0x10]                     
+    ldxdw r1, [r7+0x8]                      
+    sub64 r1, r9                                    r1 -= r9   ///  r1 = r1.wrapping_sub(r9)
+    jge r1, r6, lbb_1039                            if r1 >= r6 { pc += 5 }
+    mov64 r1, r7                                    r1 = r7
+    mov64 r2, r9                                    r2 = r9
+    mov64 r3, r6                                    r3 = r6
+    call function_696                       
+    ldxdw r9, [r7+0x10]                     
+lbb_1039:
+    ldxdw r1, [r7+0x0]                      
+    add64 r1, r9                                    r1 += r9   ///  r1 = r1.wrapping_add(r9)
+    mov64 r2, r8                                    r2 = r8
+    mov64 r3, r6                                    r3 = r6
+    call function_2100                      
+    add64 r9, r6                                    r9 += r6   ///  r9 = r9.wrapping_add(r6)
+    stxdw [r7+0x10], r9                     
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    exit                                    
+
+function_1048:
+    call function_938                       
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    exit                                    
+
+function_1051:
+    ldxdw r1, [r1+0x0]                      
+lbb_1052:
+    ja lbb_1052                                     if true { pc += -1 }
+
+function_1053:
+    exit                                    
+
+function_1054:
+    lddw r2, 0xbf0032581df6855a                     r2 load str located at -4683688258424109734
+    stxdw [r1+0x8], r2                      
+    lddw r2, 0xf6c0e91a5cd6f8ca                     r2 load str located at -666276445414819638
+    stxdw [r1+0x0], r2                      
+    exit                                    
+
+function_1061:
+    mov64 r8, r1                                    r8 = r1
+    ldxdw r6, [r2+0x20]                     
+    ldxdw r7, [r2+0x28]                     
+    ldxdw r9, [r7+0x18]                     
+    mov64 r1, r6                                    r1 = r6
+    lddw r2, 0x100004520 --> b"panicked at "        r2 load str located at 4294984992
+    mov64 r3, 12                                    r3 = 12 as i32 as i64 as u64
+    callx r9                                
+    mov64 r1, r0                                    r1 = r0
+    mov64 r0, 1                                     r0 = 1 as i32 as i64 as u64
+    jne r1, 0, lbb_1160                             if r1 != (0 as i32 as i64 as u64) { pc += 87 }
+    ldxdw r1, [r8+0x18]                     
+    mov64 r2, 0                                     r2 = 0 as i32 as i64 as u64
+    stxdw [r10-0x70], r2                    
+    lddw r2, 0x100004708 --> b"\x00\x00\x00\x00\xd8D\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…        r2 load str located at 4294985480
+    stxdw [r10-0x90], r2                    
+    mov64 r2, 3                                     r2 = 3 as i32 as i64 as u64
+    stxdw [r10-0x88], r2                    
+    stxdw [r10-0x78], r2                    
+    mov64 r2, r10                                   r2 = r10
+    add64 r2, -96                                   r2 += -96   ///  r2 = r2.wrapping_add(-96 as i32 as i64 as u64)
+    stxdw [r10-0x80], r2                    
+    mov64 r2, r1                                    r2 = r1
+    add64 r2, 20                                    r2 += 20   ///  r2 = r2.wrapping_add(20 as i32 as i64 as u64)
+    stxdw [r10-0x40], r2                    
+    lddw r2, 0x100004210 --> b"\xbf#\x00\x00\x00\x00\x00\x00a\x11\x00\x00\x00\x00\x00\x00\xb7\x02\x00\x0…        r2 load str located at 4294984208
+    stxdw [r10-0x38], r2                    
+    stxdw [r10-0x48], r2                    
+    mov64 r2, r1                                    r2 = r1
+    add64 r2, 16                                    r2 += 16   ///  r2 = r2.wrapping_add(16 as i32 as i64 as u64)
+    stxdw [r10-0x50], r2                    
+    lddw r2, 0x100004290 --> b"\xbf$\x00\x00\x00\x00\x00\x00y\x13\x08\x00\x00\x00\x00\x00y\x12\x00\x00\x…        r2 load str located at 4294984336
+    stxdw [r10-0x58], r2                    
+    stxdw [r10-0x60], r1                    
+    mov64 r3, r10                                   r3 = r10
+    add64 r3, -144                                  r3 += -144   ///  r3 = r3.wrapping_add(-144 as i32 as i64 as u64)
+    mov64 r1, r6                                    r1 = r6
+    mov64 r2, r7                                    r2 = r7
+    call function_1261                      
+    mov64 r1, r0                                    r1 = r0
+    mov64 r0, 1                                     r0 = 1 as i32 as i64 as u64
+    jne r1, 0, lbb_1160                             if r1 != (0 as i32 as i64 as u64) { pc += 53 }
+    ldxdw r1, [r8+0x10]                     
+    jeq r1, 0, lbb_1129                             if r1 == (0 as i32 as i64 as u64) { pc += 20 }
+    stxdw [r10-0xa8], r1                    
+    mov64 r1, r6                                    r1 = r6
+    lddw r2, 0x10000452c --> b":\x0a"               r2 load str located at 4294985004
+    mov64 r3, 2                                     r3 = 2 as i32 as i64 as u64
+    callx r9                                
+    mov64 r1, r0                                    r1 = r0
+    mov64 r0, 1                                     r0 = 1 as i32 as i64 as u64
+    jne r1, 0, lbb_1160                             if r1 != (0 as i32 as i64 as u64) { pc += 42 }
+    mov64 r8, r10                                   r8 = r10
+    add64 r8, -96                                   r8 += -96   ///  r8 = r8.wrapping_add(-96 as i32 as i64 as u64)
+    mov64 r1, r8                                    r1 = r8
+    ldxdw r2, [r10-0xa8]                    
+    mov64 r3, 48                                    r3 = 48 as i32 as i64 as u64
+    call function_2100                      
+    mov64 r1, r6                                    r1 = r6
+    mov64 r2, r7                                    r2 = r7
+    mov64 r3, r8                                    r3 = r8
+    call function_1261                      
+    ja lbb_1160                                     if true { pc += 31 }
+lbb_1129:
+    ldxdw r7, [r8+0x0]                      
+    ldxdw r1, [r8+0x8]                      
+    ldxdw r3, [r1+0x18]                     
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -160                                  r1 += -160   ///  r1 = r1.wrapping_add(-160 as i32 as i64 as u64)
+    mov64 r2, r7                                    r2 = r7
+    callx r3                                
+    lddw r1, 0xfdbc168100b1ef64                     r1 load str located at -163230743173927068
+    ldxdw r2, [r10-0x98]                    
+    xor64 r2, r1                                    r2 ^= r1   ///  r2 = r2.xor(r1)
+    lddw r1, 0xc1a2c89ccd1e7bc1                     r1 load str located at -4493808902380553279
+    ldxdw r3, [r10-0xa0]                    
+    xor64 r3, r1                                    r3 ^= r1   ///  r3 = r3.xor(r1)
+    or64 r3, r2                                     r3 |= r2   ///  r3 = r3.or(r2)
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    jeq r3, 0, lbb_1148                             if r3 == (0 as i32 as i64 as u64) { pc += 1 }
+    ja lbb_1160                                     if true { pc += 12 }
+lbb_1148:
+    mov64 r1, r6                                    r1 = r6
+    lddw r2, 0x10000452c --> b":\x0a"               r2 load str located at 4294985004
+    mov64 r3, 2                                     r3 = 2 as i32 as i64 as u64
+    callx r9                                
+    mov64 r1, r0                                    r1 = r0
+    mov64 r0, 1                                     r0 = 1 as i32 as i64 as u64
+    jne r1, 0, lbb_1160                             if r1 != (0 as i32 as i64 as u64) { pc += 4 }
+    ldxdw r3, [r7+0x8]                      
+    ldxdw r2, [r7+0x0]                      
+    mov64 r1, r6                                    r1 = r6
+    callx r9                                
+lbb_1160:
+    exit                                    
+
+function_1161:
+    mov64 r3, 1                                     r3 = 1 as i32 as i64 as u64
+    stxh [r10-0x8], r3                      
+    stxdw [r10-0x10], r2                    
+    stxdw [r10-0x18], r1                    
+    lddw r1, 0x100004738 --> b"\x00\x00\x00\x00\x08"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00…        r1 load str located at 4294985528
+    stxdw [r10-0x20], r1                    
+    lddw r1, 0x1000044d8 --> b"invalid argslibrary/core/src/fmt/mod.rsindex out o"        r1 load str located at 4294984920
+    stxdw [r10-0x28], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -40                                   r1 += -40   ///  r1 = r1.wrapping_add(-40 as i32 as i64 as u64)
+    call function_661                       
+    syscall [invalid]                       
+
+function_1175:
+    mov64 r6, r3                                    r6 = r3
+    stxdw [r10-0x58], r2                    
+    stxdw [r10-0x60], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -96                                   r1 += -96   ///  r1 = r1.wrapping_add(-96 as i32 as i64 as u64)
+    stxdw [r10-0x10], r1                    
+    lddw r1, 0x100004238 --> b"\xbf#\x00\x00\x00\x00\x00\x00y\x11\x00\x00\x00\x00\x00\x00\xb7\x02\x00\x0…        r1 load str located at 4294984248
+    stxdw [r10-0x8], r1                     
+    stxdw [r10-0x18], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -88                                   r1 += -88   ///  r1 = r1.wrapping_add(-88 as i32 as i64 as u64)
+    stxdw [r10-0x20], r1                    
+    mov64 r7, r10                                   r7 = r10
+    add64 r7, -80                                   r7 += -80   ///  r7 = r7.wrapping_add(-80 as i32 as i64 as u64)
+    mov64 r4, r10                                   r4 = r10
+    add64 r4, -32                                   r4 += -32   ///  r4 = r4.wrapping_add(-32 as i32 as i64 as u64)
+    mov64 r1, r7                                    r1 = r7
+    lddw r2, 0x100004758 --> b"\x00\x00"            r2 load str located at 4294985560
+    mov64 r3, 2                                     r3 = 2 as i32 as i64 as u64
+    mov64 r5, 2                                     r5 = 2 as i32 as i64 as u64
+    call function_1233                      
+    mov64 r1, r7                                    r1 = r7
+    mov64 r2, r6                                    r2 = r6
+    call function_1161                      
+    syscall [invalid]                       
+
+function_1202:
+    mov64 r6, r5                                    r6 = r5
+    stxdw [r10-0x68], r2                    
+    stxdw [r10-0x70], r1                    
+    stxdw [r10-0x58], r4                    
+    stxdw [r10-0x60], r3                    
+    lddw r1, 0x100004260 --> b"y\x13\x00\x00\x00\x00\x00\x00y\x11\x08\x00\x00\x00\x00\x00y\x14\x18\x00\x…        r1 load str located at 4294984288
+    stxdw [r10-0x8], r1                     
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -96                                   r1 += -96   ///  r1 = r1.wrapping_add(-96 as i32 as i64 as u64)
+    stxdw [r10-0x10], r1                    
+    lddw r1, 0x100004290 --> b"\xbf$\x00\x00\x00\x00\x00\x00y\x13\x08\x00\x00\x00\x00\x00y\x12\x00\x00\x…        r1 load str located at 4294984336
+    stxdw [r10-0x18], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -112                                  r1 += -112   ///  r1 = r1.wrapping_add(-112 as i32 as i64 as u64)
+    stxdw [r10-0x20], r1                    
+    mov64 r7, r10                                   r7 = r10
+    add64 r7, -80                                   r7 += -80   ///  r7 = r7.wrapping_add(-80 as i32 as i64 as u64)
+    mov64 r4, r10                                   r4 = r10
+    add64 r4, -32                                   r4 += -32   ///  r4 = r4.wrapping_add(-32 as i32 as i64 as u64)
+    mov64 r1, r7                                    r1 = r7
+    lddw r2, 0x100004778 --> b"\x00\x00"            r2 load str located at 4294985592
+    mov64 r3, 2                                     r3 = 2 as i32 as i64 as u64
+    mov64 r5, 2                                     r5 = 2 as i32 as i64 as u64
+    call function_1233                      
+    mov64 r1, r7                                    r1 = r7
+    mov64 r2, r6                                    r2 = r6
+    call function_1161                      
+    syscall [invalid]                       
+
+function_1233:
+    mov64 r0, r5                                    r0 = r5
+    add64 r0, 1                                     r0 += 1   ///  r0 = r0.wrapping_add(1 as i32 as i64 as u64)
+    jgt r3, r0, lbb_1244                            if r3 > r0 { pc += 8 }
+    jgt r5, r3, lbb_1244                            if r5 > r3 { pc += 7 }
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    stxdw [r1+0x20], r0                     
+    stxdw [r1+0x8], r3                      
+    stxdw [r1+0x0], r2                      
+    stxdw [r1+0x18], r5                     
+    stxdw [r1+0x10], r4                     
+    exit                                    
+lbb_1244:
+    mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
+    stxdw [r10-0x28], r1                    
+    lddw r1, 0x1000046f8 --> b"\x00\x00\x00\x00\xd8D\x00\x00\x0c\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…        r1 load str located at 4294985464
+    stxdw [r10-0x30], r1                    
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    stxdw [r10-0x10], r1                    
+    stxdw [r10-0x18], r1                    
+    lddw r1, 0x1000044d8 --> b"invalid argslibrary/core/src/fmt/mod.rsindex out o"        r1 load str located at 4294984920
+    stxdw [r10-0x20], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -48                                   r1 += -48   ///  r1 = r1.wrapping_add(-48 as i32 as i64 as u64)
+    lddw r2, 0x100004798 --> b"\x00\x00\x00\x00\xe4D\x00\x00\x1b\x00\x00\x00\x00\x00\x00\x00M\x01\x00\x0…        r2 load str located at 4294985624
+    call function_1161                      
+    syscall [invalid]                       
+
+function_1261:
+    mov64 r4, 3                                     r4 = 3 as i32 as i64 as u64
+    stxb [r10-0x8], r4                      
+    mov64 r4, 32                                    r4 = 32 as i32 as i64 as u64
+    stxdw [r10-0x10], r4                    
+    stxdw [r10-0x18], r2                    
+    stxdw [r10-0x20], r1                    
+    mov64 r7, 0                                     r7 = 0 as i32 as i64 as u64
+    stxdw [r10-0x30], r7                    
+    stxdw [r10-0x40], r7                    
+    ldxdw r8, [r3+0x20]                     
+    stxdw [r10-0x50], r3                    
+    jne r8, 0, lbb_1302                             if r8 != (0 as i32 as i64 as u64) { pc += 29 }
+    ldxdw r1, [r3+0x18]                     
+    jeq r1, 0, lbb_1382                             if r1 == (0 as i32 as i64 as u64) { pc += 107 }
+    ldxdw r2, [r10-0x50]                    
+    ldxdw r6, [r2+0x10]                     
+    lsh64 r1, 4                                     r1 <<= 4   ///  r1 = r1.wrapping_shl(4)
+    mov64 r8, r6                                    r8 = r6
+    add64 r8, r1                                    r8 += r1   ///  r8 = r8.wrapping_add(r1)
+    ldxdw r9, [r2+0x0]                      
+    add64 r9, 8                                     r9 += 8   ///  r9 = r9.wrapping_add(8 as i32 as i64 as u64)
+    ja lbb_1299                                     if true { pc += 16 }
+lbb_1283:
+    ldxdw r1, [r10-0x18]                    
+    ldxdw r4, [r1+0x18]                     
+    ldxdw r2, [r9-0x8]                      
+    ldxdw r1, [r10-0x20]                    
+    callx r4                                
+    jne r0, 0, lbb_1399                             if r0 != (0 as i32 as i64 as u64) { pc += 110 }
+lbb_1289:
+    ldxdw r3, [r6+0x8]                      
+    ldxdw r1, [r6+0x0]                      
+    mov64 r2, r10                                   r2 = r10
+    add64 r2, -64                                   r2 += -64   ///  r2 = r2.wrapping_add(-64 as i32 as i64 as u64)
+    callx r3                                
+    jne r0, 0, lbb_1399                             if r0 != (0 as i32 as i64 as u64) { pc += 104 }
+    add64 r7, 1                                     r7 += 1   ///  r7 = r7.wrapping_add(1 as i32 as i64 as u64)
+    add64 r9, 16                                    r9 += 16   ///  r9 = r9.wrapping_add(16 as i32 as i64 as u64)
+    add64 r6, 16                                    r6 += 16   ///  r6 = r6.wrapping_add(16 as i32 as i64 as u64)
+    jeq r6, r8, lbb_1382                            if r6 == r8 { pc += 83 }
+lbb_1299:
+    ldxdw r3, [r9+0x0]                      
+    jeq r3, 0, lbb_1289                             if r3 == (0 as i32 as i64 as u64) { pc += -12 }
+    ja lbb_1283                                     if true { pc += -19 }
+lbb_1302:
+    ldxdw r9, [r3+0x28]                     
+    jeq r9, 0, lbb_1382                             if r9 == (0 as i32 as i64 as u64) { pc += 78 }
+    add64 r8, 24                                    r8 += 24   ///  r8 = r8.wrapping_add(24 as i32 as i64 as u64)
+    mul64 r9, 56                                    r9 *= 56   ///  r9 = r9.wrapping_mul(56 as u64)
+    ldxdw r1, [r10-0x50]                    
+    ldxdw r2, [r1+0x10]                     
+    stxdw [r10-0x48], r2                    
+    ldxdw r6, [r1+0x0]                      
+    add64 r6, 8                                     r6 += 8   ///  r6 = r6.wrapping_add(8 as i32 as i64 as u64)
+    ja lbb_1329                                     if true { pc += 17 }
+lbb_1312:
+    stxdw [r10-0x28], r1                    
+    stxdw [r10-0x30], r2                    
+    ldxdw r1, [r8+0x8]                      
+    lsh64 r1, 4                                     r1 <<= 4   ///  r1 = r1.wrapping_shl(4)
+    ldxdw r2, [r10-0x48]                    
+    add64 r2, r1                                    r2 += r1   ///  r2 = r2.wrapping_add(r1)
+    ldxdw r3, [r2+0x8]                      
+    ldxdw r1, [r2+0x0]                      
+    mov64 r2, r10                                   r2 = r10
+    add64 r2, -64                                   r2 += -64   ///  r2 = r2.wrapping_add(-64 as i32 as i64 as u64)
+    callx r3                                
+    jne r0, 0, lbb_1399                             if r0 != (0 as i32 as i64 as u64) { pc += 75 }
+    add64 r7, 1                                     r7 += 1   ///  r7 = r7.wrapping_add(1 as i32 as i64 as u64)
+    add64 r8, 56                                    r8 += 56   ///  r8 = r8.wrapping_add(56 as i32 as i64 as u64)
+    add64 r6, 16                                    r6 += 16   ///  r6 = r6.wrapping_add(16 as i32 as i64 as u64)
+    add64 r9, -56                                   r9 += -56   ///  r9 = r9.wrapping_add(-56 as i32 as i64 as u64)
+    jeq r9, 0, lbb_1382                             if r9 == (0 as i32 as i64 as u64) { pc += 53 }
+lbb_1329:
+    ldxdw r3, [r6+0x0]                      
+    jeq r3, 0, lbb_1337                             if r3 == (0 as i32 as i64 as u64) { pc += 6 }
+    ldxdw r1, [r10-0x18]                    
+    ldxdw r4, [r1+0x18]                     
+    ldxdw r2, [r6-0x8]                      
+    ldxdw r1, [r10-0x20]                    
+    callx r4                                
+    jne r0, 0, lbb_1399                             if r0 != (0 as i32 as i64 as u64) { pc += 62 }
+lbb_1337:
+    ldxw r1, [r8+0x10]                      
+    stxw [r10-0x10], r1                     
+    ldxb r1, [r8+0x18]                      
+    stxb [r10-0x8], r1                      
+    ldxw r1, [r8+0x14]                      
+    stxw [r10-0xc], r1                      
+    ldxdw r1, [r8+0x0]                      
+    ldxdw r3, [r8-0x8]                      
+    jeq r3, 0, lbb_1349                             if r3 == (0 as i32 as i64 as u64) { pc += 3 }
+    mov64 r2, 0                                     r2 = 0 as i32 as i64 as u64
+    jeq r3, 1, lbb_1351                             if r3 == (1 as i32 as i64 as u64) { pc += 3 }
+    ja lbb_1361                                     if true { pc += 12 }
+lbb_1349:
+    mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
+    ja lbb_1361                                     if true { pc += 10 }
+lbb_1351:
+    lsh64 r1, 4                                     r1 <<= 4   ///  r1 = r1.wrapping_shl(4)
+    ldxdw r3, [r10-0x48]                    
+    add64 r3, r1                                    r3 += r1   ///  r3 = r3.wrapping_add(r1)
+    ldxdw r4, [r3+0x8]                      
+    lddw r5, 0x1000021f8 --> b"y\x11\x00\x00\x00\x00\x00\x00\x05\x00\xff\xff\x00\x00\x00\x00\x95\x00\x00…        r5 load str located at 4294975992
+    jne r4, r5, lbb_1361                            if r4 != r5 { pc += 3 }
+    mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
+    ldxdw r1, [r3+0x0]                      
+    ldxdw r1, [r1+0x0]                      
+lbb_1361:
+    stxdw [r10-0x38], r1                    
+    stxdw [r10-0x40], r2                    
+    ldxdw r1, [r8-0x10]                     
+    ldxdw r3, [r8-0x18]                     
+    jeq r3, 0, lbb_1369                             if r3 == (0 as i32 as i64 as u64) { pc += 3 }
+    mov64 r2, 0                                     r2 = 0 as i32 as i64 as u64
+    jeq r3, 1, lbb_1371                             if r3 == (1 as i32 as i64 as u64) { pc += 3 }
+    ja lbb_1312                                     if true { pc += -57 }
+lbb_1369:
+    mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
+    ja lbb_1312                                     if true { pc += -59 }
+lbb_1371:
+    lsh64 r1, 4                                     r1 <<= 4   ///  r1 = r1.wrapping_shl(4)
+    ldxdw r3, [r10-0x48]                    
+    add64 r3, r1                                    r3 += r1   ///  r3 = r3.wrapping_add(r1)
+    ldxdw r4, [r3+0x8]                      
+    lddw r5, 0x1000021f8 --> b"y\x11\x00\x00\x00\x00\x00\x00\x05\x00\xff\xff\x00\x00\x00\x00\x95\x00\x00…        r5 load str located at 4294975992
+    jne r4, r5, lbb_1312                            if r4 != r5 { pc += -66 }
+    mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
+    ldxdw r1, [r3+0x0]                      
+    ldxdw r1, [r1+0x0]                      
+    ja lbb_1312                                     if true { pc += -70 }
+lbb_1382:
+    ldxdw r1, [r10-0x50]                    
+    ldxdw r1, [r1+0x8]                      
+    jgt r1, r7, lbb_1386                            if r1 > r7 { pc += 1 }
+    ja lbb_1397                                     if true { pc += 11 }
+lbb_1386:
+    lsh64 r7, 4                                     r7 <<= 4   ///  r7 = r7.wrapping_shl(4)
+    ldxdw r1, [r10-0x50]                    
+    ldxdw r1, [r1+0x0]                      
+    add64 r1, r7                                    r1 += r7   ///  r1 = r1.wrapping_add(r7)
+    ldxdw r3, [r1+0x8]                      
+    ldxdw r2, [r1+0x0]                      
+    ldxdw r1, [r10-0x18]                    
+    ldxdw r4, [r1+0x18]                     
+    ldxdw r1, [r10-0x20]                    
+    callx r4                                
+    jne r0, 0, lbb_1399                             if r0 != (0 as i32 as i64 as u64) { pc += 2 }
+lbb_1397:
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    ja lbb_1400                                     if true { pc += 1 }
+lbb_1399:
+    mov64 r0, 1                                     r0 = 1 as i32 as i64 as u64
+lbb_1400:
+    exit                                    
+
+function_1401:
+    mov64 r0, r4                                    r0 = r4
+    mov64 r8, r1                                    r8 = r1
+    ldxdw r9, [r5-0xff8]                    
+    stxdw [r10-0x20], r9                    
+    jne r2, 0, lbb_1411                             if r2 != (0 as i32 as i64 as u64) { pc += 5 }
+    mov64 r1, 45                                    r1 = 45 as i32 as i64 as u64
+    stxdw [r10-0x18], r1                    
+    ldxw r7, [r8+0x34]                      
+    add64 r9, 1                                     r9 += 1   ///  r9 = r9.wrapping_add(1 as i32 as i64 as u64)
+    ja lbb_1417                                     if true { pc += 6 }
+lbb_1411:
+    mov64 r1, 1114112                               r1 = 1114112 as i32 as i64 as u64
+    stxdw [r10-0x18], r1                    
+    ldxw r7, [r8+0x34]                      
+    mov64 r1, r7                                    r1 = r7
+    and64 r1, 1                                     r1 &= 1   ///  r1 = r1.and(1)
+    jne r1, 0, lbb_1477                             if r1 != (0 as i32 as i64 as u64) { pc += 60 }
+lbb_1417:
+    ldxdw r1, [r5-0x1000]                   
+    stxdw [r10-0x28], r1                    
+    mov64 r4, 0                                     r4 = 0 as i32 as i64 as u64
+    mov64 r1, r7                                    r1 = r7
+    and64 r1, 4                                     r1 &= 4   ///  r1 = r1.and(4)
+    jeq r1, 0, lbb_1424                             if r1 == (0 as i32 as i64 as u64) { pc += 1 }
+    ja lbb_1451                                     if true { pc += 27 }
+lbb_1424:
+    ldxdw r1, [r8+0x0]                      
+    jne r1, 0, lbb_1436                             if r1 != (0 as i32 as i64 as u64) { pc += 10 }
+    ldxdw r9, [r8+0x28]                     
+    ldxdw r6, [r8+0x20]                     
+    mov64 r1, r6                                    r1 = r6
+    mov64 r2, r9                                    r2 = r9
+    ldxdw r3, [r10-0x18]                    
+    mov64 r5, r0                                    r5 = r0
+    call function_1598                      
+    mov64 r7, 1                                     r7 = 1 as i32 as i64 as u64
+    jne r0, 0, lbb_1474                             if r0 != (0 as i32 as i64 as u64) { pc += 39 }
+    ja lbb_1468                                     if true { pc += 32 }
+lbb_1436:
+    ldxdw r6, [r8+0x8]                      
+    jgt r6, r9, lbb_1439                            if r6 > r9 { pc += 1 }
+    ja lbb_1459                                     if true { pc += 20 }
+lbb_1439:
+    and64 r7, 8                                     r7 &= 8   ///  r7 = r7.and(8)
+    jeq r7, 0, lbb_1442                             if r7 == (0 as i32 as i64 as u64) { pc += 1 }
+    ja lbb_1505                                     if true { pc += 63 }
+lbb_1442:
+    sub64 r6, r9                                    r6 -= r9   ///  r6 = r6.wrapping_sub(r9)
+    ldxb r9, [r8+0x38]                      
+    stxdw [r10-0x30], r0                    
+    stxdw [r10-0x38], r4                    
+    jsgt r9, 1, lbb_1532                            if (r9 as i64) > (1 as i32 as i64) { pc += 85 }
+    jeq r9, 0, lbb_1551                             if r9 == (0 as i32 as i64 as u64) { pc += 103 }
+lbb_1448:
+    mov64 r9, r6                                    r9 = r6
+    mov64 r6, 0                                     r6 = 0 as i32 as i64 as u64
+    ja lbb_1551                                     if true { pc += 100 }
+lbb_1451:
+    mov64 r1, 32                                    r1 = 32 as i32 as i64 as u64
+    stxdw [r10-0x8], r3                     
+    jgt r1, r0, lbb_1482                            if r1 > r0 { pc += 28 }
+    mov64 r1, r3                                    r1 = r3
+    mov64 r6, r0                                    r6 = r0
+    mov64 r2, r0                                    r2 = r0
+    call function_1801                      
+    ja lbb_1493                                     if true { pc += 34 }
+lbb_1459:
+    ldxdw r9, [r8+0x28]                     
+    ldxdw r6, [r8+0x20]                     
+    mov64 r1, r6                                    r1 = r6
+    mov64 r2, r9                                    r2 = r9
+    ldxdw r3, [r10-0x18]                    
+    mov64 r5, r0                                    r5 = r0
+    call function_1598                      
+    mov64 r7, 1                                     r7 = 1 as i32 as i64 as u64
+    jne r0, 0, lbb_1474                             if r0 != (0 as i32 as i64 as u64) { pc += 6 }
+lbb_1468:
+    ldxdw r4, [r9+0x18]                     
+    mov64 r1, r6                                    r1 = r6
+    ldxdw r2, [r10-0x28]                    
+    ldxdw r3, [r10-0x20]                    
+    callx r4                                
+    mov64 r7, r0                                    r7 = r0
+lbb_1474:
+    and64 r7, 1                                     r7 &= 1   ///  r7 = r7.and(1)
+    mov64 r0, r7                                    r0 = r7
+    exit                                    
+lbb_1477:
+    mov64 r1, 43                                    r1 = 43 as i32 as i64 as u64
+    stxdw [r10-0x18], r1                    
+    ldxdw r9, [r10-0x20]                    
+    add64 r9, 1                                     r9 += 1   ///  r9 = r9.wrapping_add(1 as i32 as i64 as u64)
+    ja lbb_1417                                     if true { pc += -65 }
+lbb_1482:
+    mov64 r1, r0                                    r1 = r0
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    mov64 r6, r1                                    r6 = r1
+    jeq r1, 0, lbb_1493                             if r1 == (0 as i32 as i64 as u64) { pc += 7 }
+    ldxdw r1, [r10-0x8]                     
+    mov64 r2, r6                                    r2 = r6
+    ja lbb_1498                                     if true { pc += 9 }
+lbb_1489:
+    add64 r0, r3                                    r0 += r3   ///  r0 = r0.wrapping_add(r3)
+    add64 r1, 1                                     r1 += 1   ///  r1 = r1.wrapping_add(1 as i32 as i64 as u64)
+    add64 r2, -1                                    r2 += -1   ///  r2 = r2.wrapping_add(-1 as i32 as i64 as u64)
+    jne r2, 0, lbb_1498                             if r2 != (0 as i32 as i64 as u64) { pc += 5 }
+lbb_1493:
+    add64 r0, r9                                    r0 += r9   ///  r0 = r0.wrapping_add(r9)
+    ldxdw r4, [r10-0x8]                     
+    mov64 r9, r0                                    r9 = r0
+    mov64 r0, r6                                    r0 = r6
+    ja lbb_1424                                     if true { pc += -74 }
+lbb_1498:
+    ldxb r4, [r1+0x0]                       
+    lsh64 r4, 56                                    r4 <<= 56   ///  r4 = r4.wrapping_shl(56)
+    arsh64 r4, 56                                   r4 >>= 56 (signed)   ///  r4 = (r4 as i64).wrapping_shr(56)
+    mov64 r3, 1                                     r3 = 1 as i32 as i64 as u64
+    jsgt r4, -65, lbb_1489                          if (r4 as i64) > (-65 as i32 as i64) { pc += -14 }
+    mov64 r3, 0                                     r3 = 0 as i32 as i64 as u64
+    ja lbb_1489                                     if true { pc += -16 }
+lbb_1505:
+    ldxw r1, [r8+0x30]                      
+    stxdw [r10-0x40], r1                    
+    mov64 r1, 48                                    r1 = 48 as i32 as i64 as u64
+    stxw [r8+0x30], r1                      
+    ldxb r1, [r8+0x38]                      
+    stxdw [r10-0x48], r1                    
+    mov64 r7, 1                                     r7 = 1 as i32 as i64 as u64
+    stxb [r8+0x38], r7                      
+    ldxdw r1, [r8+0x20]                     
+    ldxdw r2, [r8+0x28]                     
+    stxdw [r10-0x8], r1                     
+    stxdw [r10-0x10], r2                    
+    ldxdw r3, [r10-0x18]                    
+    mov64 r5, r0                                    r5 = r0
+    call function_1598                      
+    jne r0, 0, lbb_1474                             if r0 != (0 as i32 as i64 as u64) { pc += -47 }
+    sub64 r6, r9                                    r6 -= r9   ///  r6 = r6.wrapping_sub(r9)
+    add64 r6, 1                                     r6 += 1   ///  r6 = r6.wrapping_add(1 as i32 as i64 as u64)
+lbb_1523:
+    add64 r6, -1                                    r6 += -1   ///  r6 = r6.wrapping_add(-1 as i32 as i64 as u64)
+    jeq r6, 0, lbb_1534                             if r6 == (0 as i32 as i64 as u64) { pc += 9 }
+    ldxdw r1, [r10-0x10]                    
+    ldxdw r3, [r1+0x20]                     
+    ldxdw r1, [r10-0x8]                     
+    mov64 r2, 48                                    r2 = 48 as i32 as i64 as u64
+    callx r3                                
+    jne r0, 0, lbb_1474                             if r0 != (0 as i32 as i64 as u64) { pc += -57 }
+    ja lbb_1523                                     if true { pc += -9 }
+lbb_1532:
+    jeq r9, 2, lbb_1547                             if r9 == (2 as i32 as i64 as u64) { pc += 14 }
+    ja lbb_1448                                     if true { pc += -86 }
+lbb_1534:
+    ldxdw r1, [r10-0x10]                    
+    ldxdw r4, [r1+0x18]                     
+    ldxdw r1, [r10-0x8]                     
+    ldxdw r2, [r10-0x28]                    
+    ldxdw r3, [r10-0x20]                    
+    callx r4                                
+    jne r0, 0, lbb_1474                             if r0 != (0 as i32 as i64 as u64) { pc += -67 }
+    ldxdw r1, [r10-0x48]                    
+    stxb [r8+0x38], r1                      
+    ldxdw r1, [r10-0x40]                    
+    stxw [r8+0x30], r1                      
+    mov64 r7, 0                                     r7 = 0 as i32 as i64 as u64
+    ja lbb_1474                                     if true { pc += -73 }
+lbb_1547:
+    mov64 r9, r6                                    r9 = r6
+    rsh64 r9, 1                                     r9 >>= 1   ///  r9 = r9.wrapping_shr(1)
+    add64 r6, 1                                     r6 += 1   ///  r6 = r6.wrapping_add(1 as i32 as i64 as u64)
+    rsh64 r6, 1                                     r6 >>= 1   ///  r6 = r6.wrapping_shr(1)
+lbb_1551:
+    add64 r9, 1                                     r9 += 1   ///  r9 = r9.wrapping_add(1 as i32 as i64 as u64)
+    ldxw r1, [r8+0x30]                      
+    stxdw [r10-0x10], r1                    
+    ldxdw r1, [r8+0x28]                     
+    stxdw [r10-0x8], r1                     
+    ldxdw r8, [r8+0x20]                     
+    mov64 r7, 1                                     r7 = 1 as i32 as i64 as u64
+lbb_1558:
+    add64 r9, -1                                    r9 += -1   ///  r9 = r9.wrapping_add(-1 as i32 as i64 as u64)
+    jeq r9, 0, lbb_1567                             if r9 == (0 as i32 as i64 as u64) { pc += 7 }
+    ldxdw r1, [r10-0x8]                     
+    ldxdw r3, [r1+0x20]                     
+    mov64 r1, r8                                    r1 = r8
+    ldxdw r2, [r10-0x10]                    
+    callx r3                                
+    jne r0, 0, lbb_1474                             if r0 != (0 as i32 as i64 as u64) { pc += -92 }
+    ja lbb_1558                                     if true { pc += -9 }
+lbb_1567:
+    mov64 r1, r8                                    r1 = r8
+    ldxdw r2, [r10-0x8]                     
+    ldxdw r3, [r10-0x18]                    
+    ldxdw r4, [r10-0x38]                    
+    ldxdw r5, [r10-0x30]                    
+    call function_1598                      
+    mov64 r7, 1                                     r7 = 1 as i32 as i64 as u64
+    jne r0, 0, lbb_1474                             if r0 != (0 as i32 as i64 as u64) { pc += -101 }
+    ldxdw r1, [r10-0x8]                     
+    ldxdw r4, [r1+0x18]                     
+    mov64 r1, r8                                    r1 = r8
+    ldxdw r2, [r10-0x28]                    
+    ldxdw r3, [r10-0x20]                    
+    callx r4                                
+    jne r0, 0, lbb_1474                             if r0 != (0 as i32 as i64 as u64) { pc += -108 }
+    mov64 r7, 0                                     r7 = 0 as i32 as i64 as u64
+lbb_1583:
+    mov64 r1, r6                                    r1 = r6
+    jeq r6, r7, lbb_1594                            if r6 == r7 { pc += 9 }
+    ldxdw r1, [r10-0x8]                     
+    ldxdw r3, [r1+0x20]                     
+    mov64 r1, r8                                    r1 = r8
+    ldxdw r2, [r10-0x10]                    
+    callx r3                                
+    add64 r7, 1                                     r7 += 1   ///  r7 = r7.wrapping_add(1 as i32 as i64 as u64)
+    jeq r0, 0, lbb_1583                             if r0 == (0 as i32 as i64 as u64) { pc += -9 }
+    add64 r7, -1                                    r7 += -1   ///  r7 = r7.wrapping_add(-1 as i32 as i64 as u64)
+    mov64 r1, r7                                    r1 = r7
+lbb_1594:
+    mov64 r7, 1                                     r7 = 1 as i32 as i64 as u64
+    jgt r6, r1, lbb_1474                            if r6 > r1 { pc += -122 }
+    mov64 r7, 0                                     r7 = 0 as i32 as i64 as u64
+    ja lbb_1474                                     if true { pc += -124 }
+
+function_1598:
+    mov64 r6, r5                                    r6 = r5
+    mov64 r7, r4                                    r7 = r4
+    mov64 r9, r2                                    r9 = r2
+    mov64 r8, r1                                    r8 = r1
+    mov64 r1, r3                                    r1 = r3
+    lsh64 r1, 32                                    r1 <<= 32   ///  r1 = r1.wrapping_shl(32)
+    rsh64 r1, 32                                    r1 >>= 32   ///  r1 = r1.wrapping_shr(32)
+    jeq r1, 1114112, lbb_1613                       if r1 == (1114112 as i32 as i64 as u64) { pc += 7 }
+    ldxdw r4, [r9+0x20]                     
+    mov64 r1, r8                                    r1 = r8
+    mov64 r2, r3                                    r2 = r3
+    callx r4                                
+    mov64 r1, r0                                    r1 = r0
+    mov64 r0, 1                                     r0 = 1 as i32 as i64 as u64
+    jne r1, 0, lbb_1615                             if r1 != (0 as i32 as i64 as u64) { pc += 2 }
+lbb_1613:
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    jne r7, 0, lbb_1616                             if r7 != (0 as i32 as i64 as u64) { pc += 1 }
+lbb_1615:
+    exit                                    
+lbb_1616:
+    ldxdw r4, [r9+0x18]                     
+    mov64 r1, r8                                    r1 = r8
+    mov64 r2, r7                                    r2 = r7
+    mov64 r3, r6                                    r3 = r6
+    callx r4                                
+    ja lbb_1615                                     if true { pc += -7 }
+
+function_1622:
+    mov64 r8, r1                                    r8 = r1
+    ldxdw r5, [r8+0x10]                     
+    ldxdw r1, [r8+0x0]                      
+    mov64 r4, r1                                    r4 = r1
+    or64 r4, r5                                     r4 |= r5   ///  r4 = r4.or(r5)
+    jeq r4, 0, lbb_1679                             if r4 == (0 as i32 as i64 as u64) { pc += 51 }
+    stxdw [r10-0x8], r2                     
+    stxdw [r10-0x10], r3                    
+    jeq r5, 0, lbb_1699                             if r5 == (0 as i32 as i64 as u64) { pc += 68 }
+    ldxdw r7, [r10-0x8]                     
+    mov64 r3, r7                                    r3 = r7
+    ldxdw r2, [r10-0x10]                    
+    add64 r3, r2                                    r3 += r2   ///  r3 = r3.wrapping_add(r2)
+    mov64 r2, 0                                     r2 = 0 as i32 as i64 as u64
+    ldxdw r4, [r8+0x18]                     
+    jeq r4, 0, lbb_1664                             if r4 == (0 as i32 as i64 as u64) { pc += 26 }
+    mov64 r6, 0                                     r6 = 0 as i32 as i64 as u64
+    ldxdw r7, [r10-0x8]                     
+lbb_1640:
+    mov64 r9, r7                                    r9 = r7
+    jeq r9, r3, lbb_1699                            if r9 == r3 { pc += 57 }
+    mov64 r7, r9                                    r7 = r9
+    add64 r7, 1                                     r7 += 1   ///  r7 = r7.wrapping_add(1 as i32 as i64 as u64)
+    ldxb r5, [r9+0x0]                       
+    mov64 r0, r5                                    r0 = r5
+    lsh64 r0, 56                                    r0 <<= 56   ///  r0 = r0.wrapping_shl(56)
+    arsh64 r0, 56                                   r0 >>= 56 (signed)   ///  r0 = (r0 as i64).wrapping_shr(56)
+    jsgt r0, -1, lbb_1660                           if (r0 as i64) > (-1 as i32 as i64) { pc += 11 }
+    mov64 r7, r9                                    r7 = r9
+    add64 r7, 2                                     r7 += 2   ///  r7 = r7.wrapping_add(2 as i32 as i64 as u64)
+    mov64 r0, r5                                    r0 = r5
+    mov64 r5, 224                                   r5 = 224 as i32 as i64 as u64
+    jgt r5, r0, lbb_1660                            if r5 > r0 { pc += 6 }
+    mov64 r7, r9                                    r7 = r9
+    add64 r7, 3                                     r7 += 3   ///  r7 = r7.wrapping_add(3 as i32 as i64 as u64)
+    mov64 r5, 240                                   r5 = 240 as i32 as i64 as u64
+    jgt r5, r0, lbb_1660                            if r5 > r0 { pc += 2 }
+    mov64 r7, r9                                    r7 = r9
+    add64 r7, 4                                     r7 += 4   ///  r7 = r7.wrapping_add(4 as i32 as i64 as u64)
+lbb_1660:
+    add64 r6, 1                                     r6 += 1   ///  r6 = r6.wrapping_add(1 as i32 as i64 as u64)
+    sub64 r2, r9                                    r2 -= r9   ///  r2 = r2.wrapping_sub(r9)
+    add64 r2, r7                                    r2 += r7   ///  r2 = r2.wrapping_add(r7)
+    jgt r4, r6, lbb_1640                            if r4 > r6 { pc += -24 }
+lbb_1664:
+    jeq r7, r3, lbb_1699                            if r7 == r3 { pc += 34 }
+    ldxb r3, [r7+0x0]                       
+    mov64 r4, r3                                    r4 = r3
+    lsh64 r4, 56                                    r4 <<= 56   ///  r4 = r4.wrapping_shl(56)
+    arsh64 r4, 56                                   r4 >>= 56 (signed)   ///  r4 = (r4 as i64).wrapping_shr(56)
+    jsgt r4, -1, lbb_1672                           if (r4 as i64) > (-1 as i32 as i64) { pc += 2 }
+    mov64 r4, 224                                   r4 = 224 as i32 as i64 as u64
+    jgt r4, r3, lbb_1672                            if r4 > r3 { pc += 0 }
+lbb_1672:
+    ldxdw r0, [r10-0x10]                    
+    ldxdw r6, [r10-0x8]                     
+    jeq r2, 0, lbb_1692                             if r2 == (0 as i32 as i64 as u64) { pc += 17 }
+    jgt r0, r2, lbb_1684                            if r0 > r2 { pc += 8 }
+    mov64 r3, 0                                     r3 = 0 as i32 as i64 as u64
+    jeq r2, r0, lbb_1692                            if r2 == r0 { pc += 14 }
+    ja lbb_1693                                     if true { pc += 14 }
+lbb_1679:
+    ldxdw r1, [r8+0x20]                     
+    ldxdw r4, [r8+0x28]                     
+    ldxdw r4, [r4+0x18]                     
+    callx r4                                
+    ja lbb_1793                                     if true { pc += 109 }
+lbb_1684:
+    mov64 r4, r6                                    r4 = r6
+    add64 r4, r2                                    r4 += r2   ///  r4 = r4.wrapping_add(r2)
+    mov64 r3, 0                                     r3 = 0 as i32 as i64 as u64
+    ldxb r4, [r4+0x0]                       
+    lsh64 r4, 56                                    r4 <<= 56   ///  r4 = r4.wrapping_shl(56)
+    arsh64 r4, 56                                   r4 >>= 56 (signed)   ///  r4 = (r4 as i64).wrapping_shr(56)
+    mov64 r5, -64                                   r5 = -64 as i32 as i64 as u64
+    jsgt r5, r4, lbb_1693                           if (r5 as i64) > (r4 as i64) { pc += 1 }
+lbb_1692:
+    mov64 r3, r6                                    r3 = r6
+lbb_1693:
+    jeq r3, 0, lbb_1695                             if r3 == (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r0, r2                                    r0 = r2
+lbb_1695:
+    stxdw [r10-0x10], r0                    
+    jeq r3, 0, lbb_1698                             if r3 == (0 as i32 as i64 as u64) { pc += 1 }
+    mov64 r6, r3                                    r6 = r3
+lbb_1698:
+    stxdw [r10-0x8], r6                     
+lbb_1699:
+    jne r1, 0, lbb_1707                             if r1 != (0 as i32 as i64 as u64) { pc += 7 }
+    ldxdw r1, [r8+0x20]                     
+    ldxdw r2, [r8+0x28]                     
+    ldxdw r4, [r2+0x18]                     
+    ldxdw r2, [r10-0x8]                     
+    ldxdw r3, [r10-0x10]                    
+    callx r4                                
+    ja lbb_1793                                     if true { pc += 86 }
+lbb_1707:
+    ldxdw r9, [r8+0x8]                      
+    mov64 r1, 32                                    r1 = 32 as i32 as i64 as u64
+    ldxdw r6, [r10-0x10]                    
+    ldxdw r7, [r10-0x8]                     
+    jgt r1, r6, lbb_1716                            if r1 > r6 { pc += 4 }
+    mov64 r1, r7                                    r1 = r7
+    mov64 r2, r6                                    r2 = r6
+    call function_1801                      
+    ja lbb_1725                                     if true { pc += 9 }
+lbb_1716:
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    jeq r6, 0, lbb_1725                             if r6 == (0 as i32 as i64 as u64) { pc += 7 }
+    mov64 r1, r7                                    r1 = r7
+    mov64 r2, r6                                    r2 = r6
+    ja lbb_1734                                     if true { pc += 13 }
+lbb_1721:
+    add64 r0, r3                                    r0 += r3   ///  r0 = r0.wrapping_add(r3)
+    add64 r1, 1                                     r1 += 1   ///  r1 = r1.wrapping_add(1 as i32 as i64 as u64)
+    add64 r2, -1                                    r2 += -1   ///  r2 = r2.wrapping_add(-1 as i32 as i64 as u64)
+    jne r2, 0, lbb_1734                             if r2 != (0 as i32 as i64 as u64) { pc += 9 }
+lbb_1725:
+    jge r0, r9, lbb_1741                            if r0 >= r9 { pc += 15 }
+    sub64 r9, r0                                    r9 -= r0   ///  r9 = r9.wrapping_sub(r0)
+    mov64 r6, 0                                     r6 = 0 as i32 as i64 as u64
+    ldxb r1, [r8+0x38]                      
+    jsgt r1, 1, lbb_1748                            if (r1 as i64) > (1 as i32 as i64) { pc += 18 }
+    jeq r1, 0, lbb_1754                             if r1 == (0 as i32 as i64 as u64) { pc += 23 }
+    mov64 r6, r9                                    r6 = r9
+    mov64 r9, 0                                     r9 = 0 as i32 as i64 as u64
+    ja lbb_1754                                     if true { pc += 20 }
+lbb_1734:
+    ldxb r4, [r1+0x0]                       
+    lsh64 r4, 56                                    r4 <<= 56   ///  r4 = r4.wrapping_shl(56)
+    arsh64 r4, 56                                   r4 >>= 56 (signed)   ///  r4 = (r4 as i64).wrapping_shr(56)
+    mov64 r3, 1                                     r3 = 1 as i32 as i64 as u64
+    jsgt r4, -65, lbb_1721                          if (r4 as i64) > (-65 as i32 as i64) { pc += -18 }
+    mov64 r3, 0                                     r3 = 0 as i32 as i64 as u64
+    ja lbb_1721                                     if true { pc += -20 }
+lbb_1741:
+    ldxdw r1, [r8+0x20]                     
+    ldxdw r2, [r8+0x28]                     
+    ldxdw r4, [r2+0x18]                     
+    mov64 r2, r7                                    r2 = r7
+    mov64 r3, r6                                    r3 = r6
+    callx r4                                
+    ja lbb_1793                                     if true { pc += 45 }
+lbb_1748:
+    jeq r1, 2, lbb_1750                             if r1 == (2 as i32 as i64 as u64) { pc += 1 }
+    ja lbb_1754                                     if true { pc += 4 }
+lbb_1750:
+    mov64 r6, r9                                    r6 = r9
+    rsh64 r6, 1                                     r6 >>= 1   ///  r6 = r6.wrapping_shr(1)
+    add64 r9, 1                                     r9 += 1   ///  r9 = r9.wrapping_add(1 as i32 as i64 as u64)
+    rsh64 r9, 1                                     r9 >>= 1   ///  r9 = r9.wrapping_shr(1)
+lbb_1754:
+    stxdw [r10-0x18], r9                    
+    add64 r6, 1                                     r6 += 1   ///  r6 = r6.wrapping_add(1 as i32 as i64 as u64)
+    ldxw r9, [r8+0x30]                      
+    ldxdw r7, [r8+0x28]                     
+    ldxdw r8, [r8+0x20]                     
+lbb_1759:
+    add64 r6, -1                                    r6 += -1   ///  r6 = r6.wrapping_add(-1 as i32 as i64 as u64)
+    jeq r6, 0, lbb_1769                             if r6 == (0 as i32 as i64 as u64) { pc += 8 }
+    ldxdw r3, [r7+0x20]                     
+    mov64 r1, r8                                    r1 = r8
+    mov64 r2, r9                                    r2 = r9
+    callx r3                                
+    mov64 r1, r0                                    r1 = r0
+    mov64 r0, 1                                     r0 = 1 as i32 as i64 as u64
+    jne r1, 0, lbb_1793                             if r1 != (0 as i32 as i64 as u64) { pc += 25 }
+    ja lbb_1759                                     if true { pc += -10 }
+lbb_1769:
+    ldxdw r4, [r7+0x18]                     
+    mov64 r1, r8                                    r1 = r8
+    ldxdw r2, [r10-0x8]                     
+    ldxdw r3, [r10-0x10]                    
+    callx r4                                
+    mov64 r1, r0                                    r1 = r0
+    mov64 r0, 1                                     r0 = 1 as i32 as i64 as u64
+    jne r1, 0, lbb_1793                             if r1 != (0 as i32 as i64 as u64) { pc += 16 }
+    mov64 r6, 0                                     r6 = 0 as i32 as i64 as u64
+lbb_1778:
+    ldxdw r2, [r10-0x18]                    
+    mov64 r1, r2                                    r1 = r2
+    jeq r2, r6, lbb_1789                            if r2 == r6 { pc += 8 }
+    ldxdw r3, [r7+0x20]                     
+    mov64 r1, r8                                    r1 = r8
+    mov64 r2, r9                                    r2 = r9
+    callx r3                                
+    add64 r6, 1                                     r6 += 1   ///  r6 = r6.wrapping_add(1 as i32 as i64 as u64)
+    jeq r0, 0, lbb_1778                             if r0 == (0 as i32 as i64 as u64) { pc += -9 }
+    add64 r6, -1                                    r6 += -1   ///  r6 = r6.wrapping_add(-1 as i32 as i64 as u64)
+    mov64 r1, r6                                    r1 = r6
+lbb_1789:
+    mov64 r0, 1                                     r0 = 1 as i32 as i64 as u64
+    ldxdw r2, [r10-0x18]                    
+    jgt r2, r1, lbb_1793                            if r2 > r1 { pc += 1 }
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+lbb_1793:
+    and64 r0, 1                                     r0 &= 1   ///  r0 = r0.and(1)
+    exit                                    
+
+function_1795:
+    ldxdw r4, [r1+0x20]                     
+    ldxdw r1, [r1+0x28]                     
+    ldxdw r5, [r1+0x18]                     
+    mov64 r1, r4                                    r1 = r4
+    callx r5                                
+    exit                                    
+
+function_1801:
+    mov64 r7, r1                                    r7 = r1
+    add64 r7, 7                                     r7 += 7   ///  r7 = r7.wrapping_add(7 as i32 as i64 as u64)
+    and64 r7, -8                                    r7 &= -8   ///  r7 = r7.and(-8)
+    mov64 r4, r7                                    r4 = r7
+    sub64 r4, r1                                    r4 -= r1   ///  r4 = r4.wrapping_sub(r1)
+    jgt r4, r2, lbb_1945                            if r4 > r2 { pc += 138 }
+    mov64 r5, r2                                    r5 = r2
+    sub64 r5, r4                                    r5 -= r4   ///  r5 = r5.wrapping_sub(r4)
+    mov64 r3, 8                                     r3 = 8 as i32 as i64 as u64
+    jgt r3, r5, lbb_1945                            if r3 > r5 { pc += 134 }
+    stxdw [r10-0x8], r4                     
+    mov64 r2, r5                                    r2 = r5
+    and64 r2, 7                                     r2 &= 7   ///  r2 = r2.and(7)
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    mov64 r3, 0                                     r3 = 0 as i32 as i64 as u64
+    jeq r7, r1, lbb_1824                            if r7 == r1 { pc += 7 }
+    mov64 r6, r1                                    r6 = r1
+    sub64 r6, r7                                    r6 -= r7   ///  r6 = r6.wrapping_sub(r7)
+    mov64 r7, r1                                    r7 = r1
+    ja lbb_1833                                     if true { pc += 12 }
+lbb_1821:
+    add64 r3, r9                                    r3 += r9   ///  r3 = r3.wrapping_add(r9)
+    add64 r7, 1                                     r7 += 1   ///  r7 = r7.wrapping_add(1 as i32 as i64 as u64)
+    jne r8, 1, lbb_1833                             if r8 != (1 as i32 as i64 as u64) { pc += 9 }
+lbb_1824:
+    ldxdw r4, [r10-0x8]                     
+    add64 r1, r4                                    r1 += r4   ///  r1 = r1.wrapping_add(r4)
+    jeq r2, 0, lbb_1848                             if r2 == (0 as i32 as i64 as u64) { pc += 21 }
+    mov64 r0, r5                                    r0 = r5
+    and64 r0, -8                                    r0 &= -8   ///  r0 = r0.and(-8)
+    mov64 r4, r1                                    r4 = r1
+    add64 r4, r0                                    r4 += r0   ///  r4 = r4.wrapping_add(r0)
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    ja lbb_1853                                     if true { pc += 20 }
+lbb_1833:
+    ldxb r4, [r7+0x0]                       
+    lsh64 r4, 56                                    r4 <<= 56   ///  r4 = r4.wrapping_shl(56)
+    arsh64 r4, 56                                   r4 >>= 56 (signed)   ///  r4 = (r4 as i64).wrapping_shr(56)
+    mov64 r8, 1                                     r8 = 1 as i32 as i64 as u64
+    mov64 r9, 1                                     r9 = 1 as i32 as i64 as u64
+    jsgt r4, -65, lbb_1840                          if (r4 as i64) > (-65 as i32 as i64) { pc += 1 }
+    mov64 r9, 0                                     r9 = 0 as i32 as i64 as u64
+lbb_1840:
+    add64 r6, 1                                     r6 += 1   ///  r6 = r6.wrapping_add(1 as i32 as i64 as u64)
+    jeq r6, 0, lbb_1821                             if r6 == (0 as i32 as i64 as u64) { pc += -21 }
+    mov64 r8, 0                                     r8 = 0 as i32 as i64 as u64
+    ja lbb_1821                                     if true { pc += -23 }
+lbb_1844:
+    add64 r0, r6                                    r0 += r6   ///  r0 = r0.wrapping_add(r6)
+    add64 r4, 1                                     r4 += 1   ///  r4 = r4.wrapping_add(1 as i32 as i64 as u64)
+    add64 r2, -1                                    r2 += -1   ///  r2 = r2.wrapping_add(-1 as i32 as i64 as u64)
+    jne r2, 0, lbb_1853                             if r2 != (0 as i32 as i64 as u64) { pc += 5 }
+lbb_1848:
+    rsh64 r5, 3                                     r5 >>= 3   ///  r5 = r5.wrapping_shr(3)
+    add64 r0, r3                                    r0 += r3   ///  r0 = r0.wrapping_add(r3)
+    lddw r6, 0x101010101010101                      r6 load str located at 72340172838076673
+    ja lbb_1926                                     if true { pc += 73 }
+lbb_1853:
+    ldxb r7, [r4+0x0]                       
+    lsh64 r7, 56                                    r7 <<= 56   ///  r7 = r7.wrapping_shl(56)
+    arsh64 r7, 56                                   r7 >>= 56 (signed)   ///  r7 = (r7 as i64).wrapping_shr(56)
+    mov64 r6, 1                                     r6 = 1 as i32 as i64 as u64
+    jsgt r7, -65, lbb_1844                          if (r7 as i64) > (-65 as i32 as i64) { pc += -14 }
+    mov64 r6, 0                                     r6 = 0 as i32 as i64 as u64
+    ja lbb_1844                                     if true { pc += -16 }
+lbb_1860:
+    ldxdw r8, [r2+0x0]                      
+    mov64 r7, r8                                    r7 = r8
+    rsh64 r7, 6                                     r7 >>= 6   ///  r7 = r7.wrapping_shr(6)
+    xor64 r8, -1                                    r8 ^= -1   ///  r8 = r8.xor(-1)
+    rsh64 r8, 7                                     r8 >>= 7   ///  r8 = r8.wrapping_shr(7)
+    or64 r8, r7                                     r8 |= r7   ///  r8 = r8.or(r7)
+    and64 r8, r6                                    r8 &= r6   ///  r8 = r8.and(r6)
+    add64 r8, r4                                    r8 += r4   ///  r8 = r8.wrapping_add(r4)
+    ldxdw r4, [r2+0x8]                      
+    mov64 r7, r4                                    r7 = r4
+    rsh64 r7, 6                                     r7 >>= 6   ///  r7 = r7.wrapping_shr(6)
+    xor64 r4, -1                                    r4 ^= -1   ///  r4 = r4.xor(-1)
+    rsh64 r4, 7                                     r4 >>= 7   ///  r4 = r4.wrapping_shr(7)
+    or64 r4, r7                                     r4 |= r7   ///  r4 = r4.or(r7)
+    and64 r4, r6                                    r4 &= r6   ///  r4 = r4.and(r6)
+    add64 r4, r8                                    r4 += r8   ///  r4 = r4.wrapping_add(r8)
+    ldxdw r8, [r2+0x10]                     
+    mov64 r7, r8                                    r7 = r8
+    rsh64 r7, 6                                     r7 >>= 6   ///  r7 = r7.wrapping_shr(6)
+    xor64 r8, -1                                    r8 ^= -1   ///  r8 = r8.xor(-1)
+    rsh64 r8, 7                                     r8 >>= 7   ///  r8 = r8.wrapping_shr(7)
+    or64 r8, r7                                     r8 |= r7   ///  r8 = r8.or(r7)
+    and64 r8, r6                                    r8 &= r6   ///  r8 = r8.and(r6)
+    add64 r8, r4                                    r8 += r4   ///  r8 = r8.wrapping_add(r4)
+    ldxdw r4, [r2+0x18]                     
+    mov64 r7, r4                                    r7 = r4
+    rsh64 r7, 6                                     r7 >>= 6   ///  r7 = r7.wrapping_shr(6)
+    xor64 r4, -1                                    r4 ^= -1   ///  r4 = r4.xor(-1)
+    rsh64 r4, 7                                     r4 >>= 7   ///  r4 = r4.wrapping_shr(7)
+    or64 r4, r7                                     r4 |= r7   ///  r4 = r4.or(r7)
+    and64 r4, r6                                    r4 &= r6   ///  r4 = r4.and(r6)
+    add64 r4, r8                                    r4 += r8   ///  r4 = r4.wrapping_add(r8)
+    add64 r2, 32                                    r2 += 32   ///  r2 = r2.wrapping_add(32 as i32 as i64 as u64)
+    jne r2, r1, lbb_1860                            if r2 != r1 { pc += -34 }
+lbb_1894:
+    mov64 r1, r9                                    r1 = r9
+    add64 r1, r5                                    r1 += r5   ///  r1 = r1.wrapping_add(r5)
+    ldxdw r8, [r10-0x8]                     
+    mov64 r2, r8                                    r2 = r8
+    and64 r2, 3                                     r2 &= 3   ///  r2 = r2.and(3)
+    mov64 r5, r3                                    r5 = r3
+    sub64 r5, r8                                    r5 -= r8   ///  r5 = r5.wrapping_sub(r8)
+    mov64 r7, r4                                    r7 = r4
+    stxdw [r10-0x10], r9                    
+    mov64 r9, r3                                    r9 = r3
+    lddw r3, 0xff00ff00ff00ff                       r3 load str located at 71777214294589695
+    and64 r7, r3                                    r7 &= r3   ///  r7 = r7.and(r3)
+    rsh64 r4, 8                                     r4 >>= 8   ///  r4 = r4.wrapping_shr(8)
+    and64 r4, r3                                    r4 &= r3   ///  r4 = r4.and(r3)
+    add64 r4, r7                                    r4 += r7   ///  r4 = r4.wrapping_add(r7)
+    lddw r7, 0x1000100010001                        r7 load str located at 281479271743489
+    mul64 r4, r7                                    r4 *= r7   ///  r4 = r4.wrapping_mul(r7)
+    rsh64 r4, 48                                    r4 >>= 48   ///  r4 = r4.wrapping_shr(48)
+    add64 r4, r0                                    r4 += r0   ///  r4 = r4.wrapping_add(r0)
+    mov64 r0, r4                                    r0 = r4
+    jeq r2, 0, lbb_1926                             if r2 == (0 as i32 as i64 as u64) { pc += 9 }
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    ldxdw r6, [r10-0x10]                    
+    jeq r2, 0, lbb_1977                             if r2 == (0 as i32 as i64 as u64) { pc += 57 }
+    and64 r8, 252                                   r8 &= 252   ///  r8 = r8.and(252)
+    lsh64 r8, 3                                     r8 <<= 3   ///  r8 = r8.wrapping_shl(3)
+    mov64 r1, 192                                   r1 = 192 as i32 as i64 as u64
+    jgt r1, r9, lbb_1958                            if r1 > r9 { pc += 34 }
+    mov64 r9, 192                                   r9 = 192 as i32 as i64 as u64
+    ja lbb_1958                                     if true { pc += 32 }
+lbb_1926:
+    mov64 r3, r5                                    r3 = r5
+    mov64 r9, r1                                    r9 = r1
+    jeq r3, 0, lbb_1989                             if r3 == (0 as i32 as i64 as u64) { pc += 60 }
+    mov64 r1, 192                                   r1 = 192 as i32 as i64 as u64
+    mov64 r2, r3                                    r2 = r3
+    jgt r1, r3, lbb_1933                            if r1 > r3 { pc += 1 }
+    mov64 r2, 192                                   r2 = 192 as i32 as i64 as u64
+lbb_1933:
+    mov64 r5, r2                                    r5 = r2
+    lsh64 r5, 3                                     r5 <<= 3   ///  r5 = r5.wrapping_shl(3)
+    mov64 r4, 0                                     r4 = 0 as i32 as i64 as u64
+    mov64 r1, 4                                     r1 = 4 as i32 as i64 as u64
+    stxdw [r10-0x8], r2                     
+    jgt r1, r2, lbb_1894                            if r1 > r2 { pc += -45 }
+    mov64 r2, r5                                    r2 = r5
+    and64 r2, 2016                                  r2 &= 2016   ///  r2 = r2.and(2016)
+    mov64 r1, r9                                    r1 = r9
+    add64 r1, r2                                    r1 += r2   ///  r1 = r1.wrapping_add(r2)
+    mov64 r2, r9                                    r2 = r9
+    ja lbb_1860                                     if true { pc += -85 }
+lbb_1945:
+    mov64 r0, 0                                     r0 = 0 as i32 as i64 as u64
+    jeq r2, 0, lbb_1989                             if r2 == (0 as i32 as i64 as u64) { pc += 42 }
+lbb_1947:
+    ldxb r4, [r1+0x0]                       
+    lsh64 r4, 56                                    r4 <<= 56   ///  r4 = r4.wrapping_shl(56)
+    arsh64 r4, 56                                   r4 >>= 56 (signed)   ///  r4 = (r4 as i64).wrapping_shr(56)
+    mov64 r3, 1                                     r3 = 1 as i32 as i64 as u64
+    jsgt r4, -65, lbb_1953                          if (r4 as i64) > (-65 as i32 as i64) { pc += 1 }
+    mov64 r3, 0                                     r3 = 0 as i32 as i64 as u64
+lbb_1953:
+    add64 r0, r3                                    r0 += r3   ///  r0 = r0.wrapping_add(r3)
+    add64 r1, 1                                     r1 += 1   ///  r1 = r1.wrapping_add(1 as i32 as i64 as u64)
+    add64 r2, -1                                    r2 += -1   ///  r2 = r2.wrapping_add(-1 as i32 as i64 as u64)
+    jeq r2, 0, lbb_1989                             if r2 == (0 as i32 as i64 as u64) { pc += 32 }
+    ja lbb_1947                                     if true { pc += -11 }
+lbb_1958:
+    add64 r6, r8                                    r6 += r8   ///  r6 = r6.wrapping_add(r8)
+    mov64 r2, 0                                     r2 = 0 as i32 as i64 as u64
+    and64 r9, 3                                     r9 &= 3   ///  r9 = r9.and(3)
+    lsh64 r9, 3                                     r9 <<= 3   ///  r9 = r9.wrapping_shl(3)
+    lddw r1, 0x101010101010101                      r1 load str located at 72340172838076673
+lbb_1964:
+    ldxdw r0, [r6+0x0]                      
+    mov64 r5, r0                                    r5 = r0
+    rsh64 r5, 6                                     r5 >>= 6   ///  r5 = r5.wrapping_shr(6)
+    xor64 r0, -1                                    r0 ^= -1   ///  r0 = r0.xor(-1)
+    rsh64 r0, 7                                     r0 >>= 7   ///  r0 = r0.wrapping_shr(7)
+    or64 r0, r5                                     r0 |= r5   ///  r0 = r0.or(r5)
+    and64 r0, r1                                    r0 &= r1   ///  r0 = r0.and(r1)
+    add64 r0, r2                                    r0 += r2   ///  r0 = r0.wrapping_add(r2)
+    add64 r6, 8                                     r6 += 8   ///  r6 = r6.wrapping_add(8 as i32 as i64 as u64)
+    add64 r9, -8                                    r9 += -8   ///  r9 = r9.wrapping_add(-8 as i32 as i64 as u64)
+    mov64 r2, r0                                    r2 = r0
+    jeq r9, 0, lbb_1977                             if r9 == (0 as i32 as i64 as u64) { pc += 1 }
+    ja lbb_1964                                     if true { pc += -13 }
+lbb_1977:
+    lddw r1, 0xff00ff00ff00ff                       r1 load str located at 71777214294589695
+    mov64 r2, r0                                    r2 = r0
+    and64 r2, r1                                    r2 &= r1   ///  r2 = r2.and(r1)
+    rsh64 r0, 8                                     r0 >>= 8   ///  r0 = r0.wrapping_shr(8)
+    and64 r0, r1                                    r0 &= r1   ///  r0 = r0.and(r1)
+    add64 r0, r2                                    r0 += r2   ///  r0 = r0.wrapping_add(r2)
+    lddw r1, 0x1000100010001                        r1 load str located at 281479271743489
+    mul64 r0, r1                                    r0 *= r1   ///  r0 = r0.wrapping_mul(r1)
+    rsh64 r0, 48                                    r0 >>= 48   ///  r0 = r0.wrapping_shr(48)
+    add64 r0, r4                                    r0 += r4   ///  r0 = r0.wrapping_add(r4)
+lbb_1989:
+    exit                                    
+
+function_1990:
+    mov64 r4, 39                                    r4 = 39 as i32 as i64 as u64
+    mov64 r5, 10000                                 r5 = 10000 as i32 as i64 as u64
+    jgt r5, r1, lbb_2025                            if r5 > r1 { pc += 32 }
+    mov64 r4, 0                                     r4 = 0 as i32 as i64 as u64
+lbb_1994:
+    mov64 r5, r1                                    r5 = r1
+    div64 r1, 10000                                 r1 /= 10000   ///  r1 = r1 / (10000 as u64)
+    mov64 r6, r1                                    r6 = r1
+    mul64 r6, 10000                                 r6 *= 10000   ///  r6 = r6.wrapping_mul(10000 as u64)
+    mov64 r0, r5                                    r0 = r5
+    sub64 r0, r6                                    r0 -= r6   ///  r0 = r0.wrapping_sub(r6)
+    mov64 r6, r0                                    r6 = r0
+    and64 r6, 65535                                 r6 &= 65535   ///  r6 = r6.and(65535)
+    div64 r6, 100                                   r6 /= 100   ///  r6 = r6 / (100 as u64)
+    mov64 r7, r6                                    r7 = r6
+    mul64 r7, 100                                   r7 *= 100   ///  r7 = r7.wrapping_mul(100 as u64)
+    sub64 r0, r7                                    r0 -= r7   ///  r0 = r0.wrapping_sub(r7)
+    mov64 r7, r10                                   r7 = r10
+    add64 r7, -39                                   r7 += -39   ///  r7 = r7.wrapping_add(-39 as i32 as i64 as u64)
+    add64 r7, r4                                    r7 += r4   ///  r7 = r7.wrapping_add(r4)
+    lsh64 r6, 1                                     r6 <<= 1   ///  r6 = r6.wrapping_shl(1)
+    lddw r8, 0x100004542 --> b"00010203040506070809101112131415161718192021222324"        r8 load str located at 4294985026
+    add64 r8, r6                                    r8 += r6   ///  r8 = r8.wrapping_add(r6)
+    ldxh r6, [r8+0x0]                       
+    stxh [r7+0x23], r6                      
+    lsh64 r0, 1                                     r0 <<= 1   ///  r0 = r0.wrapping_shl(1)
+    and64 r0, 65534                                 r0 &= 65534   ///  r0 = r0.and(65534)
+    lddw r6, 0x100004542 --> b"00010203040506070809101112131415161718192021222324"        r6 load str located at 4294985026
+    add64 r6, r0                                    r6 += r0   ///  r6 = r6.wrapping_add(r0)
+    ldxh r0, [r6+0x0]                       
+    stxh [r7+0x25], r0                      
+    add64 r4, -4                                    r4 += -4   ///  r4 = r4.wrapping_add(-4 as i32 as i64 as u64)
+    jgt r5, 99999999, lbb_1994                      if r5 > (99999999 as i32 as i64 as u64) { pc += -30 }
+    add64 r4, 39                                    r4 += 39   ///  r4 = r4.wrapping_add(39 as i32 as i64 as u64)
+lbb_2025:
+    jgt r1, 99, lbb_2027                            if r1 > (99 as i32 as i64 as u64) { pc += 1 }
+    ja lbb_2045                                     if true { pc += 18 }
+lbb_2027:
+    mov64 r5, r1                                    r5 = r1
+    and64 r5, 65535                                 r5 &= 65535   ///  r5 = r5.and(65535)
+    div64 r5, 100                                   r5 /= 100   ///  r5 = r5 / (100 as u64)
+    mov64 r0, r5                                    r0 = r5
+    mul64 r0, 100                                   r0 *= 100   ///  r0 = r0.wrapping_mul(100 as u64)
+    sub64 r1, r0                                    r1 -= r0   ///  r1 = r1.wrapping_sub(r0)
+    lsh64 r1, 1                                     r1 <<= 1   ///  r1 = r1.wrapping_shl(1)
+    and64 r1, 65534                                 r1 &= 65534   ///  r1 = r1.and(65534)
+    lddw r0, 0x100004542 --> b"00010203040506070809101112131415161718192021222324"        r0 load str located at 4294985026
+    add64 r0, r1                                    r0 += r1   ///  r0 = r0.wrapping_add(r1)
+    add64 r4, -2                                    r4 += -2   ///  r4 = r4.wrapping_add(-2 as i32 as i64 as u64)
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -39                                   r1 += -39   ///  r1 = r1.wrapping_add(-39 as i32 as i64 as u64)
+    add64 r1, r4                                    r1 += r4   ///  r1 = r1.wrapping_add(r4)
+    ldxh r0, [r0+0x0]                       
+    stxh [r1+0x0], r0                       
+    mov64 r1, r5                                    r1 = r5
+lbb_2045:
+    mov64 r5, 10                                    r5 = 10 as i32 as i64 as u64
+    jgt r5, r1, lbb_2058                            if r5 > r1 { pc += 11 }
+    lsh64 r1, 1                                     r1 <<= 1   ///  r1 = r1.wrapping_shl(1)
+    lddw r5, 0x100004542 --> b"00010203040506070809101112131415161718192021222324"        r5 load str located at 4294985026
+    add64 r5, r1                                    r5 += r1   ///  r5 = r5.wrapping_add(r1)
+    add64 r4, -2                                    r4 += -2   ///  r4 = r4.wrapping_add(-2 as i32 as i64 as u64)
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -39                                   r1 += -39   ///  r1 = r1.wrapping_add(-39 as i32 as i64 as u64)
+    add64 r1, r4                                    r1 += r4   ///  r1 = r1.wrapping_add(r4)
+    ldxh r5, [r5+0x0]                       
+    stxh [r1+0x0], r5                       
+    ja lbb_2064                                     if true { pc += 6 }
+lbb_2058:
+    add64 r4, -1                                    r4 += -1   ///  r4 = r4.wrapping_add(-1 as i32 as i64 as u64)
+    mov64 r5, r10                                   r5 = r10
+    add64 r5, -39                                   r5 += -39   ///  r5 = r5.wrapping_add(-39 as i32 as i64 as u64)
+    add64 r5, r4                                    r5 += r4   ///  r5 = r5.wrapping_add(r4)
+    add64 r1, 48                                    r1 += 48   ///  r1 = r1.wrapping_add(48 as i32 as i64 as u64)
+    stxb [r5+0x0], r1                       
+lbb_2064:
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -39                                   r1 += -39   ///  r1 = r1.wrapping_add(-39 as i32 as i64 as u64)
+    add64 r1, r4                                    r1 += r4   ///  r1 = r1.wrapping_add(r4)
+    stxdw [r10-0x1000], r1                  
+    mov64 r1, 39                                    r1 = 39 as i32 as i64 as u64
+    sub64 r1, r4                                    r1 -= r4   ///  r1 = r1.wrapping_sub(r4)
+    stxdw [r10-0xff8], r1                   
+    mov64 r5, r10                                   r5 = r10
+    mov64 r1, r3                                    r1 = r3
+    lddw r3, 0x1000044d8 --> b"invalid argslibrary/core/src/fmt/mod.rsindex out o"        r3 load str located at 4294984920
+    mov64 r4, 0                                     r4 = 0 as i32 as i64 as u64
+    call function_1401                      
+    exit                                    
+
+function_2078:
+    mov64 r3, r2                                    r3 = r2
+    ldxw r1, [r1+0x0]                       
+    mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
+    call function_1990                      
+    exit                                    
+
+function_2083:
+    mov64 r3, r2                                    r3 = r2
+    ldxdw r1, [r1+0x0]                      
+    mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
+    call function_1990                      
+    exit                                    
+
+function_2088:
+    ldxdw r3, [r1+0x0]                      
+    ldxdw r1, [r1+0x8]                      
+    ldxdw r4, [r1+0x18]                     
+    mov64 r1, r3                                    r1 = r3
+    callx r4                                
+    exit                                    
+
+function_2094:
+    mov64 r4, r2                                    r4 = r2
+    ldxdw r3, [r1+0x8]                      
+    ldxdw r2, [r1+0x0]                      
+    mov64 r1, r4                                    r1 = r4
+    call function_1622                      
+    exit                                    
+
+function_2100:
+    mov64 r6, r1                                    r6 = r1
+    mov64 r4, r3                                    r4 = r3
+    rsh64 r4, 3                                     r4 >>= 3   ///  r4 = r4.wrapping_shr(3)
+    mov64 r1, r4                                    r1 = r4
+    mul64 r1, -7                                    r1 *= -7   ///  r1 = r1.wrapping_mul(-7 as u64)
+    add64 r1, r3                                    r1 += r3   ///  r1 = r1.wrapping_add(r3)
+    jgt r1, 15, lbb_2131                            if r1 > (15 as i32 as i64 as u64) { pc += 24 }
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    mov64 r5, 8                                     r5 = 8 as i32 as i64 as u64
+    jgt r5, r3, lbb_2120                            if r5 > r3 { pc += 10 }
+    mov64 r5, 0                                     r5 = 0 as i32 as i64 as u64
+lbb_2111:
+    mov64 r0, r6                                    r0 = r6
+    add64 r0, r1                                    r0 += r1   ///  r0 = r0.wrapping_add(r1)
+    mov64 r7, r2                                    r7 = r2
+    add64 r7, r1                                    r7 += r1   ///  r7 = r7.wrapping_add(r1)
+    ldxdw r7, [r7+0x0]                      
+    stxdw [r0+0x0], r7                      
+    add64 r1, 8                                     r1 += 8   ///  r1 = r1.wrapping_add(8 as i32 as i64 as u64)
+    add64 r5, 1                                     r5 += 1   ///  r5 = r5.wrapping_add(1 as i32 as i64 as u64)
+    jgt r4, r5, lbb_2111                            if r4 > r5 { pc += -9 }
+lbb_2120:
+    jsge r1, r3, lbb_2129                           if (r1 as i64) >= (r3 as i64) { pc += 8 }
+lbb_2121:
+    mov64 r4, r6                                    r4 = r6
+    add64 r4, r1                                    r4 += r1   ///  r4 = r4.wrapping_add(r1)
+    mov64 r5, r2                                    r5 = r2
+    add64 r5, r1                                    r5 += r1   ///  r5 = r5.wrapping_add(r1)
+    ldxb r5, [r5+0x0]                       
+    stxb [r4+0x0], r5                       
+    add64 r1, 1                                     r1 += 1   ///  r1 = r1.wrapping_add(1 as i32 as i64 as u64)
+    jsgt r3, r1, lbb_2121                           if (r3 as i64) > (r1 as i64) { pc += -8 }
+lbb_2129:
+    mov64 r0, r6                                    r0 = r6
+    exit                                    
+lbb_2131:
+    mov64 r1, r6                                    r1 = r6
+    syscall [invalid]                       
+    ja lbb_2129                                     if true { pc += -5 }

@@ -7,6 +7,12 @@ use starlark::eval::{Evaluator, ReturnFileLoader};
 use starlark::syntax::{AstModule, Dialect, DialectTypes};
 use std::collections::HashMap;
 
+/// Represents the type of input a Starlark rule operates on.
+///
+/// Supported types include:
+/// - `Syn`: syntax-level (AST)
+/// - `Mir`: MIR (Mid-level IR)
+/// - `LlvmIr`: LLVM IR-level
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum StarlarkRuleType {
     Syn,
@@ -14,6 +20,9 @@ pub enum StarlarkRuleType {
     LlvmIr,
 }
 
+/// A representation of a single loaded Starlark rule file.
+///
+/// Includes the filename, file content, and the rule type.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StarlarkRule {
     pub filename: String,
@@ -21,8 +30,10 @@ pub struct StarlarkRule {
     pub rule_type: StarlarkRuleType,
 }
 
+/// A collection of Starlark rules loaded from a directory.
 pub type StarlarkRulesDir = Vec<StarlarkRule>;
 
+/// Provides a way to load Starlark rule files from a directory into a `StarlarkRulesDir`.
 pub trait StarlarkRuleDirExt
 where
     Self: Sized,
@@ -31,6 +42,15 @@ where
 }
 
 impl StarlarkRuleDirExt for StarlarkRulesDir {
+    /// Loads all `.star` files from the specified directory into a `StarlarkRulesDir`.
+    ///
+    /// # Arguments
+    ///
+    /// * `rules_dir` - Path to the directory containing Starlark `.star` rule files.
+    ///
+    /// # Returns
+    ///
+    /// A vector of `StarlarkRule` objects if loading succeeds, or an error if the directory is invalid or contains faulty files.
     fn new_from_dir(rules_dir: &String) -> anyhow::Result<Self> {
         let path = std::path::Path::new(rules_dir);
 
@@ -81,6 +101,10 @@ impl StarlarkRuleDirExt for StarlarkRulesDir {
     }
 }
 
+/// Provides an environment to evaluate Starlark rule files against parsed Rust ASTs.
+///
+/// The engine wraps the standard dialect and extends it with useful libraries
+/// for JSON handling, filtering, mapping, typing, and more.
 #[derive(Debug, Clone)]
 pub struct StarlarkEngine {
     pub dialect: Dialect,
@@ -89,6 +113,9 @@ pub struct StarlarkEngine {
 
 // TODO: Script header/footer
 impl StarlarkEngine {
+    /// Initializes a new Starlark evaluation engine with standard extensions enabled.
+    ///
+    /// Includes libraries such as JSON, Map, Filter, Typing, StructType, Print, and SetType.
     pub fn new() -> Self {
         Self {
             dialect: Dialect {
@@ -110,6 +137,9 @@ impl StarlarkEngine {
         }
     }
 
+    /// Wraps a Starlark rule source into a standardized format expected by the runtime.
+    ///
+    /// Adds import boilerplate and ensures a common function interface is exposed.
     fn wrap_syn_rule(code: String) -> String {
         format!(
             r#"# ! GENERATED
@@ -135,6 +165,20 @@ syn_rule_loader
         )
     }
 
+    /// Evaluates a Starlark rule script against a `SynAst` structure.
+    ///
+    /// Wraps the script with a common interface, prepares evaluation context,
+    /// and invokes the rule with the target AST.
+    ///
+    /// # Arguments
+    ///
+    /// * `filename` - Path or name of the rule file (used for diagnostics).
+    /// * `code` - Source code of the Starlark rule.
+    /// * `syn_ast` - The syntax tree structure to analyze.
+    ///
+    /// # Returns
+    ///
+    /// A `String` containing a JSON result, or an error if evaluation fails.
     pub fn eval_syn_rule(
         &self,
         filename: &str,
@@ -175,6 +219,15 @@ syn_rule_loader
         .map_err(|e| e.into_anyhow())?
     }
 
+    /// Loads and freeze the environment, all its value will become immutable afterwards.
+    ///
+    /// # Arguments
+    ///
+    /// * `filename` - Path to the Starlark module file.
+    ///
+    /// # Returns
+    ///
+    /// A `FrozenModule` or an error if loading or evaluation fails.
     fn load_frozen_module(&self, filename: &str) -> anyhow::Result<FrozenModule> {
         let code = match static_dir::read_file(filename) {
             Ok(code) => code,
@@ -219,6 +272,15 @@ syn_rule_loader
         module.freeze().map_err(|e| e.into())
     }
 
+    /// Loads all module dependencies from `load()` statements in a given AST.
+    ///
+    /// # Arguments
+    ///
+    /// * `starlark_ast` - The parsed AST of a Starlark script.
+    ///
+    /// # Returns
+    ///
+    /// A map of module names to frozen modules, or an error if any module fails to load.
     fn load_modules<'a>(
         &self,
         starlark_ast: &'a AstModule,

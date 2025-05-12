@@ -11,6 +11,7 @@ use crate::{helpers, Commands};
 use log::{debug, error, info};
 use std::process::{Command, Stdio};
 
+
 pub struct SastCmd {
     pub target_dir: String,
     pub rules_dir: String,
@@ -38,6 +39,20 @@ impl SastCmd {
     }
 }
 
+/// Runs a series of checks before launching SAST analysis.
+///
+/// Verifies that the target project directory and rules directory exist.
+///
+/// # Arguments
+///
+/// * `target_dir` - Path to the project to be analyzed.
+/// * `rules_dir` - Path to the directory containing SAST rules.
+/// * `syn_scan_only` - If true, only perform syntactic scanning (no build required).
+///
+/// # Returns
+///
+/// `true` if all checks passed, otherwise `false`.
+
 fn checks_before_sast(cmd: &SastCmd) -> bool {
     [
         BeforeCheck {
@@ -60,6 +75,19 @@ fn checks_before_sast(cmd: &SastCmd) -> bool {
     .all(|check| check)
 }
 
+/// Launches the static analysis (SAST) workflow on the given project using the provided rules.
+///
+/// Automatically detects the project type and dispatches to the appropriate SAST handler.
+///
+/// # Arguments
+///
+/// * `target_dir` - The path to the project root directory.
+/// * `rules_dir` - The directory where rule definitions are stored.
+/// * `syn_scan_only` - If true, only perform syntax tree analysis without full project build.
+///
+/// # Returns
+///
+/// A `SastState` object on success, or an error if any checks fail or the project type is unsupported.
 pub fn run(cmd: &SastCmd) -> anyhow::Result<Vec<SastState>> {
     debug!("Starting SAST process for {}", cmd.target_dir);
 
@@ -137,8 +165,20 @@ fn scan_directory_recursively(cmd: &SastCmd) -> anyhow::Result<Vec<SastState>> {
     Ok(results)
 }
 
-
-
+/// Performs static analysis on an Anchor-based project using rule files.
+///
+/// Syntax trees are generated from the `programs/` directory. If `syn_scan_only` is false,
+/// this function could later support additional build-based analysis.
+///
+/// # Arguments
+///
+/// * `target_dir` - The path to the root of the Anchor project.
+/// * `rules_dir` - The path to the rule definitions directory.
+/// * `syn_scan_only` - If true, skips any future deep analysis beyond syntax trees.
+///
+/// # Returns
+///
+/// A populated `SastState` if analysis succeeds, or an error if rule application fails.
 fn sast_anchor_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
     // ? FUTURE: Use Anchor.toml to get programs paths?
     let mut sast_state = SastState::new(
@@ -163,6 +203,20 @@ fn sast_anchor_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
     Ok(sast_state)
 }
 
+/// Performs static analysis on an SBF (non-Anchor) project using rule files.
+///
+/// Syntax trees are generated from the `src/` directory. If `syn_scan_only` is false,
+/// this function could be extended to support build-time inspection.
+///
+/// # Arguments
+///
+/// * `target_dir` - The path to the root of the SBF project.
+/// * `rules_dir` - The path to the rule definitions directory.
+/// * `syn_scan_only` - If true, skips deeper analysis stages.
+///
+/// # Returns
+///
+/// A `SastState` if the rule application and syntax scanning succeed, or an error otherwise.
 fn sast_sbf_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
     // ? FUTURE: Use Cargo.toml to get programs paths?
     let mut sast_state = SastState::new(

@@ -5,10 +5,25 @@ use crate::state::sast_state::{Certainty, SastState, Severity, SynAst, SynAstMap
 use anyhow::{Context, Result};
 use prettytable::{format, row, Cell, Row, Table};
 
+/// Utility responsible for displaying SAST analysis results in a human-readable format.
+///
+/// Supports printing summaries, detailed match reports, and JSON output.
 #[derive(Debug, Clone)]
 pub struct SastPrinter;
 
 impl SastPrinter {
+    /// Displays a full summary and detailed output of the SAST state results.
+    ///
+    /// Outputs number of scanned files, a summary table of rule matches,
+    /// and detailed findings with metadata and source location.
+    ///
+    /// # Arguments
+    ///
+    /// * `state` - The `SastState` containing results to print.
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success or an error if printing fails.
     pub fn print_sast_state(state: &SastState) -> Result<()> {
         println!("Files scanned: {}", state.syn_ast_map.count_files());
 
@@ -45,6 +60,17 @@ impl SastPrinter {
         Ok(())
     }
 
+    /// Displays a summary table of all rule matches across all analyzed files.
+    ///
+    /// Each row includes the rule name, severity, certainty, file name, and match count.
+    ///
+    /// # Arguments
+    ///
+    /// * `results` - A slice of `SynAstResult` entries to summarize.
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success or an error if rendering fails.
     pub fn print_rules_summary(results: &[SynAstResult]) -> Result<()> {
         let mut table = Table::new();
         table.set_format(*format::consts::FORMAT_BOX_CHARS);
@@ -118,7 +144,16 @@ impl SastPrinter {
 
         Ok(())
     }
-
+    /// Prints detailed information about a single rule result, including all matches.
+    ///
+    /// # Arguments
+    ///
+    /// * `result` - The rule result to display.
+    /// * `syn_ast_map` - A map of syntax trees used to resolve source locations.
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success, or an error if printing fails.
     pub fn print_result(
         filename: String,
         result: &SynAstResult,
@@ -148,7 +183,16 @@ impl SastPrinter {
 
         Ok(())
     }
-
+    /// Displays the metadata of a given rule, including version, author,
+    /// severity, certainty, and description.
+    ///
+    /// # Arguments
+    ///
+    /// * `metadata` - Metadata object to display.
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` on success.
     fn print_rule_metadata(metadata: &SynRuleMetadata, rule_filename: String) -> Result<()> {
         let mut table = Table::new();
         table.set_format(*format::consts::FORMAT_NO_BORDER_LINE_SEPARATOR);
@@ -224,6 +268,15 @@ impl SastPrinter {
         None
     }
 
+    /// Outputs the entire result set in a prettified JSON format.
+    ///
+    /// # Arguments
+    ///
+    /// * `results` - A slice of `SynAstResult` entries to serialize.
+    ///
+    /// # Returns
+    ///
+    /// `Ok(())` if the output was successful, or an error if serialization fails.
     pub fn print_results_as_json(results: &[SynAstResult]) -> Result<()> {
         let json =
             serde_json::to_string_pretty(results).context("Failed to serialize results to JSON")?;
@@ -233,6 +286,7 @@ impl SastPrinter {
 }
 
 impl SynAstResult {
+    /// Converts a `SynAstResult` into a `prettytable::Row` suitable for tabular display.
     pub fn to_table_row(&self) -> Row {
         Row::new(vec![
             Cell::new(&self.rule_metadata.name),
