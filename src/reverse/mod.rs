@@ -29,6 +29,7 @@ use solana_sbpf::{
     static_analysis::Analysis,
     vm::Config,
 };
+use utils::RegisterTracker;
 use std::{fs::File, io::Read as _, path::Path, sync::Arc, time::Duration};
 use test_utils::TestContextObject;
 
@@ -136,17 +137,23 @@ pub fn analyze_program(
     // Used to track all immediate datas in order to create a table with their possible associated values
     let mut imm_tracker = ImmediateTracker::new(program.len() + MM_RODATA_START as usize);
     let imm_tracker_wrapped = Some(&mut imm_tracker);
+    
+    let mut reg_tracker = RegisterTracker::new();
+    let reg_tracker_wrapped = Some(&mut reg_tracker);
 
     match mode {
         ReverseOutputMode::Disassembly(path) => {
-            let _ = disassemble_wrapper(&program, &mut analysis, imm_tracker_wrapped, &path);
+            let _ = disassemble_wrapper(&program, &mut analysis, imm_tracker_wrapped, reg_tracker_wrapped, &path);
         }
         ReverseOutputMode::ControlFlowGraph(path) => {
-            export_cfg_to_dot(&program, &mut analysis, &path, reduced, only_entrypoint)?;
+            export_cfg_to_dot(&program, &mut analysis, reg_tracker_wrapped, &path, reduced, only_entrypoint)?;
         }
         ReverseOutputMode::DisassemblyAndCFG(path) => {
-            let _ = disassemble_wrapper(&program, &mut analysis, imm_tracker_wrapped, &path);
-            export_cfg_to_dot(&program, &mut analysis, &path, reduced, only_entrypoint)?;
+            let _ = disassemble_wrapper(&program, &mut analysis, imm_tracker_wrapped, reg_tracker_wrapped, &path);
+            // shadowing old one ref
+            let mut reg_tracker = RegisterTracker::new();
+            let reg_tracker_wrapped = Some(&mut reg_tracker);
+            export_cfg_to_dot(&program, &mut analysis, reg_tracker_wrapped, &path, reduced, only_entrypoint)?;
         }
     }
     Ok(())

@@ -2,11 +2,15 @@ use solana_sbpf::static_analysis::Analysis;
 use std::collections::{BTreeMap, HashSet};
 use std::u8;
 
-use crate::reverse::utils::{MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR, get_string_repr};
+use crate::reverse::utils::{
+    update_string_resolution, MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR,
+};
 use crate::reverse::OutputFile;
 use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
+
+use super::utils::RegisterTracker;
 
 /// Exports the control flow graph (CFG) of a program to a Graphviz-compatible DOT file.
 /// Each function is rendered as a subgraph showing basic blocks (`lbb_XXX`) and instruction-level content.
@@ -31,13 +35,20 @@ use std::path::{Path, PathBuf};
 pub fn export_cfg_to_dot<P: AsRef<Path>>(
     program: &[u8],
     analysis: &mut Analysis,
+    reg_tracker_wrapped: Option<&mut RegisterTracker>,
     path: P,
     reduced: bool,
-    only_entrypoint: bool
+    only_entrypoint: bool,
 ) -> std::io::Result<()> {
     let mut cfg_path = PathBuf::from(path.as_ref());
     cfg_path.push(OutputFile::Cfg.default_filename());
     let mut output = File::create(cfg_path)?;
+
+    let mut reg_tracker_default = RegisterTracker::new();
+    let reg_tracker: &mut RegisterTracker = match reg_tracker_wrapped {
+        Some(ref_mut) => ref_mut,
+        None => &mut reg_tracker_default,
+    };
 
     /// Escapes a string for safe inclusion in HTML (used in DOT labels).
     fn html_escape(string: &str) -> String {
@@ -62,16 +73,18 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
         program: &[u8],
         output: &mut W,
         analysis: &Analysis,
+        reg_tracker: &mut RegisterTracker,
         function_range: std::ops::Range<usize>,
         alias_nodes: &mut HashSet<usize>,
         visited_nodes: &mut HashSet<usize>,
         cfg_node_start: usize,
-        reduced:bool,
+        reduced: bool,
     ) -> std::io::Result<()> {
         let cfg_node = &analysis.cfg_nodes[&cfg_node_start];
         let insns = analysis.instructions[cfg_node.instructions.clone()].to_vec();
 
-        if reduced { // this will save some memory for not-reduced CFG
+        if reduced {
+            // this will save some memory for not-reduced CFG
             visited_nodes.insert(cfg_node_start);
         }
 
@@ -83,7 +96,8 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
                 // next instruction lookup to gather information (like for string and their length when it uses MOV64_IMM)
                 let next_insn = insns.get(pc + 1);
                 // add immediate string repr if it does exists on bytecode 
-                let str_repr = get_string_repr(program, insn, next_insn);
+                let str_repr = update_string_resolution(program, insn, next_insn, reg_tracker);
+
                 if str_repr != "" {
                     desc.push_str(" --> ");
                     desc.push_str(&str_repr);
@@ -106,11 +120,12 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
                 program,
                 output,
                 analysis,
+                reg_tracker,
                 function_range.clone(),
                 alias_nodes,
                 visited_nodes,
                 *child,
-                reduced
+                reduced,
             )?;
         }
 
@@ -140,14 +155,13 @@ fontname=\"Courier New\";
     const MAX_CELL_CONTENT_LENGTH: usize =
         15 + MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize;
 
-
     let mut is_entrypoint_visited = false;
     let function_iter = &mut analysis.functions.keys().peekable();
     let mut visited_nodes = HashSet::new();
 
     while let Some(function_start) = function_iter.next() {
         let label = &analysis.cfg_nodes[function_start].label;
-        if ( reduced || only_entrypoint ) && !is_entrypoint_visited && label != "entrypoint" {
+        if (reduced || only_entrypoint) && !is_entrypoint_visited && label != "entrypoint" {
             continue;
         }
         if is_entrypoint_visited && only_entrypoint {
@@ -176,11 +190,12 @@ fontname=\"Courier New\";
             program,
             &mut output,
             &analysis,
+            reg_tracker,
             *function_start..function_end,
             &mut alias_nodes,
             &mut visited_nodes,
             *function_start,
-            reduced || only_entrypoint
+            reduced || only_entrypoint,
         )?;
 
         for alias_node in alias_nodes.iter() {
