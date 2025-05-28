@@ -5,14 +5,12 @@ use std::time::Duration;
 use std::u8;
 
 use crate::reverse::immediate_tracker::ImmediateTracker;
-use crate::reverse::utils::format_bytes;
+use crate::reverse::utils::{format_bytes, update_string_resolution, RegisterTracker, MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR};
 use crate::reverse::OutputFile;
 use crate::reverse::rusteq::translate_to_rust;
 use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
-
-use super::utils::{get_string_repr, MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR};
 
 /// Performs the core disassembly process of the program based on a provided static analysis.
 ///
@@ -38,6 +36,7 @@ fn disassemble<P: AsRef<Path>>(
     program: &[u8],
     analysis: &mut Analysis,
     mut imm_tracker_wrapped: Option<&mut ImmediateTracker>,
+    mut reg_tracker_wrapped: Option<&mut RegisterTracker>,
     path: P,
 ) -> std::io::Result<()> {
     debug!("Disassembling...");
@@ -67,8 +66,13 @@ fn disassemble<P: AsRef<Path>>(
         // next instruction lookup to gather information (like for string and their length when it uses MOV64_IMM)
         let next_insn = analysis.instructions.get(pc + 1);
         let mut insn_line = analysis.disassemble_instruction(insn, pc);
+
         // add immediate string repr if it does exists on bytecode
-        let str_repr = get_string_repr(program, insn, next_insn);
+        let str_repr = reg_tracker_wrapped.as_mut().map_or_else(
+            || String::new(),
+            |reg_tracker| update_string_resolution(program, insn, next_insn, reg_tracker),
+        );
+
         if str_repr != "" {
             insn_line.push_str(" --> ");
             insn_line.push_str(&str_repr);
@@ -113,9 +117,10 @@ pub fn disassemble_wrapper<P: AsRef<Path>>(
     program: &[u8],
     analysis: &mut Analysis,
     mut imm_tracker_wrapped: Option<&mut ImmediateTracker>,
+    mut reg_tracker_wrapped: Option<&mut RegisterTracker>,
     path: P,
 ) -> std::io::Result<()> {
-    disassemble(program, analysis, imm_tracker_wrapped.as_deref_mut(), &path)?;
+    disassemble(program, analysis, imm_tracker_wrapped.as_deref_mut(), reg_tracker_wrapped.as_deref_mut(), &path)?;
     debug!("Tracking Immediates...");
 
     let spinner = ProgressBar::new_spinner();
