@@ -63,6 +63,7 @@ pub enum ReverseOutputMode {
     DisassemblyAndCFG(String),
 }
 
+#[allow(dead_code)]
 impl ReverseOutputMode {
     /// Retrieves the associated path string for the selected output mode.
     pub fn path(&self) -> &str {

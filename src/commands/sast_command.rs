@@ -1,14 +1,9 @@
-use crate::commands::build_command;
-use crate::commands::build_command::build_sbf_project;
-use crate::helpers;
 use crate::helpers::{
-    check_binary_installed, create_dir_if_not_exists, get_project_type, BeforeCheck, ProjectType,
+    get_project_type, BeforeCheck, ProjectType,
 };
 use crate::parsers::syn_ast;
-use crate::state::build_state::BuildState;
-use crate::state::sast_state::{SastState, SynAstMap, SynAstMapExt};
-use log::{debug, error, info};
-use std::process::{Command, Stdio};
+use crate::state::sast_state::{SastState};
+use log::{debug, error};
 
 /// Runs a series of checks before launching SAST analysis.
 ///
@@ -23,7 +18,7 @@ use std::process::{Command, Stdio};
 /// # Returns
 ///
 /// `true` if all checks passed, otherwise `false`.
-fn checks_before_sast(target_dir: &String, rules_dir: &String, syn_scan_only: bool) -> bool {
+fn checks_before_sast(target_dir: &String, rules_dir: &String, _syn_scan_only: bool) -> bool {
     [
         BeforeCheck {
             error_msg: format!("Target directory {} doesn't exist", target_dir),
@@ -110,7 +105,7 @@ fn sast_anchor_project(
 
     match sast_state.apply_rules() {
         Ok(_) => {}
-        Err(e) => {
+        Err(_) => {
             error!("Cannot apply rules to the project: {}", target_dir);
             return Err(anyhow::anyhow!("Cannot apply rules to the project: {}", target_dir));
         }
@@ -151,7 +146,7 @@ fn sast_sbf_project(
 
     match sast_state.apply_rules() {
         Ok(_) => {}
-        Err(e) => {
+        Err(_) => {
             error!("Cannot apply rules to the project: {}", target_dir);
             return Err(anyhow::anyhow!("Cannot apply rules to the project: {}", target_dir));
         }

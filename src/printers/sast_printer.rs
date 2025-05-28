@@ -307,7 +307,8 @@ impl SastPrinter {
     ///
     /// # Returns
     ///
-    /// `Ok(())` if the output was successful, or an error if serialization fails.
+    /// `Ok(())` if the output was successful, or an error if serialization fail
+    #[allow(dead_code)]
     pub fn print_results_as_json(results: &[SynAstResult]) -> Result<()> {
         let json =
             serde_json::to_string_pretty(results).context("Failed to serialize results to JSON")?;
@@ -318,6 +319,7 @@ impl SastPrinter {
 
 impl SynAstResult {
     /// Converts a `SynAstResult` into a `prettytable::Row` suitable for tabular display.
+    #[allow(dead_code)]
     pub fn to_table_row(&self) -> Row {
         Row::new(vec![
             Cell::new(&self.rule_metadata.name),

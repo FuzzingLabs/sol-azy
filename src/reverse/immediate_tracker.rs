@@ -46,7 +46,7 @@ impl ImmediateTracker {
             .unwrap_or(self.program_len);
 
         // Update existing ranges if the new_start falls inside
-        for (&start, end) in self.ranges.range_mut(..new_start) {
+        for (_start, end) in self.ranges.range_mut(..new_start) {
             if *end > new_start {
                 *end = new_start;
             }
@@ -54,20 +54,6 @@ impl ImmediateTracker {
 
         // Insert the new range
         self.ranges.insert(new_start, new_end);
-    }
-
-    /// Retrieves the immediate value range that starts at a given offset.
-    ///
-    /// # Arguments
-    ///
-    /// * `start` - The offset to look up.
-    ///
-    /// # Returns
-    ///
-    /// An optional tuple `(start, end)` representing the registered range,
-    /// or `None` if no range begins at that offset.
-    pub fn get_range(&self, start: usize) -> Option<(usize, usize)> {
-        self.ranges.get(&start).map(|&end| (start, end))
     }
 
     /// Returns a reference to the internal map of all registered immediate value ranges.

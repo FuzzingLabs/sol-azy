@@ -1,15 +1,11 @@
 use std::any::TypeId;
-use crate::state;
 use crate::state::sast_state::{SynAst, SynAstMap};
 use anyhow::{Context, Result};
 use log::error;
-use regex::Regex;
-use serde::{Deserialize, Serialize};
-use serde_json::json;
 use std::collections::HashMap;
 use std::{fmt, fs};
 use std::fmt::Formatter;
-use std::hash::{DefaultHasher, Hash, Hasher};
+use std::hash::{Hash, Hasher};
 use std::path::Path;
 use proc_macro2::Span;
 use syn::visit;

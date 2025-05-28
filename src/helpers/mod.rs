@@ -12,10 +12,8 @@ pub mod static_dir;
 
 use std::{fs, path::Path, process::Command};
 use toml::Value;
-use log::{debug, error, info};
+use log::{debug, error};
 use std::process::Stdio;
-use crate::commands::build_command;
-use crate::state::build_state::BuildState;
 
 /// Checks if a binary is available in the system's `$PATH`.
 ///
@@ -109,7 +107,7 @@ pub struct BeforeCheck {
 /// A `Result<String>` containing the command's stdout if successful, or an error.
 pub fn run_command(command_name: &str, args: &[&str], env_vars: Vec<(&str, &str)>) -> Result<String, anyhow::Error> {
     let mut bind = Command::new(command_name);
-    let mut command = bind.args(args)
+    let command = bind.args(args)
         .stdout(Stdio::piped())
         .stderr(Stdio::piped());
 

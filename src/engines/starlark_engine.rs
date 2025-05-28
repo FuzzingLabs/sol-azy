@@ -190,7 +190,7 @@ syn_rule_loader
         let modules_owned = self.load_modules(&binding)?;
 
         let modules_ref: HashMap<&str, &FrozenModule> =
-            modules_owned.iter().map(|(k, v)| (k.clone(), v)).collect();
+            modules_owned.iter().map(|(k, v)| (*k, v)).collect();
 
         let loader = ReturnFileLoader {
             modules: &modules_ref,
@@ -244,7 +244,7 @@ syn_rule_loader
         let modules_owned = self.load_modules(&binding)?;
 
         let modules_ref: HashMap<&str, &FrozenModule> =
-            modules_owned.iter().map(|(k, v)| (k.clone(), v)).collect();
+            modules_owned.iter().map(|(k, v)| (*k, v)).collect();
 
         let loader = ReturnFileLoader {
             modules: &modules_ref,
@@ -284,7 +284,7 @@ syn_rule_loader
             .loads()
             .iter()
             .filter_map(|load| {
-                let module_id = load.module_id.clone();
+                let module_id = load.module_id;
                 match self.load_frozen_module(&format!("starlark_libs/{}", module_id)) {
                     Ok(module) => Some((module_id, module)),
                     Err(e) => {
