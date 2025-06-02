@@ -65,13 +65,40 @@ def ast_node_add_children(node: dict, children: list[dict]) -> dict:
 
 
 def to_result(node: dict) -> dict:
+    metadata = node.get("metadata", {})
+
+    if "position" not in metadata:
+        parent = node.get("parent", {})
+        if parent:
+            parent_meta = parent.get("metadata", {})
+            if "position" in parent_meta:
+                metadata["position"] = parent_meta["position"]
+            elif parent.get("parent"):
+                parent_position = to_result(parent).get("metadata", {}).get("position")
+                if parent_position:
+                    metadata["position"] = parent_position
+
     return {
         "children": map(to_result, node["children"]),
         "access_path": node.get("access_path", EMPTY_ACCESS_PATH),
-        "metadata": node.get("metadata", {}),
+        "metadata": metadata,
         "ident": node.get("ident", EMPTY_IDENT),
         "parent": node.get("parent", {}).get("ident", EMPTY_IDENT),
     }
+
+def filter_result(result: list[dict]) -> list[dict]:
+    unique_items = []
+    seen_positions = set()
+
+    for item in result:
+        position = str(item.get("metadata", {}).get("position", {}))
+        if position and position not in seen_positions:
+            seen_positions.add(position)
+            unique_items.append(item)
+        elif not position:
+            unique_items.append(item)
+
+    return unique_items
 
 
 def traverse_tree(node: dict, collector) -> list[dict]:
@@ -514,6 +541,7 @@ syn_ast = struct(
     EMPTY_NODE=EMPTY_NODE,
     new_ast_node=new_ast_node,
     to_result=to_result,
+    filter_result=filter_result,
     traverse_tree=traverse_tree,
     flatten_tree=flatten_tree,
     find_by_child=find_by_child,

@@ -98,7 +98,7 @@ pub enum Commands {
 #[tokio::main]
 async fn main() {
     fmt::Subscriber::builder()
-        .with_env_filter("sol_azy=debug")
+        .with_env_filter(std::env::var("RUST_LOG").unwrap_or_else(|_| "sol_azy=debug".into()))
         .pretty()
         .init();
 

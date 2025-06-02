@@ -64,11 +64,12 @@ impl SastPrinter {
                 let total_matches: usize = results.iter().map(|(_, res)| res.matches.len()).sum();
                 println!("\nMatches found: {}", total_matches);
 
-                let mut match_number = 1;
                 for (filename, ast_res) in results {
                     for match_result in &ast_res.matches {
-                        println!("{}: {}", filename, match_result.access_path);
-                        match_number += 1;
+                        match match_result.get_location_metadata() {
+                            Ok(pos) => println!("{}", pos.get_pretty_string()),
+                            Err(_) => println!("{}: {}", filename, match_result.access_path)    
+                        }
                     }
                 }
 

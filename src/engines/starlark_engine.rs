@@ -151,9 +151,9 @@ load("syn_ast.star", "syn_ast")
 # ! GENERATED
 def syn_rule_loader(ast: str) -> dict:
     return {{
-        "matches": syn_ast_rule(
+        "matches": syn_ast.filter_result(syn_ast_rule(
             syn_ast.prepare_ast(json.decode(ast)["items"]),
-        ),
+        )),
         "metadata": RULE_METADATA,
     }}
 
