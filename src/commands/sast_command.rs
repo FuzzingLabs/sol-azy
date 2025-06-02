@@ -197,6 +197,8 @@ fn sast_anchor_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
         }
     }
 
+    sast_state.print_results(&cmd.target_dir)?;
+
     if cmd.syn_scan_only {
         return Ok(sast_state);
     }
@@ -234,8 +236,8 @@ fn sast_sbf_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
             ));
         }
     }
-
-    sast_state.print_results()?;
+    
+    sast_state.print_results(&cmd.target_dir)?;
 
     if cmd.syn_scan_only {
         return Ok(sast_state);

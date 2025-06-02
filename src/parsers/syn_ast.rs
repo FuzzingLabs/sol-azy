@@ -1,13 +1,9 @@
-use crate::state;
 use crate::state::sast_state::{SynAst, SynAstMap};
 use anyhow::{Context, Result};
 use log::{debug, error};
-use regex::Regex;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use sha2::digest::Update;
 use sha2::Digest;
-use std::any::TypeId;
 use std::collections::HashMap;
 use std::fmt::Formatter;
 use std::hash::{DefaultHasher, Hash, Hasher};
@@ -61,19 +57,6 @@ fn visit_dir(dir_path: &Path, ast_map: &mut SynAstMap) -> Result<()> {
     Ok(())
 }
 
-/// Parses a single Rust source file and inserts it into the provided `SynAstMap`.
-///
-/// Each file is converted into a `syn::File` AST and enriched with span metadata
-/// (line and column info) for later analysis.
-///
-/// # Arguments
-///
-/// * `path` - Path to the Rust source file.
-/// * `ast_map` - Mutable reference to the AST map to populate.
-///
-/// # Errors
-///
-/// Returns an error if reading or parsing the file fails.
 pub fn parse_rust_file(path: &Path, ast_map: &mut SynAstMap) -> Result<()> {
     let file_content = match fs::read_to_string(path) {
         Ok(content) => content,
@@ -89,11 +72,18 @@ pub fn parse_rust_file(path: &Path, ast_map: &mut SynAstMap) -> Result<()> {
 
     match syn::parse_file(&file_content) {
         Ok(ast) => {
+            // Generate position info using access paths instead of hashes
+            let ast_positions = enrich_ast_with_source_lines(&ast, path);
+            
+            // Generate enriched JSON with position information
+            let ast_json = ast_to_json_with_positions(&ast, &ast_positions);
+            
             ast_map.insert(
                 filename,
                 SynAst {
                     ast: ast.clone(),
-                    ast_positions: enrich_ast_with_source_lines(&ast, &file_content, path),
+                    ast_positions,
+                    ast_json,
                     results: vec![],
                 },
             );
@@ -105,26 +95,37 @@ pub fn parse_rust_file(path: &Path, ast_map: &mut SynAstMap) -> Result<()> {
     Ok(())
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SourcePosition {
-    pub node_span: proc_macro2::Span,
-    pub start_span: proc_macro2::LineColumn,
-    pub end_span: proc_macro2::LineColumn,
+    pub start_line: u32,
+    pub start_column: u32,
+    pub end_line: u32, 
+    pub end_column: u32,
     pub source_file: String,
 }
 
 impl SourcePosition {
+    pub fn from_span(span: &proc_macro2::Span, source_file: String) -> Self {
+        Self {
+            start_line: span.start().line as u32,
+            start_column: span.start().column as u32,
+            end_line: span.end().line as u32,
+            end_column: span.end().column as u32,
+            source_file,
+        }
+    }
+    
     pub fn get_pretty_string(&self) -> String {
         format!(
             "{}:{}:{}",
-            self.source_file, self.start_span.line, self.start_span.column
+            self.source_file, self.start_line, self.start_column
         )
     }
 }
 
 impl fmt::Display for SourcePosition {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "Span: {:?}", self.node_span)
+        write!(f, "{}", self.get_pretty_string())   
     }
 }
 
@@ -133,74 +134,42 @@ impl fmt::Display for SourcePosition {
 /// Used to enrich parsed syntax trees with source location metadata.
 #[derive(Debug, Clone)]
 pub struct AstPositions {
-    pub positions: HashMap<[u8; 32], SourcePosition>,
-    pub last_ident_hash: [u8; 32],
-    pub hashes_vec: Vec<[u8; 32]>,
+    // Store position info directly on nodes, removing the need for a HashMap
+    pub nodes_with_positions: Vec<(String, SourcePosition)>, // Path -> Position
 }
 
 impl AstPositions {
-    /// Creates a new, empty `AstPositions` structure.
     pub fn new() -> Self {
-        let mut hasher = sha2::Sha256::new();
-        Digest::update(&mut hasher, "DEFAULT_STATE".as_bytes());
-        let mut hash = [0u8; 32];
-        hash.copy_from_slice(&hasher.finalize()[..32]);
         Self {
-            positions: HashMap::new(),
-            last_ident_hash: hash,
-            hashes_vec: vec![],
+            nodes_with_positions: Vec::new(),
         }
     }
-    /// Retrieves the registered `SourcePosition` for a given node, if any.
-    ///
-    /// # Arguments
-    ///
-    /// * `node` - A reference to the AST node to query.
-    ///
-    /// # Returns
-    ///
-    /// An optional `SourcePosition` for the given node.
-    pub fn add_position<T: 'static>(&mut self, node: &T, position: SourcePosition, ident: String) {
-        let mut hasher = sha2::Sha256::new();
-        Digest::update(&mut hasher, &self.last_ident_hash);
-        Digest::update(&mut hasher, ident.as_bytes());
-        let mut hash = [0u8; 32];
-        hash.copy_from_slice(&hasher.finalize()[..32]);
-        self.last_ident_hash = hash;
-        self.positions.insert(self.last_ident_hash, position);
-        self.hashes_vec.push(self.last_ident_hash);
-    }
-
-    pub fn get_position(&self, hash: &[u8; 32]) -> Option<&SourcePosition> {
-        self.positions.get(hash)
-    }
-
-    pub fn get_hashes_json(&self) -> String {
-        json!(self.hashes_vec).to_string()
+    
+    pub fn add_position(&mut self, access_path: String, position: SourcePosition) {
+        self.nodes_with_positions.push((access_path, position));
     }
 }
 
 struct SpanCollector<'a> {
-    rust_code: &'a str,
     source_file_path: &'a Path,
     positions: AstPositions,
+    current_path: Vec<String>, // Track the access path during traversal
 }
 
 impl<'a, 'ast> Visit<'ast> for SpanCollector<'a> {
     fn visit_ident(&mut self, node: &'ast syn::Ident) {
         let span = node.span();
+        let access_path = self.current_path.join(".");
+        
+        // Add node position without using hash
         self.positions.add_position(
-            node,
-            SourcePosition {
-                node_span: span.clone(),
-                start_span: span.start(),
-                end_span: span.end(),
-                source_file: match self.source_file_path.to_str() {
+            node.to_string(),
+            SourcePosition::from_span(&span, 
+                match self.source_file_path.to_str() {
                     Some(path) => path.to_string(),
                     None => "no_source_path".to_string(),
                 },
-            },
-            node.to_string(),
+            )
         );
         visit::visit_ident(self, node);
     }
@@ -211,7 +180,6 @@ impl<'a, 'ast> Visit<'ast> for SpanCollector<'a> {
 /// # Arguments
 ///
 /// * `ast` - The parsed syntax tree (`syn::File`) to analyze.
-/// * `rust_code` - Original source code content, used for context.
 /// * `source_file_path` - Path to the source file (used for logging/debugging).
 ///
 /// # Returns
@@ -219,14 +187,64 @@ impl<'a, 'ast> Visit<'ast> for SpanCollector<'a> {
 /// An `AstPositions` structure containing span metadata for relevant nodes.
 pub fn enrich_ast_with_source_lines(
     ast: &syn::File,
-    rust_code: &str,
     source_file_path: &Path,
 ) -> AstPositions {
     let mut collector = SpanCollector {
-        rust_code,
         source_file_path,
         positions: AstPositions::new(),
+        current_path: Vec::new(),
     };
     collector.visit_file(ast);
     collector.positions
+}
+
+pub fn ast_to_json_with_positions(
+    ast: &syn::File, 
+    positions: &AstPositions
+) -> serde_json::Value {
+    let ast_json_string = syn_serde::json::to_string(ast);
+
+    let mut ast_json: serde_json::Value = serde_json::from_str(&ast_json_string)
+        .unwrap_or_else(|_| serde_json::json!({}));
+
+
+    let positions_map: HashMap<&str, &SourcePosition> = positions.nodes_with_positions
+        .iter()
+        .map(|(path, pos)| (path.as_str(), pos))
+        .collect();
+        
+    enrich_json_with_positions(&mut ast_json, &positions_map);
+    
+    ast_json
+}
+
+fn enrich_json_with_positions(
+    node: &mut serde_json::Value,
+    positions: &HashMap<&str, &SourcePosition>
+) {
+    match node {
+        serde_json::Value::Object(map) => {
+            if let Some(ident) = map.get("ident").and_then(|v| v.as_str()) {
+                if let Some(position) = positions.get(ident) {
+                    map.insert("position".to_string(), json!({
+                        "start_line": position.start_line,
+                        "start_column": position.start_column,
+                        "end_line": position.end_line,
+                        "end_column": position.end_column,
+                        "source_file": position.source_file
+                    }));
+                }
+            }
+            
+            for (_, value) in map {
+                enrich_json_with_positions(value, positions);
+            }
+        },
+        serde_json::Value::Array(arr) => {
+            for item in arr {
+                enrich_json_with_positions(item, positions);
+            }
+        },
+        _ => {}
+    }
 }

@@ -4,7 +4,7 @@ use log::{debug, error};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt;
-use crate::parsers::syn_ast::{AstPositions};
+use crate::parsers::syn_ast::{AstPositions, SourcePosition};
 use crate::printers::sast_printer::SastPrinter;
 
 /// Represents the severity level of a rule match in static analysis.
@@ -69,42 +69,24 @@ pub struct SynMatchResult {
 /// Contains the original rule filename, raw JSON result string, match results,
 /// and associated rule metadata.
 impl SynMatchResult {
-    // TODO: Refactor me
-    pub fn get_hash_metadata(&self) -> Result<[u8; 32]> {
+    pub fn get_location_metadata(&self) -> Result<SourcePosition> {
         let value = self
             .metadata
-            .get("__hash__")
-            .ok_or_else(|| anyhow::anyhow!("No '__hash__' metadata value found in matches"))?;
+            .get("position")
+            .ok_or_else(|| anyhow::anyhow!("No 'position' metadata found in matches"))?;
 
-        if let serde_json::Value::Array(ref bytes_array) = value {
-            if bytes_array.len() != 32 {
-                return Err(anyhow::anyhow!(
-                "Invalid '__hash__' length: expected 32 bytes, got {}",
-                bytes_array.len()
-            ));
+        if let serde_json::Value::Object(obj) = value {
+            match serde_json::from_value::<SourcePosition>(value.clone()) {
+                Ok(position) => Ok(position),
+                Err(err) => Err(anyhow::anyhow!("Failed to parse 'position' metadata: {}", err)),
             }
-
-            let mut hash = [0u8; 32];
-            for (i, item) in bytes_array.iter().enumerate() {
-                let byte = item
-                    .as_u64()
-                    .ok_or_else(|| anyhow::anyhow!("Invalid byte value at position {}", i))?;
-                if byte > 255 {
-                    return Err(anyhow::anyhow!(
-                    "Byte value out of range at position {}: {}",
-                    i,
-                    byte
-                ));
-                }
-                hash[i] = byte as u8;
-            }
-            Ok(hash)
         } else {
             Err(anyhow::anyhow!(
-            "Unsupported type for '__hash__' metadata. Expected an array of bytes."
-        ))
+                "Unsupported type for 'position' metadata. Expected SourcePosition type."
+            ))
         }
     }
+
 }
 
 /// Stores the result of evaluating a single syntactic rule against a file's AST.
@@ -192,6 +174,7 @@ impl SynAstResult {
 pub struct SynAst {
     pub ast: syn::File,
     pub ast_positions: AstPositions,
+    pub ast_json: serde_json::Value,
     pub results: Vec<SynAstResult>,
 }
 
@@ -325,7 +308,7 @@ impl SastState {
     /// # Returns
     ///
     /// `Ok(())` on success, or an error if the print operation fails.
-    pub fn print_results(&self) -> Result<()> {
-        SastPrinter::print_sast_state(self)
+    pub fn print_results(&self, scanned_dir: &String) -> Result<()> {
+        SastPrinter::print_sast_state(self, scanned_dir)
     }
 }

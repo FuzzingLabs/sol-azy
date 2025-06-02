@@ -85,10 +85,6 @@ def flatten_tree(root: dict) -> list[dict]:
     return traverse_tree(root, lambda node: [node])
 
 
-# def find_by_parent(self: dict, parent_ident: str):
-#     pass
-
-
 def find_by_child(self: dict, child_ident: str) -> list[dict]:
     matches = []
 
@@ -116,10 +112,6 @@ def find_chained_calls(self: dict, *idents: tuple[str, ...]) -> list[dict]:
 
     list(map(check_node, flatten_tree(self)))
     return matches
-
-
-# def find_by_access_path(self: dict, access_path_part: str):
-#     pass
 
 
 def find_macro_attribute_by_names(self: dict, *idents: tuple[str, ...]) -> list[dict]:
@@ -181,18 +173,15 @@ def find_comparison_to_any(self: dict, ident: str) -> list[dict]:
     def check_ident(node: dict, _ident: str) -> bool:
         return any(filter(lambda n: n.get("ident", "") == _ident, flatten_tree(node)))
 
-
     def check_node(node: dict):
-        if "cond.binary.left" in node.get("access_path", "") or "cond.binary.right" in node.get("access_path", "") or "cond.unary" in node.get("access_path", ""):
+        if "cond.binary.left" in node.get("access_path", "") or "cond.binary.right" in node.get("access_path",
+                                                                                                "") or "cond.unary" in node.get(
+                "access_path", ""):
             if check_ident(node, ident):
                 matches.append(node)
 
     list(map(check_node, flatten_tree(self)))
     return matches
-
-
-# def find_negative_of_operation(self: dict, operation_name: str, *args: tuple):
-#     pass
 
 
 def find_functions_by_names(self: dict, *function_names: tuple[str, ...]) -> list[dict]:
@@ -297,11 +286,13 @@ def find_member_accesses(self: dict, ident: str) -> list[dict]:
     matches = []
 
     def check_node(node: dict):
-        if node.get("ident", "") == ident and ("tokens" in node.get("access_path", "") or "call.args" in node.get("access_path", "")):
+        if node.get("ident", "") == ident and (
+                "tokens" in node.get("access_path", "") or "call.args" in node.get("access_path", "")):
             matches.append(node)
 
     list(map(check_node, flatten_tree(self)))
     return matches
+
 
 def first(nodes: list[dict]) -> dict:
     return nodes[0] if nodes else EMPTY_NODE
@@ -330,20 +321,21 @@ def find_ident_src_node(sub_data, sub_access_path: str, metadata: dict) -> dict:
     return EMPTY_NODE
 
 
-def prepare_syn_ast(ast, access_path, parent, hashes) -> list[dict]:
+def prepare_syn_ast(ast, access_path, parent) -> list[dict]:
     nodes = []
 
     if type(ast) == "list":
         for i, item in enumerate(ast):
             new_path = f"{access_path}[{i}]"
-            nodes.extend(prepare_syn_ast(item, new_path, parent, hashes))
+            nodes.extend(prepare_syn_ast(item, new_path, parent))
         return nodes
 
     if type(ast) == "dict":
         # ? Method node https://github.com/Auditware/radar/blob/main/api/utils/ast.py#L95
         if ast.get("method", False):
-            print("method")
             metadata = {}
+            if "position" in ast:
+                metadata["position"] = ast["position"]
             if "mut" in ast:
                 metadata["mut"] = ast["mut"]
             node = new_ast_node(ast, metadata, access_path)
@@ -353,8 +345,9 @@ def prepare_syn_ast(ast, access_path, parent, hashes) -> list[dict]:
             parent = node
         # ? Int node https://github.com/Auditware/radar/blob/main/api/utils/ast.py#L95
         elif ast.get("int", False):
-            print("int")
             metadata = {}
+            if "position" in ast:
+                metadata["position"] = ast["position"]
             if "mut" in ast:
                 metadata["mut"] = ast["mut"]
             node = new_ast_node(ast, metadata, access_path)
@@ -363,8 +356,9 @@ def prepare_syn_ast(ast, access_path, parent, hashes) -> list[dict]:
             nodes.append(node)
             parent = node
         elif ast.get("mut", False):
-            print("mut")
             metadata = {"mut": ast["mut"]}
+            if "position" in ast:
+                metadata["position"] = ast["position"]
             node = find_ident_src_node(ast, access_path, metadata)
             if node != EMPTY_NODE:
                 ast_node_add_child(parent, node)
@@ -372,30 +366,25 @@ def prepare_syn_ast(ast, access_path, parent, hashes) -> list[dict]:
                 parent = node
         # ? Ident node
         elif ast.get("ident", False):
-            metadata = {
-                "__hash__": hashes.pop(0)
-            }
+            metadata = {}
+            if "position" in ast:
+                metadata["position"] = ast["position"]
             if "mut" in ast:
                 metadata["mut"] = ast["mut"]
             node = new_ast_node(ast, metadata, access_path)
             node["parent"] = parent
             nodes.append(node)
             parent = node
-        else:
-            nodes.extend(prepare_syn_ast(ast.values(), access_path, parent, hashes))
 
         for key, value in ast.items():
             new_path = f"{access_path}.{key}" if access_path else key
-            nodes.extend(prepare_syn_ast(value, new_path, parent, hashes))
+            nodes.extend(prepare_syn_ast(value, new_path, parent))
 
     return nodes
 
 
-def prepare_ast(ast: list[dict], hashes: list[list[int]]) -> dict:
-    print(len(hashes))
-    nodes = prepare_syn_ast(ast, "", EMPTY_NODE, hashes)
-    print(len(hashes))
-    print(len(nodes))
+def prepare_ast(ast: list[dict]) -> dict:
+    nodes = prepare_syn_ast(ast, "", EMPTY_NODE)
     assigned_children = set()
     path_to_node = {}
     for node in nodes:
@@ -416,6 +405,109 @@ def prepare_ast(ast: list[dict], hashes: list[list[int]]) -> dict:
         if node.get("parent", EMPTY_NODE) == EMPTY_NODE:
             ast_node_add_child(root, node)
     return root
+
+
+# AST Traversal Helpers
+def walk_ast(node, visit_fn):
+    pass
+
+
+def filter_nodes_by_type(nodes, node_type):
+    pass
+
+
+def find_nodes(ast, condition_fn):
+    pass
+
+
+def map_nodes(ast, transform_fn):
+    pass
+
+
+# Entry Points and Public Functions
+def find_sol_public_functions(ast):
+    pass
+
+
+# Mutability and Ownership
+def find_mutable_parameters(function_node):
+    pass
+
+
+def find_immutable_parameters(function_node):
+    pass
+
+
+def find_mutable_variables(ast):
+    pass
+
+
+# Access Control and Authority Patterns
+def find_require_calls(ast):
+    pass
+
+
+def find_assert_calls(ast):
+    pass
+
+
+def find_functions_with_attribute(ast, attribute_name):
+    pass
+
+
+# Data Structure Access
+def find_struct_field_accesses(ast, struct_name=None, field_name=None):
+    pass
+
+
+def find_state_variable_access(ast, var_name=None):
+    pass
+
+
+def find_mapping_access(ast, mapping_name=None, key=None):
+    pass
+
+
+def find_function_arg_access(function_node, arg_name):
+    pass
+
+
+def find_array_access(ast, array_name=None):
+    pass
+
+
+# Token Transfers and Balance Manipulations
+def find_sol_token_transfer_calls(ast):
+    pass
+
+
+def find_sol_token_balance_updates(ast):
+    pass
+
+
+def find_sol_token_mint_calls(ast):
+    pass
+
+
+def find_sol_token_burn_calls(ast):
+    pass
+
+
+# Solana serialization Patterns
+def find_sol_borsh_serialize_calls(ast):
+    pass
+
+
+def find_sol_borsh_deserialize_calls(ast):
+    pass
+
+
+def find_sol_serde_serialize_calls(ast):
+    pass
+
+
+def find_sol_serde_deserialize_calls(ast):
+    pass
 
 
 syn_ast = struct(

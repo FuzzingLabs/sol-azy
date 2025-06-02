@@ -6,7 +6,7 @@ RULE_METADATA = {
     "certainty": "Medium",
     "description": "If not validated properly, when a program implements a Cross-Program Invocation, callers of the program may provide an arbitrary or untrusted program - manipulating the program to call instructions on an untrusted target program."
 }
-
+# ? Need to filter false positive
 def syn_ast_rule(root: dict) -> list[dict]:
     matches = []
     for sink in syn_ast.find_chained_calls(root, "solana_program", "program", "invoke"):

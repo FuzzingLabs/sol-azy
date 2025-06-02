@@ -81,11 +81,6 @@ impl AppState {
     fn run_sast(&mut self, cmd: &commands::sast_command::SastCmd) {
         match commands::sast_command::run(cmd) {
             Ok(ss) => {
-                ss.iter().for_each(|s| {
-                    if let Err(e) = s.print_results() {
-                        error!("Failed to print results: {}", e);
-                    }
-                });
                 self.sast_states.extend(ss)
             },
             Err(e) => error!("An error occurred during SAST of {} {}", cmd.target_dir, e),

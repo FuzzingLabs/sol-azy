@@ -149,10 +149,10 @@ load("syn_ast.star", "syn_ast")
 {}
 
 # ! GENERATED
-def syn_rule_loader(ast: str, hashes: str) -> dict:
+def syn_rule_loader(ast: str) -> dict:
     return {{
         "matches": syn_ast_rule(
-            syn_ast.prepare_ast(json.decode(ast)["items"], json.decode(hashes)),
+            syn_ast.prepare_ast(json.decode(ast)["items"]),
         ),
         "metadata": RULE_METADATA,
     }}
@@ -210,8 +210,7 @@ syn_rule_loader
         eval.eval_function(
             syn_rule,
             &[
-                heap.alloc(syn_serde::json::to_string(&syn_ast.ast)),
-                heap.alloc(syn_ast.ast_positions.get_hashes_json()),
+                heap.alloc(serde_json::to_string(&syn_ast.ast_json).unwrap_or(String::new())),
             ],
             &[],
         )

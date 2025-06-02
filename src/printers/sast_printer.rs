@@ -1,5 +1,6 @@
 // src/pretty_printer.rs
 
+use std::collections::HashMap;
 use crate::parsers::syn_ast::SourcePosition;
 use crate::state::sast_state::{Certainty, SastState, Severity, SynAst, SynAstMap, SynAstMapExt, SynAstResult, SynMatchResult, SynRuleMetadata};
 use anyhow::{Context, Result};
@@ -24,8 +25,8 @@ impl SastPrinter {
     /// # Returns
     ///
     /// `Ok(())` on success or an error if printing fails.
-    pub fn print_sast_state(state: &SastState) -> Result<()> {
-        println!("Files scanned: {}", state.syn_ast_map.count_files());
+    pub fn print_sast_state(state: &SastState, scanned_dir: &String) -> Result<()> {
+        println!("\n================================================================================\n\n{} files scanned in {} directory\n", state.syn_ast_map.count_files(), scanned_dir);
 
         let all_results: Vec<SynAstResult> = state
             .syn_ast_map
@@ -48,16 +49,37 @@ impl SastPrinter {
 
         if !results_with_matches.is_empty() {
             println!("\nDetailed findings:");
-            results_with_matches
-                .iter()
-                .try_for_each(|(filename, ast)| {
-                    Self::print_result(filename.clone(), ast, &state.syn_ast_map)
-                })?;
+            let mut grouped_results: HashMap<String, Vec<(String, &SynAstResult)>> = HashMap::new();
+            
+            for (filename, ast_res) in results_with_matches.iter() {
+                let rule_name = ast_res.rule_metadata.name.clone();
+                grouped_results.entry(rule_name).or_default().push((filename.clone(), *ast_res));
+            }
+
+            for (rule_name, results) in grouped_results {
+                let first_result = &results[0].1;
+                println!("\n{}", "=".repeat(80));
+                Self::print_rule_metadata(&first_result.rule_metadata, first_result.rule_filename.to_string())?;
+
+                let total_matches: usize = results.iter().map(|(_, res)| res.matches.len()).sum();
+                println!("\nMatches found: {}", total_matches);
+
+                let mut match_number = 1;
+                for (filename, ast_res) in results {
+                    for match_result in &ast_res.matches {
+                        println!("{}: {}", filename, match_result.access_path);
+                        match_number += 1;
+                    }
+                }
+
+                println!("{}", "=".repeat(80));
+            }
         } else {
             println!("\nNo vulnerabilities detected.");
         }
 
         Ok(())
+
     }
 
     /// Displays a summary table of all rule matches across all analyzed files.
@@ -157,7 +179,6 @@ impl SastPrinter {
     pub fn print_result(
         filename: String,
         result: &SynAstResult,
-        syn_ast_map: &SynAstMap,
     ) -> Result<()> {
         println!("\n{}", "=".repeat(80));
         Self::print_rule_metadata(&result.rule_metadata, result.rule_filename.to_string())?;
@@ -166,14 +187,7 @@ impl SastPrinter {
             println!("\nMatches found: {}", result.matches.len());
             for (i, match_result) in result.matches.iter().enumerate() {
                 let match_number = i + 1;
-                if let Some(position) = Self::find_source_position(match_result, syn_ast_map.get(&filename).unwrap()) {
-                    println!("{}: ", position.get_pretty_string());
-                } else {
-                    println!(
-                        "Match #{}: No source position found in {}",
-                        match_number, filename
-                    );
-                }
+                println!("#{}: {}", match_number, match_result.access_path)
             }
         } else {
             println!("\nNo matches found.");
@@ -254,18 +268,13 @@ impl SastPrinter {
         Ok(())
     }
 
-    fn find_source_position<'a>(
-        match_result: &'a SynMatchResult,
-        syn_ast: &'a SynAst,
-    ) -> Option<&'a SourcePosition> {
-        let node_hash = match match_result.get_hash_metadata().ok() {
-            Some(hash) => hash,
-            None => return None,
-        };
-        if let Some(position) = syn_ast.ast_positions.get_position(&node_hash) {
-                return Some(position);
-            }
-        None
+    fn find_source_position(
+        match_result: &SynMatchResult,
+    ) -> Option<SourcePosition> {
+        match match_result.get_location_metadata().ok() {
+            Some(pos) => Option::from(pos),
+            None => None,
+        }
     }
 
     /// Outputs the entire result set in a prettified JSON format.
