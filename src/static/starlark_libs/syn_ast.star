@@ -68,15 +68,19 @@ def to_result(node: dict) -> dict:
     metadata = node.get("metadata", {})
 
     if "position" not in metadata:
-        parent = node.get("parent", {})
-        if parent:
+        def collect_parents(current_node):
+            parents = []
+            parent = current_node.get("parent", {})
+            if parent:
+                parents.append(parent)
+                parents.extend(collect_parents(parent))
+            return parents
+
+        for parent in collect_parents(node):
             parent_meta = parent.get("metadata", {})
             if "position" in parent_meta:
                 metadata["position"] = parent_meta["position"]
-            elif parent.get("parent"):
-                parent_position = to_result(parent).get("metadata", {}).get("position")
-                if parent_position:
-                    metadata["position"] = parent_position
+                break
 
     return {
         "children": map(to_result, node["children"]),
@@ -85,6 +89,8 @@ def to_result(node: dict) -> dict:
         "ident": node.get("ident", EMPTY_IDENT),
         "parent": node.get("parent", {}).get("ident", EMPTY_IDENT),
     }
+
+
 
 def filter_result(result: list[dict]) -> list[dict]:
     unique_items = []
