@@ -14,5 +14,7 @@ def syn_ast_rule(root: dict) -> list[dict]:
             continue
         if syn_ast.find_comparisons(sink, "spl_token", "token_program") or syn_ast.find_comparisons(sink, "spl_token_2022", "token_program"):
             continue
+        if template_manager.is_matching_template(sink, "CHECK_SPLTOKEN_ID_CTX_ACCOUNT_AUTHORITY_KEY"):
+            continue
         matches.append(syn_ast.to_result(sink))
     return matches

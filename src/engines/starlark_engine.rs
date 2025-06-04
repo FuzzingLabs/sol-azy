@@ -144,6 +144,7 @@ impl StarlarkEngine {
         format!(
             r#"# ! GENERATED
 load("syn_ast.star", "syn_ast")
+load("template_manager.star", "template_manager")
 # ! GENERATED
 
 {}
