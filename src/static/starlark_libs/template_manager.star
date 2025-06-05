@@ -75,7 +75,6 @@ def template_to_linear_pattern(template):
     walk(template)
     return pattern
 
-
 def all_templates_to_patterns(templates):
     return {key: template_to_linear_pattern(value) for key, value in templates.items()}
 
@@ -99,7 +98,6 @@ def extract_info(
                     _extract(v)
                 elif isinstance(v, list):
                     for item in v:
-                        # print("item", item)
                         _extract(item)
 
     for key in priority_rule:
@@ -126,6 +124,7 @@ def extract_ast_to_sequence(node, pattern, priority_rule):
         current = stack.pop()
         current_step = repr(current)
 
+        # TODO: verify why this is problem to not check whether the node is seen (in starlark engine)
         # starlark memory management magic problem bypass, without this it will do infinite cycle probably due to pointer reference things
         if current_step in seen:
             continue
@@ -175,8 +174,10 @@ def is_matching_template(ast, template_key):
     if not template:
         return False
 
+    current_node = ast["parent"]["raw_node"]
+
     return match_sequence_in_ast(
-        ast, template_to_linear_pattern(template), template["priority_rule"], template
+        current_node, template_to_linear_pattern(template), template["priority_rule"], template
     )
 
 template_manager = struct(

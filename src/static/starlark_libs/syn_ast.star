@@ -66,21 +66,29 @@ def ast_node_add_children(node: dict, children: list[dict]) -> dict:
 
 def to_result(node: dict) -> dict:
     metadata = node.get("metadata", {})
+    parent = node.get("parent", {})
 
-    if "position" not in metadata:
-        def collect_parents(current_node):
-            parents = []
-            parent = current_node.get("parent", {})
-            if parent:
-                parents.append(parent)
-                parents.extend(collect_parents(parent))
-            return parents
+    raw_node = {}
+    if parent != {}:
+        raw_node = parent["raw_node"]
+    if raw_node != {} and "position" in raw_node:
+        position = raw_node.get("position")
+        metadata["position"] = position
 
-        for parent in collect_parents(node):
-            parent_meta = parent.get("metadata", {})
-            if "position" in parent_meta:
-                metadata["position"] = parent_meta["position"]
-                break
+    # elif "position" not in metadata:
+    #     def collect_parents(current_node):
+    #         parents = []
+    #         parent = current_node.get("parent", {})
+    #         if parent:
+    #             parents.append(parent)
+    #             parents.extend(collect_parents(parent))
+    #         return parents
+
+    #     for parent in collect_parents(node):
+    #         parent_meta = parent.get("metadata", {})
+    #         if "position" in parent_meta:
+    #             metadata["position"] = parent_meta["position"]
+    #             break
 
     return {
         "children": map(to_result, node["children"]),
