@@ -148,9 +148,6 @@ def extract_ast_to_sequence(node, pattern, priority_rule):
                 stack.append(item)
     return result
 
-
-
-
 def match_sequence_in_ast(
     ast, pattern, priority_rule, template
 ) -> bool:

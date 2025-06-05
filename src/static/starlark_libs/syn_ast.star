@@ -75,21 +75,6 @@ def to_result(node: dict) -> dict:
         position = raw_node.get("position")
         metadata["position"] = position
 
-    # elif "position" not in metadata:
-    #     def collect_parents(current_node):
-    #         parents = []
-    #         parent = current_node.get("parent", {})
-    #         if parent:
-    #             parents.append(parent)
-    #             parents.extend(collect_parents(parent))
-    #         return parents
-
-    #     for parent in collect_parents(node):
-    #         parent_meta = parent.get("metadata", {})
-    #         if "position" in parent_meta:
-    #             metadata["position"] = parent_meta["position"]
-    #             break
-
     return {
         "children": map(to_result, node["children"]),
         "access_path": node.get("access_path", EMPTY_ACCESS_PATH),
