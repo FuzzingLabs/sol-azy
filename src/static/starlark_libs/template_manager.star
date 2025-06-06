@@ -5,26 +5,67 @@ TEMPLATES = {}
 
 # check if ctx.accounts.authority.key != &token.owner
 TEMPLATES["CHECK_CTX_ACCOUNT_AUTHORITY_KEY_TOKEN_OWNER"] = {
-    "binary": {
-        "left": {"path": ["ctx", "accounts", "authority", "key"]},
-        "op": "!=",
-        "right": {"path": ["token", "owner"]},
+    "pattern": { 
+        "cond": {
+            "binary": {
+                "left": {"path": ["ctx", "accounts", "authority", "key"]},
+                "op": "!=",
+                "right": {"path": ["token", "owner"]},
+            }
+        }
     },
     "priority_rule": ["left", "op", "right"],
 }
 
 # check if &spl_token::ID != ctx.accounts.token_program.key
 TEMPLATES["CHECK_SPLTOKEN_ID_CTX_ACCOUNT_AUTHORITY_KEY"] = {
-    "binary": {
-        "left": {"path": ["spl_token", "ID"]},
-        "op": "!=",
-        "right": {"path": ["ctx", "accounts", "token_program", "key"]},
+    "pattern": { 
+        "cond": {
+            "binary": {
+                "left": {"path": ["spl_token", "ID"]},
+                "op": "!=",
+                "right": {"path": ["ctx", "accounts", "token_program", "key"]},
+            }
+        }
     },
     "priority_rule": ["left", "op", "right"],
 }
 
+# check if ctx.accounts.authority.is_signer
+TEMPLATES["CHECK_CTX_ACCOUNTS_AUTHORITY_ISSIGNER"] = {
+    "pattern": { 
+        "cond": {
+            "field": {
+                "base": {"path": ["ctx", "accounts", "authority", "is_signer"]},
+            }
+        }
+    },
+    "priority_rule": ["base"],
+}
+
+# check if !ctx.accounts.authority.is_signer
+TEMPLATES["CHECK_NOT_CTX_ACCOUNTS_AUTHORITY_ISSIGNER"] = {
+    "pattern": { 
+        "cond": {
+            "unary": {
+                "expr": {"path": ["ctx", "accounts", "authority", "is_signer"]},
+                "op": "!"
+            }
+        }
+    },
+    "priority_rule": ["op", "expr"],
+}
+
 def generate_symmetric_template(template):
-    binary = template.get("binary", {})
+    template = template.get("pattern", {})
+    if template == {}:
+        return None
+    cond = template.get("cond", {})
+    if cond == {}:
+        return None
+    binary = cond.get("binary", {})
+    if binary == {}:
+        return None
     left = binary.get("left")
     right = binary.get("right")
     op = binary.get("op")
@@ -34,10 +75,14 @@ def generate_symmetric_template(template):
         return None
 
     symmetric_template = {
-        "binary": {
-            "left": right,
-            "op": op,
-            "right": left,
+        "pattern": { 
+            "cond": {
+                "binary": {
+                    "left": right,
+                    "op": op,
+                    "right": left,
+                }
+            }
         },
         "priority_rule": ["left", "op", "right"],
     }
@@ -110,7 +155,7 @@ def extract_info(
 
     return result
 
-def extract_ast_to_sequence(node, pattern, priority_rule):
+def extract_ast_to_sequence(node, pattern, priority_rule, template):
     result = []
     stack = [node]
     seen = set()
@@ -131,15 +176,25 @@ def extract_ast_to_sequence(node, pattern, priority_rule):
         seen.add(current_step)
 
         if isinstance(current, dict):
-            keys = sorted(
-                current.keys(),
-                key=lambda k: (
-                    priority_rule.index(k) if k in priority_rule else len(priority_rule)
-                ),
-            )
-            if keys == priority_rule:
-                extract_info(current, pattern, priority_rule, result)
-            else:
+            # atm we just check for pattern like {"cond": {"binary": ...}} or {"cond": {"unary": ...}} or {"cond": {"field": ...}}
+            patt_found = False
+            if len(template["pattern"].keys()) == 1:
+                first_pattern_key = list(template["pattern"].keys())[0]
+                current_patt = current.get(first_pattern_key, {})
+                if current_patt != {} and len(current_patt.keys()) == 1 and current_patt.keys() == template["pattern"][first_pattern_key].keys():
+                    second_pattern_key = list(current_patt.keys())[0]
+                    current_stmt = current_patt.get(second_pattern_key, {})
+                    if current_stmt != {} and len(current_patt.keys()) == 1 and current_stmt.keys() == template["pattern"][first_pattern_key][second_pattern_key].keys():
+                        keys = sorted(
+                            list(current_stmt.keys()),
+                            key=lambda k: (
+                                priority_rule.index(k) if k in priority_rule else len(priority_rule)
+                            ),
+                        )
+                        if keys == priority_rule:
+                            extract_info(current_stmt, pattern, priority_rule, result)
+                            patt_found = True
+            if not patt_found:
                 for value in current.values():
                     stack.append(value)
 
@@ -151,7 +206,7 @@ def extract_ast_to_sequence(node, pattern, priority_rule):
 def match_sequence_in_ast(
     ast, pattern, priority_rule, template
 ) -> bool:
-    tokens = extract_ast_to_sequence(ast, pattern, priority_rule)
+    tokens = extract_ast_to_sequence(ast, pattern, priority_rule, template)
 
     sym_pattern = generate_symmetric_template(template) # used to check for a symmetrical rules like == or != (since a != b is the same than b != a for example)
     len_pattern = len(pattern)
@@ -171,7 +226,8 @@ def is_matching_template(ast, template_key):
     if not template:
         return False
 
-    current_node = ast["parent"]["raw_node"]
+    ast["parent"]["children"] = {}
+    current_node = ast["parent"]
 
     return match_sequence_in_ast(
         current_node, template_to_linear_pattern(template), template["priority_rule"], template
