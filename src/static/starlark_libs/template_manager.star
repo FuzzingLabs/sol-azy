@@ -226,8 +226,7 @@ def is_matching_template(ast, template_key):
     if not template:
         return False
 
-    ast["parent"]["children"] = {}
-    current_node = ast["parent"]
+    current_node = ast["parent"]["raw_node"]
 
     return match_sequence_in_ast(
         current_node, template_to_linear_pattern(template), template["priority_rule"], template
