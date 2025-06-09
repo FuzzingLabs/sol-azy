@@ -226,6 +226,7 @@ def is_matching_template(ast, template_key):
     if not template:
         return False
 
+    # TODO: Why raw_node
     current_node = ast["parent"]["raw_node"]
 
     return match_sequence_in_ast(

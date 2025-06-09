@@ -430,6 +430,7 @@ def prepare_ast(ast: list[dict]) -> dict:
     for node in nodes:
         if node.get("parent", EMPTY_NODE) == EMPTY_NODE:
             ast_node_add_child(root, node)
+    print(root)
     return root
 
 
