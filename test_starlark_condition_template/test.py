@@ -1,3 +1,5 @@
+from test_ast import *
+
 # template_matcher.star
 
 # Templates dictionary using simplified 'idents' notation
@@ -305,7 +307,9 @@ def is_matching_template(ast, template_key):
         ast, template_to_linear_pattern(template), template["priority_rule"], template
     )
 
-template_manager = struct(
-    TEMPLATES=TEMPLATES,
-    is_matching_template=is_matching_template,
-)
+if __name__ == "__main__":
+    assert is_matching_template(AST, "CHECK_CTX_ACCOUNT_AUTHORITY_KEY_TOKEN_OWNER")
+    assert is_matching_template(AST2, "CHECK_SPLTOKEN_ID_CTX_ACCOUNT_AUTHORITY_KEY")
+    assert is_matching_template(AST3, "CHECK_NOT_CTX_ACCOUNTS_AUTHORITY_ISSIGNER")
+    assert is_matching_template(AST4, "CHECK_CTX_ACCOUNTS_WILDCARD_KEY_EQ")
+    assert is_matching_template(AST5, "REQUIRE_CTX_ACCOUNTS_RENT_KEY_SYSVAR_RENT_ID")
