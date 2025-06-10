@@ -56,7 +56,7 @@ TEMPLATES["CHECK_NOT_CTX_ACCOUNTS_AUTHORITY_ISSIGNER"] = {
     "priority_rule": ["op", "expr"],
 }
 
-# usecase example if ctx.accounts.user_a.key() == ctx.accounts.user_b.key()
+# usecase example if ctx.accounts.user_a.key() == ctx.accounts.user_b.key() 
 TEMPLATES["CHECK_CTX_ACCOUNTS_WILDCARD_KEY_EQ"] = {
     "pattern": {
         "cond": {
@@ -83,6 +83,27 @@ TEMPLATES["REQUIRE_CTX_ACCOUNTS_RENT_KEY_SYSVAR_RENT_ID"] = {
     "priority_rule": ["path", "tokens", "delimiter", "semi_token"],
 }
 
+# check if solana_program::program::invoke is called
+TEMPLATES["CALL_FN_SOLANAPROGRAM_PROGRAM_INVOKE"] = {
+    "pattern": {
+        "call": {
+                "args": "", # we don't use it for now
+                "func": {"idents": ["solana_program", "program", "invoke"]},
+        }
+    },
+    "priority_rule": ["func", "args"],
+}
+
+def generate_call_fn_template(*idents):
+    return { 
+        "pattern": {
+        "call": {
+                "args": "", # we don't use it for now
+                "func": {"idents": idents},
+            }
+        },
+        "priority_rule": ["func", "args"],
+    }
 
 def generate_symmetric_template(template):
     template = template.get("pattern", {})
@@ -130,9 +151,12 @@ def template_to_linear_pattern(template):
                 # in AST method node is declared BEFORE idents
                 keys = ["method", "idents"] + [k for k in keys if k not in ("method", "idents")]
             else:
-                keys.sort(key=lambda k: (
-                        priority_rule.index(k) if k in priority_rule else len(priority_rule)
-                ))
+                keys = sorted(
+                            list(keys),
+                            key=lambda k: (
+                                priority_rule.index(k) if k in priority_rule else len(priority_rule)
+                            ),
+                        )
 
             for key in keys:
                 value = node[key]
@@ -218,7 +242,7 @@ def extract_ast_to_sequence(node, pattern, priority_rule, template):
         seen.add(current_step)
 
         if isinstance(current, dict):
-            # TODO: maybe a more generic pattern matching than just 3 if case could be better but atm that is sufficient
+            # TODO: maybe a more generic pattern matching than just 3 if case could be better but atm that is sufficient 
             # atm we just check for pattern like {"cond": {"binary": ...}} or {"cond": {"unary": ...}} or {"cond": {"field": ...}}
             patt_found = False
             if len(template["pattern"].keys()) == 1:
@@ -237,7 +261,7 @@ def extract_ast_to_sequence(node, pattern, priority_rule, template):
                     else:
                         second_pattern_key = list(current_patt.keys())[0]
                         current_stmt = current_patt.get(second_pattern_key, {})
-
+                    
                     if not patt_found and current_stmt != {} and len(current_patt.keys()) == 1 and current_stmt.keys() == template["pattern"][first_pattern_key][second_pattern_key].keys():
                         keys = sorted(
                             list(current_stmt.keys()),
@@ -296,7 +320,7 @@ def match_sequence_in_ast(
     return False
 
 
-def is_matching_template(ast, template_key):
+def is_matching_template_by_key(ast, template_key):
     template = TEMPLATES.get(template_key)
     if not template:
         return False
@@ -305,7 +329,15 @@ def is_matching_template(ast, template_key):
         ast, template_to_linear_pattern(template), template["priority_rule"], template
     )
 
+def is_matching_template(ast, template):
+    if isinstance(template, str):
+        print("Should use is_matching_template_by_key instead of is_matching_template")
+    return match_sequence_in_ast(
+        ast, template_to_linear_pattern(template), template["priority_rule"], template
+    )
+
 template_manager = struct(
     TEMPLATES=TEMPLATES,
     is_matching_template=is_matching_template,
+    is_matching_template_by_key=is_matching_template_by_key,
 )

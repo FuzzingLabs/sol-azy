@@ -75,8 +75,12 @@ def to_result(node: dict) -> dict:
         position = raw_node.get("position")
         metadata["position"] = position
 
+    children = []
+    if "children" in node:
+        children = map(to_result, node["children"])
+
     return {
-        "children": map(to_result, node["children"]),
+        "children": children,
         "access_path": node.get("access_path", EMPTY_ACCESS_PATH),
         "metadata": metadata,
         "ident": node.get("ident", EMPTY_IDENT),
@@ -347,6 +351,78 @@ def find_ident_src_node(sub_data, sub_access_path: str, metadata: dict) -> dict:
     return EMPTY_NODE
 
 
+def find_fn_names(node):
+    found = []
+    stack = [node]
+    seen = set()
+    _str_node = str(node)
+    approx_nb_element = _str_node.count(",") + 1 + _str_node.count("[") + _str_node.count("{")
+    
+    for _ in range(approx_nb_element):
+        if not stack:
+            break
+
+        current = stack.pop()
+        current_step = repr(current)
+        # TODO: verify why this is problem to not check whether the node is seen (in starlark engine)
+        # starlark memory management magic problem bypass, without this it will do infinite cycle probably due to pointer reference things
+        if current_step in seen:
+            continue
+        seen.add(current_step)
+
+        if isinstance(current, dict):
+            function_name_found = False
+            if "fn" in current:
+                if "ident" in current["fn"]:
+                    found.append(current["fn"]["ident"])
+                    function_name_found = True
+            if not function_name_found:
+                for value in current.values():
+                    stack.append(value)
+        elif isinstance(current, list):
+            for item in current:
+                stack.append(item)
+
+    return found
+
+def find_raw_nodes_by_fn_names(node, func_names):
+    found = []
+
+    stack = [node]
+    _str_node = str(node)
+    approx_nb_element = _str_node.count(",") + 1 + _str_node.count("[") + _str_node.count("{")
+    seen = set()
+    
+    for _ in range(approx_nb_element):
+        if not stack:
+            break
+        current = stack.pop()
+        current_step = repr(current)
+        # TODO: verify why this is problem to not check whether the node is seen (in starlark engine)
+        # starlark memory management magic problem bypass, without this it will do infinite cycle probably due to pointer reference things
+        if current_step in seen:
+            continue
+        seen.add(current_step)
+
+        if isinstance(current, dict):
+            function_node_found = False
+            if "raw_node" in current:
+                if "ident" in current["raw_node"] and current["raw_node"]["ident"] in func_names:
+                    found.append({"root": current["raw_node"], "metadata": current["metadata"]})
+                    function_node_found = True
+            if not function_node_found:
+                for value in current.values():
+                    stack.append(value)
+        elif isinstance(current, list):
+            for item in current:
+                stack.append(item)
+
+    return found
+
+def find_raw_nodes(ast):
+    fn_names = find_fn_names(ast)
+    return find_raw_nodes_by_fn_names(ast, fn_names)
+
 def prepare_syn_ast(ast, access_path, parent) -> list[dict]:
     nodes = []
 
@@ -430,7 +506,6 @@ def prepare_ast(ast: list[dict]) -> dict:
     for node in nodes:
         if node.get("parent", EMPTY_NODE) == EMPTY_NODE:
             ast_node_add_child(root, node)
-    print(root)
     return root
 
 
@@ -558,5 +633,8 @@ syn_ast = struct(
     find_account_typed_nodes=find_account_typed_nodes,
     find_member_accesses=find_member_accesses,
     first=first,
+    find_fn_names=find_fn_names,
+    find_raw_nodes_by_fn_names=find_raw_nodes_by_fn_names,
+    find_raw_nodes=find_raw_nodes,
     prepare_ast=prepare_ast,
 )
