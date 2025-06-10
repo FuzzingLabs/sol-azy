@@ -2,7 +2,7 @@ use std::cmp::PartialEq;
 use crate::commands::build_command;
 use crate::commands::build_command::build_sbf_project;
 use crate::helpers::{
-    check_binary_installed, create_dir_if_not_exists, get_project_type, BeforeCheck, ProjectType,
+    get_project_type, BeforeCheck, ProjectType,
 };
 use crate::parsers::syn_ast;
 use crate::state::build_state::BuildState;

@@ -19,10 +19,10 @@ Sol-azy provides tools for:
   - Enables writing domain-specific security rules
 
 - **Reverse Engineering**:
-  - Disassembles compiled eBPF bytecode
+  - Disassembles compiled sBPF bytecode
   - Exports Control Flow Graphs in `.dot` format
   - Tracks and formats immediate data from RODATA
-  - (Future) Outputs simplified Rust-like pseudocode
+  - Annotations simplified with Rust-like pseudocode
 
 - **Dotting**:
   - Lets you manually reinsert functions into reduced CFGs from the full `.dot` graph

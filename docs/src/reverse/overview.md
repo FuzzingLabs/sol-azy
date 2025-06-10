@@ -1,6 +1,6 @@
 # Reverse Overview
 
-This section explains how Sol-azy performs static reverse engineering on Solana programs compiled to eBPF.
+This section explains how Sol-azy performs static reverse engineering on Solana programs compiled to SBF.
 
 The reverse module combines disassembly, control flow analysis, and memory inspection, using a customized static analysis engine adapted from [`sbpf-solana`](https://github.com/anza-xyz/sbpf-solana).
 

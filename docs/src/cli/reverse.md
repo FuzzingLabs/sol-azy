@@ -72,7 +72,7 @@ cargo run -- reverse \
   --reduced
 ```
 
-This command will disassemble the program and generate both a full and reduced CFG.
+This command will disassemble the program and generate reduced CFG.
 
 ---
 

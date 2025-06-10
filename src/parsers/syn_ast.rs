@@ -6,7 +6,7 @@ use serde_json::json;
 use sha2::Digest;
 use std::collections::HashMap;
 use std::fmt::Formatter;
-use std::hash::{DefaultHasher, Hash, Hasher};
+use std::hash::{Hash, Hasher};
 use std::path::Path;
 use std::{fmt, fs};
 use syn::spanned::Spanned;

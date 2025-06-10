@@ -102,8 +102,25 @@ point into `.rodata`. Sol-azy:
 This process is handled by:
 
 ```rust
-fn get_string_repr(program: &[u8], insn: &Insn, next: Option<&Insn>) -> String
+pub fn update_string_resolution(program: &[u8], insn: &Insn, next_insn_wrapped: Option<&Insn>, register_tracker: &mut RegisterTracker) -> String
 ```
+
+> Support for sBPF v2+: Address Construction via `mov32` + `hor64`
+> In sBPF version 2 and above, the use of `lddw` for loading 64-bit constants is forbidden. Instead, addresses are **manually constructed** using:
+>
+> ```text
+> mov32  r1, 0x3000         ; load lower 32 bits
+> hor64  r1, 0x10000000     ; set upper 32 bits → r1 = 0x1000000000003000
+> ```
+>
+> Sol-azy handles this by:
+>
+> 1. **Tracking register values** using a `RegisterTracker`
+> 2. **Do an "emulation"** of `mov` and `hor64`
+> 3. **Resolving loads like** `ldxdw r2, [dst + off]` where `dst + off` points into `.rodata`
+> 4. **Extracting and decoding the pointed memory**, same as for `lddw`
+>
+> This lets the disassembler annotate pointer-based loads even when addresses are assembled dynamically.
 
 ---
 
