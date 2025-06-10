@@ -1,3 +1,5 @@
+from test_ast import *
+
 # template_matcher.star
 
 # Templates dictionary using simplified 'idents' notation
@@ -56,7 +58,7 @@ TEMPLATES["CHECK_NOT_CTX_ACCOUNTS_AUTHORITY_ISSIGNER"] = {
     "priority_rule": ["op", "expr"],
 }
 
-# usecase example if ctx.accounts.user_a.key() == ctx.accounts.user_b.key()
+# usecase example if ctx.accounts.user_a.key() == ctx.accounts.user_b.key() 
 TEMPLATES["CHECK_CTX_ACCOUNTS_WILDCARD_KEY_EQ"] = {
     "pattern": {
         "cond": {
@@ -218,7 +220,7 @@ def extract_ast_to_sequence(node, pattern, priority_rule, template):
         seen.add(current_step)
 
         if isinstance(current, dict):
-            # TODO: maybe a more generic pattern matching than just 3 if case could be better but atm that is sufficient
+            # TODO: maybe a more generic pattern matching than just 3 if case could be better but atm that is sufficient 
             # atm we just check for pattern like {"cond": {"binary": ...}} or {"cond": {"unary": ...}} or {"cond": {"field": ...}}
             patt_found = False
             if len(template["pattern"].keys()) == 1:
@@ -237,7 +239,7 @@ def extract_ast_to_sequence(node, pattern, priority_rule, template):
                     else:
                         second_pattern_key = list(current_patt.keys())[0]
                         current_stmt = current_patt.get(second_pattern_key, {})
-
+                    
                     if not patt_found and current_stmt != {} and len(current_patt.keys()) == 1 and current_stmt.keys() == template["pattern"][first_pattern_key][second_pattern_key].keys():
                         keys = sorted(
                             list(current_stmt.keys()),
@@ -305,7 +307,9 @@ def is_matching_template(ast, template_key):
         ast, template_to_linear_pattern(template), template["priority_rule"], template
     )
 
-template_manager = struct(
-    TEMPLATES=TEMPLATES,
-    is_matching_template=is_matching_template,
-)
+if __name__ == "__main__":
+    assert is_matching_template(AST, "CHECK_CTX_ACCOUNT_AUTHORITY_KEY_TOKEN_OWNER")
+    assert is_matching_template(AST2, "CHECK_SPLTOKEN_ID_CTX_ACCOUNT_AUTHORITY_KEY")
+    assert is_matching_template(AST3, "CHECK_NOT_CTX_ACCOUNTS_AUTHORITY_ISSIGNER")
+    assert is_matching_template(AST4, "CHECK_CTX_ACCOUNTS_WILDCARD_KEY_EQ")
+    assert is_matching_template(AST5, "REQUIRE_CTX_ACCOUNTS_RENT_KEY_SYSVAR_RENT_ID")
