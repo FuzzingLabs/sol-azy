@@ -85,6 +85,27 @@ TEMPLATES["REQUIRE_CTX_ACCOUNTS_RENT_KEY_SYSVAR_RENT_ID"] = {
     "priority_rule": ["path", "tokens", "delimiter", "semi_token"],
 }
 
+# check if solana_program::program::invoke is called
+TEMPLATES["CALL_FN_SOLANAPROGRAM_PROGRAM_INVOKE"] = {
+    "pattern": {
+        "call": {
+                "args": "", # we don't use it for now
+                "func": {"idents": ["solana_program", "program", "invoke"]},
+        }
+    },
+    "priority_rule": ["func", "args"],
+}
+
+def generate_call_fn_template(*idents):
+    return { 
+        "pattern": {
+        "call": {
+                "args": "", # we don't use it for now
+                "func": {"idents": idents},
+            }
+        },
+        "priority_rule": ["func", "args"],
+    }
 
 def generate_symmetric_template(template):
     template = template.get("pattern", {})
@@ -132,9 +153,12 @@ def template_to_linear_pattern(template):
                 # in AST method node is declared BEFORE idents
                 keys = ["method", "idents"] + [k for k in keys if k not in ("method", "idents")]
             else:
-                keys.sort(key=lambda k: (
-                        priority_rule.index(k) if k in priority_rule else len(priority_rule)
-                ))
+                keys = sorted(
+                            list(keys),
+                            key=lambda k: (
+                                priority_rule.index(k) if k in priority_rule else len(priority_rule)
+                            ),
+                        )
 
             for key in keys:
                 value = node[key]
@@ -298,7 +322,7 @@ def match_sequence_in_ast(
     return False
 
 
-def is_matching_template(ast, template_key):
+def is_matching_template_by_key(ast, template_key):
     template = TEMPLATES.get(template_key)
     if not template:
         return False
@@ -307,9 +331,95 @@ def is_matching_template(ast, template_key):
         ast, template_to_linear_pattern(template), template["priority_rule"], template
     )
 
+def is_matching_template(ast, template):
+    return match_sequence_in_ast(
+        ast, template_to_linear_pattern(template), template["priority_rule"], template
+    )
+
+def find_fn_names(node):
+    found = []
+    stack = [node]
+    seen = set()
+    _str_node = str(node)
+    approx_nb_element = _str_node.count(",") + 1 + _str_node.count("[") + _str_node.count("{")
+    
+    for _ in range(approx_nb_element):
+        if not stack:
+            break
+
+        current = stack.pop()
+        current_step = repr(current)
+        # TODO: verify why this is problem to not check whether the node is seen (in starlark engine)
+        # starlark memory management magic problem bypass, without this it will do infinite cycle probably due to pointer reference things
+        if current_step in seen:
+            continue
+        seen.add(current_step)
+
+        if isinstance(current, dict):
+            function_name_found = False
+            if "fn" in current:
+                if "ident" in current["fn"]:
+                    found.append(current["fn"]["ident"])
+                    function_name_found = True
+            if not function_name_found:
+                for value in current.values():
+                    stack.append(value)
+        elif isinstance(current, list):
+            for item in current:
+                stack.append(item)
+
+    return found
+
+def find_raw_nodes_by_fn_names(node, func_names):
+    found = []
+
+    stack = [node]
+    _str_node = str(node)
+    approx_nb_element = _str_node.count(",") + 1 + _str_node.count("[") + _str_node.count("{")
+    seen = set()
+    
+    for _ in range(approx_nb_element):
+        if not stack:
+            break
+        current = stack.pop()
+        current_step = repr(current)
+        # TODO: verify why this is problem to not check whether the node is seen (in starlark engine)
+        # starlark memory management magic problem bypass, without this it will do infinite cycle probably due to pointer reference things
+        if current_step in seen:
+            continue
+        seen.add(current_step)
+
+        if isinstance(current, dict):
+            function_node_found = False
+            if "raw_node" in current:
+                if "ident" in current["raw_node"] and current["raw_node"]["ident"] in func_names:
+                    found.append({"root": current["raw_node"], "metadata": current["metadata"]})
+                    function_node_found = True
+            if not function_node_found:
+                for value in current.values():
+                    stack.append(value)
+        elif isinstance(current, list):
+            for item in current:
+                stack.append(item)
+
+    return found
+
+def find_raw_nodes(ast):
+    fn_names = find_fn_names(ast)
+    return find_raw_nodes_by_fn_names(ast, fn_names)
+
 if __name__ == "__main__":
-    assert is_matching_template(AST, "CHECK_CTX_ACCOUNT_AUTHORITY_KEY_TOKEN_OWNER")
-    assert is_matching_template(AST2, "CHECK_SPLTOKEN_ID_CTX_ACCOUNT_AUTHORITY_KEY")
-    assert is_matching_template(AST3, "CHECK_NOT_CTX_ACCOUNTS_AUTHORITY_ISSIGNER")
-    assert is_matching_template(AST4, "CHECK_CTX_ACCOUNTS_WILDCARD_KEY_EQ")
-    assert is_matching_template(AST5, "REQUIRE_CTX_ACCOUNTS_RENT_KEY_SYSVAR_RENT_ID")
+    # if
+    assert is_matching_template_by_key(AST, "CHECK_CTX_ACCOUNT_AUTHORITY_KEY_TOKEN_OWNER")
+    assert is_matching_template_by_key(AST2, "CHECK_SPLTOKEN_ID_CTX_ACCOUNT_AUTHORITY_KEY")
+    assert is_matching_template_by_key(AST3, "CHECK_NOT_CTX_ACCOUNTS_AUTHORITY_ISSIGNER")
+    assert is_matching_template_by_key(AST4, "CHECK_CTX_ACCOUNTS_WILDCARD_KEY_EQ")
+
+    # require
+    assert is_matching_template_by_key(AST5, "REQUIRE_CTX_ACCOUNTS_RENT_KEY_SYSVAR_RENT_ID")
+
+    # called function
+    assert is_matching_template_by_key(AST2, "CALL_FN_SOLANAPROGRAM_PROGRAM_INVOKE")
+    assert is_matching_template(AST2, generate_call_fn_template("solana_program", "program", "invoke"))
+
+    
