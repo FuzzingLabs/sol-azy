@@ -1,15 +1,10 @@
-use std::cmp::PartialEq;
-use crate::commands::build_command;
-use crate::commands::build_command::build_sbf_project;
 use crate::helpers::{
     get_project_type, BeforeCheck, ProjectType,
 };
 use crate::parsers::syn_ast;
-use crate::state::build_state::BuildState;
-use crate::state::sast_state::{SastState, SynAstMap, SynAstMapExt};
-use crate::{helpers, Commands};
+use crate::state::sast_state::{SastState};
+use crate::Commands;
 use log::{debug, error, info};
-use std::process::{Command, Stdio};
 
 
 pub struct SastCmd {
@@ -188,7 +183,7 @@ fn sast_anchor_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
 
     match sast_state.apply_rules() {
         Ok(_) => {}
-        Err(e) => {
+        Err(_e) => {
             error!("Cannot apply rules to the project: {}", cmd.target_dir);
             return Err(anyhow::anyhow!(
                 "Cannot apply rules to the project: {}",
@@ -228,7 +223,7 @@ fn sast_sbf_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
 
     match sast_state.apply_rules() {
         Ok(_) => {}
-        Err(e) => {
+        Err(_e) => {
             error!("Cannot apply rules to the project: {}", cmd.target_dir);
             return Err(anyhow::anyhow!(
                 "Cannot apply rules to the project: {}",

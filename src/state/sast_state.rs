@@ -75,7 +75,7 @@ impl SynMatchResult {
             .get("position")
             .ok_or_else(|| anyhow::anyhow!("No 'position' metadata found in matches"))?;
 
-        if let serde_json::Value::Object(obj) = value {
+        if let serde_json::Value::Object(_obj) = value {
             match serde_json::from_value::<SourcePosition>(value.clone()) {
                 Ok(position) => Ok(position),
                 Err(err) => Err(anyhow::anyhow!("Failed to parse 'position' metadata: {}", err)),
@@ -172,6 +172,7 @@ impl SynAstResult {
 /// and a collection of results from rule evaluations.
 #[derive(Clone)]
 pub struct SynAst {
+    #[allow(dead_code)]
     pub ast: syn::File,
     pub ast_positions: AstPositions,
     pub ast_json: serde_json::Value,
@@ -243,6 +244,7 @@ pub trait SynAstMapExt {
     /// `Ok(true)` if at least one rule matched across all files, otherwise `Ok(false)` or an error.
     fn apply_rules(&mut self, rules_dir: &StarlarkRulesDir, starlark_engine: &StarlarkEngine) -> Result<bool>;
     /// Returns all file paths present in the syntax map.
+    #[allow(dead_code)]
     fn get_file_paths(&self) -> Vec<&String>;
     /// Returns the number of syntax trees (files) in the map.
     fn count_files(&self) -> usize;

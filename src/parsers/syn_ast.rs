@@ -1,15 +1,12 @@
 use crate::state::sast_state::{SynAst, SynAstMap};
 use anyhow::{Context, Result};
-use log::{debug, error};
+use log::error;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use sha2::Digest;
 use std::collections::HashMap;
 use std::fmt::Formatter;
-use std::hash::{Hash, Hasher};
 use std::path::Path;
 use std::{fmt, fs};
-use syn::spanned::Spanned;
 use syn::visit;
 use syn::visit::Visit;
 
@@ -153,15 +150,14 @@ impl AstPositions {
 struct SpanCollector<'a> {
     source_file_path: &'a Path,
     positions: AstPositions,
+    #[allow(dead_code)]
     current_path: Vec<String>, // Track the access path during traversal
 }
 
 impl<'a, 'ast> Visit<'ast> for SpanCollector<'a> {
     fn visit_ident(&mut self, node: &'ast syn::Ident) {
         let span = node.span();
-        let access_path = self.current_path.join(".");
         
-        // Add node position without using hash
         self.positions.add_position(
             node.to_string(),
             SourcePosition::from_span(&span, 

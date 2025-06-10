@@ -1,11 +1,9 @@
-use crate::commands::build_command;
 use crate::helpers::{
     check_binary_installed, create_dir_if_not_exists, get_project_type, BeforeCheck, ProjectType,
 };
 use crate::state::build_state::BuildState;
 use crate::{helpers, Commands};
 use log::{debug, error, info};
-use std::process::{Command, Stdio};
 
 
 pub struct BuildCmd {

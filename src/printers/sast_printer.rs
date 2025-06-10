@@ -1,10 +1,9 @@
 // src/pretty_printer.rs
 
 use std::collections::HashMap;
-use crate::parsers::syn_ast::SourcePosition;
-use crate::state::sast_state::{Certainty, SastState, Severity, SynAst, SynAstMap, SynAstMapExt, SynAstResult, SynMatchResult, SynRuleMetadata};
+use crate::state::sast_state::{Certainty, SastState, Severity, SynAstMapExt, SynAstResult, SynRuleMetadata};
 use anyhow::{Context, Result};
-use prettytable::{format, row, Cell, Row, Table};
+use prettytable::{format, Cell, Row, Table};
 
 /// Utility responsible for displaying SAST analysis results in a human-readable format.
 ///
@@ -56,7 +55,7 @@ impl SastPrinter {
                 grouped_results.entry(rule_name).or_default().push((filename.clone(), *ast_res));
             }
 
-            for (rule_name, results) in grouped_results {
+            for (_rule_name, results) in grouped_results {
                 let first_result = &results[0].1;
                 println!("\n{}", "=".repeat(80));
                 Self::print_rule_metadata(&first_result.rule_metadata, first_result.rule_filename.to_string())?;
@@ -137,15 +136,7 @@ impl SastPrinter {
 
         for (rule_name, group_results) in rule_groups {
             let first_result = &group_results[0];
-
-            let file_count = group_results
-                .iter()
-                .map(|r| &r.rule_filename)
-                .collect::<std::collections::HashSet<_>>()
-                .len();
-
             let total_matches: usize = group_results.iter().map(|r| r.matches.len()).sum();
-
             let file_list = group_results
                 .iter()
                 .map(|r| r.rule_filename.clone())
@@ -164,37 +155,6 @@ impl SastPrinter {
         }
 
         table.printstd();
-
-        Ok(())
-    }
-    /// Prints detailed information about a single rule result, including all matches.
-    ///
-    /// # Arguments
-    ///
-    /// * `result` - The rule result to display.
-    /// * `syn_ast_map` - A map of syntax trees used to resolve source locations.
-    ///
-    /// # Returns
-    ///
-    /// `Ok(())` on success, or an error if printing fails.
-    pub fn print_result(
-        filename: String,
-        result: &SynAstResult,
-    ) -> Result<()> {
-        println!("\n{}", "=".repeat(80));
-        Self::print_rule_metadata(&result.rule_metadata, result.rule_filename.to_string())?;
-
-        if !result.matches.is_empty() {
-            println!("\nMatches found: {}", result.matches.len());
-            for (i, match_result) in result.matches.iter().enumerate() {
-                let match_number = i + 1;
-                println!("#{}: {}", match_number, match_result.access_path)
-            }
-        } else {
-            println!("\nNo matches found.");
-        }
-
-        println!("{}", "=".repeat(80));
 
         Ok(())
     }
@@ -267,15 +227,6 @@ impl SastPrinter {
         table.printstd();
 
         Ok(())
-    }
-
-    fn find_source_position(
-        match_result: &SynMatchResult,
-    ) -> Option<SourcePosition> {
-        match match_result.get_location_metadata().ok() {
-            Some(pos) => Option::from(pos),
-            None => None,
-        }
     }
 
     /// Outputs the entire result set in a prettified JSON format.
