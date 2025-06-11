@@ -41,6 +41,8 @@ pub enum Commands {
         rules_dir: String,
         #[clap(short = 's', long = "syn-scan-only", default_value_t = false)]
         syn_scan_only: bool,
+        #[clap(long = "no-internal-rules", action = clap::ArgAction::SetFalse, default_value_t = true)]
+        use_internal_rules: bool,
         #[clap(long = "recursive", default_value_t = true)]
         recursive: bool,
         // TODO: use Build out-dir in options
@@ -98,7 +100,7 @@ pub enum Commands {
 #[tokio::main]
 async fn main() {
     fmt::Subscriber::builder()
-        .with_env_filter(std::env::var("RUST_LOG").unwrap_or_else(|_| "sol_azy=debug".into()))
+        .with_env_filter(std::env::var("RUST_LOG").unwrap_or_else(|_| "sol_azy=error".into()))
         .pretty()
         .init();
 

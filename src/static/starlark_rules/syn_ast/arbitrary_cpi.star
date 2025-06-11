@@ -9,10 +9,8 @@ RULE_METADATA = {
 # ? Need to filter false positive
 def syn_ast_rule(root: dict) -> list[dict]:
     matches = []
-    for sink in syn_ast.find_chained_calls(root, "solana_program", "program", "invoke"):
-        if sink.get("ident", "") in ["program", "invoke"]:
-            continue
-        if syn_ast.find_comparisons(sink, "spl_token", "token_program") or syn_ast.find_comparisons(sink, "spl_token_2022", "token_program"):
-            continue
-        matches.append(syn_ast.to_result(sink))
+    raw_nodes = syn_ast.find_raw_nodes(root)
+    for sink in raw_nodes:
+        if template_manager.is_matching_template_by_key(sink, "CALL_FN_SOLANAPROGRAM_PROGRAM_INVOKE") and not template_manager.is_matching_template_by_key(sink, "CHECK_SPLTOKEN_ID_CTX_ACCOUNT_AUTHORITY_KEY"):
+            matches.append(syn_ast.to_result(sink))
     return matches

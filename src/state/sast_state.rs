@@ -288,10 +288,14 @@ impl SastState {
     /// # Returns
     ///
     /// A new `SastState` instance, or an error if the rule directory couldn't be parsed.
-    pub fn new(syn_ast_map: SynAstMap, starlark_rules_dir_path: &String) -> Result<Self> {
+    pub fn new(
+        syn_ast_map: SynAstMap, 
+        starlark_rules_dir_path: &String,
+        use_internal_rules: bool,
+    ) -> Result<Self> {
         Ok(Self {
             syn_ast_map,
-            starlark_rules_dir: StarlarkRulesDir::new_from_dir(starlark_rules_dir_path)?,
+            starlark_rules_dir: StarlarkRulesDir::new_from_dir(starlark_rules_dir_path, use_internal_rules)?,
             starlark_engine: StarlarkEngine::new(),
         })
     }
