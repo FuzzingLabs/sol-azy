@@ -1,16 +1,14 @@
-use crate::helpers::{
-    get_project_type, BeforeCheck, ProjectType,
-};
+use crate::helpers::{get_project_type, BeforeCheck, ProjectType};
 use crate::parsers::syn_ast;
-use crate::state::sast_state::{SastState};
+use crate::state::sast_state::SastState;
 use crate::Commands;
 use log::{debug, error, info};
-
 
 pub struct SastCmd {
     pub target_dir: String,
     pub rules_dir: String,
     pub syn_scan_only: bool,
+    pub use_internal_rules: bool,
     pub recursive: bool,
     // TODO: use Build out-dir in options
 }
@@ -22,11 +20,13 @@ impl SastCmd {
                 target_dir,
                 rules_dir,
                 syn_scan_only,
+                use_internal_rules,
                 recursive,
             } => Self {
                 target_dir: target_dir.clone(),
                 rules_dir: rules_dir.clone(),
                 syn_scan_only: *syn_scan_only,
+                use_internal_rules: *use_internal_rules,
                 recursive: *recursive,
             },
             _ => unreachable!(),
@@ -113,14 +113,16 @@ fn scan_directory_recursively(cmd: &SastCmd) -> anyhow::Result<Vec<SastState>> {
     let path = std::path::Path::new(&cmd.target_dir);
 
     // Skip certain directories commonly not needed for scanning
-    let dir_name = path.file_name()
+    let dir_name = path
+        .file_name()
         .and_then(|name| name.to_str())
         .unwrap_or("");
 
-    if dir_name.starts_with(".") ||
-        dir_name == "node_modules" ||
-        dir_name == "target" ||
-        dir_name == "build" {
+    if dir_name.starts_with(".")
+        || dir_name == "node_modules"
+        || dir_name == "target"
+        || dir_name == "build"
+    {
         return Ok(results);
     }
 
@@ -147,6 +149,7 @@ fn scan_directory_recursively(cmd: &SastCmd) -> anyhow::Result<Vec<SastState>> {
                     target_dir: sub_path.to_string_lossy().to_string(),
                     rules_dir: cmd.rules_dir.clone(),
                     syn_scan_only: cmd.syn_scan_only,
+                    use_internal_rules: cmd.use_internal_rules,
                     recursive: true,
                 };
 
@@ -179,6 +182,7 @@ fn sast_anchor_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
     let mut sast_state = SastState::new(
         syn_ast::get_syn_ast_recursive(&format!("{}/programs", cmd.target_dir))?,
         &cmd.rules_dir,
+        cmd.use_internal_rules,
     )?;
 
     match sast_state.apply_rules() {
@@ -219,6 +223,7 @@ fn sast_sbf_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
     let mut sast_state = SastState::new(
         syn_ast::get_syn_ast_recursive(&format!("{}/src", cmd.target_dir))?,
         &cmd.rules_dir,
+        cmd.use_internal_rules,
     )?;
 
     match sast_state.apply_rules() {
@@ -231,7 +236,7 @@ fn sast_sbf_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
             ));
         }
     }
-    
+
     sast_state.print_results(&cmd.target_dir)?;
 
     if cmd.syn_scan_only {

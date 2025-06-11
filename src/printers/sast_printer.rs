@@ -25,17 +25,43 @@ impl SastPrinter {
     ///
     /// `Ok(())` on success or an error if printing fails.
     pub fn print_sast_state(state: &SastState, scanned_dir: &String) -> Result<()> {
-        println!("\n================================================================================\n\n{} files scanned in {} directory\n", state.syn_ast_map.count_files(), scanned_dir);
+        Self::print_scan_summary(state, scanned_dir);
+        
+        let all_results = Self::collect_all_results(state);
+        Self::print_rules_summary(&all_results)?;
 
-        let all_results: Vec<SynAstResult> = state
+        let results_with_matches = Self::collect_results_with_matches(state);
+        
+        if !results_with_matches.is_empty() {
+            Self::print_detailed_findings(&results_with_matches)?;
+        } else {
+            println!("\nNo vulnerabilities detected.");
+        }
+
+        Ok(())
+    }
+
+    /// Prints a summary of the scan including file count and directory
+    fn print_scan_summary(state: &SastState, scanned_dir: &String) {
+        println!(
+            "\n================================================================================\n\n{} files scanned in {} directory\n", 
+            state.syn_ast_map.count_files(), 
+            scanned_dir
+        );
+    }
+
+    /// Collects all results from the SAST state
+    fn collect_all_results(state: &SastState) -> Vec<SynAstResult> {
+        state
             .syn_ast_map
             .values()
             .flat_map(|ast| ast.results.clone())
-            .collect();
+            .collect()
+    }
 
-        Self::print_rules_summary(&all_results)?;
-
-        let results_with_matches: Vec<(String, &SynAstResult)> = state
+    /// Collects results that have matches from the SAST state
+    fn collect_results_with_matches(state: &SastState) -> Vec<(String, &SynAstResult)> {
+        state
             .syn_ast_map
             .iter()
             .flat_map(|(filename, ast)| {
@@ -43,43 +69,54 @@ impl SastPrinter {
                     .iter()
                     .filter(|result| !result.matches.is_empty())
                     .map(|result| (filename.clone(), result))
-            })
-            .collect();
+        })
+        .collect()
+    }
 
-        if !results_with_matches.is_empty() {
-            println!("\nDetailed findings:");
-            let mut grouped_results: HashMap<String, Vec<(String, &SynAstResult)>> = HashMap::new();
-            
-            for (filename, ast_res) in results_with_matches.iter() {
-                let rule_name = ast_res.rule_metadata.name.clone();
-                grouped_results.entry(rule_name).or_default().push((filename.clone(), *ast_res));
-            }
+    /// Prints detailed findings for results with matches
+    fn print_detailed_findings(results_with_matches: &[(String, &SynAstResult)]) -> Result<()> {
+        println!("\nDetailed findings:");
+        let grouped_results = Self::group_results_by_rule_name(results_with_matches);
 
-            for (_rule_name, results) in grouped_results {
-                let first_result = &results[0].1;
-                println!("\n{}", "=".repeat(80));
-                Self::print_rule_metadata(&first_result.rule_metadata, first_result.rule_filename.to_string())?;
+        for (_rule_name, results) in grouped_results {
+            let first_result = &results[0].1;
+            println!("\n{}", "=".repeat(80));
+            Self::print_rule_metadata(&first_result.rule_metadata, first_result.rule_filename.to_string())?;
 
-                let total_matches: usize = results.iter().map(|(_, res)| res.matches.len()).sum();
-                println!("\nMatches found: {}", total_matches);
+            let total_matches: usize = results.iter().map(|(_, res)| res.matches.len()).sum();
+            println!("\nMatches found: {}", total_matches);
 
-                for (filename, ast_res) in results {
-                    for match_result in &ast_res.matches {
-                        match match_result.get_location_metadata() {
-                            Ok(pos) => println!("{}", pos.get_pretty_string()),
-                            Err(_) => println!("{}: {}", filename, match_result.access_path)    
-                        }
-                    }
-                }
-
-                println!("{}", "=".repeat(80));
-            }
-        } else {
-            println!("\nNo vulnerabilities detected.");
+            Self::print_match_locations(&results);
+            println!("{}", "=".repeat(80));
         }
 
         Ok(())
+    }
 
+    /// Groups results by rule name for better organization
+    fn group_results_by_rule_name<'a>(
+        results_with_matches: &[(String, &'a SynAstResult)]
+    ) -> HashMap<String, Vec<(String, &'a SynAstResult)>> {
+        let mut grouped_results: HashMap<String, Vec<(String, &'a SynAstResult)>> = HashMap::new();
+        
+        for (filename, ast_res) in results_with_matches {
+            let rule_name = ast_res.rule_metadata.name.clone();
+            grouped_results.entry(rule_name).or_default().push((filename.clone(), *ast_res));
+        }
+        
+        grouped_results
+    }
+
+    /// Prints match locations for each result
+    fn print_match_locations(results: &[(String, &SynAstResult)]) {
+        for (filename, ast_res) in results {
+            for match_result in &ast_res.matches {
+                match match_result.get_location_metadata() {
+                    Ok(pos) => println!("{}", pos.get_pretty_string()),
+                    Err(_) => println!("{}: {}", filename, match_result.access_path)    
+                }
+            }
+        }
     }
 
     /// Displays a summary table of all rule matches across all analyzed files.
@@ -124,8 +161,8 @@ impl SastPrinter {
             }
         };
 
-        let mut rule_groups: std::collections::HashMap<String, Vec<&SynAstResult>> =
-            std::collections::HashMap::new();
+        let mut rule_groups: HashMap<String, Vec<&SynAstResult>> =
+            HashMap::new();
 
         for result in results {
             rule_groups

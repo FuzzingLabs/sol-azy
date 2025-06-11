@@ -38,7 +38,7 @@ pub trait StarlarkRuleDirExt
 where
     Self: Sized,
 {
-    fn new_from_dir(rules_dir: &String) -> anyhow::Result<Self>;
+    fn new_from_dir(rules_dir: &String, use_internal_rules: bool) -> anyhow::Result<Self>;
 }
 
 impl StarlarkRuleDirExt for StarlarkRulesDir {
@@ -51,54 +51,98 @@ impl StarlarkRuleDirExt for StarlarkRulesDir {
     /// # Returns
     ///
     /// A vector of `StarlarkRule` objects if loading succeeds, or an error if the directory is invalid or contains faulty files.
-    fn new_from_dir(rules_dir: &String) -> anyhow::Result<Self> {
+    fn new_from_dir(rules_dir: &String, use_internal_rules: bool) -> anyhow::Result<Self> {
         let path = std::path::Path::new(rules_dir);
+        validate_rules_directory(path, rules_dir)?;
 
-        if !path.exists() {
-            error!("Rules directory does not exist: {}", rules_dir);
-            return Err(anyhow::anyhow!(
-                "Rules directory does not exist: {}",
-                rules_dir
-            ));
+        let mut rules = Vec::new();
+
+        if use_internal_rules {
+            let internal_rules = load_internal_rules()?;
+            rules.extend(internal_rules);
         }
 
-        if !path.is_dir() {
-            error!("Path is not a directory: {}", rules_dir);
-            return Err(anyhow::anyhow!("Path is not a directory: {}", rules_dir));
-        }
+        let external_rules = load_external_rules(path, rules_dir)?;
+        rules.extend(external_rules);
 
-        std::fs::read_dir(path)?
-            .filter_map(Result::ok)
-            .map(|entry| entry.path())
-            .filter(|path| {
-                path.is_file() && path.extension().and_then(|ext| ext.to_str()) == Some("star")
-            })
-            .map(|path| {
-                let filename = path
-                    .file_name()
-                    .and_then(|name| name.to_str())
-                    .ok_or_else(|| anyhow::anyhow!("Invalid filename"))?
-                    .to_string();
-
-                let content = std::fs::read_to_string(&path)?;
-
-                // TODO: get rule_type
-                let rule_type = StarlarkRuleType::Syn;
-
-                info!(
-                    "Loaded rule {} from directory {}",
-                    filename,
-                    rules_dir
-                );
-
-                Ok(StarlarkRule {
-                    filename,
-                    content,
-                    rule_type,
-                })
-            })
-            .collect::<Result<Vec<StarlarkRule>, anyhow::Error>>()
+        Ok(rules)
     }
+}
+
+/// Validates that the specified path exists and is a directory
+fn validate_rules_directory(path: &std::path::Path, rules_dir: &String) -> anyhow::Result<()> {
+    if !path.exists() {
+        error!("Rules directory does not exist: {}", rules_dir);
+        return Err(anyhow::anyhow!(
+            "Rules directory does not exist: {}",
+            rules_dir
+        ));
+    }
+
+    if !path.is_dir() {
+        error!("Path is not a directory: {}", rules_dir);
+        return Err(anyhow::anyhow!("Path is not a directory: {}", rules_dir));
+    }
+
+    Ok(())
+}
+
+/// Loads internal Starlark rules from the embedded resources
+fn load_internal_rules() -> anyhow::Result<Vec<StarlarkRule>> {
+    static_dir::read_all_files_in_dir("starlark_rules/syn_ast")?
+        .into_iter()
+        .filter(|(name, _)| name.ends_with(".star"))
+        .map(|(name, content)| {
+            let filename = name
+                .split('/')
+                .last()
+                .ok_or_else(|| anyhow::anyhow!("Invalid filename"))?
+                .to_string();
+
+            info!("Loaded internal rule {}", filename);
+
+            Ok(StarlarkRule {
+                filename,
+                content,
+                rule_type: StarlarkRuleType::Syn,
+            })
+        })
+        .collect()
+}
+
+/// Loads external Starlark rules from the specified directory
+fn load_external_rules(path: &std::path::Path, rules_dir: &String) -> anyhow::Result<Vec<StarlarkRule>> {
+    std::fs::read_dir(path)?
+        .filter_map(Result::ok)
+        .map(|entry| entry.path())
+        .filter(|path| {
+            path.is_file() && path.extension().and_then(|ext| ext.to_str()) == Some("star")
+        })
+        .map(|path| {
+            let filename = path
+                .file_name()
+                .and_then(|name| name.to_str())
+                .ok_or_else(|| anyhow::anyhow!("Invalid filename"))?
+                .to_string();
+
+            let content = std::fs::read_to_string(&path)?;
+
+            // TODO: get rule_type
+            let rule_type = StarlarkRuleType::Syn;
+
+            info!(
+                "Loaded rule {} from directory {}",
+                filename,
+                rules_dir
+            );
+
+            Ok(StarlarkRule {
+                filename,
+                content,
+                rule_type,
+            })
+        })
+        .collect()
 }
 
 /// Provides an environment to evaluate Starlark rule files against parsed Rust ASTs.
