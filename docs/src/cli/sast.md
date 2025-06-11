@@ -82,5 +82,5 @@ cargo run -- sast \
 ## Related
 
 - [Rule Format](../rules/format.md)
-- [Example Rules](../rules/examples.md)
+- [Use case example](../rules/example.md)
 - [SAST Engine Architecture](../architecture/sast_engine.md)

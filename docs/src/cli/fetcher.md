@@ -9,12 +9,12 @@ This is useful for performing offline analysis, reverse engineering, or static c
 ```sh
 cargo run -- fetcher \
   --program-id <PROGRAM_ID> \
-  --out-file <OUTPUT_DIR> \
+  --out-dir <OUTPUT_DIR> \
   [--rpc-url <CUSTOM_RPC_ENDPOINT>]
 ````
 
 * `--program-id`: The Solana program ID to fetch.
-* `--out-file`: Directory where the bytecode file will be saved (as `fetched_program.so`).
+* `--out-dir`: Directory where the bytecode file will be saved (as `fetched_program.so`).
 * `--rpc-url`: (Optional) Custom Solana RPC endpoint. Defaults to `https://api.mainnet-beta.solana.com`.
 
 ## Behavior
@@ -28,8 +28,8 @@ cargo run -- fetcher \
 
 ```sh
 cargo run -- fetcher \
-  --program-id 4MangoMjqJ2firMokCjjGgoK8d4MXcrgL7XJaL3w6fVg \
-  --out-file ./out
+  --program-id srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX \
+  --out-dir ./out
 ```
 
 This will fetch the bytecode of the program and save it to `./out/fetched_program.so`.
