@@ -10,9 +10,9 @@ use std::collections::HashMap;
 /// Represents the type of input a Starlark rule operates on.
 ///
 /// Supported types include:
-/// - `Syn`: syntax-level (AST)
-/// - `Mir`: MIR (Mid-level IR)
-/// - `LlvmIr`: LLVM IR-level
+/// - `Syn`: Abstract Syntax Tree (AST) WIP
+/// - `Mir`: Mid-level Intermediate Representation (MIR) Not yet implemented
+/// - `LlvmIr`: LLVM Intermediate Representation (LLVM IR) Not yet implemented
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum StarlarkRuleType {
     Syn,
@@ -22,7 +22,7 @@ pub enum StarlarkRuleType {
 
 /// A representation of a single loaded Starlark rule file.
 ///
-/// Includes the filename, file content, and the rule type.
+/// This struct holds the filename, file content, and the type of the rule.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StarlarkRule {
     pub filename: String,
@@ -33,24 +33,33 @@ pub struct StarlarkRule {
 /// A collection of Starlark rules loaded from a directory.
 pub type StarlarkRulesDir = Vec<StarlarkRule>;
 
-/// Provides a way to load Starlark rule files from a directory into a `StarlarkRulesDir`.
+/// A trait for loading Starlark rule files from a directory.
 pub trait StarlarkRuleDirExt
 where
     Self: Sized,
 {
+    /// Creates a new collection of rules from a specified directory.
+    ///
+    /// # Arguments
+    ///
+    /// * `rules_dir` - The path to the directory containing the rule files.
+    /// * `use_internal_rules` - A boolean indicating whether to include built-in rules.
     fn new_from_dir(rules_dir: &String, use_internal_rules: bool) -> anyhow::Result<Self>;
 }
 
 impl StarlarkRuleDirExt for StarlarkRulesDir {
-    /// Loads all `.star` files from the specified directory into a `StarlarkRulesDir`.
+    /// Loads all `.star` files from the specified directory and, if requested,
+    /// includes the internal (built-in) rules.
     ///
     /// # Arguments
     ///
-    /// * `rules_dir` - Path to the directory containing Starlark `.star` rule files.
+    /// * `rules_dir` - Path to the directory containing external Starlark `.star` rule files.
+    /// * `use_internal_rules` - If `true`, loads the bundled internal rules.
     ///
     /// # Returns
     ///
-    /// A vector of `StarlarkRule` objects if loading succeeds, or an error if the directory is invalid or contains faulty files.
+    /// A `Result` containing a vector of `StarlarkRule` objects on success, or an error
+    /// if the directory is invalid or contains faulty files.
     fn new_from_dir(rules_dir: &String, use_internal_rules: bool) -> anyhow::Result<Self> {
         let path = std::path::Path::new(rules_dir);
         validate_rules_directory(path, rules_dir)?;
@@ -69,7 +78,16 @@ impl StarlarkRuleDirExt for StarlarkRulesDir {
     }
 }
 
-/// Validates that the specified path exists and is a directory
+/// Validates that the specified path exists and is a directory.
+///
+/// # Arguments
+///
+/// * `path` - The `Path` object to validate.
+/// * `rules_dir` - The original path string, used for error messages.
+///
+/// # Returns
+///
+/// An empty `Result` on success, or an error if validation fails.
 fn validate_rules_directory(path: &std::path::Path, rules_dir: &String) -> anyhow::Result<()> {
     if !path.exists() {
         error!("Rules directory does not exist: {}", rules_dir);
@@ -87,7 +105,11 @@ fn validate_rules_directory(path: &std::path::Path, rules_dir: &String) -> anyho
     Ok(())
 }
 
-/// Loads internal Starlark rules from the embedded resources
+/// Loads internal Starlark rules from the embedded `starlark_rules` directory.
+///
+/// # Returns
+///
+/// A `Result` containing a vector of `StarlarkRule` objects, or an I/O error.
 fn load_internal_rules() -> anyhow::Result<Vec<StarlarkRule>> {
     static_dir::read_all_files_in_dir("starlark_rules/syn_ast")?
         .into_iter()
@@ -96,7 +118,7 @@ fn load_internal_rules() -> anyhow::Result<Vec<StarlarkRule>> {
             let filename = name
                 .split('/')
                 .last()
-                .ok_or_else(|| anyhow::anyhow!("Invalid filename"))?
+                .ok_or_else(|| anyhow::anyhow!("Invalid internal rule path"))?
                 .to_string();
 
             info!("Loaded internal rule {}", filename);
@@ -110,7 +132,16 @@ fn load_internal_rules() -> anyhow::Result<Vec<StarlarkRule>> {
         .collect()
 }
 
-/// Loads external Starlark rules from the specified directory
+/// Loads external Starlark rules from a specified filesystem directory.
+///
+/// # Arguments
+///
+/// * `path` - The `Path` of the directory to read from.
+/// * `rules_dir` - The original path string, for logging purposes.
+///
+/// # Returns
+///
+/// A `Result` containing a vector of `StarlarkRule` objects, or an I/O error.
 fn load_external_rules(path: &std::path::Path, rules_dir: &String) -> anyhow::Result<Vec<StarlarkRule>> {
     std::fs::read_dir(path)?
         .filter_map(Result::ok)
@@ -147,8 +178,9 @@ fn load_external_rules(path: &std::path::Path, rules_dir: &String) -> anyhow::Re
 
 /// Provides an environment to evaluate Starlark rule files against parsed Rust ASTs.
 ///
-/// The engine wraps the standard dialect and extends it with useful libraries
-/// for JSON handling, filtering, mapping, typing, and more.
+/// The engine is configured with a dialect that supports f-strings and type annotations.
+/// It also extends the environment with useful libraries for JSON handling, data manipulation,
+/// and other common utilities.
 #[derive(Debug, Clone)]
 pub struct StarlarkEngine {
     pub dialect: Dialect,
@@ -159,7 +191,12 @@ pub struct StarlarkEngine {
 impl StarlarkEngine {
     /// Initializes a new Starlark evaluation engine with standard extensions enabled.
     ///
-    /// Includes libraries such as JSON, Map, Filter, Typing, StructType, Print, and SetType.
+    /// This includes libraries for:
+    /// - `Json`: For data interchange with Rust components.
+    /// - `Map`, `Filter`, `SetType`: For data manipulation.
+    /// - `Typing`: For type annotation and checking.
+    /// - `StructType`: For creating structured data.
+    /// - `Print`: For debugging.
     pub fn new() -> Self {
         Self {
             dialect: Dialect {
@@ -181,9 +218,18 @@ impl StarlarkEngine {
         }
     }
 
-    /// Wraps a Starlark rule source into a standardized format expected by the runtime.
+    /// Wraps Starlark rule source code with a standard entry point.
     ///
-    /// Adds import boilerplate and ensures a common function interface is exposed.
+    /// This function adds boilerplate to import necessary modules (`syn_ast`, `template_manager`)
+    /// and defines a `syn_rule_loader` function that the engine calls to execute the rule.
+    ///
+    /// # Arguments
+    ///
+    /// * `code` - The raw source code of the Starlark rule.
+    ///
+    /// # Returns
+    ///
+    /// The wrapped source code as a `String`.
     fn wrap_syn_rule(code: String) -> String {
         format!(
             r#"# ! GENERATED
@@ -212,18 +258,18 @@ syn_rule_loader
 
     /// Evaluates a Starlark rule script against a `SynAst` structure.
     ///
-    /// Wraps the script with a common interface, prepares evaluation context,
-    /// and invokes the rule with the target AST.
+    /// This method parses the rule, loads its dependencies, sets up an evaluator, and
+    /// invokes the rule with the provided syntax tree.
     ///
     /// # Arguments
     ///
-    /// * `filename` - Path or name of the rule file (used for diagnostics).
-    /// * `code` - Source code of the Starlark rule.
-    /// * `syn_ast` - The syntax tree structure to analyze.
+    /// * `filename` - The path or name of the rule file, used for diagnostics.
+    /// * `code` - The source code of the Starlark rule.
+    /// * `syn_ast` - A reference to the syntax tree structure to be analyzed.
     ///
     /// # Returns
     ///
-    /// A `String` containing a JSON result, or an error if evaluation fails.
+    /// A `Result` containing a JSON string with the analysis results, or an error if evaluation fails.
     pub fn eval_syn_rule(
         &self,
         filename: &str,
@@ -263,15 +309,17 @@ syn_rule_loader
         .map_err(|e| e.into_anyhow())?
     }
 
-    /// Loads and freeze the environment, all its value will become immutable afterwards.
+    /// Loads a Starlark module and freezes it, making its values immutable.
+    ///
+    /// This is used to load dependencies required by a rule.
     ///
     /// # Arguments
     ///
-    /// * `filename` - Path to the Starlark module file.
+    /// * `filename` - The path to the Starlark module file within the embedded library.
     ///
     /// # Returns
     ///
-    /// A `FrozenModule` or an error if loading or evaluation fails.
+    /// A `Result` containing the `FrozenModule`, or an error if loading or freezing fails.
     fn load_frozen_module(&self, filename: &str) -> anyhow::Result<FrozenModule> {
         let code = match static_dir::read_file(filename) {
             Ok(code) => code,
@@ -316,15 +364,16 @@ syn_rule_loader
         module.freeze().map_err(|e| e.into())
     }
 
-    /// Loads all module dependencies from `load()` statements in a given AST.
+    /// Loads all module dependencies specified in `load()` statements within a Starlark file.
     ///
     /// # Arguments
     ///
-    /// * `starlark_ast` - The parsed AST of a Starlark script.
+    /// * `starlark_ast` - A reference to the parsed AST of a Starlark script.
     ///
     /// # Returns
     ///
-    /// A map of module names to frozen modules, or an error if any module fails to load.
+    /// A `Result` containing a map of module names to their corresponding `FrozenModule`,
+    /// or an error if any module fails to load.
     fn load_modules<'a>(
         &self,
         starlark_ast: &'a AstModule,

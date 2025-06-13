@@ -36,18 +36,15 @@ impl SastCmd {
 
 /// Runs a series of checks before launching SAST analysis.
 ///
-/// Verifies that the target project directory and rules directory exist.
+/// This function verifies that the target project directory and rules directory exist.
 ///
 /// # Arguments
 ///
-/// * `target_dir` - Path to the project to be analyzed.
-/// * `rules_dir` - Path to the directory containing SAST rules.
-/// * `syn_scan_only` - If true, only perform syntactic scanning (no build required).
+/// * `cmd` - A reference to the `SastCmd` struct, containing command-line arguments.
 ///
 /// # Returns
 ///
-/// `true` if all checks passed, otherwise `false`.
-
+/// Returns `true` if all checks pass, `false` otherwise.
 fn checks_before_sast(cmd: &SastCmd) -> bool {
     [
         BeforeCheck {
@@ -59,30 +56,30 @@ fn checks_before_sast(cmd: &SastCmd) -> bool {
             result: std::path::Path::new(&cmd.rules_dir).exists(),
         },
     ]
-    .iter()
-    .map(|check| {
-        if !check.result {
-            error!("{}", check.error_msg);
-            return false;
-        }
-        return true;
-    })
-    .all(|check| check)
+        .iter()
+        .map(|check| {
+            if !check.result {
+                error!("{}", check.error_msg);
+                return false;
+            }
+            return true;
+        })
+        .all(|check| check)
 }
 
-/// Launches the static analysis (SAST) workflow on the given project using the provided rules.
+/// Launches the static analysis (SAST) workflow.
 ///
-/// Automatically detects the project type and dispatches to the appropriate SAST handler.
+/// This function automatically detects the project type and dispatches the analysis to the
+/// appropriate handler. It can run on a single project or recursively scan a directory.
 ///
 /// # Arguments
 ///
-/// * `target_dir` - The path to the project root directory.
-/// * `rules_dir` - The directory where rule definitions are stored.
-/// * `syn_scan_only` - If true, only perform syntax tree analysis without full project build.
+/// * `cmd` - A reference to the `SastCmd` struct, containing command-line arguments.
 ///
 /// # Returns
 ///
-/// A `SastState` object on success, or an error if any checks fail or the project type is unsupported.
+/// A `Result` containing a vector of `SastState` objects on success, or an error if any
+/// checks fail or the project type is unsupported.
 pub fn run(cmd: &SastCmd) -> anyhow::Result<Vec<SastState>> {
     debug!("Starting SAST process for {}", cmd.target_dir);
 
@@ -108,6 +105,17 @@ pub fn run(cmd: &SastCmd) -> anyhow::Result<Vec<SastState>> {
     }
 }
 
+/// Recursively scans a directory for projects and runs SAST analysis on them.
+///
+/// It skips common directories like `node_modules`, `target`, and hidden directories.
+///
+/// # Arguments
+///
+/// * `cmd` - A reference to the `SastCmd` struct. The `target_dir` is updated for each recursive call.
+///
+/// # Returns
+///
+/// A `Result` containing a vector of `SastState` for all analyzed projects, or an I/O error.
 fn scan_directory_recursively(cmd: &SastCmd) -> anyhow::Result<Vec<SastState>> {
     let mut results = Vec::new();
     let path = std::path::Path::new(&cmd.target_dir);
@@ -163,20 +171,17 @@ fn scan_directory_recursively(cmd: &SastCmd) -> anyhow::Result<Vec<SastState>> {
     Ok(results)
 }
 
-/// Performs static analysis on an Anchor-based project using rule files.
+/// Performs static analysis on an Anchor-based project.
 ///
-/// Syntax trees are generated from the `programs/` directory. If `syn_scan_only` is false,
-/// this function could later support additional build-based analysis.
+/// Syntax trees are generated from the `programs/` directory.
 ///
 /// # Arguments
 ///
-/// * `target_dir` - The path to the root of the Anchor project.
-/// * `rules_dir` - The path to the rule definitions directory.
-/// * `syn_scan_only` - If true, skips any future deep analysis beyond syntax trees.
+/// * `cmd` - A reference to the `SastCmd` struct, containing command-line arguments.
 ///
 /// # Returns
 ///
-/// A populated `SastState` if analysis succeeds, or an error if rule application fails.
+/// A `Result` containing a populated `SastState` on success, or an error if analysis fails.
 fn sast_anchor_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
     // ? FUTURE: Use Anchor.toml to get programs paths?
     let mut sast_state = SastState::new(
@@ -204,20 +209,17 @@ fn sast_anchor_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
     Ok(sast_state)
 }
 
-/// Performs static analysis on an SBF (non-Anchor) project using rule files.
+/// Performs static analysis on a Solana SBF project.
 ///
-/// Syntax trees are generated from the `src/` directory. If `syn_scan_only` is false,
-/// this function could be extended to support build-time inspection.
+/// Syntax trees are generated from the `src/` directory.
 ///
 /// # Arguments
 ///
-/// * `target_dir` - The path to the root of the SBF project.
-/// * `rules_dir` - The path to the rule definitions directory.
-/// * `syn_scan_only` - If true, skips deeper analysis stages.
+/// * `cmd` - A reference to the `SastCmd` struct, containing command-line arguments.
 ///
 /// # Returns
 ///
-/// A `SastState` if the rule application and syntax scanning succeed, or an error otherwise.
+/// A `Result` containing a populated `SastState` on success, or an error if analysis fails.
 fn sast_sbf_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
     // ? FUTURE: Use Cargo.toml to get programs paths?
     let mut sast_state = SastState::new(
