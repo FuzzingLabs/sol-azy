@@ -4,7 +4,7 @@ use log::{debug, error};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt;
-use crate::parsers::syn_ast::{AstPositions};
+use crate::parsers::syn_ast::{AstPositions, SourcePosition};
 use crate::printers::sast_printer::SastPrinter;
 
 /// Represents the severity level of a rule match in static analysis.
@@ -51,17 +51,42 @@ impl SynRuleMetadata {
     }
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 /// Represents a single match result from a syntactic rule evaluation.
 ///
 /// This includes contextual metadata such as the identifier, access path,
 /// parent node, and any nested matches.
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SynMatchResult {
     pub children: Vec<SynMatchResult>,
     pub access_path: String,
-    pub metadata: HashMap<String, String>,
+    pub metadata: HashMap<String, serde_json::Value>,
     pub ident: String,
     pub parent: String,
+}
+
+/// Stores the result of evaluating a single syntactic rule against a file's AST.
+///
+/// Contains the original rule filename, raw JSON result string, match results,
+/// and associated rule metadata.
+impl SynMatchResult {
+    pub fn get_location_metadata(&self) -> Result<SourcePosition> {
+        let value = self
+            .metadata
+            .get("position")
+            .ok_or_else(|| anyhow::anyhow!("No 'position' metadata found in matches"))?;
+
+        if let serde_json::Value::Object(_obj) = value {
+            match serde_json::from_value::<SourcePosition>(value.clone()) {
+                Ok(position) => Ok(position),
+                Err(err) => Err(anyhow::anyhow!("Failed to parse 'position' metadata: {}", err)),
+            }
+        } else {
+            Err(anyhow::anyhow!(
+                "Unsupported type for 'position' metadata. Expected SourcePosition type."
+            ))
+        }
+    }
+
 }
 
 /// Stores the result of evaluating a single syntactic rule against a file's AST.
@@ -147,8 +172,10 @@ impl SynAstResult {
 /// and a collection of results from rule evaluations.
 #[derive(Clone)]
 pub struct SynAst {
+    #[allow(dead_code)]
     pub ast: syn::File,
     pub ast_positions: AstPositions,
+    pub ast_json: serde_json::Value,
     pub results: Vec<SynAstResult>,
 }
 
@@ -217,6 +244,7 @@ pub trait SynAstMapExt {
     /// `Ok(true)` if at least one rule matched across all files, otherwise `Ok(false)` or an error.
     fn apply_rules(&mut self, rules_dir: &StarlarkRulesDir, starlark_engine: &StarlarkEngine) -> Result<bool>;
     /// Returns all file paths present in the syntax map.
+    #[allow(dead_code)]
     fn get_file_paths(&self) -> Vec<&String>;
     /// Returns the number of syntax trees (files) in the map.
     fn count_files(&self) -> usize;
@@ -282,7 +310,7 @@ impl SastState {
     /// # Returns
     ///
     /// `Ok(())` on success, or an error if the print operation fails.
-    pub fn print_results(&self) -> Result<()> {
-        SastPrinter::print_sast_state(self)
+    pub fn print_results(&self, scanned_dir: &String) -> Result<()> {
+        SastPrinter::print_sast_state(self, scanned_dir)
     }
 }

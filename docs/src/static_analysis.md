@@ -39,4 +39,4 @@ The rule engine gives you access to:
 ## Related Pages
 
 - 📘 [How to write Rules](rules/format.md)
-- ✅ [Examples](rules/examples.md) 
+- ✅ [Use case example](rules/example.md) 

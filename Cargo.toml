@@ -31,3 +31,4 @@ tokio = { version = "1", features = ["full"] }
 base64 = "0.21"
 solana-sdk = "1.18"
 thiserror = "1"
+sha2 = "0.10.8"

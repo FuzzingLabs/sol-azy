@@ -24,15 +24,6 @@ impl AppState {
     /// If no command is matched, it logs a message without performing any action.
     pub async fn run_cli(&mut self) {
         match &self.cli.command {
-            Commands::Build {
-                target_dir,
-                out_dir,
-            } => self.build_project(target_dir.clone(), out_dir.clone()),
-            Commands::Sast {
-                target_dir,
-                rules_dir,
-                syn_scan_only,
-            } => self.run_sast(target_dir.clone(), rules_dir.clone(), syn_scan_only.clone()),
             Commands::Reverse {
                 mode,
                 out_dir,
@@ -40,13 +31,19 @@ impl AppState {
                 labeling,
                 reduced,
                 only_entrypoint
-            } => self.run_reverse(mode.clone(), out_dir.clone(), bytecodes_file.clone(), *labeling, *reduced, *only_entrypoint),    
+            } => self.run_reverse(mode.clone(), out_dir.clone(), bytecodes_file.clone(), *labeling, *reduced, *only_entrypoint),
             Commands::Dotting { config, reduced_dot_path, full_dot_path } => {
                 self.run_dotting(config.clone(), reduced_dot_path.clone(), full_dot_path.clone())
-            }        
+            }
             Commands::Fetcher { program_id, out_dir, rpc_url } => {
                 self.run_fetcher(program_id.clone(), out_dir.clone(), rpc_url.clone()).await;
-            }         
+            }
+            cmd @ Commands::Build { .. } => {
+                self.build_project(&commands::build_command::BuildCmd::new_from_clap(cmd))
+            }
+            cmd @ Commands::Sast { .. } => {
+                self.run_sast(&commands::sast_command::SastCmd::new_from_clap(cmd))
+            }
             _ => info!("No command selected"),
         }
     }
@@ -62,12 +59,10 @@ impl AppState {
     ///
     /// On success, the resulting `BuildState` is stored in `build_states`.
     /// On failure, an error is logged.
-    pub fn build_project(&mut self, target_dir: String, out_dir: String) {
-        match commands::build_command::run(&target_dir, &out_dir) {
+    pub fn build_project(&mut self, cmd: &commands::build_command::BuildCmd) {
+        match commands::build_command::run(cmd) {
             Ok(bs) => self.build_states.push(bs),
-            Err(e) => {
-                error!("An error occurred during build of {} {}", target_dir, e);
-            }
+            Err(e) => error!("An error occurred during build of {} {}", cmd.target_dir, e),
         }
     }
 
@@ -83,12 +78,12 @@ impl AppState {
     ///
     /// On success, the resulting `SastState` is stored in `sast_states`.
     /// On failure, an error is logged.
-    fn run_sast(&mut self, target_dir: String, rules_dir: String, syn_scan_only: bool) {
-        match commands::sast_command::run(&target_dir, &rules_dir, syn_scan_only) {
-            Ok(ss) => self.sast_states.push(ss),
-            Err(e) => {
-                error!("An error occurred during SAST of {} {}", target_dir, e);
-            }
+    fn run_sast(&mut self, cmd: &commands::sast_command::SastCmd) {
+        match commands::sast_command::run(cmd) {
+            Ok(ss) => {
+                self.sast_states.extend(ss)
+            },
+            Err(e) => error!("An error occurred during SAST of {} {}", cmd.target_dir, e),
         }
     }
 
@@ -158,7 +153,7 @@ impl AppState {
             Some(url) => format!("{url}"),
             None => format!("https://api.mainnet-beta.solana.com (by default)"),
         };
-    
+
         match commands::fetcher_command::run(program_id, output_path.clone(), rpc_url.clone()).await {
             Ok(_) => info!(
                 "Bytecode successfully fetched from RPC '{}' and saved to '{}/fetched_program.so'",
@@ -167,6 +162,6 @@ impl AppState {
             ),
             Err(e) => error!("Fetcher failed: {}", e),
         }
-    }    
+    }
 
 }

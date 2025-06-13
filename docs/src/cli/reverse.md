@@ -20,10 +20,10 @@ cargo run -- reverse \
 **Arguments:**
 
 * `--mode`: Output mode. One of:
-
   * `disass`: Disassemble the bytecode
   * `cfg`: Export control flow graph
   * `both`: Disassemble and export CFG
+  
 * `--out-dir`: Output directory for result files.
 * `--bytecodes-file`: Path to the compiled `.so` file.
 * `--labeling`: Enables use of symbol and section labels when available.

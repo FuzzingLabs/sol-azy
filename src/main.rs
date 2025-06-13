@@ -27,7 +27,7 @@ struct Cli {
 }
 
 #[derive(Subcommand)]
-enum Commands {
+pub enum Commands {
     Build {
         #[clap(short = 'd', long = "target-dir")]
         target_dir: String,
@@ -41,6 +41,8 @@ enum Commands {
         rules_dir: String,
         #[clap(short = 's', long = "syn-scan-only", default_value_t = false)]
         syn_scan_only: bool,
+        #[clap(long = "recursive", default_value_t = true)]
+        recursive: bool,
         // TODO: use Build out-dir in options
     },
     Fuzz {
@@ -96,7 +98,7 @@ enum Commands {
 #[tokio::main]
 async fn main() {
     fmt::Subscriber::builder()
-        .with_env_filter("sol_azy=debug")
+        .with_env_filter(std::env::var("RUST_LOG").unwrap_or_else(|_| "sol_azy=debug".into()))
         .pretty()
         .init();
 

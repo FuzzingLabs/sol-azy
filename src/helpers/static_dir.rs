@@ -15,6 +15,7 @@ pub static STATIC_DIR: Dir<'_> = include_dir!("./src/static");
 /// # Returns
 ///
 /// A vector of displayable paths as strings, or an error if the directory does not exist.
+#[allow(dead_code)]
 pub fn list_files(path: &str) -> Result<Vec<String>> {
     STATIC_DIR
         .get_dir(path)
@@ -31,6 +32,7 @@ pub fn list_files(path: &str) -> Result<Vec<String>> {
 /// # Returns
 ///
 /// A vector of `File` references cloned from the directory, or an error if the directory is invalid.
+#[allow(dead_code)]
 pub fn get_all_files(path: &str) -> Result<Vec<File>> {
     STATIC_DIR
         .get_dir(path)
@@ -47,6 +49,7 @@ pub fn get_all_files(path: &str) -> Result<Vec<File>> {
 /// # Returns
 ///
 /// File contents as a `String`, or an error if the file does not exist or is not UTF-8 encoded.
+#[allow(dead_code)]
 pub fn read_file(path: &str) -> Result<String> {
     STATIC_DIR
         .get_file(path)
@@ -64,6 +67,7 @@ pub fn read_file(path: &str) -> Result<String> {
 ///
 /// A vector of tuples, each containing the file path and its string content.
 /// Returns an error if the directory cannot be found or read.
+#[allow(dead_code)]
 pub fn read_all_files_in_dir(path: &str) -> Result<Vec<(String, String)>> {
     STATIC_DIR
         .get_dir(path)

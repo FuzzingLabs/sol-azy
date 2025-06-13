@@ -1,9 +1,30 @@
-use crate::helpers;
 use crate::helpers::{
     check_binary_installed, create_dir_if_not_exists, get_project_type, BeforeCheck, ProjectType,
 };
 use crate::state::build_state::BuildState;
+use crate::{helpers, Commands};
 use log::{debug, error, info};
+
+
+pub struct BuildCmd {
+    pub target_dir: String,
+    pub out_dir: String,
+}
+
+impl BuildCmd {
+    pub fn new_from_clap(cmd: &Commands) -> Self {
+        match cmd {
+            Commands::Build {
+                target_dir,
+                out_dir,
+            } => Self {
+                target_dir: target_dir.clone(),
+                out_dir: out_dir.clone(),
+            },
+            _ => unreachable!(),
+        }
+    }
+}
 
 /// Runs a series of preconditions before attempting to build the project.
 ///
@@ -19,7 +40,7 @@ use log::{debug, error, info};
 /// # Returns
 ///
 /// `true` if all checks passed, otherwise `false`.
-fn checks_before_build(target_dir: &String, out_dir: &String) -> bool {
+fn checks_before_build(cmd: &BuildCmd) -> bool {
     [
         BeforeCheck {
             error_msg: "`anchor` isn't installed".to_string(),
@@ -30,15 +51,15 @@ fn checks_before_build(target_dir: &String, out_dir: &String) -> bool {
             result: check_binary_installed(&"cargo".to_string()),
         },
         BeforeCheck {
-            error_msg: format!("Target directory {} doesn't exist", target_dir),
-            result: std::path::Path::new(target_dir).exists(),
+            error_msg: format!("Target directory {} doesn't exist", cmd.target_dir),
+            result: std::path::Path::new(&cmd.target_dir).exists(),
         },
         BeforeCheck {
             error_msg: format!(
                 "Output directory {} doesn't exist and can't be created",
-                out_dir
+                cmd.out_dir
             ),
-            result: create_dir_if_not_exists(out_dir),
+            result: create_dir_if_not_exists(&cmd.out_dir),
         },
     ]
     .iter()
@@ -63,17 +84,17 @@ fn checks_before_build(target_dir: &String, out_dir: &String) -> bool {
 /// # Returns
 ///
 /// A `BuildState` on success, or an error if the build fails or the project type is unknown.
-pub fn run(target_dir: &String, out_dir: &String) -> anyhow::Result<BuildState> {
-    debug!("Starting build process for {}", target_dir);
+pub fn run(cmd: &BuildCmd) -> anyhow::Result<BuildState> {
+    debug!("Starting build process for {}", cmd.target_dir);
 
-    if !checks_before_build(target_dir, out_dir) {
+    if !checks_before_build(cmd) {
         error!("Can't build project, see errors above.");
         return Err(anyhow::anyhow!("Can't build project, see errors above."));
     }
 
-    match get_project_type(target_dir) {
-        ProjectType::Anchor => build_anchor_project(target_dir, out_dir),
-        ProjectType::Sbf => build_sbf_project(target_dir, out_dir),
+    match get_project_type(&cmd.target_dir) {
+        ProjectType::Anchor => build_anchor_project(cmd),
+        ProjectType::Sbf => build_sbf_project(cmd),
         ProjectType::Unknown => Err(anyhow::anyhow!("Unknown project type.")),
     }
 }
@@ -91,21 +112,21 @@ pub fn run(target_dir: &String, out_dir: &String) -> anyhow::Result<BuildState> 
 /// # Returns
 ///
 /// A `BuildState` object if the build is successful, or an error otherwise.
-fn build_anchor_project(target_dir: &String, out_dir: &String) -> anyhow::Result<BuildState> {
-    debug!("Building anchor project {}", target_dir);
+fn build_anchor_project(cmd: &BuildCmd) -> anyhow::Result<BuildState> {
+    debug!("Building anchor project {}", cmd.target_dir);
 
     let current_dir = std::env::current_dir()?;
-    std::env::set_current_dir(target_dir)?;
+    std::env::set_current_dir(cmd.target_dir.clone())?;
 
-    info!("Running `cargo clean` in {}", target_dir);
+    info!("Running `cargo clean` in {}", cmd.target_dir);
     let res = helpers::run_command("cargo", &["clean"], vec![]);
 
     std::env::set_current_dir(current_dir)?;
     res?;
     let current_dir = std::env::current_dir()?;
-    std::env::set_current_dir(target_dir)?;
+    std::env::set_current_dir(cmd.target_dir.clone())?;
 
-    info!("Running `anchor build` in {}", target_dir);
+    info!("Running `anchor build` in {}", cmd.target_dir);
     let res = helpers::run_command(
         "anchor",
         &["build", "--skip-lint"],
@@ -120,8 +141,8 @@ fn build_anchor_project(target_dir: &String, out_dir: &String) -> anyhow::Result
 
     Ok(BuildState {
         name: "".to_string(),
-        target_dir: target_dir.clone(),
-        out_dir: out_dir.clone(),
+        target_dir: cmd.target_dir.clone(),
+        out_dir: cmd.out_dir.clone(),
     })
 }
 
@@ -138,21 +159,21 @@ fn build_anchor_project(target_dir: &String, out_dir: &String) -> anyhow::Result
 /// # Returns
 ///
 /// A `BuildState` object if the build is successful, or an error otherwise.
-pub fn build_sbf_project(target_dir: &String, out_dir: &String) -> anyhow::Result<BuildState> {
-    debug!("Building sbf project {}", target_dir);
+pub fn build_sbf_project(cmd: &BuildCmd) -> anyhow::Result<BuildState> {
+    debug!("Building sbf project {}", cmd.target_dir);
 
     let current_dir = std::env::current_dir()?;
-    std::env::set_current_dir(target_dir)?;
+    std::env::set_current_dir(cmd.target_dir.clone())?;
 
-    info!("Running `cargo clean` in {}", target_dir);
+    info!("Running `cargo clean` in {}", cmd.target_dir);
     let res = helpers::run_command("cargo", &["clean"], vec![]);
 
     std::env::set_current_dir(current_dir)?;
     res?;
     let current_dir = std::env::current_dir()?;
-    std::env::set_current_dir(target_dir)?;
+    std::env::set_current_dir(cmd.target_dir.clone())?;
 
-    info!("Running `cargo build-sbf` in {}", target_dir);
+    info!("Running `cargo build-sbf` in {}", cmd.target_dir);
     let res = helpers::run_command(
         "cargo",
         &["build-sbf"],
@@ -167,7 +188,7 @@ pub fn build_sbf_project(target_dir: &String, out_dir: &String) -> anyhow::Resul
 
     Ok(BuildState {
         name: "".to_string(),
-        target_dir: target_dir.clone(),
-        out_dir: out_dir.clone(),
+        target_dir: cmd.target_dir.clone(),
+        out_dir: cmd.out_dir.clone(),
     })
 }

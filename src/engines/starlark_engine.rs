@@ -144,6 +144,7 @@ impl StarlarkEngine {
         format!(
             r#"# ! GENERATED
 load("syn_ast.star", "syn_ast")
+load("template_manager.star", "template_manager")
 # ! GENERATED
 
 {}
@@ -151,7 +152,9 @@ load("syn_ast.star", "syn_ast")
 # ! GENERATED
 def syn_rule_loader(ast: str) -> dict:
     return {{
-        "matches": syn_ast_rule(syn_ast.prepare_ast(json.decode(ast)["items"])),
+        "matches": syn_ast.filter_result(syn_ast_rule(
+            syn_ast.prepare_ast(json.decode(ast)["items"]),
+        )),
         "metadata": RULE_METADATA,
     }}
 
@@ -207,7 +210,9 @@ syn_rule_loader
         let heap = eval.heap();
         eval.eval_function(
             syn_rule,
-            &[heap.alloc(syn_serde::json::to_string(&syn_ast.ast))],
+            &[
+                heap.alloc(serde_json::to_string(&syn_ast.ast_json).unwrap_or(String::new())),
+            ],
             &[],
         )
         .map(|v| v.to_json())
