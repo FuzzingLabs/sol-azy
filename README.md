@@ -61,7 +61,7 @@ cargo run -- sast --target-dir ./my_project --rules-dir ./rules/
 cargo run -- reverse --mode both --out-dir ./out --bytecodes-file ./program.so --labeling --reduced
 ```
 
-### Fetch deployed bytecode from mainnet
+### Fetch deployed bytecode from the mainnet
 
 ```bash
 cargo run -- fetcher --program-id <PROGRAM_ID> --out-dir ./out/
@@ -77,11 +77,20 @@ cargo run -- dotting -c functions.json -r reduced.dot -f full.dot
 
 ## Documentation
 
-The project includes a full [mdBook documentation](https://github.com/FuzzingLabs/sol-azy/tree/master/docs):
+The project includes full [mdBook documentation](https://github.com/FuzzingLabs/sol-azy/tree/master/docs):
+
+### Serve the docs
 
 ```bash
 cd book
 mdbook serve
+```
+
+### Build the docs
+
+```bash
+cd book
+mdbook build
 ```
 
 ---
@@ -98,8 +107,8 @@ If you have any questions, suggestions, or need support:
 
 - Feel free to [open an issue](https://github.com/FuzzingLabs/sol-azy/issues).
 - You can also reach out directly to _(responses may take longer than issue depending on individual availability)_:
-  - [FuzzingLabs](https://x.com/FuzzingLabs)
-  - [MohaFuzzingLabs](https://github.com/MohaFuzzingLabs)
-  - [Ectario](https://x.com/Ectari0)
+    - [FuzzingLabs](https://x.com/FuzzingLabs)
+    - [MohaFuzzingLabs](https://github.com/MohaFuzzingLabs)
+    - [Ectario](https://x.com/Ectari0)
 
 We're happy to help and value community engagement!
