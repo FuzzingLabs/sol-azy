@@ -14239,3 +14239,3379 @@ AST5 = {
     "args": [],
     "ident": "EMPTY_IDENT"
 }
+
+AST6 = {
+    "raw_node": {},
+    "access_path": "root",
+    "metadata": {},
+    "children": [
+        {
+            "raw_node": {
+                "ident": "anchor_lang",
+                "position": {
+                    "end_column": 15,
+                    "end_line": 1,
+                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                    "start_column": 4,
+                    "start_line": 1
+                },
+                "tree": {
+                    "path": {
+                        "ident": "prelude",
+                        "position": {
+                            "end_column": 24,
+                            "end_line": 1,
+                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                            "start_column": 17,
+                            "start_line": 1
+                        },
+                        "tree": "*"
+                    }
+                }
+            },
+            "access_path": "[0].use.tree.path",
+            "metadata": {
+                "position": {
+                    "end_column": 15,
+                    "end_line": 1,
+                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                    "start_column": 4,
+                    "start_line": 1
+                }
+            },
+            "children": [
+                {
+                    "raw_node": {
+                        "ident": "prelude",
+                        "position": {
+                            "end_column": 24,
+                            "end_line": 1,
+                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                            "start_column": 17,
+                            "start_line": 1
+                        },
+                        "tree": "*"
+                    },
+                    "access_path": "[0].use.tree.path.tree.path",
+                    "metadata": {
+                        "position": {
+                            "end_column": 24,
+                            "end_line": 1,
+                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                            "start_column": 17,
+                            "start_line": 1
+                        }
+                    },
+                    "children": [],
+                    "parent": "{...}",
+                    "root": "False",
+                    "args": [],
+                    "ident": "prelude"
+                }
+            ],
+            "parent": "{...}",
+            "root": "False",
+            "args": [],
+            "ident": "anchor_lang"
+        },
+        {
+            "raw_node": {
+                "ident": "declare_id",
+                "position": {
+                    "end_column": 10,
+                    "end_line": 3,
+                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                    "start_column": 0,
+                    "start_line": 3
+                }
+            },
+            "access_path": "[1].macro.path.segments[0]",
+            "metadata": {
+                "position": {
+                    "end_column": 10,
+                    "end_line": 3,
+                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                    "start_column": 0,
+                    "start_line": 3
+                }
+            },
+            "children": [],
+            "parent": "{...}",
+            "root": "False",
+            "args": [],
+            "ident": "declare_id"
+        },
+        {
+            "raw_node": {
+                "content": [
+                    {
+                        "use": {
+                            "tree": {
+                                "path": {
+                                    "ident": "super",
+                                    "position": {
+                                        "end_column": 13,
+                                        "end_line": 6,
+                                        "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                        "start_column": 8,
+                                        "start_line": 6
+                                    },
+                                    "tree": "*"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "fn": {
+                            "ident": "safe_math_demo",
+                            "inputs": [
+                                {
+                                    "typed": {
+                                        "pat": {
+                                            "ident": {
+                                                "ident": "a",
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            }
+                                        },
+                                        "ty": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "u64",
+                                                        "position": {
+                                                            "end_column": 48,
+                                                            "end_line": 8,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 45,
+                                                            "start_line": 8
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "typed": {
+                                        "pat": {
+                                            "ident": {
+                                                "ident": "b",
+                                                "position": {
+                                                    "end_column": 33,
+                                                    "end_line": 13,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 32,
+                                                    "start_line": 13
+                                                }
+                                            }
+                                        },
+                                        "ty": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "u64",
+                                                        "position": {
+                                                            "end_column": 48,
+                                                            "end_line": 8,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 45,
+                                                            "start_line": 8
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "output": {
+                                "path": {
+                                    "segments": [
+                                        {
+                                            "ident": "u64",
+                                            "position": {
+                                                "end_column": 48,
+                                                "end_line": 8,
+                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                "start_column": 45,
+                                                "start_line": 8
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "position": {
+                                "end_column": 25,
+                                "end_line": 8,
+                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                "start_column": 11,
+                                "start_line": 8
+                            },
+                            "stmts": [
+                                {
+                                    "let": {
+                                        "init": {
+                                            "expr": {
+                                                "method_call": {
+                                                    "args": [],
+                                                    "method": "unwrap",
+                                                    "receiver": {
+                                                        "method_call": {
+                                                            "args": [
+                                                                {
+                                                                    "path": {
+                                                                        "segments": [
+                                                                            {
+                                                                                "ident": "b",
+                                                                                "position": {
+                                                                                    "end_column": 33,
+                                                                                    "end_line": 13,
+                                                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                    "start_column": 32,
+                                                                                    "start_line": 13
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "method": "checked_add",
+                                                            "receiver": {
+                                                                "path": {
+                                                                    "segments": [
+                                                                        {
+                                                                            "ident": "a",
+                                                                            "position": {
+                                                                                "end_column": 19,
+                                                                                "end_line": 17,
+                                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                "start_column": 18,
+                                                                                "start_line": 17
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "pat": {
+                                            "ident": {
+                                                "ident": "sum",
+                                                "position": {
+                                                    "end_column": 15,
+                                                    "end_line": 9,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 12,
+                                                    "start_line": 9
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "let": {
+                                        "init": {
+                                            "expr": {
+                                                "method_call": {
+                                                    "args": [],
+                                                    "method": "unwrap",
+                                                    "receiver": {
+                                                        "method_call": {
+                                                            "args": [
+                                                                {
+                                                                    "path": {
+                                                                        "segments": [
+                                                                            {
+                                                                                "ident": "b",
+                                                                                "position": {
+                                                                                    "end_column": 33,
+                                                                                    "end_line": 13,
+                                                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                    "start_column": 32,
+                                                                                    "start_line": 13
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "method": "checked_sub",
+                                                            "receiver": {
+                                                                "path": {
+                                                                    "segments": [
+                                                                        {
+                                                                            "ident": "a",
+                                                                            "position": {
+                                                                                "end_column": 19,
+                                                                                "end_line": 17,
+                                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                "start_column": 18,
+                                                                                "start_line": 17
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "pat": {
+                                            "ident": {
+                                                "ident": "diff",
+                                                "position": {
+                                                    "end_column": 16,
+                                                    "end_line": 10,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 12,
+                                                    "start_line": 10
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "let": {
+                                        "init": {
+                                            "expr": {
+                                                "method_call": {
+                                                    "args": [],
+                                                    "method": "unwrap",
+                                                    "receiver": {
+                                                        "method_call": {
+                                                            "args": [
+                                                                {
+                                                                    "path": {
+                                                                        "segments": [
+                                                                            {
+                                                                                "ident": "b",
+                                                                                "position": {
+                                                                                    "end_column": 33,
+                                                                                    "end_line": 13,
+                                                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                    "start_column": 32,
+                                                                                    "start_line": 13
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "method": "checked_mul",
+                                                            "receiver": {
+                                                                "path": {
+                                                                    "segments": [
+                                                                        {
+                                                                            "ident": "a",
+                                                                            "position": {
+                                                                                "end_column": 19,
+                                                                                "end_line": 17,
+                                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                "start_column": 18,
+                                                                                "start_line": 17
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "pat": {
+                                            "ident": {
+                                                "ident": "prod",
+                                                "position": {
+                                                    "end_column": 16,
+                                                    "end_line": 11,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 12,
+                                                    "start_line": 11
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "let": {
+                                        "init": {
+                                            "expr": {
+                                                "method_call": {
+                                                    "args": [],
+                                                    "method": "unwrap",
+                                                    "receiver": {
+                                                        "method_call": {
+                                                            "args": [
+                                                                {
+                                                                    "path": {
+                                                                        "segments": [
+                                                                            {
+                                                                                "ident": "b",
+                                                                                "position": {
+                                                                                    "end_column": 33,
+                                                                                    "end_line": 13,
+                                                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                    "start_column": 32,
+                                                                                    "start_line": 13
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "method": "checked_div",
+                                                            "receiver": {
+                                                                "path": {
+                                                                    "segments": [
+                                                                        {
+                                                                            "ident": "a",
+                                                                            "position": {
+                                                                                "end_column": 19,
+                                                                                "end_line": 17,
+                                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                "start_column": 18,
+                                                                                "start_line": 17
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "pat": {
+                                            "ident": {
+                                                "ident": "quot",
+                                                "position": {
+                                                    "end_column": 16,
+                                                    "end_line": 12,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 12,
+                                                    "start_line": 12
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "let": {
+                                        "init": {
+                                            "expr": {
+                                                "method_call": {
+                                                    "args": [],
+                                                    "method": "unwrap",
+                                                    "receiver": {
+                                                        "method_call": {
+                                                            "args": [
+                                                                {
+                                                                    "path": {
+                                                                        "segments": [
+                                                                            {
+                                                                                "ident": "b",
+                                                                                "position": {
+                                                                                    "end_column": 33,
+                                                                                    "end_line": 13,
+                                                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                    "start_column": 32,
+                                                                                    "start_line": 13
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "method": "checked_rem",
+                                                            "receiver": {
+                                                                "path": {
+                                                                    "segments": [
+                                                                        {
+                                                                            "ident": "a",
+                                                                            "position": {
+                                                                                "end_column": 19,
+                                                                                "end_line": 17,
+                                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                "start_column": 18,
+                                                                                "start_line": 17
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "pat": {
+                                            "ident": {
+                                                "ident": "rem",
+                                                "position": {
+                                                    "end_column": 15,
+                                                    "end_line": 13,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 12,
+                                                    "start_line": 13
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "let": {
+                                        "init": {
+                                            "expr": {
+                                                "method_call": {
+                                                    "args": [],
+                                                    "method": "unwrap",
+                                                    "receiver": {
+                                                        "method_call": {
+                                                            "args": [
+                                                                {
+                                                                    "lit": {
+                                                                        "int": "2"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "method": "checked_pow",
+                                                            "receiver": {
+                                                                "path": {
+                                                                    "segments": [
+                                                                        {
+                                                                            "ident": "a",
+                                                                            "position": {
+                                                                                "end_column": 19,
+                                                                                "end_line": 17,
+                                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                "start_column": 18,
+                                                                                "start_line": 17
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "pat": {
+                                            "ident": {
+                                                "ident": "pow",
+                                                "position": {
+                                                    "end_column": 15,
+                                                    "end_line": 15,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 12,
+                                                    "start_line": 15
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "let": {
+                                        "init": {
+                                            "expr": {
+                                                "method_call": {
+                                                    "args": [],
+                                                    "method": "unwrap",
+                                                    "receiver": {
+                                                        "method_call": {
+                                                            "args": [
+                                                                {
+                                                                    "lit": {
+                                                                        "int": "1"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "method": "checked_shl",
+                                                            "receiver": {
+                                                                "path": {
+                                                                    "segments": [
+                                                                        {
+                                                                            "ident": "a",
+                                                                            "position": {
+                                                                                "end_column": 19,
+                                                                                "end_line": 17,
+                                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                "start_column": 18,
+                                                                                "start_line": 17
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "pat": {
+                                            "ident": {
+                                                "ident": "shl",
+                                                "position": {
+                                                    "end_column": 15,
+                                                    "end_line": 16,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 12,
+                                                    "start_line": 16
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    "let": {
+                                        "init": {
+                                            "expr": {
+                                                "method_call": {
+                                                    "args": [],
+                                                    "method": "unwrap",
+                                                    "receiver": {
+                                                        "method_call": {
+                                                            "args": [
+                                                                {
+                                                                    "lit": {
+                                                                        "int": "1"
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "method": "checked_shr",
+                                                            "receiver": {
+                                                                "path": {
+                                                                    "segments": [
+                                                                        {
+                                                                            "ident": "a",
+                                                                            "position": {
+                                                                                "end_column": 19,
+                                                                                "end_line": 17,
+                                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                "start_column": 18,
+                                                                                "start_line": 17
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "pat": {
+                                            "ident": {
+                                                "ident": "shr",
+                                                "position": {
+                                                    "end_column": 15,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 12,
+                                                    "start_line": 17
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "vis": "pub"
+                        }
+                    }
+                ],
+                "ident": "insecure",
+                "position": {
+                    "end_column": 16,
+                    "end_line": 5,
+                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                    "start_column": 8,
+                    "start_line": 5
+                },
+                "vis": "pub"
+            },
+            "access_path": "[2].mod",
+            "metadata": {
+                "position": {
+                    "end_column": 16,
+                    "end_line": 5,
+                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                    "start_column": 8,
+                    "start_line": 5
+                }
+            },
+            "children": [
+                {
+                    "raw_node": {
+                        "ident": "super",
+                        "position": {
+                            "end_column": 13,
+                            "end_line": 6,
+                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                            "start_column": 8,
+                            "start_line": 6
+                        },
+                        "tree": "*"
+                    },
+                    "access_path": "[2].mod.content[0].use.tree.path",
+                    "metadata": {
+                        "position": {
+                            "end_column": 13,
+                            "end_line": 6,
+                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                            "start_column": 8,
+                            "start_line": 6
+                        }
+                    },
+                    "children": [],
+                    "parent": "{...}",
+                    "root": "False",
+                    "args": [],
+                    "ident": "super"
+                },
+                {
+                    "raw_node": {
+                        "ident": "safe_math_demo",
+                        "inputs": [
+                            {
+                                "typed": {
+                                    "pat": {
+                                        "ident": {
+                                            "ident": "a",
+                                            "position": {
+                                                "end_column": 19,
+                                                "end_line": 17,
+                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                "start_column": 18,
+                                                "start_line": 17
+                                            }
+                                        }
+                                    },
+                                    "ty": {
+                                        "path": {
+                                            "segments": [
+                                                {
+                                                    "ident": "u64",
+                                                    "position": {
+                                                        "end_column": 48,
+                                                        "end_line": 8,
+                                                        "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                        "start_column": 45,
+                                                        "start_line": 8
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "typed": {
+                                    "pat": {
+                                        "ident": {
+                                            "ident": "b",
+                                            "position": {
+                                                "end_column": 33,
+                                                "end_line": 13,
+                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                "start_column": 32,
+                                                "start_line": 13
+                                            }
+                                        }
+                                    },
+                                    "ty": {
+                                        "path": {
+                                            "segments": [
+                                                {
+                                                    "ident": "u64",
+                                                    "position": {
+                                                        "end_column": 48,
+                                                        "end_line": 8,
+                                                        "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                        "start_column": 45,
+                                                        "start_line": 8
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ],
+                        "output": {
+                            "path": {
+                                "segments": [
+                                    {
+                                        "ident": "u64",
+                                        "position": {
+                                            "end_column": 48,
+                                            "end_line": 8,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 45,
+                                            "start_line": 8
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        "position": {
+                            "end_column": 25,
+                            "end_line": 8,
+                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                            "start_column": 11,
+                            "start_line": 8
+                        },
+                        "stmts": [
+                            {
+                                "let": {
+                                    "init": {
+                                        "expr": {
+                                            "method_call": {
+                                                "args": [],
+                                                "method": "unwrap",
+                                                "receiver": {
+                                                    "method_call": {
+                                                        "args": [
+                                                            {
+                                                                "path": {
+                                                                    "segments": [
+                                                                        {
+                                                                            "ident": "b",
+                                                                            "position": {
+                                                                                "end_column": 33,
+                                                                                "end_line": 13,
+                                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                "start_column": 32,
+                                                                                "start_line": 13
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ],
+                                                        "method": "checked_add",
+                                                        "receiver": {
+                                                            "path": {
+                                                                "segments": [
+                                                                    {
+                                                                        "ident": "a",
+                                                                        "position": {
+                                                                            "end_column": 19,
+                                                                            "end_line": 17,
+                                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                            "start_column": 18,
+                                                                            "start_line": 17
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "pat": {
+                                        "ident": {
+                                            "ident": "sum",
+                                            "position": {
+                                                "end_column": 15,
+                                                "end_line": 9,
+                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                "start_column": 12,
+                                                "start_line": 9
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "let": {
+                                    "init": {
+                                        "expr": {
+                                            "method_call": {
+                                                "args": [],
+                                                "method": "unwrap",
+                                                "receiver": {
+                                                    "method_call": {
+                                                        "args": [
+                                                            {
+                                                                "path": {
+                                                                    "segments": [
+                                                                        {
+                                                                            "ident": "b",
+                                                                            "position": {
+                                                                                "end_column": 33,
+                                                                                "end_line": 13,
+                                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                "start_column": 32,
+                                                                                "start_line": 13
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ],
+                                                        "method": "checked_sub",
+                                                        "receiver": {
+                                                            "path": {
+                                                                "segments": [
+                                                                    {
+                                                                        "ident": "a",
+                                                                        "position": {
+                                                                            "end_column": 19,
+                                                                            "end_line": 17,
+                                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                            "start_column": 18,
+                                                                            "start_line": 17
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "pat": {
+                                        "ident": {
+                                            "ident": "diff",
+                                            "position": {
+                                                "end_column": 16,
+                                                "end_line": 10,
+                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                "start_column": 12,
+                                                "start_line": 10
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "let": {
+                                    "init": {
+                                        "expr": {
+                                            "method_call": {
+                                                "args": [],
+                                                "method": "unwrap",
+                                                "receiver": {
+                                                    "method_call": {
+                                                        "args": [
+                                                            {
+                                                                "path": {
+                                                                    "segments": [
+                                                                        {
+                                                                            "ident": "b",
+                                                                            "position": {
+                                                                                "end_column": 33,
+                                                                                "end_line": 13,
+                                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                "start_column": 32,
+                                                                                "start_line": 13
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ],
+                                                        "method": "checked_mul",
+                                                        "receiver": {
+                                                            "path": {
+                                                                "segments": [
+                                                                    {
+                                                                        "ident": "a",
+                                                                        "position": {
+                                                                            "end_column": 19,
+                                                                            "end_line": 17,
+                                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                            "start_column": 18,
+                                                                            "start_line": 17
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "pat": {
+                                        "ident": {
+                                            "ident": "prod",
+                                            "position": {
+                                                "end_column": 16,
+                                                "end_line": 11,
+                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                "start_column": 12,
+                                                "start_line": 11
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "let": {
+                                    "init": {
+                                        "expr": {
+                                            "method_call": {
+                                                "args": [],
+                                                "method": "unwrap",
+                                                "receiver": {
+                                                    "method_call": {
+                                                        "args": [
+                                                            {
+                                                                "path": {
+                                                                    "segments": [
+                                                                        {
+                                                                            "ident": "b",
+                                                                            "position": {
+                                                                                "end_column": 33,
+                                                                                "end_line": 13,
+                                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                "start_column": 32,
+                                                                                "start_line": 13
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ],
+                                                        "method": "checked_div",
+                                                        "receiver": {
+                                                            "path": {
+                                                                "segments": [
+                                                                    {
+                                                                        "ident": "a",
+                                                                        "position": {
+                                                                            "end_column": 19,
+                                                                            "end_line": 17,
+                                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                            "start_column": 18,
+                                                                            "start_line": 17
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "pat": {
+                                        "ident": {
+                                            "ident": "quot",
+                                            "position": {
+                                                "end_column": 16,
+                                                "end_line": 12,
+                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                "start_column": 12,
+                                                "start_line": 12
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "let": {
+                                    "init": {
+                                        "expr": {
+                                            "method_call": {
+                                                "args": [],
+                                                "method": "unwrap",
+                                                "receiver": {
+                                                    "method_call": {
+                                                        "args": [
+                                                            {
+                                                                "path": {
+                                                                    "segments": [
+                                                                        {
+                                                                            "ident": "b",
+                                                                            "position": {
+                                                                                "end_column": 33,
+                                                                                "end_line": 13,
+                                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                                "start_column": 32,
+                                                                                "start_line": 13
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ],
+                                                        "method": "checked_rem",
+                                                        "receiver": {
+                                                            "path": {
+                                                                "segments": [
+                                                                    {
+                                                                        "ident": "a",
+                                                                        "position": {
+                                                                            "end_column": 19,
+                                                                            "end_line": 17,
+                                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                            "start_column": 18,
+                                                                            "start_line": 17
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "pat": {
+                                        "ident": {
+                                            "ident": "rem",
+                                            "position": {
+                                                "end_column": 15,
+                                                "end_line": 13,
+                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                "start_column": 12,
+                                                "start_line": 13
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "let": {
+                                    "init": {
+                                        "expr": {
+                                            "method_call": {
+                                                "args": [],
+                                                "method": "unwrap",
+                                                "receiver": {
+                                                    "method_call": {
+                                                        "args": [
+                                                            {
+                                                                "lit": {
+                                                                    "int": "2"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "method": "checked_pow",
+                                                        "receiver": {
+                                                            "path": {
+                                                                "segments": [
+                                                                    {
+                                                                        "ident": "a",
+                                                                        "position": {
+                                                                            "end_column": 19,
+                                                                            "end_line": 17,
+                                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                            "start_column": 18,
+                                                                            "start_line": 17
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "pat": {
+                                        "ident": {
+                                            "ident": "pow",
+                                            "position": {
+                                                "end_column": 15,
+                                                "end_line": 15,
+                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                "start_column": 12,
+                                                "start_line": 15
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "let": {
+                                    "init": {
+                                        "expr": {
+                                            "method_call": {
+                                                "args": [],
+                                                "method": "unwrap",
+                                                "receiver": {
+                                                    "method_call": {
+                                                        "args": [
+                                                            {
+                                                                "lit": {
+                                                                    "int": "1"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "method": "checked_shl",
+                                                        "receiver": {
+                                                            "path": {
+                                                                "segments": [
+                                                                    {
+                                                                        "ident": "a",
+                                                                        "position": {
+                                                                            "end_column": 19,
+                                                                            "end_line": 17,
+                                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                            "start_column": 18,
+                                                                            "start_line": 17
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "pat": {
+                                        "ident": {
+                                            "ident": "shl",
+                                            "position": {
+                                                "end_column": 15,
+                                                "end_line": 16,
+                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                "start_column": 12,
+                                                "start_line": 16
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "let": {
+                                    "init": {
+                                        "expr": {
+                                            "method_call": {
+                                                "args": [],
+                                                "method": "unwrap",
+                                                "receiver": {
+                                                    "method_call": {
+                                                        "args": [
+                                                            {
+                                                                "lit": {
+                                                                    "int": "1"
+                                                                }
+                                                            }
+                                                        ],
+                                                        "method": "checked_shr",
+                                                        "receiver": {
+                                                            "path": {
+                                                                "segments": [
+                                                                    {
+                                                                        "ident": "a",
+                                                                        "position": {
+                                                                            "end_column": 19,
+                                                                            "end_line": 17,
+                                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                            "start_column": 18,
+                                                                            "start_line": 17
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "pat": {
+                                        "ident": {
+                                            "ident": "shr",
+                                            "position": {
+                                                "end_column": 15,
+                                                "end_line": 17,
+                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                "start_column": 12,
+                                                "start_line": 17
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        ],
+                        "vis": "pub"
+                    },
+                    "access_path": "[2].mod.content[1].fn",
+                    "metadata": {
+                        "position": {
+                            "end_column": 25,
+                            "end_line": 8,
+                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                            "start_column": 11,
+                            "start_line": 8
+                        }
+                    },
+                    "children": [
+                        {
+                            "raw_node": {
+                                "ident": {
+                                    "ident": "a",
+                                    "position": {
+                                        "end_column": 19,
+                                        "end_line": 17,
+                                        "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                        "start_column": 18,
+                                        "start_line": 17
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.inputs[0].typed.pat",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "ident": "a",
+                                        "position": {
+                                            "end_column": 19,
+                                            "end_line": 17,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 18,
+                                            "start_line": 17
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.inputs[0].typed.pat.ident",
+                                    "metadata": {
+                                        "position": {
+                                            "end_column": 19,
+                                            "end_line": 17,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 18,
+                                            "start_line": 17
+                                        }
+                                    },
+                                    "children": [],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [],
+                                    "ident": "a"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "a"
+                        },
+                        {
+                            "raw_node": {
+                                "ident": "u64",
+                                "position": {
+                                    "end_column": 48,
+                                    "end_line": 8,
+                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                    "start_column": 45,
+                                    "start_line": 8
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.inputs[0].typed.ty.path.segments[0]",
+                            "metadata": {
+                                "position": {
+                                    "end_column": 48,
+                                    "end_line": 8,
+                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                    "start_column": 45,
+                                    "start_line": 8
+                                }
+                            },
+                            "children": [],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "u64"
+                        },
+                        {
+                            "raw_node": {
+                                "ident": {
+                                    "ident": "b",
+                                    "position": {
+                                        "end_column": 33,
+                                        "end_line": 13,
+                                        "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                        "start_column": 32,
+                                        "start_line": 13
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.inputs[1].typed.pat",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "ident": "b",
+                                        "position": {
+                                            "end_column": 33,
+                                            "end_line": 13,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 32,
+                                            "start_line": 13
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.inputs[1].typed.pat.ident",
+                                    "metadata": {
+                                        "position": {
+                                            "end_column": 33,
+                                            "end_line": 13,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 32,
+                                            "start_line": 13
+                                        }
+                                    },
+                                    "children": [],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [],
+                                    "ident": "b"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "b"
+                        },
+                        {
+                            "raw_node": {
+                                "ident": "u64",
+                                "position": {
+                                    "end_column": 48,
+                                    "end_line": 8,
+                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                    "start_column": 45,
+                                    "start_line": 8
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.inputs[1].typed.ty.path.segments[0]",
+                            "metadata": {
+                                "position": {
+                                    "end_column": 48,
+                                    "end_line": 8,
+                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                    "start_column": 45,
+                                    "start_line": 8
+                                }
+                            },
+                            "children": [],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "u64"
+                        },
+                        {
+                            "raw_node": {
+                                "ident": "u64",
+                                "position": {
+                                    "end_column": 48,
+                                    "end_line": 8,
+                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                    "start_column": 45,
+                                    "start_line": 8
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.output.path.segments[0]",
+                            "metadata": {
+                                "position": {
+                                    "end_column": 48,
+                                    "end_line": 8,
+                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                    "start_column": 45,
+                                    "start_line": 8
+                                }
+                            },
+                            "children": [],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "u64"
+                        },
+                        {
+                            "raw_node": {
+                                "args": [],
+                                "method": "unwrap",
+                                "receiver": {
+                                    "method_call": {
+                                        "args": [
+                                            {
+                                                "path": {
+                                                    "segments": [
+                                                        {
+                                                            "ident": "b",
+                                                            "position": {
+                                                                "end_column": 33,
+                                                                "end_line": 13,
+                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                "start_column": 32,
+                                                                "start_line": 13
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_add",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[0].let.init.expr.method_call",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "args": [
+                                            {
+                                                "path": {
+                                                    "segments": [
+                                                        {
+                                                            "ident": "b",
+                                                            "position": {
+                                                                "end_column": 33,
+                                                                "end_line": 13,
+                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                "start_column": 32,
+                                                                "start_line": 13
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_add",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[0].let.init.expr.method_call.receiver.method_call",
+                                    "metadata": {},
+                                    "children": [
+                                        {
+                                            "raw_node": {
+                                                "ident": "b",
+                                                "position": {
+                                                    "end_column": 33,
+                                                    "end_line": 13,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 32,
+                                                    "start_line": 13
+                                                }
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[0].let.init.expr.method_call.receiver.method_call.args[0].path.segments[0]",
+                                            "metadata": {
+                                                "position": {
+                                                    "end_column": 33,
+                                                    "end_line": 13,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 32,
+                                                    "start_line": 13
+                                                }
+                                            },
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "b"
+                                        },
+                                        {
+                                            "raw_node": {
+                                                "ident": "a",
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[0].let.init.expr.method_call.receiver.method_call.receiver.path.segments[0]",
+                                            "metadata": {
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "a"
+                                        }
+                                    ],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [
+                                        {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "b",
+                                                        "position": {
+                                                            "end_column": 33,
+                                                            "end_line": 13,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 32,
+                                                            "start_line": 13
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ],
+                                    "ident": "checked_add"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "unwrap"
+                        },
+                        {
+                            "raw_node": {
+                                "ident": {
+                                    "ident": "sum",
+                                    "position": {
+                                        "end_column": 15,
+                                        "end_line": 9,
+                                        "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                        "start_column": 12,
+                                        "start_line": 9
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[0].let.pat",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "ident": "sum",
+                                        "position": {
+                                            "end_column": 15,
+                                            "end_line": 9,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 9
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[0].let.pat.ident",
+                                    "metadata": {
+                                        "position": {
+                                            "end_column": 15,
+                                            "end_line": 9,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 9
+                                        }
+                                    },
+                                    "children": [],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [],
+                                    "ident": "sum"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "sum"
+                        },
+                        {
+                            "raw_node": {
+                                "args": [],
+                                "method": "unwrap",
+                                "receiver": {
+                                    "method_call": {
+                                        "args": [
+                                            {
+                                                "path": {
+                                                    "segments": [
+                                                        {
+                                                            "ident": "b",
+                                                            "position": {
+                                                                "end_column": 33,
+                                                                "end_line": 13,
+                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                "start_column": 32,
+                                                                "start_line": 13
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_sub",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[1].let.init.expr.method_call",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "args": [
+                                            {
+                                                "path": {
+                                                    "segments": [
+                                                        {
+                                                            "ident": "b",
+                                                            "position": {
+                                                                "end_column": 33,
+                                                                "end_line": 13,
+                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                "start_column": 32,
+                                                                "start_line": 13
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_sub",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[1].let.init.expr.method_call.receiver.method_call",
+                                    "metadata": {},
+                                    "children": [
+                                        {
+                                            "raw_node": {
+                                                "ident": "b",
+                                                "position": {
+                                                    "end_column": 33,
+                                                    "end_line": 13,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 32,
+                                                    "start_line": 13
+                                                }
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[1].let.init.expr.method_call.receiver.method_call.args[0].path.segments[0]",
+                                            "metadata": {
+                                                "position": {
+                                                    "end_column": 33,
+                                                    "end_line": 13,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 32,
+                                                    "start_line": 13
+                                                }
+                                            },
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "b"
+                                        },
+                                        {
+                                            "raw_node": {
+                                                "ident": "a",
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[1].let.init.expr.method_call.receiver.method_call.receiver.path.segments[0]",
+                                            "metadata": {
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "a"
+                                        }
+                                    ],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [
+                                        {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "b",
+                                                        "position": {
+                                                            "end_column": 33,
+                                                            "end_line": 13,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 32,
+                                                            "start_line": 13
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ],
+                                    "ident": "checked_sub"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "unwrap"
+                        },
+                        {
+                            "raw_node": {
+                                "ident": {
+                                    "ident": "diff",
+                                    "position": {
+                                        "end_column": 16,
+                                        "end_line": 10,
+                                        "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                        "start_column": 12,
+                                        "start_line": 10
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[1].let.pat",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "ident": "diff",
+                                        "position": {
+                                            "end_column": 16,
+                                            "end_line": 10,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 10
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[1].let.pat.ident",
+                                    "metadata": {
+                                        "position": {
+                                            "end_column": 16,
+                                            "end_line": 10,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 10
+                                        }
+                                    },
+                                    "children": [],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [],
+                                    "ident": "diff"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "diff"
+                        },
+                        {
+                            "raw_node": {
+                                "args": [],
+                                "method": "unwrap",
+                                "receiver": {
+                                    "method_call": {
+                                        "args": [
+                                            {
+                                                "path": {
+                                                    "segments": [
+                                                        {
+                                                            "ident": "b",
+                                                            "position": {
+                                                                "end_column": 33,
+                                                                "end_line": 13,
+                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                "start_column": 32,
+                                                                "start_line": 13
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_mul",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[2].let.init.expr.method_call",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "args": [
+                                            {
+                                                "path": {
+                                                    "segments": [
+                                                        {
+                                                            "ident": "b",
+                                                            "position": {
+                                                                "end_column": 33,
+                                                                "end_line": 13,
+                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                "start_column": 32,
+                                                                "start_line": 13
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_mul",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[2].let.init.expr.method_call.receiver.method_call",
+                                    "metadata": {},
+                                    "children": [
+                                        {
+                                            "raw_node": {
+                                                "ident": "b",
+                                                "position": {
+                                                    "end_column": 33,
+                                                    "end_line": 13,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 32,
+                                                    "start_line": 13
+                                                }
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[2].let.init.expr.method_call.receiver.method_call.args[0].path.segments[0]",
+                                            "metadata": {
+                                                "position": {
+                                                    "end_column": 33,
+                                                    "end_line": 13,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 32,
+                                                    "start_line": 13
+                                                }
+                                            },
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "b"
+                                        },
+                                        {
+                                            "raw_node": {
+                                                "ident": "a",
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[2].let.init.expr.method_call.receiver.method_call.receiver.path.segments[0]",
+                                            "metadata": {
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "a"
+                                        }
+                                    ],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [
+                                        {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "b",
+                                                        "position": {
+                                                            "end_column": 33,
+                                                            "end_line": 13,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 32,
+                                                            "start_line": 13
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ],
+                                    "ident": "checked_mul"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "unwrap"
+                        },
+                        {
+                            "raw_node": {
+                                "ident": {
+                                    "ident": "prod",
+                                    "position": {
+                                        "end_column": 16,
+                                        "end_line": 11,
+                                        "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                        "start_column": 12,
+                                        "start_line": 11
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[2].let.pat",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "ident": "prod",
+                                        "position": {
+                                            "end_column": 16,
+                                            "end_line": 11,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 11
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[2].let.pat.ident",
+                                    "metadata": {
+                                        "position": {
+                                            "end_column": 16,
+                                            "end_line": 11,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 11
+                                        }
+                                    },
+                                    "children": [],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [],
+                                    "ident": "prod"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "prod"
+                        },
+                        {
+                            "raw_node": {
+                                "args": [],
+                                "method": "unwrap",
+                                "receiver": {
+                                    "method_call": {
+                                        "args": [
+                                            {
+                                                "path": {
+                                                    "segments": [
+                                                        {
+                                                            "ident": "b",
+                                                            "position": {
+                                                                "end_column": 33,
+                                                                "end_line": 13,
+                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                "start_column": 32,
+                                                                "start_line": 13
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_div",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[3].let.init.expr.method_call",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "args": [
+                                            {
+                                                "path": {
+                                                    "segments": [
+                                                        {
+                                                            "ident": "b",
+                                                            "position": {
+                                                                "end_column": 33,
+                                                                "end_line": 13,
+                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                "start_column": 32,
+                                                                "start_line": 13
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_div",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[3].let.init.expr.method_call.receiver.method_call",
+                                    "metadata": {},
+                                    "children": [
+                                        {
+                                            "raw_node": {
+                                                "ident": "b",
+                                                "position": {
+                                                    "end_column": 33,
+                                                    "end_line": 13,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 32,
+                                                    "start_line": 13
+                                                }
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[3].let.init.expr.method_call.receiver.method_call.args[0].path.segments[0]",
+                                            "metadata": {
+                                                "position": {
+                                                    "end_column": 33,
+                                                    "end_line": 13,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 32,
+                                                    "start_line": 13
+                                                }
+                                            },
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "b"
+                                        },
+                                        {
+                                            "raw_node": {
+                                                "ident": "a",
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[3].let.init.expr.method_call.receiver.method_call.receiver.path.segments[0]",
+                                            "metadata": {
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "a"
+                                        }
+                                    ],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [
+                                        {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "b",
+                                                        "position": {
+                                                            "end_column": 33,
+                                                            "end_line": 13,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 32,
+                                                            "start_line": 13
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ],
+                                    "ident": "checked_div"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "unwrap"
+                        },
+                        {
+                            "raw_node": {
+                                "ident": {
+                                    "ident": "quot",
+                                    "position": {
+                                        "end_column": 16,
+                                        "end_line": 12,
+                                        "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                        "start_column": 12,
+                                        "start_line": 12
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[3].let.pat",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "ident": "quot",
+                                        "position": {
+                                            "end_column": 16,
+                                            "end_line": 12,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 12
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[3].let.pat.ident",
+                                    "metadata": {
+                                        "position": {
+                                            "end_column": 16,
+                                            "end_line": 12,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 12
+                                        }
+                                    },
+                                    "children": [],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [],
+                                    "ident": "quot"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "quot"
+                        },
+                        {
+                            "raw_node": {
+                                "args": [],
+                                "method": "unwrap",
+                                "receiver": {
+                                    "method_call": {
+                                        "args": [
+                                            {
+                                                "path": {
+                                                    "segments": [
+                                                        {
+                                                            "ident": "b",
+                                                            "position": {
+                                                                "end_column": 33,
+                                                                "end_line": 13,
+                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                "start_column": 32,
+                                                                "start_line": 13
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_rem",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[4].let.init.expr.method_call",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "args": [
+                                            {
+                                                "path": {
+                                                    "segments": [
+                                                        {
+                                                            "ident": "b",
+                                                            "position": {
+                                                                "end_column": 33,
+                                                                "end_line": 13,
+                                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                                "start_column": 32,
+                                                                "start_line": 13
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_rem",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[4].let.init.expr.method_call.receiver.method_call",
+                                    "metadata": {},
+                                    "children": [
+                                        {
+                                            "raw_node": {
+                                                "ident": "b",
+                                                "position": {
+                                                    "end_column": 33,
+                                                    "end_line": 13,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 32,
+                                                    "start_line": 13
+                                                }
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[4].let.init.expr.method_call.receiver.method_call.args[0].path.segments[0]",
+                                            "metadata": {
+                                                "position": {
+                                                    "end_column": 33,
+                                                    "end_line": 13,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 32,
+                                                    "start_line": 13
+                                                }
+                                            },
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "b"
+                                        },
+                                        {
+                                            "raw_node": {
+                                                "ident": "a",
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[4].let.init.expr.method_call.receiver.method_call.receiver.path.segments[0]",
+                                            "metadata": {
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "a"
+                                        }
+                                    ],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [
+                                        {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "b",
+                                                        "position": {
+                                                            "end_column": 33,
+                                                            "end_line": 13,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 32,
+                                                            "start_line": 13
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ],
+                                    "ident": "checked_rem"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "unwrap"
+                        },
+                        {
+                            "raw_node": {
+                                "ident": {
+                                    "ident": "rem",
+                                    "position": {
+                                        "end_column": 15,
+                                        "end_line": 13,
+                                        "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                        "start_column": 12,
+                                        "start_line": 13
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[4].let.pat",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "ident": "rem",
+                                        "position": {
+                                            "end_column": 15,
+                                            "end_line": 13,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 13
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[4].let.pat.ident",
+                                    "metadata": {
+                                        "position": {
+                                            "end_column": 15,
+                                            "end_line": 13,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 13
+                                        }
+                                    },
+                                    "children": [],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [],
+                                    "ident": "rem"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "rem"
+                        },
+                        {
+                            "raw_node": {
+                                "args": [],
+                                "method": "unwrap",
+                                "receiver": {
+                                    "method_call": {
+                                        "args": [
+                                            {
+                                                "lit": {
+                                                    "int": "2"
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_pow",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[5].let.init.expr.method_call",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "args": [
+                                            {
+                                                "lit": {
+                                                    "int": "2"
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_pow",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[5].let.init.expr.method_call.receiver.method_call",
+                                    "metadata": {},
+                                    "children": [
+                                        {
+                                            "raw_node": {
+                                                "int": "2"
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[5].let.init.expr.method_call.receiver.method_call.args[0].lit",
+                                            "metadata": {},
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "2"
+                                        },
+                                        {
+                                            "raw_node": {
+                                                "ident": "a",
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[5].let.init.expr.method_call.receiver.method_call.receiver.path.segments[0]",
+                                            "metadata": {
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "a"
+                                        }
+                                    ],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [
+                                        {
+                                            "lit": {
+                                                "int": "2"
+                                            }
+                                        }
+                                    ],
+                                    "ident": "checked_pow"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "unwrap"
+                        },
+                        {
+                            "raw_node": {
+                                "ident": {
+                                    "ident": "pow",
+                                    "position": {
+                                        "end_column": 15,
+                                        "end_line": 15,
+                                        "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                        "start_column": 12,
+                                        "start_line": 15
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[5].let.pat",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "ident": "pow",
+                                        "position": {
+                                            "end_column": 15,
+                                            "end_line": 15,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 15
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[5].let.pat.ident",
+                                    "metadata": {
+                                        "position": {
+                                            "end_column": 15,
+                                            "end_line": 15,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 15
+                                        }
+                                    },
+                                    "children": [],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [],
+                                    "ident": "pow"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "pow"
+                        },
+                        {
+                            "raw_node": {
+                                "args": [],
+                                "method": "unwrap",
+                                "receiver": {
+                                    "method_call": {
+                                        "args": [
+                                            {
+                                                "lit": {
+                                                    "int": "1"
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_shl",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[6].let.init.expr.method_call",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "args": [
+                                            {
+                                                "lit": {
+                                                    "int": "1"
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_shl",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[6].let.init.expr.method_call.receiver.method_call",
+                                    "metadata": {},
+                                    "children": [
+                                        {
+                                            "raw_node": {
+                                                "int": "1"
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[6].let.init.expr.method_call.receiver.method_call.args[0].lit",
+                                            "metadata": {},
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "1"
+                                        },
+                                        {
+                                            "raw_node": {
+                                                "ident": "a",
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[6].let.init.expr.method_call.receiver.method_call.receiver.path.segments[0]",
+                                            "metadata": {
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "a"
+                                        }
+                                    ],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [
+                                        {
+                                            "lit": {
+                                                "int": "1"
+                                            }
+                                        }
+                                    ],
+                                    "ident": "checked_shl"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "unwrap"
+                        },
+                        {
+                            "raw_node": {
+                                "ident": {
+                                    "ident": "shl",
+                                    "position": {
+                                        "end_column": 15,
+                                        "end_line": 16,
+                                        "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                        "start_column": 12,
+                                        "start_line": 16
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[6].let.pat",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "ident": "shl",
+                                        "position": {
+                                            "end_column": 15,
+                                            "end_line": 16,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 16
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[6].let.pat.ident",
+                                    "metadata": {
+                                        "position": {
+                                            "end_column": 15,
+                                            "end_line": 16,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 16
+                                        }
+                                    },
+                                    "children": [],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [],
+                                    "ident": "shl"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "shl"
+                        },
+                        {
+                            "raw_node": {
+                                "args": [],
+                                "method": "unwrap",
+                                "receiver": {
+                                    "method_call": {
+                                        "args": [
+                                            {
+                                                "lit": {
+                                                    "int": "1"
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_shr",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[7].let.init.expr.method_call",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "args": [
+                                            {
+                                                "lit": {
+                                                    "int": "1"
+                                                }
+                                            }
+                                        ],
+                                        "method": "checked_shr",
+                                        "receiver": {
+                                            "path": {
+                                                "segments": [
+                                                    {
+                                                        "ident": "a",
+                                                        "position": {
+                                                            "end_column": 19,
+                                                            "end_line": 17,
+                                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                            "start_column": 18,
+                                                            "start_line": 17
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[7].let.init.expr.method_call.receiver.method_call",
+                                    "metadata": {},
+                                    "children": [
+                                        {
+                                            "raw_node": {
+                                                "int": "1"
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[7].let.init.expr.method_call.receiver.method_call.args[0].lit",
+                                            "metadata": {},
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "1"
+                                        },
+                                        {
+                                            "raw_node": {
+                                                "ident": "a",
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "access_path": "[2].mod.content[1].fn.stmts[7].let.init.expr.method_call.receiver.method_call.receiver.path.segments[0]",
+                                            "metadata": {
+                                                "position": {
+                                                    "end_column": 19,
+                                                    "end_line": 17,
+                                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                    "start_column": 18,
+                                                    "start_line": 17
+                                                }
+                                            },
+                                            "children": [],
+                                            "parent": "{...}",
+                                            "root": "False",
+                                            "args": [],
+                                            "ident": "a"
+                                        }
+                                    ],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [
+                                        {
+                                            "lit": {
+                                                "int": "1"
+                                            }
+                                        }
+                                    ],
+                                    "ident": "checked_shr"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "unwrap"
+                        },
+                        {
+                            "raw_node": {
+                                "ident": {
+                                    "ident": "shr",
+                                    "position": {
+                                        "end_column": 15,
+                                        "end_line": 17,
+                                        "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                        "start_column": 12,
+                                        "start_line": 17
+                                    }
+                                }
+                            },
+                            "access_path": "[2].mod.content[1].fn.stmts[7].let.pat",
+                            "metadata": {},
+                            "children": [
+                                {
+                                    "raw_node": {
+                                        "ident": "shr",
+                                        "position": {
+                                            "end_column": 15,
+                                            "end_line": 17,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 17
+                                        }
+                                    },
+                                    "access_path": "[2].mod.content[1].fn.stmts[7].let.pat.ident",
+                                    "metadata": {
+                                        "position": {
+                                            "end_column": 15,
+                                            "end_line": 17,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 12,
+                                            "start_line": 17
+                                        }
+                                    },
+                                    "children": [],
+                                    "parent": "{...}",
+                                    "root": "False",
+                                    "args": [],
+                                    "ident": "shr"
+                                }
+                            ],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "shr"
+                        }
+                    ],
+                    "parent": "{...}",
+                    "root": "False",
+                    "args": [],
+                    "ident": "safe_math_demo"
+                }
+            ],
+            "parent": "{...}",
+            "root": "False",
+            "args": [],
+            "ident": "insecure"
+        },
+        {
+            "raw_node": {
+                "attrs": [
+                    {
+                        "meta": {
+                            "list": {
+                                "delimiter": "paren",
+                                "path": {
+                                    "segments": [
+                                        {
+                                            "ident": "derive",
+                                            "position": {
+                                                "end_column": 8,
+                                                "end_line": 22,
+                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                "start_column": 2,
+                                                "start_line": 22
+                                            }
+                                        }
+                                    ]
+                                },
+                                "tokens": [
+                                    {
+                                        "ident": "Accounts"
+                                    }
+                                ]
+                            }
+                        },
+                        "style": "outer"
+                    }
+                ],
+                "fields": {
+                    "named": [
+                        {
+                            "colon_token": "True",
+                            "ident": "rent",
+                            "position": {
+                                "end_column": 8,
+                                "end_line": 24,
+                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                "start_column": 4,
+                                "start_line": 24
+                            },
+                            "ty": {
+                                "path": {
+                                    "segments": [
+                                        {
+                                            "arguments": {
+                                                "angle_bracketed": {
+                                                    "args": [
+                                                        {
+                                                            "lifetime": "info"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "ident": "AccountInfo",
+                                            "position": {
+                                                "end_column": 21,
+                                                "end_line": 24,
+                                                "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                                "start_column": 10,
+                                                "start_line": 24
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                "generics": {
+                    "params": [
+                        {
+                            "lifetime": {
+                                "bounds": [],
+                                "lifetime": "info"
+                            }
+                        }
+                    ]
+                },
+                "ident": "CheckSysvarAddress",
+                "position": {
+                    "end_column": 29,
+                    "end_line": 23,
+                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                    "start_column": 11,
+                    "start_line": 23
+                },
+                "vis": "pub"
+            },
+            "access_path": "[3].struct",
+            "metadata": {
+                "position": {
+                    "end_column": 29,
+                    "end_line": 23,
+                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                    "start_column": 11,
+                    "start_line": 23
+                }
+            },
+            "children": [
+                {
+                    "raw_node": {
+                        "ident": "derive",
+                        "position": {
+                            "end_column": 8,
+                            "end_line": 22,
+                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                            "start_column": 2,
+                            "start_line": 22
+                        }
+                    },
+                    "access_path": "[3].struct.attrs[0].meta.list.path.segments[0]",
+                    "metadata": {
+                        "position": {
+                            "end_column": 8,
+                            "end_line": 22,
+                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                            "start_column": 2,
+                            "start_line": 22
+                        }
+                    },
+                    "children": [],
+                    "parent": "{...}",
+                    "root": "False",
+                    "args": [],
+                    "ident": "derive"
+                },
+                {
+                    "raw_node": {
+                        "ident": "Accounts"
+                    },
+                    "access_path": "[3].struct.attrs[0].meta.list.tokens[0]",
+                    "metadata": {},
+                    "children": [],
+                    "parent": "{...}",
+                    "root": "False",
+                    "args": [],
+                    "ident": "Accounts"
+                },
+                {
+                    "raw_node": {
+                        "colon_token": "True",
+                        "ident": "rent",
+                        "position": {
+                            "end_column": 8,
+                            "end_line": 24,
+                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                            "start_column": 4,
+                            "start_line": 24
+                        },
+                        "ty": {
+                            "path": {
+                                "segments": [
+                                    {
+                                        "arguments": {
+                                            "angle_bracketed": {
+                                                "args": [
+                                                    {
+                                                        "lifetime": "info"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "ident": "AccountInfo",
+                                        "position": {
+                                            "end_column": 21,
+                                            "end_line": 24,
+                                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                            "start_column": 10,
+                                            "start_line": 24
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "access_path": "[3].struct.fields.named[0]",
+                    "metadata": {
+                        "position": {
+                            "end_column": 8,
+                            "end_line": 24,
+                            "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                            "start_column": 4,
+                            "start_line": 24
+                        }
+                    },
+                    "children": [
+                        {
+                            "raw_node": {
+                                "arguments": {
+                                    "angle_bracketed": {
+                                        "args": [
+                                            {
+                                                "lifetime": "info"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "ident": "AccountInfo",
+                                "position": {
+                                    "end_column": 21,
+                                    "end_line": 24,
+                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                    "start_column": 10,
+                                    "start_line": 24
+                                }
+                            },
+                            "access_path": "[3].struct.fields.named[0].ty.path.segments[0]",
+                            "metadata": {
+                                "position": {
+                                    "end_column": 21,
+                                    "end_line": 24,
+                                    "source_file": "../SolanaPlayground/sealevel-attacks//programs/11-checked-arithm-unwrap/insecure/src/lib.rs",
+                                    "start_column": 10,
+                                    "start_line": 24
+                                }
+                            },
+                            "children": [],
+                            "parent": "{...}",
+                            "root": "False",
+                            "args": [],
+                            "ident": "AccountInfo"
+                        }
+                    ],
+                    "parent": "{...}",
+                    "root": "False",
+                    "args": [],
+                    "ident": "rent"
+                }
+            ],
+            "parent": "{...}",
+            "root": "False",
+            "args": [],
+            "ident": "CheckSysvarAddress"
+        }
+    ],
+    "parent": {
+        "raw_node": {},
+        "access_path": "EMPTY_ACCESS_PATH",
+        "metadata": {},
+        "children": [],
+        "parent": {},
+        "root": "False",
+        "args": []
+    },
+    "root": "False",
+    "args": [],
+    "ident": "EMPTY_IDENT"
+}

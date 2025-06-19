@@ -64,15 +64,18 @@ def ast_node_add_children(node: dict, children: list[dict]) -> dict:
     return node
 
 
-def to_result(node: dict) -> dict:
+def to_result(node: dict, position = {}) -> dict:
     metadata = node.get("metadata", {})
     parent = node.get("parent", {})
 
-    raw_node = {}
-    if parent != {}:
-        raw_node = parent["raw_node"]
-    if raw_node != {} and "position" in raw_node:
-        position = raw_node.get("position")
+    if position == {}:
+        raw_node = {}
+        if parent != {}:
+            raw_node = parent["raw_node"]
+        if raw_node != {} and "position" in raw_node:
+            position = raw_node.get("position")
+            metadata["position"] = position
+    else:
         metadata["position"] = position
 
     children = []
