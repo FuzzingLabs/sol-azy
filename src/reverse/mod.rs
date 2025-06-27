@@ -13,8 +13,8 @@
 
 pub mod cfg;
 pub mod disass;
-pub mod rusteq;
 pub mod immediate_tracker;
+pub mod rusteq;
 pub mod utils;
 
 use cfg::*;
@@ -23,15 +23,12 @@ use immediate_tracker::ImmediateTracker;
 use indicatif::{ProgressBar, ProgressStyle};
 use log::{debug, error};
 use solana_sbpf::{
-    ebpf::MM_RODATA_START,
-    elf::Executable,
-    program::BuiltinProgram,
-    static_analysis::Analysis,
+    ebpf::MM_RODATA_START, elf::Executable, program::BuiltinProgram, static_analysis::Analysis,
     vm::Config,
 };
-use utils::RegisterTracker;
 use std::{fs::File, io::Read as _, path::Path, sync::Arc, time::Duration};
 use test_utils::TestContextObject;
+use utils::RegisterTracker;
 
 use anyhow::Result;
 
@@ -85,7 +82,7 @@ impl ReverseOutputMode {
 /// * `mode` - Output mode that determines the type of reverse engineering output to generate (disassembly, CFG, both, or rust equivalent).
 /// * `target_bytecode` - Path to the ELF binary of the eBPF program.
 /// * `labeling` - Enables symbol and section labeling if `true`. Useful for better disassembly readability.
-/// * `reduced` - If `true`, only includes functions defined after the program's entrypoint in the generated CFG, 
+/// * `reduced` - If `true`, only includes functions defined after the program's entrypoint in the generated CFG,
 ///   omitting system-level or library-defined functions that may not be relevant.
 /// * `only_entrypoint` - If `true`, generates a CFG containing only the entrypoint (`cluster_{entry}`) block,
 ///   allowing users to build out a focused CFG incrementally (e.g., with the `dotting` module).
@@ -124,10 +121,12 @@ pub fn analyze_program(
 
     let spinner = ProgressBar::new_spinner();
     spinner.set_message("Performing binary analysis...");
-    spinner.set_style(ProgressStyle::default_spinner()
-        .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"])
-        .template("{spinner} {msg}")
-        .unwrap());
+    spinner.set_style(
+        ProgressStyle::default_spinner()
+            .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"])
+            .template("{spinner} {msg}")
+            .unwrap(),
+    );
     spinner.enable_steady_tick(Duration::from_millis(50));
 
     // Perform analysis on the executable (e.g., necessary for disassembly, control flow graph, etc..).
@@ -138,23 +137,49 @@ pub fn analyze_program(
     // Used to track all immediate datas in order to create a table with their possible associated values
     let mut imm_tracker = ImmediateTracker::new(program.len() + MM_RODATA_START as usize);
     let imm_tracker_wrapped = Some(&mut imm_tracker);
-    
+
     let mut reg_tracker = RegisterTracker::new();
     let reg_tracker_wrapped = Some(&mut reg_tracker);
 
     match mode {
         ReverseOutputMode::Disassembly(path) => {
-            let _ = disassemble_wrapper(&program, &mut analysis, imm_tracker_wrapped, reg_tracker_wrapped, &path);
+            let _ = disassemble_wrapper(
+                &program,
+                &mut analysis,
+                imm_tracker_wrapped,
+                reg_tracker_wrapped,
+                &path,
+            );
         }
         ReverseOutputMode::ControlFlowGraph(path) => {
-            export_cfg_to_dot(&program, &mut analysis, reg_tracker_wrapped, &path, reduced, only_entrypoint)?;
+            export_cfg_to_dot(
+                &program,
+                &mut analysis,
+                reg_tracker_wrapped,
+                &path,
+                reduced,
+                only_entrypoint,
+            )?;
         }
         ReverseOutputMode::DisassemblyAndCFG(path) => {
-            let _ = disassemble_wrapper(&program, &mut analysis, imm_tracker_wrapped, reg_tracker_wrapped, &path);
+            let _ = disassemble_wrapper(
+                &program,
+                &mut analysis,
+                imm_tracker_wrapped,
+                reg_tracker_wrapped,
+                &path,
+            );
             // shadowing old one ref
             let mut reg_tracker = RegisterTracker::new();
             let reg_tracker_wrapped = Some(&mut reg_tracker);
-            export_cfg_to_dot(&program, &mut analysis, reg_tracker_wrapped, &path, reduced, only_entrypoint)?;
+            export_cfg_to_dot(
+                &program,
+                &mut analysis,
+                reg_tracker_wrapped,
+                &path,
+                reduced,
+                only_entrypoint,
+            )?;
         }
     }
     Ok(())
@@ -175,7 +200,7 @@ mod tests {
             "test_cases/base_sbf_addition_checker/bytecodes/addition_checker.so".to_string(),
             true,
             false,
-            false
+            false,
         );
     }
 
@@ -190,7 +215,7 @@ mod tests {
                 .to_string(),
             false,
             false,
-            false
+            false,
         );
     }
 }

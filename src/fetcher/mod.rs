@@ -1,9 +1,9 @@
+use anyhow::Result;
 use base64::{engine::general_purpose, Engine};
 use reqwest::Client;
 use serde_json::json;
 use solana_sdk::pubkey::Pubkey;
 use std::{fs, path::Path};
-use anyhow::Result;
 
 pub const MAINNET_RPC: &str = "https://api.mainnet-beta.solana.com";
 
@@ -16,10 +16,7 @@ fn slice_from_elf_header(bytecode: &[u8]) -> Option<&[u8]> {
 }
 
 /// Fetch the bytecode of a Solana program, handling both upgradeable and non-upgradeable types.
-async fn fetch_program_bytecode(
-    rpc_url: &str,
-    program_id: &str,
-) -> Result<Vec<u8>, anyhow::Error> {
+async fn fetch_program_bytecode(rpc_url: &str, program_id: &str) -> Result<Vec<u8>, anyhow::Error> {
     let client = Client::new();
 
     // Step 1: fetch account info for the program ID
@@ -44,13 +41,17 @@ async fn fetch_program_bytecode(
         .ok_or_else(|| anyhow::anyhow!("No data in account response"))?;
     let mut decoded_data = general_purpose::STANDARD.decode(data_base64)?;
 
-    let owner = value["owner"].as_str().ok_or_else(|| anyhow::anyhow!("Missing owner field"))?;
+    let owner = value["owner"]
+        .as_str()
+        .ok_or_else(|| anyhow::anyhow!("Missing owner field"))?;
 
     // BPFLoaderUpgradeable programs need to resolve the ProgramData account
     if owner == "BPFLoaderUpgradeab1e11111111111111111111111" {
         // Extract the ProgramData address from the upgradeable account
         if decoded_data.len() < 36 {
-            return Err(anyhow::anyhow!("Program account too small to contain ProgramData address"));
+            return Err(anyhow::anyhow!(
+                "Program account too small to contain ProgramData address"
+            ));
         }
 
         let programdata_pubkey_bytes = &decoded_data[4..36]; // skip first 4 bytes
@@ -88,7 +89,9 @@ async fn fetch_program_bytecode(
     if let Some(elf_data) = slice_from_elf_header(&decoded_data) {
         Ok(elf_data.to_vec())
     } else {
-        Err(anyhow::anyhow!("Wrong bytecode (should have at least 45 bytes of metadata)"))
+        Err(anyhow::anyhow!(
+            "Wrong bytecode (should have at least 45 bytes of metadata)"
+        ))
     }
 }
 
@@ -143,11 +146,9 @@ mod tests {
 
     #[tokio::test]
     async fn test_fetch_program_bytecode_ok() {
-        let _: Vec<u8> = fetch_program_bytecode(
-            MAINNET_RPC,
-            "4MangoMjqJ2firMokCjjGgoK8d4MXcrgL7XJaL3w6fVg",
-        )
-        .await
-        .expect("Should succeed");
+        let _: Vec<u8> =
+            fetch_program_bytecode(MAINNET_RPC, "4MangoMjqJ2firMokCjjGgoK8d4MXcrgL7XJaL3w6fVg")
+                .await
+                .expect("Should succeed");
     }
 }

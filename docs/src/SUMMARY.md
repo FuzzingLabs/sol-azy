@@ -11,6 +11,7 @@
   - [Rule Format](rules/format.md)
   - [Writing Templates](rules/templates.md)
   - [Detection Example](rules/example.md)
+  - [Starlark references](rules/starlark_libs.md)
 - [Reverse Engineering](reverse.md)
   - [Overview](reverse/overview.md)
   - [Disassembly](reverse/disassembly.md)
@@ -20,3 +21,5 @@
     - [Manual CFG Editing (Dotting)](reverse/dotting.md)
 - [Architecture](architecture.md)
   - [App State](architecture/app_state.md)
+  - [SAST Engine](architecture/sast_engine.md)
+- [Evolution of the tool](future.md)

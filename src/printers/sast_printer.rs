@@ -1,98 +1,186 @@
 // src/pretty_printer.rs
 
-use std::collections::HashMap;
-use crate::state::sast_state::{Certainty, SastState, Severity, SynAstMapExt, SynAstResult, SynRuleMetadata};
+use crate::state::sast_state::{
+    Certainty, SastState, Severity, SynAstMapExt, SynAstResult, SynRuleMetadata,
+};
 use anyhow::{Context, Result};
 use prettytable::{format, Cell, Row, Table};
+use std::collections::HashMap;
 
-/// Utility responsible for displaying SAST analysis results in a human-readable format.
+/// A utility for displaying Static Analysis (SAST) results in a readable format.
 ///
-/// Supports printing summaries, detailed match reports, and JSON output.
+/// This printer handles the presentation of scan summaries, detailed findings,
+/// and rule metadata in structured tables.
 #[derive(Debug, Clone)]
 pub struct SastPrinter;
 
 impl SastPrinter {
-    /// Displays a full summary and detailed output of the SAST state results.
+    /// Displays a comprehensive report of the SAST analysis results.
     ///
-    /// Outputs number of scanned files, a summary table of rule matches,
-    /// and detailed findings with metadata and source location.
+    /// This function orchestrates the printing of the scan summary, a summary table
+    /// of rule matches, and detailed findings for each vulnerability.
     ///
     /// # Arguments
     ///
-    /// * `state` - The `SastState` containing results to print.
+    /// * `state` - The `SastState` containing the analysis results.
+    /// * `scanned_dir` - The directory on which the scan was performed.
     ///
     /// # Returns
     ///
-    /// `Ok(())` on success or an error if printing fails.
+    /// An empty `Result` on success, or an error if printing fails.
     pub fn print_sast_state(state: &SastState, scanned_dir: &String) -> Result<()> {
-        println!("\n================================================================================\n\n{} files scanned in {} directory\n", state.syn_ast_map.count_files(), scanned_dir);
+        Self::print_scan_summary(state, scanned_dir);
 
-        let all_results: Vec<SynAstResult> = state
+        let all_results = Self::collect_all_results(state);
+        Self::print_rules_summary(&all_results)?;
+
+        let results_with_matches = Self::collect_results_with_matches(state);
+
+        if !results_with_matches.is_empty() {
+            Self::print_detailed_findings(&results_with_matches)?;
+        } else {
+            println!("\nNo vulnerabilities detected.");
+        }
+
+        Ok(())
+    }
+
+    /// Prints a summary of the scan, including the number of files scanned and the target directory.
+    ///
+    /// # Arguments
+    ///
+    /// * `state` - The `SastState` from the analysis.
+    /// * `scanned_dir` - The directory that was scanned.
+    fn print_scan_summary(state: &SastState, scanned_dir: &String) {
+        println!(
+            "\n================================================================================\n\n{} files scanned in {} directory\n",
+            state.syn_ast_map.count_files(),
+            scanned_dir
+        );
+    }
+
+    /// Collects and flattens all analysis results from the SAST state.
+    ///
+    /// # Arguments
+    ///
+    /// * `state` - The `SastState` containing results across multiple files.
+    ///
+    /// # Returns
+    ///
+    /// A vector of `SynAstResult` containing all findings.
+    fn collect_all_results(state: &SastState) -> Vec<SynAstResult> {
+        state
             .syn_ast_map
             .values()
             .flat_map(|ast| ast.results.clone())
-            .collect();
+            .collect()
+    }
 
-        Self::print_rules_summary(&all_results)?;
-
-        let results_with_matches: Vec<(String, &SynAstResult)> = state
+    /// Collects results that have at least one match, pairing them with their source filename.
+    ///
+    /// # Arguments
+    ///
+    /// * `state` - The `SastState` to filter results from.
+    ///
+    /// # Returns
+    ///
+    /// A vector of tuples, each containing a filename and a reference to the `SynAstResult`.
+    fn collect_results_with_matches(state: &SastState) -> Vec<(String, &SynAstResult)> {
+        state
             .syn_ast_map
             .iter()
             .flat_map(|(filename, ast)| {
                 ast.results
                     .iter()
                     .filter(|result| !result.matches.is_empty())
-                    .map(|result| (filename.clone(), result))
+                    .map(move |result| (filename.clone(), result))
             })
-            .collect();
-
-        if !results_with_matches.is_empty() {
-            println!("\nDetailed findings:");
-            let mut grouped_results: HashMap<String, Vec<(String, &SynAstResult)>> = HashMap::new();
-            
-            for (filename, ast_res) in results_with_matches.iter() {
-                let rule_name = ast_res.rule_metadata.name.clone();
-                grouped_results.entry(rule_name).or_default().push((filename.clone(), *ast_res));
-            }
-
-            for (_rule_name, results) in grouped_results {
-                let first_result = &results[0].1;
-                println!("\n{}", "=".repeat(80));
-                Self::print_rule_metadata(&first_result.rule_metadata, first_result.rule_filename.to_string())?;
-
-                let total_matches: usize = results.iter().map(|(_, res)| res.matches.len()).sum();
-                println!("\nMatches found: {}", total_matches);
-
-                for (filename, ast_res) in results {
-                    for match_result in &ast_res.matches {
-                        match match_result.get_location_metadata() {
-                            Ok(pos) => println!("{}", pos.get_pretty_string()),
-                            Err(_) => println!("{}: {}", filename, match_result.access_path)    
-                        }
-                    }
-                }
-
-                println!("{}", "=".repeat(80));
-            }
-        } else {
-            println!("\nNo vulnerabilities detected.");
-        }
-
-        Ok(())
-
+            .collect()
     }
 
-    /// Displays a summary table of all rule matches across all analyzed files.
-    ///
-    /// Each row includes the rule name, severity, certainty, file name, and match count.
+    /// Prints the detailed findings, grouped by rule, for all identified matches.
     ///
     /// # Arguments
     ///
-    /// * `results` - A slice of `SynAstResult` entries to summarize.
+    /// * `results_with_matches` - A slice of tuples, each with a filename and a result.
     ///
     /// # Returns
     ///
-    /// `Ok(())` on success or an error if rendering fails.
+    /// An empty `Result` on success, or an error if printing fails.
+    fn print_detailed_findings(results_with_matches: &[(String, &SynAstResult)]) -> Result<()> {
+        println!("\nDetailed findings:");
+        let grouped_results = Self::group_results_by_rule_name(results_with_matches);
+
+        for (_rule_name, results) in grouped_results {
+            let first_result = &results[0].1;
+            println!("\n{}", "=".repeat(80));
+            Self::print_rule_metadata(
+                &first_result.rule_metadata,
+                first_result.rule_filename.to_string(),
+            )?;
+
+            let total_matches: usize = results.iter().map(|(_, res)| res.matches.len()).sum();
+            println!("\nMatches found: {}", total_matches);
+
+            Self::print_match_locations(&results);
+            println!("{}", "=".repeat(80));
+        }
+
+        Ok(())
+    }
+
+    /// Groups analysis results by rule name for organized reporting.
+    ///
+    /// # Arguments
+    ///
+    /// * `results_with_matches` - A slice of tuples containing filenames and results.
+    ///
+    /// # Returns
+    ///
+    /// A `HashMap` where keys are rule names and values are vectors of corresponding results.
+    fn group_results_by_rule_name<'a>(
+        results_with_matches: &[(String, &'a SynAstResult)],
+    ) -> HashMap<String, Vec<(String, &'a SynAstResult)>> {
+        let mut grouped_results: HashMap<String, Vec<(String, &'a SynAstResult)>> = HashMap::new();
+
+        for (filename, ast_res) in results_with_matches {
+            let rule_name = ast_res.rule_metadata.name.clone();
+            grouped_results
+                .entry(rule_name)
+                .or_default()
+                .push((filename.clone(), *ast_res));
+        }
+
+        grouped_results
+    }
+
+    /// Prints the source code location for each match in a set of results.
+    ///
+    /// # Arguments
+    ///
+    /// * `results` - A slice of tuples containing filenames and results to print locations for.
+    fn print_match_locations(results: &[(String, &SynAstResult)]) {
+        for (filename, ast_res) in results {
+            for match_result in &ast_res.matches {
+                match match_result.get_location_metadata() {
+                    Ok(pos) => println!("{}", pos.get_pretty_string()),
+                    Err(_) => println!("{}: {}", filename, match_result.access_path),
+                }
+            }
+        }
+    }
+
+    /// Displays a summary table of all matched rules.
+    ///
+    /// Each row includes the rule name, severity, certainty, associated files, and total matches.
+    ///
+    /// # Arguments
+    ///
+    /// * `results` - A slice of `SynAstResult` entries to be summarized.
+    ///
+    /// # Returns
+    ///
+    /// An empty `Result` on success, or an error if rendering the table fails.
     pub fn print_rules_summary(results: &[SynAstResult]) -> Result<()> {
         let mut table = Table::new();
         table.set_format(*format::consts::FORMAT_BOX_CHARS);
@@ -124,8 +212,7 @@ impl SastPrinter {
             }
         };
 
-        let mut rule_groups: std::collections::HashMap<String, Vec<&SynAstResult>> =
-            std::collections::HashMap::new();
+        let mut rule_groups: HashMap<String, Vec<&SynAstResult>> = HashMap::new();
 
         for result in results {
             rule_groups
@@ -158,16 +245,17 @@ impl SastPrinter {
 
         Ok(())
     }
-    /// Displays the metadata of a given rule, including version, author,
-    /// severity, certainty, and description.
+
+    /// Displays the metadata for a given rule in a structured table.
     ///
     /// # Arguments
     ///
-    /// * `metadata` - Metadata object to display.
+    /// * `metadata` - The `SynRuleMetadata` object to display.
+    /// * `rule_filename` - The filename of the rule being displayed.
     ///
     /// # Returns
     ///
-    /// `Ok(())` on success.
+    /// An empty `Result` on success.
     fn print_rule_metadata(metadata: &SynRuleMetadata, rule_filename: String) -> Result<()> {
         let mut table = Table::new();
         table.set_format(*format::consts::FORMAT_NO_BORDER_LINE_SEPARATOR);
@@ -229,15 +317,15 @@ impl SastPrinter {
         Ok(())
     }
 
-    /// Outputs the entire result set in a prettified JSON format.
+    /// Outputs the analysis results in a prettified JSON format.
     ///
     /// # Arguments
     ///
-    /// * `results` - A slice of `SynAstResult` entries to serialize.
+    /// * `results` - A slice of `SynAstResult` entries to serialize and print.
     ///
     /// # Returns
     ///
-    /// `Ok(())` if the output was successful, or an error if serialization fail
+    /// An empty `Result` on success, or an error if serialization fails.
     #[allow(dead_code)]
     pub fn print_results_as_json(results: &[SynAstResult]) -> Result<()> {
         let json =
@@ -248,7 +336,11 @@ impl SastPrinter {
 }
 
 impl SynAstResult {
-    /// Converts a `SynAstResult` into a `prettytable::Row` suitable for tabular display.
+    /// Converts a `SynAstResult` into a `prettytable::Row` for tabular display.
+    ///
+    /// # Returns
+    ///
+    /// A `Row` containing cells for the rule name, severity, certainty, filename, and match count.
     #[allow(dead_code)]
     pub fn to_table_row(&self) -> Row {
         Row::new(vec![

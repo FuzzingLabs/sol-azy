@@ -1,8 +1,7 @@
-use crate::reverse::{analyze_program, ReverseOutputMode};
 use crate::helpers::BeforeCheck;
-use log::{error, debug, info};
+use crate::reverse::{analyze_program, ReverseOutputMode};
 use anyhow::Result;
-
+use log::{debug, error, info};
 
 /// Verifies that the required files and directories exist before running reverse analysis.
 ///
@@ -70,7 +69,7 @@ fn checks_before_reverse(bytecodes_file: &String, out_dir: &String) -> bool {
 /// * `labeling` - Whether to enable symbol and section labeling in the analysis.
 /// * `reduced` - If enabled, limits CFG generation to functions defined after the program entrypoint,
 ///   which helps reduce noise from unrelated or prelinked functions in the bytecode.
-/// * `only_entrypoint` - If true, generates a minimal CFG containing only the entrypoint function (`cluster_{entry}`), 
+/// * `only_entrypoint` - If true, generates a minimal CFG containing only the entrypoint function (`cluster_{entry}`),
 ///   allowing manual expansion afterward using tools like the `dotting` module.
 ///
 /// # Returns
@@ -82,7 +81,14 @@ fn checks_before_reverse(bytecodes_file: &String, out_dir: &String) -> bool {
 ///
 /// Returns an error if the provided `mode` string does not match any known `ReverseOutputMode`,
 /// or if the reverse analysis fails to initialize properly.
-pub fn run(mode: String, out_dir: String, bytecodes_file: String, labeling: bool, reduced: bool, only_entrypoint: bool) -> Result<()> {
+pub fn run(
+    mode: String,
+    out_dir: String,
+    bytecodes_file: String,
+    labeling: bool,
+    reduced: bool,
+    only_entrypoint: bool,
+) -> Result<()> {
     debug!("Starting reverse process for {}", bytecodes_file);
 
     if !checks_before_reverse(&bytecodes_file, &out_dir) {
@@ -105,7 +111,13 @@ pub fn run(mode: String, out_dir: String, bytecodes_file: String, labeling: bool
         }
     };
 
-    analyze_program(output_mode, bytecodes_file, labeling, reduced, only_entrypoint)
+    analyze_program(
+        output_mode,
+        bytecodes_file,
+        labeling,
+        reduced,
+        only_entrypoint,
+    )
 }
 
 #[cfg(test)]
