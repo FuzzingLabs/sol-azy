@@ -1,0 +1,2392 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>docs</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="cli_usage.html"><strong aria-hidden="true">3.</strong> CLI Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cli/build.html"><strong aria-hidden="true">3.1.</strong> Build</a></li><li class="chapter-item expanded "><a href="cli/sast.html"><strong aria-hidden="true">3.2.</strong> SAST</a></li><li class="chapter-item expanded "><a href="cli/fetcher.html"><strong aria-hidden="true">3.3.</strong> Fetcher</a></li><li class="chapter-item expanded "><a href="cli/reverse.html"><strong aria-hidden="true">3.4.</strong> Reverse</a></li></ol></li><li class="chapter-item expanded "><a href="static_analysis.html"><strong aria-hidden="true">4.</strong> Static Analysis</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="rules/format.html"><strong aria-hidden="true">4.1.</strong> Rule Format</a></li><li class="chapter-item expanded "><a href="rules/templates.html"><strong aria-hidden="true">4.2.</strong> Writing Templates</a></li><li class="chapter-item expanded "><a href="rules/example.html"><strong aria-hidden="true">4.3.</strong> Detection Example</a></li><li class="chapter-item expanded "><a href="rules/starlark_libs.html"><strong aria-hidden="true">4.4.</strong> Starlark references</a></li></ol></li><li class="chapter-item expanded "><a href="reverse.html"><strong aria-hidden="true">5.</strong> Reverse Engineering</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="reverse/overview.html"><strong aria-hidden="true">5.1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="reverse/disassembly.html"><strong aria-hidden="true">5.2.</strong> Disassembly</a></li><li class="chapter-item expanded "><a href="reverse/immediates.html"><strong aria-hidden="true">5.3.</strong> Immediate Tracking</a></li><li class="chapter-item expanded "><a href="reverse/cfg.html"><strong aria-hidden="true">5.4.</strong> Control Flow Graph (CFG)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="reverse/reduced_cfg.html"><strong aria-hidden="true">5.4.1.</strong> Reduced / Entry-only CFG</a></li><li class="chapter-item expanded "><a href="reverse/dotting.html"><strong aria-hidden="true">5.4.2.</strong> Manual CFG Editing (Dotting)</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="architecture.html"><strong aria-hidden="true">6.</strong> Architecture</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="architecture/app_state.html"><strong aria-hidden="true">6.1.</strong> App State</a></li><li class="chapter-item expanded "><a href="architecture/sast_engine.html"><strong aria-hidden="true">6.2.</strong> SAST Engine</a></li></ol></li><li class="chapter-item expanded "><a href="future.html"><strong aria-hidden="true">7.</strong> Evolution of the tool</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">docs</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p><strong>Sol-azy</strong> is a modular, CLI-based toolchain designed for working with Solana programs.<br />
+It combines <strong>static analysis</strong>, <strong>reverse engineering</strong>, and <strong>project building</strong> features in one streamlined developer and auditor experience.</p>
+<hr />
+<h2 id="what-is-sol-azy"><a class="header" href="#what-is-sol-azy">What Is Sol-azy?</a></h2>
+<p>Sol-azy provides tools for:</p>
+<ul>
+<li>
+<p><strong>Building Solana programs</strong>:</p>
+<ul>
+<li>Supports both <code>Anchor</code> and native <code>SBF</code> workflows</li>
+<li>Handles compilation and artifact organization</li>
+</ul>
+</li>
+<li>
+<p><strong>Static Application Security Testing (SAST)</strong>:</p>
+<ul>
+<li>Uses a custom Starlark-based rule engine</li>
+<li>Applies pattern-matching on the Rust AST</li>
+<li>Enables writing domain-specific security rules</li>
+</ul>
+</li>
+<li>
+<p><strong>Reverse Engineering</strong>:</p>
+<ul>
+<li>Disassembles compiled sBPF bytecode</li>
+<li>Exports Control Flow Graphs in <code>.dot</code> format</li>
+<li>Tracks and formats immediate data from RODATA</li>
+<li>Annotations simplified with Rust-like pseudocode</li>
+</ul>
+</li>
+<li>
+<p><strong>Dotting</strong>:</p>
+<ul>
+<li>Lets you manually reinsert functions into reduced CFGs from the full <code>.dot</code> graph</li>
+<li>Useful for selectively exploring large or complex programs</li>
+</ul>
+</li>
+<li>
+<p><strong>Fetcher</strong>:</p>
+<ul>
+<li>Retrieves deployed <code>.so</code> binaries from Solana RPC endpoints using a program ID</li>
+<li>Makes it easy to reverse-engineer or audit programs without local builds</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="why-sol-azy"><a class="header" href="#why-sol-azy">Why Sol-azy?</a></h2>
+<p>While tools like <code>solana</code>, <code>cargo build-sbf</code>, or <code>anchor build</code> focus on building and deployment, Sol-azy targets:</p>
+<ul>
+<li><strong>Security auditing workflows</strong></li>
+<li><strong>Automated code review pipelines</strong></li>
+<li><strong>Understanding bytecode-level structure</strong></li>
+<li><strong>Writing and applying custom static rules</strong></li>
+</ul>
+<p>It integrates tightly with Solana's BPF toolchain and <code>syn</code> parsing to provide source-level and binary-level insights in one place.</p>
+<hr />
+<h2 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h2>
+<p>Sol-azy is structured into several engines and CLI commands:</p>
+<ul>
+<li><a href="cli/build.html"><code>build</code></a> – Compile programs and prepare artifacts</li>
+<li><a href="cli/sast.html"><code>sast</code></a> – Run static analysis with Starlark rules</li>
+<li><a href="cli/reverse.html"><code>reverse</code></a> – Perform bytecode reverse engineering</li>
+<li><a href="reverse/dotting.html"><code>dotting</code></a> – Post-process <code>.dot</code> graphs to manually restore functions in reduced CFGs</li>
+<li><a href="cli/fetcher.html"><code>fetcher</code></a> – Retrieve deployed on-chain bytecode for offline inspection</li>
+</ul>
+<p>See the full <a href="cli_usage.html">CLI Usage</a> section for more details.</p>
+<hr />
+<h2 id="requirements"><a class="header" href="#requirements">Requirements</a></h2>
+<ul>
+<li>Rust + Cargo</li>
+<li>Solana Toolchain (for <code>cargo build-sbf</code>)</li>
+<li>(Optional) <a href="https://www.anchor-lang.com/"><code>anchor</code></a> for Anchor support</li>
+<li>[<code>mdbook</code>] if you are contributing to or browsing the documentation locally</li>
+</ul>
+<hr />
+<h2 id="next-steps"><a class="header" href="#next-steps">Next Steps</a></h2>
+<ul>
+<li>👉 <a href="installation.html">Installation</a></li>
+<li>👉 <a href="cli/build.html">Build your first project</a></li>
+<li>👉 <a href="rules/format.html">Write a custom rule</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+<p>This page describes how to set up Sol-azy and its required dependencies.</p>
+<hr />
+<h2 id="1-prerequisites"><a class="header" href="#1-prerequisites">1. Prerequisites</a></h2>
+<p>Make sure the following tools are installed on your system:</p>
+<div class="table-wrapper"><table><thead><tr><th>Tool</th><th>Purpose</th><th>Install link / command</th></tr></thead><tbody>
+<tr><td><strong>Rust</strong></td><td>Required to compile Sol-azy</td><td>https://rustup.rs</td></tr>
+<tr><td><strong>cargo</strong></td><td>Rust package manager</td><td>Included with <code>rustup</code></td></tr>
+<tr><td><strong>Solana CLI</strong></td><td>Needed for SBF builds</td><td>https://docs.solana.com/cli/install-solana-cli</td></tr>
+<tr><td><strong>anchor</strong> <em>(optional)</em></td><td>For Anchor-based projects</td><td><code>cargo install --git https://github.com/coral-xyz/anchor anchor-cli --locked</code></td></tr>
+</tbody></table>
+</div>
+<p>Verify installations:</p>
+<pre><code class="language-bash">rustc --version
+cargo --version
+solana --version
+anchor --version # optional
+</code></pre>
+<hr />
+<h2 id="2-clone-the-repository"><a class="header" href="#2-clone-the-repository">2. Clone the Repository</a></h2>
+<pre><code class="language-bash">git clone https://github.com/FuzzingLabs/sol-azy
+cd sol-azy
+</code></pre>
+<hr />
+<h2 id="3-build-the-tool"><a class="header" href="#3-build-the-tool">3. Build the Tool</a></h2>
+<pre><code class="language-bash">cargo build --release
+</code></pre>
+<p>The binary will be available at:</p>
+<pre><code class="language-bash">./target/release/sol-azy
+</code></pre>
+<p>You can also run Sol-azy in development using:</p>
+<pre><code class="language-bash">cargo run -- &lt;command&gt; [options]
+</code></pre>
+<hr />
+<h2 id="4-install-mdbook-optional"><a class="header" href="#4-install-mdbook-optional">4. Install <code>mdBook</code> (optional)</a></h2>
+<p>To build or view the documentation locally:</p>
+<pre><code class="language-bash">cargo install mdbook
+mdbook serve docs
+</code></pre>
+<p>Then open <a href="http://localhost:3000">http://localhost:3000</a></p>
+<hr />
+<p>Certainly! Here's a &quot;Known Issues &amp; Troubleshooting&quot; section that addresses the <code>Cargo.lock</code> version mismatch and related errors when building Solana programs with Anchor:</p>
+<hr />
+<h2 id="known-issues--troubleshooting"><a class="header" href="#known-issues--troubleshooting">Known Issues &amp; Troubleshooting</a></h2>
+<h3 id="-cargolock-version-mismatch-error"><a class="header" href="#-cargolock-version-mismatch-error">⚠️ <code>Cargo.lock</code> Version Mismatch Error</a></h3>
+<p>When running the <code>build</code> command, you might encounter the following error:</p>
+<pre><code>error: failed to parse lock file at: ...
+Caused by: lock file version 4 requires -Znext-lockfile-bump
+</code></pre>
+<h4 id="root-cause"><a class="header" href="#root-cause">Root Cause</a></h4>
+<p>This issue arises due to a mismatch between the <code>Cargo.lock</code> file version and the Rust compiler version used by Solana's build tools. Specifically:</p>
+<ul>
+<li><code>Cargo.lock</code> version 4 is generated by newer versions of Cargo and requires <code>rustc</code> 1.78 or newer.</li>
+<li>However, Solana's <code>cargo-build-sbf</code> and <code>anchor build</code> commands may use an older <code>rustc</code> version (e.g., 1.75), leading to this incompatibility.</li>
+</ul>
+<p>This discrepancy occurs because Solana's build tools bundle their own Rust toolchain, which might not match the system's Rust version managed by <code>rustup</code>.</p>
+<h4 id="solutions"><a class="header" href="#solutions">Solutions</a></h4>
+<ol>
+<li>
+<p><strong>Update Solana CLI and Anchor</strong></p>
+<p>Ensure you're using compatible versions of Solana and Anchor that support the newer <code>Cargo.lock</code> format:</p>
+<pre><code class="language-bash"># Update Solana CLI to version 2.1.x or newer
+sh -c &quot;$(curl -sSfL https://release.anza.xyz/v2.1.0/install)&quot;
+# Update Anchor CLI
+cargo install --git https://github.com/coral-xyz/anchor avm --locked
+avm install latest
+avm use latest
+</code></pre>
+<p>These updates align the toolchains with the expected <code>Cargo.lock</code> version and Rust compiler requirements.</p>
+</li>
+<li>
+<p><strong>Manually Downgrade <code>Cargo.lock</code> Version (Temporary Workaround)</strong></p>
+<p>If updating is not feasible, you can temporarily modify the <code>Cargo.lock</code> file:</p>
+<ul>
+<li>
+<p>Open <code>Cargo.lock</code> in your project root.</p>
+</li>
+<li>
+<p>Change the version line from:</p>
+<pre><code class="language-toml">version = 4
+</code></pre>
+<p>to:</p>
+<pre><code class="language-toml">version = 3
+</code></pre>
+</li>
+</ul>
+<p><strong>Note:</strong> This is a temporary fix. Running <code>cargo update</code> or similar commands may regenerate the <code>Cargo.lock</code> file with version 4.</p>
+</li>
+<li>
+<p><strong>Ensure Consistent Rust Toolchain</strong></p>
+<p>Verify that the Rust version used by Solana's build tools matches the required version:</p>
+<pre><code class="language-bash"># Check Rust version used by Solana's cargo-build-sbf
+cargo-build-sbf --version
+</code></pre>
+<p>If the version is older than required, updating the Solana CLI as shown above should resolve the issue.</p>
+</li>
+</ol>
+<h4 id="additional-resources"><a class="header" href="#additional-resources">Additional Resources</a></h4>
+<ul>
+<li><a href="https://github.com/solana-foundation/anchor/issues/3392">Anchor Issue #3392</a></li>
+<li><a href="https://solana.stackexchange.com/questions/18620/lock-file-version-4-was-found-but-this-version-of-cargo-does-not-understand-t">Solana Stack Exchange Discussion</a></li>
+</ul>
+<p>By following these steps, you should be able to resolve the <code>Cargo.lock</code> version mismatch error and continue building your Solana programs successfully.</p>
+<hr />
+<h2 id="need-help"><a class="header" href="#need-help">Need Help?</a></h2>
+<p>If something doesn't work, check:</p>
+<ul>
+<li>Error messages in the CLI output</li>
+<li>That <code>cargo</code>, <code>solana</code>, or <code>anchor</code> are in your <code>PATH</code></li>
+<li>That the bytecode you are reversing is a valid <code>.so</code> file, for instance:</li>
+</ul>
+<pre><code class="language-sh">test_cases/base_sbf_addition_checker/bytecodes/addition_checker.so: ELF 64-bit LSB shared object, eBPF, version 1 (SYSV), dynamically linked, stripped
+test_cases/base_sbf_addition_checker/bytecodes/addition_checker_sbpf_solana.so: ELF 64-bit LSB shared object, eBPF, version 1 (SYSV), dynamically linked, not stripped
+</code></pre>
+<p>You can also open an issue or contact the maintainers.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cli-usage"><a class="header" href="#cli-usage">CLI Usage</a></h1>
+<p>Sol-azy provides a command-line interface (CLI) for interacting with Solana programs through various operations:</p>
+<ul>
+<li>Building programs</li>
+<li>Running static analysis</li>
+<li>Reversing compiled bytecode</li>
+<li>Modifying CFG .dot files</li>
+<li>Fetching deployed bytecode</li>
+<li>(Future) Fuzzing and testing support</li>
+</ul>
+<p>All commands are accessible via:</p>
+<pre><code class="language-bash">cargo run -- &lt;command&gt; [options]
+</code></pre>
+<hr />
+<h2 id="available-commands"><a class="header" href="#available-commands">Available Commands</a></h2>
+<h3 id="build"><a class="header" href="#build"><a href="cli/build.html"><code>build</code></a></a></h3>
+<p>Compiles a Solana project using either Anchor or the native SBF toolchain.</p>
+<pre><code class="language-bash">cargo run -- build --target-dir ./my_project --out-dir ./out/
+</code></pre>
+<hr />
+<h3 id="sast"><a class="header" href="#sast"><a href="cli/sast.html"><code>sast</code></a></a></h3>
+<p>Runs static analysis using Starlark-based rules on the project's source code.</p>
+<pre><code class="language-bash">cargo run -- sast --target-dir ./my_project --rules-dir ./rules/ --syn-scan-only
+</code></pre>
+<hr />
+<h3 id="reverse"><a class="header" href="#reverse"><a href="cli/reverse.html"><code>reverse</code></a></a></h3>
+<p>Performs disassembly, control flow graph (CFG) generation, and immediate value extraction on compiled <code>.so</code> files.</p>
+<pre><code class="language-bash">cargo run -- reverse --mode both --out-dir ./out --bytecodes-file ./program.so --labeling
+</code></pre>
+<hr />
+<h3 id="dotting"><a class="header" href="#dotting"><a href="../reverse/dotting.html"><code>dotting</code></a></a></h3>
+<p>Allows you to edit a reduced control flow graph (<code>.dot</code>) by selectively re-inserting functions from the full graph.
+This is especially useful when working with large binaries where the full CFG is too dense.</p>
+<pre><code class="language-bash">cargo run -- dotting \
+  -c temp_config.json \
+  -r cfg_reduced.dot \
+  -f cfg.dot
+</code></pre>
+<hr />
+<h3 id="fetcher"><a class="header" href="#fetcher"><a href="../reverse/fetcher.html"><code>fetcher</code></a></a></h3>
+<p>Fetches an on-chain deployed Solana program’s bytecode (<code>.so</code>) using its program ID.
+Useful when you want to analyze a program without having its local source or compiled artifact.</p>
+<pre><code class="language-bash">cargo run -- fetcher \
+  --program-id 4MEX8vDCZzAxQkuyd6onJCTeFdof6c1HJgznEtCGqA1N \
+  --out-dir ./bytecodes/
+</code></pre>
+<p>Optional RPC override:</p>
+<pre><code class="language-bash">cargo run -- fetcher \
+  -p 4MEX8vDCZzAxQkuyd6onJCTeFdof6c1HJgznEtCGqA1N \
+  -o ./bytecodes/ \
+  -r https://api.mainnet-beta.solana.com
+</code></pre>
+<hr />
+<h3 id="test-to-do"><a class="header" href="#test-to-do"><code>test</code> <em>(TO DO)</em></a></h3>
+<hr />
+<h3 id="fuzz-to-do"><a class="header" href="#fuzz-to-do"><code>fuzz</code> <em>(TO DO)</em></a></h3>
+<hr />
+<h2 id="quickstart"><a class="header" href="#quickstart">Quickstart</a></h2>
+<p>To get started with Sol-azy:</p>
+<ol>
+<li><a href="installation.html">Install prerequisites</a></li>
+<li><a href="cli/build.html">Build your project</a></li>
+<li><a href="cli/sast.html">Run static analysis</a></li>
+<li><a href="cli/reverse.html">Reverse engineer the bytecode</a></li>
+</ol>
+<hr />
+<h2 id="related"><a class="header" href="#related">Related</a></h2>
+<ul>
+<li><a href="../architecture/app_state.html">Architecture Overview</a></li>
+<li><a href="../rules/format.html">Writing Custom Rules</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="build-command"><a class="header" href="#build-command"><code>build</code> Command</a></h1>
+<p>The <code>build</code> command compiles Solana programs located in a given target directory.<br />
+It supports both <a href="https://www.anchor-lang.com/">Anchor</a> projects and native SBF (Solana BPF) programs.</p>
+<hr />
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<pre><code class="language-bash">cargo run -- build --target-dir ./examples/my_project --out-dir ./out/
+</code></pre>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>--target-dir</code>: Path to the Solana project root.</li>
+<li><code>--out-dir</code>: Path where build outputs should be saved.</li>
+</ul>
+<hr />
+<h2 id="behavior"><a class="header" href="#behavior">Behavior</a></h2>
+<p>Sol-azy automatically detects the project type based on its contents:</p>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Detection Criteria</th></tr></thead><tbody>
+<tr><td>Anchor</td><td>Presence of <code>Anchor.toml</code></td></tr>
+<tr><td>Native SBF</td><td><code>Cargo.toml</code> includes <code>solana-program</code></td></tr>
+</tbody></table>
+</div>
+<p>Depending on the project type, it runs one of:</p>
+<ul>
+<li><code>anchor build --skip-lint</code> (for Anchor)</li>
+<li><code>cargo build-sbf</code> (for SBF)</li>
+</ul>
+<p>Before building, the tool runs a series of <strong>pre-checks</strong>:</p>
+<ul>
+<li>Verifies that <code>cargo</code> and/or <code>anchor</code> is installed</li>
+<li>Checks if the output directory exists or creates it</li>
+<li>Validates the project directory structure</li>
+</ul>
+<hr />
+<h2 id="output"><a class="header" href="#output">Output</a></h2>
+<p>By default, the output directory will contain:</p>
+<ul>
+<li>Compiled <code>.so</code> file(s) in subdirectories defined by the framework</li>
+<li>Any additional files generated by the Solana toolchain</li>
+</ul>
+<hr />
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<pre><code class="language-bash">cargo run -- build \
+  --target-dir test_cases/base_sbf_addition_checker \
+  --out-dir test_cases/base_sbf_addition_checker/out
+</code></pre>
+<p>This builds a native Solana SBF program and saves the output in <code>./out</code>.</p>
+<hr />
+<h2 id="related-1"><a class="header" href="#related-1">Related</a></h2>
+<ul>
+<li><a href="cli/./reverse.html">Reverse</a> — You can use the compiled <code>.so</code> as input for disassembly</li>
+<li><a href="cli/./sast.html">SAST</a> — Optional static analysis can run on source before or after build</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sast-command"><a class="header" href="#sast-command"><code>sast</code> Command</a></h1>
+<p>The <code>sast</code> command performs <strong>Static Application Security Testing</strong> on Solana projects using a custom rule engine.<br />
+It parses the Rust source code, builds an AST, and applies <strong>Starlark-based rules</strong> to detect potential vulnerabilities or design patterns.</p>
+<hr />
+<h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
+<pre><code class="language-bash">cargo run -- sast \
+  --target-dir ./my_project \
+  --rules-dir ./rules/ \
+  --syn-scan-only
+</code></pre>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>--target-dir</code>: Path to the root of the Solana project.</li>
+<li><code>--rules-dir</code>: Directory containing <code>.star</code> rule files.</li>
+<li><code>--syn-scan-only</code>: If true, only perform syntactic scanning (no build required).</li>
+</ul>
+<hr />
+<h2 id="how-it-works"><a class="header" href="#how-it-works">How It Works</a></h2>
+<p>The SAST engine:</p>
+<ol>
+<li><strong>Parses all <code>.rs</code> files</strong> under the target project (Anchor or native SBF)</li>
+<li><strong>Builds a <code>syn</code> AST</strong> enriched with source spans</li>
+<li><strong>Loads all <code>.star</code> rule files</strong> from the provided rules directory</li>
+<li>Applies the rules and collects any matches (vulnerabilities, code smells, patterns)</li>
+</ol>
+<p>Rules are written in <a href="https://github.com/bazelbuild/starlark">Starlark</a>, making them:</p>
+<ul>
+<li>Secure</li>
+<li>Sandboxable</li>
+<li>Easy to reason about</li>
+</ul>
+<hr />
+<h2 id="rule-file-example"><a class="header" href="#rule-file-example">Rule File Example</a></h2>
+<pre><code class="language-python">load(&quot;syn_ast.star&quot;, &quot;syn_ast&quot;)
+
+RULE_METADATA = struct(
+    name = &quot;DangerousPanicUsage&quot;,
+    author = &quot;FuzzingLabs&quot;,
+    version = &quot;0.1&quot;,
+    severity = &quot;High&quot;,
+    certainty = &quot;High&quot;,
+    description = &quot;Detects usage of `panic!` in logic paths&quot;,
+)
+
+def syn_ast_rule(ast):
+    return [node for node in ast if node[&quot;ident&quot;] == &quot;panic&quot;]
+</code></pre>
+<hr />
+<h2 id="output-1"><a class="header" href="#output-1">Output</a></h2>
+<p>Sol-azy prints results in a terminal table or as JSON.</p>
+<ul>
+<li>Rule metadata</li>
+<li>File names</li>
+<li>Matches and associated spans (if available)</li>
+</ul>
+<hr />
+<h2 id="example-1"><a class="header" href="#example-1">Example</a></h2>
+<pre><code class="language-bash">cargo run -- sast \
+  --target-dir test_cases/base_anchor/programs/base_anchor \
+  --rules-dir ./rules/ \
+  --syn-scan-only
+</code></pre>
+<hr />
+<h2 id="related-2"><a class="header" href="#related-2">Related</a></h2>
+<ul>
+<li><a href="cli/../rules/format.html">Rule Format</a></li>
+<li><a href="cli/../rules/example.html">Use case example</a></li>
+<li><a href="cli/../architecture/sast_engine.html">SAST Engine Architecture</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="fetcher-1"><a class="header" href="#fetcher-1">Fetcher</a></h1>
+<p>The <code>fetcher</code> command allows you to retrieve the deployed bytecode of a Solana program and save it locally as <code>fetched_program.so</code>.</p>
+<p>This is useful for performing offline analysis, reverse engineering, or static checks without relying on local source code or Solana toolchain.</p>
+<h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
+<pre><code class="language-sh">cargo run -- fetcher \
+  --program-id &lt;PROGRAM_ID&gt; \
+  --out-dir &lt;OUTPUT_DIR&gt; \
+  [--rpc-url &lt;CUSTOM_RPC_ENDPOINT&gt;]
+</code></pre>
+<ul>
+<li><code>--program-id</code>: The Solana program ID to fetch.</li>
+<li><code>--out-dir</code>: Directory where the bytecode file will be saved (as <code>fetched_program.so</code>).</li>
+<li><code>--rpc-url</code>: (Optional) Custom Solana RPC endpoint. Defaults to <code>https://api.mainnet-beta.solana.com</code>.</li>
+</ul>
+<h2 id="behavior-1"><a class="header" href="#behavior-1">Behavior</a></h2>
+<ul>
+<li>Checks if the output directory exists (if not it creates the folder).</li>
+<li>Validates the program exists on-chain and is executable.</li>
+<li>Writes the bytecode to the specified directory.</li>
+<li>Logs the output file path &amp; the RPC used, including when default is applied.</li>
+</ul>
+<h2 id="example-2"><a class="header" href="#example-2">Example</a></h2>
+<pre><code class="language-sh">cargo run -- fetcher \
+  --program-id srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX \
+  --out-dir ./out
+</code></pre>
+<p>This will fetch the bytecode of the program and save it to <code>./out/fetched_program.so</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="reverse-command"><a class="header" href="#reverse-command"><code>reverse</code> Command</a></h1>
+<p>The <code>reverse</code> command performs static reverse engineering on compiled Solana eBPF bytecode (<code>.so</code> files).<br />
+It supports disassembly, control flow graph (CFG) generation, and immediate data inspection.</p>
+<hr />
+<h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
+<pre><code class="language-bash">cargo run -- reverse \
+  --mode both \
+  --out-dir ./out/ \
+  --bytecodes-file ./bytecodes/program.so \
+  --labeling \
+  --reduced \
+  --only-entrypoint
+</code></pre>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li>
+<p><code>--mode</code>: Output mode. One of:</p>
+<ul>
+<li><code>disass</code>: Disassemble the bytecode</li>
+<li><code>cfg</code>: Export control flow graph</li>
+<li><code>both</code>: Disassemble and export CFG</li>
+</ul>
+</li>
+<li>
+<p><code>--out-dir</code>: Output directory for result files.</p>
+</li>
+<li>
+<p><code>--bytecodes-file</code>: Path to the compiled <code>.so</code> file.</p>
+</li>
+<li>
+<p><code>--labeling</code>: Enables use of symbol and section labels when available.</p>
+</li>
+<li>
+<p><code>--reduced</code>: <em>(Optional)</em> Excludes functions defined before the entrypoint (often library or startup code).</p>
+</li>
+<li>
+<p><code>--only-entrypoint</code>: <em>(Optional)</em> Only generates the CFG for the entrypoint function, allowing custom extension via dotting.</p>
+</li>
+</ul>
+<hr />
+<h2 id="modes"><a class="header" href="#modes">Modes</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Mode</th><th>Description</th><th>Output Files</th></tr></thead><tbody>
+<tr><td><code>disass</code></td><td>Disassembles bytecode and extracts immediates</td><td><code>disassembly.out</code>, <code>immediate_data_table.out</code></td></tr>
+<tr><td><code>cfg</code></td><td>Builds a <code>.dot</code> graph from instruction flow</td><td><code>cfg.dot</code></td></tr>
+<tr><td><code>both</code></td><td>Performs both operations</td><td>All of the above</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="output-files"><a class="header" href="#output-files">Output Files</a></h2>
+<p>Depending on the selected mode and options, the following files may be generated in <code>--out-dir</code>:</p>
+<ul>
+<li><code>disassembly.out</code>: Human-readable disassembly of eBPF instructions</li>
+<li><code>immediate_data_table.out</code>: Table of <code>.rodata</code> strings and constants</li>
+<li><code>cfg.dot</code>: Full control flow graph</li>
+</ul>
+<p>You can visualize <code>.dot</code> files using tools like:</p>
+<pre><code class="language-bash">dot -Tpng cfg.dot -o cfg.png
+xdot cfg.dot
+</code></pre>
+<blockquote>
+<p>⚠️ For very large programs, even the <code>--reduced</code> version of the CFG can take significant time to generate due to the size and complexity of the bytecode being analyzed and rendered by <code>dot</code>.</p>
+</blockquote>
+<hr />
+<h2 id="example-3"><a class="header" href="#example-3">Example</a></h2>
+<pre><code class="language-bash">cargo run -- reverse \
+  --mode both \
+  --out-dir test_cases/base_sbf_addition_checker/out1/ \
+  --bytecodes-file test_cases/base_sbf_addition_checker/bytecodes/addition_checker.so \
+  --labeling \
+  --reduced
+</code></pre>
+<p>This command will disassemble the program and generate reduced CFG.</p>
+<hr />
+<h2 id="advanced-use-case"><a class="header" href="#advanced-use-case">Advanced Use Case</a></h2>
+<p>If using <code>--only-entrypoint</code>, Sol-azy will generate a minimal CFG with only the entrypoint's subgraph.
+You can later extend this graph manually using <a href="cli/../reverse/dotting.html"><code>dotting</code></a> with a JSON list of function clusters to add.</p>
+<hr />
+<h2 id="related-3"><a class="header" href="#related-3">Related</a></h2>
+<ul>
+<li><a href="cli/../reverse/disassembly.html">Disassembly details</a></li>
+<li><a href="cli/../reverse/cfg.html">Control Flow Graph</a></li>
+<li><a href="cli/../reverse/immediates.html">Immediate Tracking</a></li>
+<li><a href="cli/../reverse/dotting.html">Dotting (manual CFG editing)</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="static-analysis"><a class="header" href="#static-analysis">Static Analysis</a></h1>
+<p>Sol-azy includes a flexible static analysis engine designed to scan Solana Rust source code for programs vulnerabilities, code smells, or user-defined patterns.</p>
+<p>This engine leverages the <code>Starlark</code> language to express detection logic in <code>.star</code> files, and operates directly on the parsed Rust Abstract Syntax Tree (AST).</p>
+<hr />
+<h2 id="key-concepts"><a class="header" href="#key-concepts">Key Concepts</a></h2>
+<ul>
+<li><strong>AST-Based</strong>: Operates purely on the Rust syntax tree using the [<code>syn</code>] crate — no type inference or semantic resolution is performed. <em>(We're working on a future MIR...)</em></li>
+<li><strong>Declarative Rules</strong>: Users write <code>.star</code> scripts to describe what they want to detect.</li>
+<li><strong>Safe &amp; Sandboxed</strong>: Rules are evaluated inside a restricted Starlark runtime.</li>
+</ul>
+<hr />
+<h2 id="rule-engine-capabilities"><a class="header" href="#rule-engine-capabilities">Rule Engine Capabilities</a></h2>
+<p>The rule engine gives you access to:</p>
+<ul>
+<li>Node inspection (e.g. calls, structs, attributes, visibility)</li>
+<li>Parent-child relationships in AST</li>
+<li>Span and file location tracking</li>
+<li>Metadata enrichment (severity, certainty, etc.)</li>
+<li>JSON-compatible output for integration</li>
+</ul>
+<hr />
+<h2 id="use-cases"><a class="header" href="#use-cases">Use Cases</a></h2>
+<ul>
+<li>Anchor account declaration validation</li>
+<li>Detection of unsafe CPI (Cross Program Invocation)</li>
+<li>Missing signer or owner checks</li>
+<li>Misuse of <code>invoke_signed</code> or unchecked sysvars</li>
+<li>Custom security checks during CI</li>
+</ul>
+<hr />
+<h2 id="related-pages"><a class="header" href="#related-pages">Related Pages</a></h2>
+<ul>
+<li>📘 <a href="rules/format.html">How to write Rules</a></li>
+<li>✅ <a href="rules/example.html">Use case example</a> </li>
+</ul>
+<h2 id="note"><a class="header" href="#note">Note</a></h2>
+<p>The sast engineering core in Sol-azy is based on the excellent open-source project<br />
+<a href="https://github.com/Auditware/radar"><code>radar</code></a> by <a href="https://github.com/Auditware">Auditware)</a>.</p>
+<p>We've been heavily inspired by their approach and wanted a standalone binary capable of it.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rule-format"><a class="header" href="#rule-format">Rule Format</a></h1>
+<p>Sol-azy allows developers and auditors to write custom <strong>static analysis rules</strong> using the <a href="https://github.com/bazelbuild/starlark">Starlark language</a> — a Python-like configuration language used by projects like <a href="https://bazel.build/rules/language">Bazel</a> and <a href="https://github.com/facebook/buck2">Buck/Buck2</a> (<a href="https://buck2.build/docs/developers/starlark/environment/">Buck2 docs</a>).</p>
+<p>These rules are evaluated against the <strong>Rust AST</strong> (Abstract Syntax Tree) of a Solana program, enabling precise pattern matching to detect vulnerabilities or code smells.</p>
+<h2 id="rule-file-structure"><a class="header" href="#rule-file-structure">Rule File Structure</a></h2>
+<p>A valid rule file is a <code>.star</code> script containing two main parts:</p>
+<ol>
+<li><strong><code>RULE_METADATA</code></strong> — a dictionary with basic info</li>
+<li><strong><code>syn_ast_rule(root)</code></strong> — the entrypoint function, called on each parsed file</li>
+</ol>
+<pre><code class="language-python">RULE_METADATA = {
+    &quot;version&quot;: &quot;0.1.0&quot;,
+    &quot;author&quot;: &quot;your-name&quot;,
+    &quot;name&quot;: &quot;Rule Name&quot;,
+    &quot;severity&quot;: &quot;Low&quot; | &quot;Medium&quot; | &quot;High&quot; | &quot;Critical&quot;,
+    &quot;certainty&quot;: &quot;Low&quot; | &quot;Medium&quot; | &quot;High&quot;,
+    &quot;description&quot;: &quot;What the rule checks for&quot;
+}
+</code></pre>
+<h2 id="example-rule-arbitrary-cpi"><a class="header" href="#example-rule-arbitrary-cpi">Example Rule: Arbitrary CPI</a></h2>
+<pre><code class="language-python">RULE_METADATA = {
+    &quot;version&quot;: &quot;0.1.0&quot;,
+    &quot;author&quot;: &quot;forefy&quot;,
+    &quot;name&quot;: &quot;Arbitrary Cross-Program Invocation&quot;,
+    &quot;severity&quot;: &quot;Medium&quot;,
+    &quot;certainty&quot;: &quot;Medium&quot;,
+    &quot;description&quot;: &quot;Detects CPIs made to arbitrary or unchecked program IDs.&quot;
+}
+
+def syn_ast_rule(root: dict) -&gt; list[dict]:
+    matches = []
+    raw_nodes = syn_ast.find_raw_nodes(root)
+    for sink in raw_nodes:
+        if template_manager.is_matching_template_by_key(sink, &quot;CALL_FN_SOLANAPROGRAM_PROGRAM_INVOKE&quot;) and not template_manager.is_matching_template_by_key(sink, &quot;CHECK_SPLTOKEN_ID_CTX_ACCOUNT_AUTHORITY_KEY&quot;):
+            matches.append(syn_ast.to_result(sink))
+    return matches
+</code></pre>
+<h2 id="execution-flow"><a class="header" href="#execution-flow">Execution Flow</a></h2>
+<p>When Sol-azy runs a rule:</p>
+<ol>
+<li>It parses the source code into an AST</li>
+<li>Converts it to JSON</li>
+<li>Passes it as the <code>root</code> parameter to <code>syn_ast_rule</code></li>
+<li>The rule inspects the tree using helper functions (typically, here the <code>syn_ast.find_raw_nodes()</code> here is used to gather each function independently)</li>
+<li>Any result added to <code>matches</code> is reported</li>
+</ol>
+<h2 id="helper-libraries"><a class="header" href="#helper-libraries">Helper Libraries</a></h2>
+<p>Sol-azy ships with built-in Sol-azy helpers (written in Starlark):</p>
+<pre><code>src/static/starlark_libs/
+├── syn_ast.star            # AST navigation utilities
+└── template_manager.star   # Match against common templates
+</code></pre>
+<p>These can be imported and used in any rule. Examples:</p>
+<pre><code class="language-python">raw_nodes = syn_ast.find_raw_nodes(root)
+template_manager.is_matching_template_by_key(node, &quot;CHECK_INSTRUCTION_DISCRIMINATOR&quot;)
+</code></pre>
+<blockquote>
+<p>📌 <strong>Note:</strong> The <code>template_manager</code> logic enables reusable pattern detection (documented in <a href="rules/templates.html">Templates</a>).</p>
+</blockquote>
+<h2 id="writing-new-rules"><a class="header" href="#writing-new-rules">Writing New Rules</a></h2>
+<p>To create a new rule:</p>
+<ol>
+<li>Create a <code>.star</code> file in your rules directory</li>
+<li>Define <code>RULE_METADATA</code> and <code>syn_ast_rule(...)</code></li>
+<li>Use <code>cargo run -- sast ...</code> to apply the rule</li>
+</ol>
+<h2 id="documentation"><a class="header" href="#documentation">Documentation</a></h2>
+<ul>
+<li><a href="https://github.com/bazelbuild/starlark">Starlark language reference (GitHub)</a></li>
+<li><a href="https://github.com/bazelbuild/starlark/blob/master/spec.md">Starlark spec &amp; built-ins</a></li>
+<li><a href="https://bazel.build/rules/language">Starlark in Bazel (docs)</a></li>
+<li><a href="https://buck2.build/docs/developers/starlark/environment/">Starkark in Buck2 (docs)</a></li>
+</ul>
+<h2 id="related-4"><a class="header" href="#related-4">Related</a></h2>
+<ul>
+<li><a href="rules/example.html">Use case example</a></li>
+<li><a href="rules/templates.html">Writing Templates</a></li>
+<li><a href="rules/../cli/sast.html">Running Static Analysis</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="what-are-templates"><a class="header" href="#what-are-templates">What Are Templates?</a></h1>
+<p>Templates in Sol-azy are reusable pattern matchers designed to identify <strong>specific AST fragments</strong> in Rust source code.
+They allow users to describe <strong>common logic constructs</strong> in a simple, declarative way, and can be used as building blocks in Starlark rules or during static pattern matching.</p>
+<p>They are especially useful when:</p>
+<ul>
+<li>A pattern appears frequently (e.g., <code>ctx.accounts.authority.is_signer</code>)</li>
+<li>You want to simplify rule definitions by abstracting repetitive AST shapes</li>
+</ul>
+<h2 id="template-anatomy"><a class="header" href="#template-anatomy">Template Anatomy</a></h2>
+<p>Each template includes:</p>
+<ul>
+<li>A <code>pattern</code>: describing a shape to find in the AST, using simplified <code>idents</code> (Rust path segments)</li>
+<li>A <code>priority_rule</code>: used to guide traversal and maintain node order consistency</li>
+</ul>
+<h3 id="example-template"><a class="header" href="#example-template">Example Template</a></h3>
+<pre><code class="language-python">TEMPLATES[&quot;CHECK_CTX_ACCOUNT_AUTHORITY_KEY_TOKEN_OWNER&quot;] = {
+    &quot;pattern&quot;: {
+        &quot;cond&quot;: {
+            &quot;binary&quot;: {
+                &quot;left&quot;: {&quot;idents&quot;: [&quot;ctx&quot;, &quot;accounts&quot;, &quot;authority&quot;, &quot;key&quot;]},
+                &quot;op&quot;: &quot;!=&quot;,
+                &quot;right&quot;: {&quot;idents&quot;: [&quot;token&quot;, &quot;owner&quot;]},
+            }
+        }
+    },
+    &quot;priority_rule&quot;: [&quot;left&quot;, &quot;op&quot;, &quot;right&quot;],
+}
+</code></pre>
+<p>This matches AST code like:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>if ctx.accounts.authority.key != &amp;token.owner
+<span class="boring">}</span></code></pre></pre>
+<p>Each template defines a <strong>shallow structural pattern</strong> over <strong>AST nodes of maximum depth 3</strong>.</p>
+<blockquote>
+<p>For now, a maximum depth of 3 levels in AST node matching has proven sufficient, but deeper recursive pattern support could be added in the future if needed, directly within the <code>template_manager.star</code> logic</p>
+</blockquote>
+<h2 id="fields-used"><a class="header" href="#fields-used">Fields Used</a></h2>
+<h3 id="idents"><a class="header" href="#idents"><code>idents</code></a></h3>
+<p>Lists of identifier segments (e.g., <code>[&quot;ctx&quot;, &quot;accounts&quot;, &quot;authority&quot;, &quot;key&quot;]</code>) that are matched <strong>in order</strong>, exactly.</p>
+<h3 id="method"><a class="header" href="#method"><code>method</code></a></h3>
+<p>Optional field for method calls like <code>.key()</code>.</p>
+<h3 id="op"><a class="header" href="#op"><code>op</code></a></h3>
+<p>Operator such as <code>&quot;==&quot;</code> or <code>&quot;!=&quot;</code>.</p>
+<h3 id="macro-call-unary-binary-field"><a class="header" href="#macro-call-unary-binary-field"><code>macro</code>, <code>call</code>, <code>unary</code>, <code>binary</code>, <code>field</code></a></h3>
+<p>These correspond to the Rust AST node types (extracted from <code>syn</code>) that can be matched.</p>
+<h2 id="priority_rule"><a class="header" href="#priority_rule"><code>priority_rule</code></a></h2>
+<p>The <code>priority_rule</code> defines the traversal order of keys inside a pattern node.
+It ensures that, during linearization of the AST, the relevant fields are matched in the correct order, especially in constructs like:</p>
+<pre><code class="language-python">&quot;priority_rule&quot;: [&quot;left&quot;, &quot;op&quot;, &quot;right&quot;]
+</code></pre>
+<p>This guarantees consistent matching across pattern instances.</p>
+<h2 id="wildcard-support"><a class="header" href="#wildcard-support">Wildcard Support</a></h2>
+<p>You can use a wildcard <code>*</code> in the <code>idents</code> list to match <strong>any one identifier</strong>.
+For example:</p>
+<pre><code class="language-python">&quot;idents&quot;: [&quot;ctx&quot;, &quot;accounts&quot;, &quot;*&quot;]
+</code></pre>
+<p>...matches any field under <code>ctx.accounts</code>, such as <code>ctx.accounts.user_a</code>.</p>
+<h2 id="dynamic-template-creation"><a class="header" href="#dynamic-template-creation">Dynamic Template Creation</a></h2>
+<p>For convenience, you can add generator for classical templates programmatically, this one is an example:</p>
+<pre><code class="language-python">def generate_call_fn_template(*idents):
+    return {
+        &quot;pattern&quot;: {
+            &quot;call&quot;: {
+                &quot;args&quot;: &quot;&quot;,  # ignored for now
+                &quot;func&quot;: {&quot;idents&quot;: idents},
+            }
+        },
+        &quot;priority_rule&quot;: [&quot;func&quot;, &quot;args&quot;],
+    }
+</code></pre>
+<p>This allows you to match function calls like:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>solana_program::program::invoke(...)
+<span class="boring">}</span></code></pre></pre>
+<p>and by using the dynamic generation with <code>generate_call_fn_template(&quot;solana_program&quot;, &quot;program&quot;, &quot;invoke&quot;)</code>, you don't have to manually write a full template.</p>
+<h2 id="template-testing"><a class="header" href="#template-testing">Template Testing</a></h2>
+<p>The folder <code>test_starlark_condition_template/</code> contains a <code>test.py</code> script that acts as a an example place for templates.</p>
+<p>It defines AST snippets and verifies that each pattern matches correctly:</p>
+<pre><code class="language-python">    # if
+    assert is_matching_template_by_key(AST, &quot;CHECK_CTX_ACCOUNT_AUTHORITY_KEY_TOKEN_OWNER&quot;)
+    assert is_matching_template_by_key(AST2, &quot;CHECK_SPLTOKEN_ID_CTX_ACCOUNT_AUTHORITY_KEY&quot;)
+    assert is_matching_template_by_key(AST3, &quot;CHECK_NOT_CTX_ACCOUNTS_AUTHORITY_ISSIGNER&quot;)
+    assert is_matching_template_by_key(AST4, &quot;CHECK_CTX_ACCOUNTS_WILDCARD_KEY_EQ&quot;)
+
+    # require
+    assert is_matching_template_by_key(AST5, &quot;REQUIRE_CTX_ACCOUNTS_RENT_KEY_SYSVAR_RENT_ID&quot;)
+
+    # called function
+    assert is_matching_template_by_key(AST2, &quot;CALL_FN_SOLANAPROGRAM_PROGRAM_INVOKE&quot;)
+
+    # dynamic template
+    assert is_matching_template(AST2, generate_call_fn_template(&quot;solana_program&quot;, &quot;program&quot;, &quot;invoke&quot;))
+</code></pre>
+<h2 id="summary-of-supported-pattern-types-already-implemented-can-easily-be-extended"><a class="header" href="#summary-of-supported-pattern-types-already-implemented-can-easily-be-extended">Summary of supported pattern types already implemented (can easily be extended)</a></h2>
+<p>Templates can express:</p>
+<ul>
+<li><strong>Binary comparisons</strong> (<code>==</code>, <code>!=</code>)</li>
+<li><strong>Unary operations</strong> (<code>!some_flag</code>)</li>
+<li><strong>Field access</strong> (<code>ctx.accounts.x.is_signer</code>)</li>
+<li><strong>Macro calls</strong> (<code>require_eq!(...)</code>)</li>
+<li><strong>Method calls</strong> (<code>ctx.accounts.user_a.key()</code>)</li>
+<li><strong>Function calls</strong> (example: <code>solana_program::program::invoke(...)</code>)</li>
+</ul>
+<p>They support wildcards like <code>&quot;*&quot;</code> to generalize over certain path segments.</p>
+<h2 id="usage-in-rules"><a class="header" href="#usage-in-rules">Usage in Rules</a></h2>
+<p>Templates are often used within <code>.star</code> files like this:</p>
+<pre><code class="language-python">if template_manager.is_matching_template_by_key(node, &quot;CHECK_CTX_ACCOUNT_AUTHORITY_KEY_TOKEN_OWNER&quot;):
+    continue # continue the loop over all nodes, the check is there, so it's probably not vuln
+</code></pre>
+<p>This allows auditors or developers to write rules that check for high-level semantic conditions without diving into low-level AST fields every time.</p>
+<h2 id="advantages"><a class="header" href="#advantages">Advantages</a></h2>
+<ul>
+<li>🔁 Reusability: templates can be applied across multiple rules</li>
+<li>🔍 Precision: match deeply nested expressions in structured order</li>
+<li>🔧 Extensibility: you can write custom templates without editing core logic</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="example-4"><a class="header" href="#example-4">Example</a></h1>
+<h2 id="-use-case-arbitrary-cpi-detection-with-templates"><a class="header" href="#-use-case-arbitrary-cpi-detection-with-templates">🔍 Use Case: Arbitrary CPI Detection with Templates</a></h2>
+<p>Consider the following Rust function:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn cpi_insecure(ctx: Context&lt;Cpi&gt;, amount: u64) -&gt; ProgramResult {
+    solana_program::program::invoke(
+        &amp;spl_token::instruction::transfer(
+            ctx.accounts.token_program.key,
+            ctx.accounts.source.key,
+            ctx.accounts.destination.key,
+            ctx.accounts.authority.key,
+            &amp;[],
+            amount,
+        )?,
+        &amp;[
+            ctx.accounts.source.clone(),
+            ctx.accounts.destination.clone(),
+            ctx.accounts.authority.clone(),
+        ],
+    )
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This function performs a <strong>Cross-Program Invocation (CPI)</strong> without validating that <code>ctx.accounts.token_program.key</code> matches the expected program (i.e., <code>spl_token::ID</code>). This is exactly the kind of vulnerability we want to detect using a template like this:</p>
+<pre><code class="language-python">TEMPLATES[&quot;CALL_FN_SOLANAPROGRAM_PROGRAM_INVOKE&quot;] = {
+    &quot;pattern&quot;: {
+        &quot;call&quot;: {
+            &quot;args&quot;: &quot;&quot;,
+            &quot;func&quot;: {&quot;idents&quot;: [&quot;solana_program&quot;, &quot;program&quot;, &quot;invoke&quot;]},
+        }
+    },
+    &quot;priority_rule&quot;: [&quot;func&quot;, &quot;args&quot;],
+}
+</code></pre>
+<h2 id="what-the-template-does"><a class="header" href="#what-the-template-does">What the Template Does</a></h2>
+<p>This template matches any call to <code>solana_program::program::invoke(...)</code>, regardless of its arguments.
+It uses the <code>idents</code> field to match the identifier path in the AST and <code>priority_rule</code> to specify the matching order.</p>
+<h2 id="detection"><a class="header" href="#detection">Detection</a></h2>
+<p>So the full vulnerable code is:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use anchor_lang::prelude::*;
+use anchor_lang::solana_program;
+
+declare_id!(&quot;Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS&quot;);
+
+pub mod arbitrary_cpi_secure2 {
+    use super::*;
+    pub fn cpi_secure2(ctx: Context&lt;Cpi&gt;, amount: u64) -&gt; ProgramResult {
+        if &amp;spl_token::ID != ctx.accounts.token_program.key {
+            return Err(ProgramError::IncorrectProgramId);
+        }
+        solana_program::program::invoke(
+            &amp;spl_token::instruction::transfer(
+                ctx.accounts.token_program.key,
+                ctx.accounts.source.key,
+                ctx.accounts.destination.key,
+                ctx.accounts.authority.key,
+                &amp;[],
+                amount,
+            )?,
+            &amp;[
+                ctx.accounts.source.clone(),
+                ctx.accounts.destination.clone(),
+                ctx.accounts.authority.clone(),
+            ],
+        )
+    }
+
+    pub fn cpi_insecure2(ctx: Context&lt;Cpi&gt;, amount: u64) -&gt; ProgramResult {
+        solana_program::program::invoke(
+            &amp;spl_token::instruction::transfer(
+                ctx.accounts.token_program.key,
+                ctx.accounts.source.key,
+                ctx.accounts.destination.key,
+                ctx.accounts.authority.key,
+                &amp;[],
+                amount,
+            )?,
+            &amp;[
+                ctx.accounts.source.clone(),
+                ctx.accounts.destination.clone(),
+                ctx.accounts.authority.clone(),
+            ],
+        )
+    }
+}
+
+#[program]
+pub mod arbitrary_cpi_secure {
+    use super::*;
+
+    pub fn cpi_secure(ctx: Context&lt;Cpi&gt;, amount: u64) -&gt; ProgramResult {
+        if &amp;spl_token::ID != ctx.accounts.token_program.key {
+            return Err(ProgramError::IncorrectProgramId);
+        }
+        solana_program::program::invoke(
+            &amp;spl_token::instruction::transfer(
+                ctx.accounts.token_program.key,
+                ctx.accounts.source.key,
+                ctx.accounts.destination.key,
+                ctx.accounts.authority.key,
+                &amp;[],
+                amount,
+            )?,
+            &amp;[
+                ctx.accounts.source.clone(),
+                ctx.accounts.destination.clone(),
+                ctx.accounts.authority.clone(),
+            ],
+        )
+    }
+
+    pub fn cpi_insecure(ctx: Context&lt;Cpi&gt;, amount: u64) -&gt; ProgramResult {
+        solana_program::program::invoke(
+            &amp;spl_token::instruction::transfer(
+                ctx.accounts.token_program.key,
+                ctx.accounts.source.key,
+                ctx.accounts.destination.key,
+                ctx.accounts.authority.key,
+                &amp;[],
+                amount,
+            )?,
+            &amp;[
+                ctx.accounts.source.clone(),
+                ctx.accounts.destination.clone(),
+                ctx.accounts.authority.clone(),
+            ],
+        )
+    }
+}
+
+#[derive(Accounts)]
+pub struct Cpi&lt;'info&gt; {
+    source: AccountInfo&lt;'info&gt;,
+    destination: AccountInfo&lt;'info&gt;,
+    authority: AccountInfo&lt;'info&gt;,
+    token_program: AccountInfo&lt;'info&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>When we run:</p>
+<pre><code class="language-bash">cargo run --release -- \
+  sast \
+  --target-dir ../SolanaPlayground/sealevel-attacks/ \
+  --rules-dir rules/syn_ast
+</code></pre>
+<p><img src="rules/../images/sast_result_abr_cpi_example.png" alt="alt text" /></p>
+<p>Sol-azy successfully detects <strong>three instances</strong> of the vulnerability, reported as:</p>
+<pre><code class="language-text">../SolanaPlayground/sealevel-attacks//programs/5-arbitrary-cpi/secure/src/lib.rs:73:11
+../SolanaPlayground/sealevel-attacks//programs/5-arbitrary-cpi/secure/src/lib.rs:29:11
+../SolanaPlayground/sealevel-attacks//programs/5-arbitrary-cpi/insecure/src/lib.rs:10:11
+</code></pre>
+<p>Two are found in the <code>secure/</code> module (the source code provided above), and one in the <code>insecure/</code> module, which defines the same logic in a separate file with 1 vulnerable function.</p>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<p>Thanks to this template-based pattern matcher, <strong>Sol-azy</strong> is able to:</p>
+<ul>
+<li>Statistically identify unvalidated CPI targets,</li>
+<li>Highlight affected source locations with precision,</li>
+<li>Save analysts from manually combing through source code.</li>
+</ul>
+<blockquote>
+<p>💡 <em>Tip:</em> You can dynamically create templates like this using <code>generate_call_fn_template(...)</code> to reduce duplication. For instance:</p>
+<pre><code class="language-python">is_matching_template(AST, generate_call_fn_template(&quot;solana_program&quot;, &quot;program&quot;, &quot;invoke&quot;))
+</code></pre>
+<p>This matches the same call pattern with minimal boilerplate.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="starlark-libraries-references"><a class="header" href="#starlark-libraries-references">Starlark Libraries References</a></h1>
+<h2 id="ast-node-structure"><a class="header" href="#ast-node-structure">AST Node Structure</a></h2>
+<p>An AST node represents a single element in the Abstract Syntax Tree with a standardized structure. Each node contains: a
+<code>raw_node</code> with the original AST data, an <code>access_path</code> string representing the node's location in the tree, <code>metadata</code>
+for additional information like position and mutability flags, <code>children</code> and <code>parent</code> references for tree navigation,
+<code>ident</code> for the node's identifier, and optional fields like <code>args</code> for function arguments and <code>root</code> to indicate if it's
+a root node. This consistent structure facilitates tree traversal and pattern matching operations throughout the
+codebase.</p>
+<pre><code class="language-python">{
+    &quot;raw_node&quot;: {},   # Original AST data from parser
+    &quot;access_path&quot;: &quot;&quot;,# Path string showing location in tree (e.g. &quot;root.expr.binary.left&quot;)
+    &quot;metadata&quot;: {},   # Additional data like position and mutability flags
+    &quot;children&quot;: [],   # List of child nodes
+    &quot;parent&quot;: {},     # Reference to parent node
+    &quot;root&quot;: False,    # Boolean indicating if this is a root node
+    &quot;args&quot;: [],       # Function arguments (if applicable)
+    &quot;ident&quot;: &quot;&quot;       # Node identifier/name
+}
+</code></pre>
+<h2 id="syn-ast-utilities"><a class="header" href="#syn-ast-utilities">Syn AST Utilities</a></h2>
+<p>The Syn AST utilities module provides functions for working with Rust's syntactic ASTs, particularly for security
+analysis. </p>
+<h3 id="core-components"><a class="header" href="#core-components">Core Components</a></h3>
+<h4 id="constants"><a class="header" href="#constants">Constants</a></h4>
+<ul>
+<li><code>EMPTY_ACCESS_PATH</code>, <code>EMPTY_IDENT</code>, <code>EMPTY_METADATA</code>, <code>EMPTY_NODE</code>: Default values for empty nodes</li>
+</ul>
+<h4 id="node-management"><a class="header" href="#node-management">Node Management</a></h4>
+<ul>
+<li><code>new_ast_node(syn_ast_node, metadata, access_path)</code>: Creates a new AST node</li>
+<li><code>ast_node_add_child(node, child)</code>: Adds a child to an AST node</li>
+<li><code>ast_node_add_children(node, children)</code>: Adds multiple children to an AST node</li>
+<li><code>to_result(node)</code>: Converts a node to a result format</li>
+<li><code>filter_result(result)</code>: Filters duplicate results</li>
+</ul>
+<h4 id="tree-traversal"><a class="header" href="#tree-traversal">Tree Traversal</a></h4>
+<ul>
+<li><code>traverse_tree(node, collector)</code>: Traverses a tree with a collector function</li>
+<li><code>flatten_tree(root)</code>: Flattens a tree into a list of nodes</li>
+<li><code>first(nodes)</code>: Returns the first node from a list</li>
+</ul>
+<h4 id="node-finding-functions"><a class="header" href="#node-finding-functions">Node Finding Functions</a></h4>
+<ul>
+<li><code>find_by_child(self, child_ident)</code>: Finds nodes by child identifier</li>
+<li><code>find_chained_calls(self, *idents)</code>: Finds chained method calls</li>
+<li><code>find_macro_attribute_by_names(self, *idents)</code>: Finds macro attributes by name</li>
+<li><code>find_by_similar_access_path(self, access_path, stop_keyword)</code>: Finds nodes with similar access paths</li>
+<li><code>find_comparisons(self, ident1, ident2)</code>: Finds comparisons between two identifiers</li>
+<li><code>find_comparison_to_any(self, ident)</code>: Finds comparisons involving a specific identifier</li>
+<li><code>find_functions_by_names(self, *function_names)</code>: Finds functions by name</li>
+<li><code>find_by_names(self, *idents)</code>: Finds nodes by identifier names</li>
+<li><code>find_method_calls(self, caller, method)</code>: Finds method calls on a specific caller</li>
+<li><code>find_assignments(self, ident, value_ident)</code>: Finds assignment operations</li>
+<li><code>find_mutables(self)</code>: Finds mutable variables</li>
+<li><code>find_account_typed_nodes(self, ident)</code>: Finds account-typed nodes</li>
+<li><code>find_member_accesses(self, ident)</code>: Finds member accesses for a specific identifier</li>
+</ul>
+<h4 id="ast-preparation"><a class="header" href="#ast-preparation">AST Preparation</a></h4>
+<ul>
+<li><code>find_ident_src_node(sub_data, sub_access_path, metadata)</code>: Finds identifier source nodes</li>
+<li><code>find_fn_names(node)</code>: Extracts function names from an AST</li>
+<li><code>find_raw_nodes_by_fn_names(node, func_names)</code>: Finds raw nodes by function names</li>
+<li><code>find_raw_nodes(ast)</code>: Finds all raw nodes in an AST</li>
+<li><code>prepare_syn_ast(ast, access_path, parent)</code>: Prepares a Syn AST for analysis</li>
+<li><code>prepare_ast(ast)</code>: Main function to prepare an AST for analysis</li>
+</ul>
+<h3 id="usage-examples"><a class="header" href="#usage-examples">Usage Examples</a></h3>
+<p>For finding specific code patterns:</p>
+<pre><code class="language-python"></code></pre>
+<p>This documentation provides an overview of the functionality available in these Starlark libraries, which are designed
+for security analysis of Solana programs by detecting specific code patterns in their AST representations.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="reverse-engineering"><a class="header" href="#reverse-engineering">Reverse Engineering</a></h1>
+<p>Sol-azy provides a reverse engineering module tailored for Solana programs compiled to eBPF.<br />
+It allows you to <strong>disassemble</strong> <code>.so</code> binaries, <strong>extract control flow</strong>, and <strong>track embedded immediate data</strong>.</p>
+<p>This tooling is especially useful for:</p>
+<ul>
+<li>Security researchers auditing deployed programs</li>
+<li>Developers understanding bytecode behavior</li>
+<li>Anyone comparing compiled output to source logic</li>
+</ul>
+<hr />
+<h2 id="features"><a class="header" href="#features">Features</a></h2>
+<ul>
+<li><strong>Disassembler</strong>: Converts raw bytecode into human-readable SBPF instructions + Rust-like comparisons</li>
+<li><strong>Control Flow Graph</strong>: Generates <code>.dot</code> files representing program structure</li>
+<li><strong>Immediate Tracker</strong>: Resolves strings or data loaded from <code>.rodata</code></li>
+</ul>
+<p>Each of these features is accessible through the <a href="../cli/reverse.html"><code>reverse</code></a> CLI command.</p>
+<hr />
+<h2 id="input"><a class="header" href="#input">Input</a></h2>
+<p>The reverse engine operates on compiled <strong>Solana <code>.so</code> files</strong>, typically generated by:</p>
+<pre><code class="language-bash">anchor build
+# or
+cargo build-sbf
+</code></pre>
+<p>You pass the <code>.so</code> file using <code>--bytecodes-file</code>.</p>
+<hr />
+<h2 id="output-2"><a class="header" href="#output-2">Output</a></h2>
+<p>Depending on the selected mode, Sol-azy produces one or more of the following:</p>
+<div class="table-wrapper"><table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>disassembly.out</code></td><td>Instruction-by-instruction disassembly</td></tr>
+<tr><td><code>immediate_data_table.out</code></td><td>Extracted strings or data from RODATA</td></tr>
+<tr><td><code>cfg.dot</code></td><td>Control flow graph (Graphviz-compatible)</td></tr>
+</tbody></table>
+</div>
+<p>You can visualize <code>cfg.dot</code> with:</p>
+<pre><code class="language-bash">dot -Tpng cfg.dot -o cfg.png
+</code></pre>
+<hr />
+<h2 id="subsections"><a class="header" href="#subsections">Subsections</a></h2>
+<p>To dive deeper into how reverse analysis works in Sol-azy:</p>
+<ul>
+<li><a href="./reverse/disassembly.html">Disassembly</a></li>
+<li><a href="./reverse/cfg.html">Control Flow Graph</a></li>
+<li><a href="./reverse/immediates.html">Immediate Tracking</a></li>
+</ul>
+<hr />
+<h2 id="usage-example"><a class="header" href="#usage-example">Usage Example</a></h2>
+<pre><code class="language-bash">cargo run -- reverse \
+  --mode both \
+  --out-dir ./out/ \
+  --bytecodes-file ./bytecodes/program.so \
+  --labeling
+</code></pre>
+<hr />
+<h2 id="compatibility"><a class="header" href="#compatibility">Compatibility</a></h2>
+<ul>
+<li>Supports <code>.so</code> files compiled using Solana's official toolchain</li>
+<li>Compatible with both Anchor and native SBF programs</li>
+<li>Works on programs targeting <code>solana_rbpf</code> / <code>solana_sbpf</code></li>
+</ul>
+<hr />
+<h2 id="note-1"><a class="header" href="#note-1">Note</a></h2>
+<p>The reverse engineering core in Sol-azy is based on the excellent open-source project<br />
+<a href="https://github.com/anza-xyz/sbpf"><code>sbpf-solana</code></a> by <a href="https://github.com/anza-xyz">Anza (anza-xyz)</a>.</p>
+<p>We have modified and extended its disassembly and control flow analysis logic to better fit Sol-azy’s needs,
+especially for static audits, immediate tracking, and custom export formats.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="reverse-overview"><a class="header" href="#reverse-overview">Reverse Overview</a></h1>
+<p>This section explains how Sol-azy performs static reverse engineering on Solana programs compiled to SBF.</p>
+<p>The reverse module combines disassembly, control flow analysis, and memory inspection, using a customized static analysis engine adapted from <a href="https://github.com/anza-xyz/sbpf-solana"><code>sbpf-solana</code></a>.</p>
+<hr />
+<h2 id="how-it-works-1"><a class="header" href="#how-it-works-1">How It Works</a></h2>
+<ol>
+<li>
+<p><strong>ELF Parsing</strong></p>
+<p>Sol-azy loads the <code>.so</code> bytecode using Solana’s <code>Executable</code> abstraction (from <code>solana_rbpf</code>), which parses the ELF and loads its segments (e.g., <code>.text</code>, <code>.rodata</code>).</p>
+</li>
+<li>
+<p><strong>Instruction Analysis</strong></p>
+<p>Using the <code>Analysis</code> struct from <code>sbpf-solana</code>, the tool walks through all valid instruction addresses, building:</p>
+<ul>
+<li>A disassembled instruction list</li>
+<li>Basic block boundaries</li>
+<li>Cross-references and destination mappings</li>
+</ul>
+</li>
+<li>
+<p><strong>Immediate Tracking</strong></p>
+<p>When <code>LD_DW_IMM</code> instructions reference <code>MM_RODATA</code>, Sol-azy tries to:</p>
+<ul>
+<li>Interpret the referenced memory slice</li>
+<li>Associate it with a <code>MOV64_IMM</code> or <code>MOV32_IMM</code> defining its length</li>
+<li>Format the result as a printable string (e.g., <code>b&quot;hello world&quot;</code>)</li>
+</ul>
+</li>
+<li>
+<p><strong>Graph Generation</strong></p>
+<p>For control flow graphs, each basic block becomes a node in a <code>.dot</code> file, with edges linking jumps, calls, and returns.</p>
+</li>
+</ol>
+<hr />
+<h2 id="internal-components"><a class="header" href="#internal-components">Internal Components</a></h2>
+<ul>
+<li><a href="reverse/./immediates.html"><code>ImmediateTracker</code></a>: Tracks memory ranges referenced by LD_DW_IMM</li>
+<li><a href="reverse/./cfg.html#strings-from-rodata"><code>get_string_repr</code></a>: Converts slices from <code>.rodata</code> into readable strings</li>
+<li><a href="reverse/./cfg.html#overview"><code>export_cfg_to_dot</code></a>: Emits Graphviz-compatible control flow graphs</li>
+<li><a href="reverse/./immediates.html#behind-the-scenes"><code>disassemble_wrapper</code></a>: Main entrypoint for disassembly + data extraction</li>
+</ul>
+<hr />
+<h2 id="reverseoutputmode"><a class="header" href="#reverseoutputmode">ReverseOutputMode</a></h2>
+<p>The CLI dispatches different logic depending on this enum:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ReverseOutputMode {
+    Disassembly(String),
+    ControlFlowGraph(String),
+    DisassemblyAndCFG(String),
+}
+<span class="boring">}</span></code></pre></pre>
+<hr />
+<h2 id="example-workflow-recap"><a class="header" href="#example-workflow-recap">Example Workflow (Recap)</a></h2>
+<pre><code class="language-bash">cargo run -- reverse \
+  --mode both \
+  --out-dir ./out/ \
+  --bytecodes-file ./bytecodes/program.so \
+  --labeling
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="disassembly"><a class="header" href="#disassembly">Disassembly</a></h1>
+<p>Sol-azy statically disassembles compiled Solana eBPF programs into a readable, instruction-by-instruction view.<br />
+This view is enhanced with <strong>immediate data decoding</strong>, especially for strings loaded from <code>.rodata</code>.</p>
+<hr />
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>The disassembly engine in Sol-azy builds upon <code>sbpf-solana</code>'s instruction decoder.<br />
+It adds layers of audit-focused context by:</p>
+<ul>
+<li>Labeling basic blocks (e.g., <code>lbb_42</code>)</li>
+<li>Resolving immediate values from <code>.rodata</code></li>
+<li>Emitting annotated output into <code>disassembly.out</code></li>
+<li>Adding Rust-like comparison for better understanding</li>
+</ul>
+<hr />
+<h2 id="example-5"><a class="header" href="#example-5">Example</a></h2>
+<p>Here’s a disassembly snippet produced by Sol-azy:</p>
+<pre><code>entrypoint:
+    mov64 r2, r1                                    r2 = r1
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -96                                   r1 += -96   ///  r1 = r1.wrapping_add(-96 as i32 as i64 as u64)
+    call function_308                       
+    ldxdw r7, [r10-0x48]                    
+    ldxdw r8, [r10-0x58]                    
+    ldxdw r1, [r10-0x38]                    
+    mov64 r2, 8                                     r2 = 8 as i32 as i64 as u64
+    jgt r2, r1, lbb_91                              if r2 &gt; r1 { pc += 79 }
+    ldxdw r1, [r10-0x40]                    
+    ldxw r2, [r1+0x0]                       
+    stxw [r10-0xa8], r2                     
+    ldxw r1, [r1+0x4]                       
+    stxw [r10-0xa4], r1                     
+    mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
+    stxdw [r10-0x40], r1                    
+    lddw r1, 0x100004610 --&gt; b&quot;\x00\x00\x00\x00\xd0C\x00\x00\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…        r1 load str located at 4294985232
+    stxdw [r10-0x60], r1                    
+    mov64 r1, 2                                     r1 = 2 as i32 as i64 as u64
+    stxdw [r10-0x58], r1                    
+    stxdw [r10-0x48], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -136                                  r1 += -136   ///  r1 = r1.wrapping_add(-136 as i32 as i64 as u64)
+    stxdw [r10-0x50], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -164                                  r1 += -164   ///  r1 = r1.wrapping_add(-164 as i32 as i64 as u64)
+    stxdw [r10-0x78], r1                    
+    lddw r1, 0x100004210 --&gt; b&quot;\xbf#\x00\x00\x00\x00\x00\x00a\x11\x00\x00\x00\x00\x00\x00\xb7\x02\x00\x0…        r1 load str located at 4294984208
+    stxdw [r10-0x70], r1                    
+    stxdw [r10-0x80], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -168                                  r1 += -168   ///  r1 = r1.wrapping_add(-168 as i32 as i64 as u64)
+    stxdw [r10-0x88], r1                    
+    mov64 r1, r10                                   r1 = r10
+    add64 r1, -160                                  r1 += -160   ///  r1 = r1.wrapping_add(-160 as i32 as i64 as u64)
+    mov64 r2, r10                                   r2 = r10
+    add64 r2, -96                                   r2 += -96   ///  r2 = r2.wrapping_add(-96 as i32 as i64 as u64)
+    call function_858                       
+    ldxdw r1, [r10-0xa0]                    
+    ldxdw r2, [r10-0x90]                    
+    syscall [invalid]                       
+    ldxw r1, [r10-0xa8]                     
+    ldxw r2, [r10-0xa4]                     
+    add64 r2, r1                                    r2 += r1   ///  r2 = r2.wrapping_add(r1)
+    lsh64 r2, 32                                    r2 &lt;&lt;= 32   ///  r2 = r2.wrapping_shl(32)
+    rsh64 r2, 32                                    r2 &gt;&gt;= 32   ///  r2 = r2.wrapping_shr(32)
+    jne r2, 1337, lbb_58                            if r2 != (1337 as i32 as i64 as u64) { pc += 6 }
+    lddw r1, 0x1000043e0 --&gt; b&quot;You win!&quot;            r1 load str located at 4294984672
+    mov64 r2, 8                                     r2 = 8 as i32 as i64 as u64
+    syscall [invalid]                       
+    mov64 r1, 987654321                             r1 = 987654321 as i32 as i64 as u64
+    ja lbb_63                                       if true { pc += 5 }
+lbb_58:
+    lddw r1, 0x1000043e8 --&gt; b&quot;You lose!&quot;           r1 load str located at 4294984680
+    mov64 r2, 9                                     r2 = 9 as i32 as i64 as u64
+    syscall [invalid]                       
+    mov64 r1, 123456789                             r1 = 123456789 as i32 as i64 as u64
+</code></pre>
+<hr />
+<h2 id="annotating-immediate-loads"><a class="header" href="#annotating-immediate-loads">Annotating Immediate Loads</a></h2>
+<p>Instructions like:</p>
+<pre><code class="language-text">lddw   r1, 0x1000043e0
+</code></pre>
+<p>point into <code>.rodata</code>. Sol-azy:</p>
+<ol>
+<li>Checks if <code>imm &gt;= MM_RODATA_START</code></li>
+<li>Extracts the corresponding bytes from the <code>.so</code></li>
+<li>Uses the next <code>MOV64_IMM</code> (here, <code>mov64 r2, 8</code>) to determine the length</li>
+<li>Displays a byte string: <code>b&quot;You win!&quot;</code></li>
+</ol>
+<p>This process is handled by:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn update_string_resolution(program: &amp;[u8], insn: &amp;Insn, next_insn_wrapped: Option&lt;&amp;Insn&gt;, register_tracker: &amp;mut RegisterTracker) -&gt; String
+<span class="boring">}</span></code></pre></pre>
+<blockquote>
+<p>Support for sBPF v2+: Address Construction via <code>mov32</code> + <code>hor64</code>
+In sBPF version 2 and above, the use of <code>lddw</code> for loading 64-bit constants is forbidden. Instead, addresses are <strong>manually constructed</strong> using:</p>
+<pre><code class="language-text">mov32  r1, 0x3000         ; load lower 32 bits
+hor64  r1, 0x10000000     ; set upper 32 bits → r1 = 0x1000000000003000
+</code></pre>
+<p>Sol-azy handles this by:</p>
+<ol>
+<li><strong>Tracking register values</strong> using a <code>RegisterTracker</code></li>
+<li><strong>Do an &quot;emulation&quot;</strong> of <code>mov</code> and <code>hor64</code></li>
+<li><strong>Resolving loads like</strong> <code>ldxdw r2, [dst + off]</code> where <code>dst + off</code> points into <code>.rodata</code></li>
+<li><strong>Extracting and decoding the pointed memory</strong>, same as for <code>lddw</code></li>
+</ol>
+<p>This lets the disassembler annotate pointer-based loads even when addresses are assembled dynamically.</p>
+</blockquote>
+<hr />
+<h2 id="visualization"><a class="header" href="#visualization">Visualization</a></h2>
+<p>Here is an example of a control flow graph with disassembly and immediate data decoded:</p>
+<p><img src="reverse/../images/reverse_cfg_example.png" alt="Disassembly with .rodata decoded" /></p>
+<ul>
+<li>Arrows represent jumps or branches</li>
+<li>Blocks show disassembled instructions</li>
+<li><code>--&gt; b&quot;...string...&quot;</code> indicates <code>.rodata</code> interpretation</li>
+</ul>
+<hr />
+<h2 id="output-files-1"><a class="header" href="#output-files-1">Output Files</a></h2>
+<p>When running:</p>
+<pre><code class="language-bash">cargo run -- reverse --mode disass --out-dir ./out --bytecodes-file ./program.so
+</code></pre>
+<p>You get:</p>
+<div class="table-wrapper"><table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>disassembly.out</code></td><td>Main instruction listing with annotations</td></tr>
+<tr><td><code>immediate_data_table.out</code></td><td>All tracked immediate memory ranges</td></tr>
+</tbody></table>
+</div>
+<p>Example from <code>immediate_data_table.out</code>:</p>
+<pre><code>0x1000043e0 (+ 0x43e0): b&quot;You win!&quot;
+0x1000043e8 (+ 0x43e8): b&quot;You lose!&quot;
+</code></pre>
+<hr />
+<h2 id="tips"><a class="header" href="#tips">Tips</a></h2>
+<ul>
+<li>Enable <code>--labeling</code> to auto-gen labels.</li>
+<li>Use <code>mode = both</code> to get disassembly + CFG together.</li>
+</ul>
+<hr />
+<h2 id="related-5"><a class="header" href="#related-5">Related</a></h2>
+<ul>
+<li><a href="reverse/immediates.html">Immediate Tracking</a></li>
+<li><a href="reverse/cfg.html">Control Flow Graph</a></li>
+<li><a href="reverse/../cli/reverse.html">Reverse CLI Command</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="immediate-data-tracking"><a class="header" href="#immediate-data-tracking">Immediate Data Tracking</a></h1>
+<p>Sol-azy performs tracking of immediate values loaded from <code>.rodata</code> via <code>LD_DW_IMM</code> instructions.<br />
+This feature is crucial to recover strings, error messages, and embedded constants that are otherwise opaque in the bytecode.</p>
+<hr />
+<h2 id="how-it-works-2"><a class="header" href="#how-it-works-2">How it works</a></h2>
+<p>Solana eBPF programs often use this pattern to load a constant string:</p>
+<pre><code class="language-text">lddw   r1, 0x1000043e8
+mov64  r2, 9
+</code></pre>
+<ul>
+<li>The <code>lddw</code> instruction loads an offset in <code>.rodata</code></li>
+<li>The <code>mov64</code> gives a length (usually in bytes)</li>
+<li>Sol-azy uses these two to extract a slice of memory and decode it</li>
+</ul>
+<p>If the memory region looks printable (ASCII-compatible), it is rendered as a string like:</p>
+<pre><code class="language-text">b&quot;You lose!&quot;
+</code></pre>
+<p>Otherwise, a hex-escaped byte string is emitted.</p>
+<hr />
+<h2 id="output-file-immediate_data_tableout"><a class="header" href="#output-file-immediate_data_tableout">Output File: <code>immediate_data_table.out</code></a></h2>
+<p>This file lists all detected <code>.rodata</code> ranges accessed via <code>LD_DW_IMM</code>, whether or not they were also used in disassembly.</p>
+<h3 id="format"><a class="header" href="#format">Format</a></h3>
+<p>Each line contains:</p>
+<pre><code class="language-text">&lt;absolute_address&gt; (+ &lt;relative_offset&gt;): &lt;decoded_bytes&gt;
+</code></pre>
+<p>Example:</p>
+<pre><code>0x1000043e0 (+ 0x43e0): b&quot;You win!&quot;
+0x1000043e8 (+ 0x43e8): b&quot;You lose!&quot;
+0x100004434 (+ 0x434): b&quot;Not enough data. Need two u32 values.src/entrypoint.rs&quot;
+</code></pre>
+<blockquote>
+<p>The <code>relative_offset</code> is computed relative to <code>MM_RODATA_START</code>, and is used to index into the ELF's <code>.rodata</code> section.</p>
+</blockquote>
+<hr />
+<h2 id="visual-reference"><a class="header" href="#visual-reference">Visual Reference</a></h2>
+<p>Here's a screenshot of a real <code>immediate_data_table.out</code> file generated from a test case:</p>
+<p><img src="reverse/../images/reverse_immediate_data_example.png" alt="Immediate Data Table Output" /></p>
+<p>We can see:</p>
+<ul>
+<li>Success and failure strings: <code>&quot;You win!&quot;</code>, <code>&quot;You lose!&quot;</code></li>
+<li>Panic messages</li>
+<li>Rust format strings</li>
+<li>Even full numeric patterns (e.g. <code>&quot;00010203...&quot;</code>)</li>
+</ul>
+<hr />
+<h2 id="behind-the-scenes"><a class="header" href="#behind-the-scenes">Behind the scenes</a></h2>
+<p>The logic is handled by this function:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn disassemble_wrapper(
+    program: &amp;[u8],
+    analysis: &amp;mut Analysis,
+    imm_tracker_wrapped: Option&lt;&amp;mut ImmediateTracker&gt;,
+    path: P,
+)
+<span class="boring">}</span></code></pre></pre>
+<p>Each <code>LD_DW_IMM</code> is analyzed, and its value is registered using:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>imm_tracker.register_offset(insn.imm as usize);
+<span class="boring">}</span></code></pre></pre>
+<p>Then, for each tracked range:</p>
+<ul>
+<li>The <code>program</code> is sliced using offset logic</li>
+<li>The result is passed to:</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn format_bytes(slice: &amp;[u8]) -&gt; String
+<span class="boring">}</span></code></pre></pre>
+<p>which escapes non-printables and prints ASCII as-is.</p>
+<h3 id="ld_dw_imm-key-instructions-and-address-keys"><a class="header" href="#ld_dw_imm-key-instructions-and-address-keys">LD_DW_IMM: Key Instructions and Address Keys</a></h3>
+<p>The tracking system is triggered <strong>exclusively</strong> by <code>LD_DW_IMM</code> instructions, which are used to load 64-bit constants.<br />
+When such an instruction loads an address greater than or equal to <code>MM_RODATA_START</code>, Sol-azy considers it a <code>.rodata</code> access.</p>
+<p>These addresses become the <strong>keys</strong> of the <code>immediate_data_table.out</code> output.</p>
+<p>Example:</p>
+<pre><code class="language-text">lddw   r1, 0x1000043e0   ; ← This address becomes a key
+mov64  r2, 8             ; ← Length hint
+</code></pre>
+<p>This results in:</p>
+<pre><code>0x1000043e0 (+ 0x43e0): b&quot;You win!&quot;
+</code></pre>
+<h3 id="range-truncation-avoiding-overlaps"><a class="header" href="#range-truncation-avoiding-overlaps">Range Truncation: Avoiding Overlaps</a></h3>
+<p>In programs with many <code>LD_DW_IMM</code>, multiple memory regions may point into the same <code>.rodata</code> segment.<br />
+To avoid overlap between two string regions, Sol-azy performs a <strong>forward truncation</strong>:</p>
+<ul>
+<li>It registers each <code>LD_DW_IMM</code> address (<code>new_start</code>)</li>
+<li>It finds the <strong>next closest start</strong> already known</li>
+<li>It truncates any overlapping previous entry so that no two extracted ranges overlap</li>
+</ul>
+<p>This ensures that the memory region allocated for one string or constant <strong>does not accidentally contain bytes meant for another</strong>.</p>
+<blockquote>
+<p>⚠️ <strong>Important Note on Partial Overlaps</strong></p>
+</blockquote>
+<p>The truncation mechanism ensures that two tracked <code>.rodata</code> regions do not overlap, but this <strong>does not imply</strong> that only the non-overlapping portion of earlier data is relevant.</p>
+<p>For example:</p>
+<ul>
+<li>A <code>lddw</code> at <code>0x1</code> loads 4 bytes of useful data.</li>
+<li>Later, a <code>lddw</code> at <code>0x3</code> uses only the high bits (e.g., last 2 bytes).</li>
+</ul>
+<p>Even if these regions partially overlap in memory, the system still treats <code>0x1</code> as a distinct valid address for its own usage.</p>
+<p>This means:</p>
+<ul>
+<li>The data at <code>0x1</code> is still considered to start at <code>0x1</code>.</li>
+<li>The data at <code>0x3</code> is separately tracked, even if it falls inside a previously registered range.</li>
+</ul>
+<p>The truncation is <strong>only used to split visible ranges in the output</strong>, not to reinterpret or cut off the semantics of earlier loads.</p>
+<h3 id="example-6"><a class="header" href="#example-6">Example</a></h3>
+<p>Suppose:</p>
+<pre><code class="language-text">lddw r1, 0x1000043e0      ; key #1
+lddw r2, 0x1000043e8      ; key #2, appears later in bytecode
+</code></pre>
+<p>Even if the length for key #1 is unclear (or too long), Sol-azy will <strong>truncate its range</strong> to stop at <code>0x1000043e8</code>.</p>
+<p>This avoids having <code>&quot;You win!&quot; + &quot;You lose!&quot;</code> accidentally merged into one blob, since both of them will be used independently by separate <code>LD_DW_IMM</code> instructions.</p>
+<hr />
+<h2 id="internal-implementation"><a class="header" href="#internal-implementation">Internal Implementation</a></h2>
+<p>The tracking structure is a <code>BTreeMap&lt;usize, usize&gt;</code>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct ImmediateTracker {
+    ranges: BTreeMap&lt;usize, usize&gt;, // start =&gt; end
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Each <code>register_offset(new_start)</code> will:</p>
+<ul>
+<li>Locate the next start value already in <code>ranges</code></li>
+<li>Set <code>new_end = next_start</code></li>
+<li>Truncate any existing range that would overlap with <code>new_start</code></li>
+</ul>
+<p>This is enforced even if the memory contents could technically overlap — correctness is prioritized.</p>
+<hr />
+<h2 id="when-this-matters"><a class="header" href="#when-this-matters">When this matters</a></h2>
+<p>This tracking is especially useful when:</p>
+<ul>
+<li>The program includes panic messages</li>
+<li>You want to recover hardcoded strings (e.g. <code>&quot;owner mismatch&quot;</code>)</li>
+<li>You're analyzing solana_program syscalls with string-based I/O</li>
+<li>You want to reverse undocumented or obfuscated logic</li>
+</ul>
+<hr />
+<h2 id="tips-1"><a class="header" href="#tips-1">Tips</a></h2>
+<ul>
+<li>Use <code>--mode disass</code> or <code>--mode both</code> to enable this feature</li>
+<li>If a string appears truncated, check the corresponding <code>mov64</code> for its length</li>
+<li>If no <code>mov64</code> follows a <code>lddw</code>, the default read length is ~50 bytes for the CFG rendering</li>
+</ul>
+<hr />
+<h2 id="related-6"><a class="header" href="#related-6">Related</a></h2>
+<ul>
+<li><a href="reverse/disassembly.html">Disassembly</a></li>
+<li><a href="reverse/cfg.html">Control Flow Graph</a></li>
+<li><a href="reverse/../cli/reverse.html">Reverse CLI Command</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="control-flow-graph-cfg"><a class="header" href="#control-flow-graph-cfg">Control Flow Graph (CFG)</a></h1>
+<p>Sol-azy can extract a static control flow graph (CFG) from a compiled Solana eBPF program.<br />
+The output is a Graphviz-compatible <code>.dot</code> file representing function-level control flow between basic blocks.</p>
+<p>This is useful for:</p>
+<ul>
+<li>Visualizing branching behavior</li>
+<li>Locating unreachable code</li>
+<li>Detecting loop structures</li>
+<li>Understanding high-level logic without source code</li>
+</ul>
+<hr />
+<h2 id="overview-1"><a class="header" href="#overview-1">Overview</a></h2>
+<p>The CFG is generated via:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn export_cfg_to_dot(
+    program: &amp;[u8],
+    analysis: &amp;mut Analysis,
+    path: impl AsRef&lt;Path&gt;,
+    reduced: bool,
+    only_entrypoint: bool,
+) -&gt; std::io::Result&lt;()&gt;
+<span class="boring">}</span></code></pre></pre>
+<p>Sol-azy uses the static <code>Analysis</code> engine to:</p>
+<ol>
+<li>Identify all <strong>functions</strong></li>
+<li>Segment them into <strong>basic blocks</strong></li>
+<li>Record all <strong>dominators</strong> and <strong>edges</strong></li>
+<li>Render each function as a <code>subgraph cluster</code> in Graphviz <code>.dot</code> syntax</li>
+</ol>
+<h3 id="filtering-the-graph"><a class="header" href="#filtering-the-graph">Filtering the graph</a></h3>
+<ul>
+<li><code>--reduced</code>: excludes library functions that appear before the program’s entrypoint, reducing noise.</li>
+<li><code>--only-entrypoint</code>: includes <strong>only</strong> the function where execution starts, allowing for very focused manual exploration (e.g., with <a href="reverse/dotting.html"><code>dotting</code></a>).</li>
+</ul>
+<hr />
+<h2 id="structure-of-the-graph"><a class="header" href="#structure-of-the-graph">Structure of the Graph</a></h2>
+<p>Each <strong>basic block</strong> is rendered as a node with label:</p>
+<pre><code>lbb_&lt;id&gt; [label=&lt;&lt;table&gt;...&lt;/table&gt;&gt;];
+</code></pre>
+<ul>
+<li>The instruction list is printed line-by-line</li>
+<li>If a string is found via <code>LD_DW_IMM</code> + <code>MOV64_IMM</code>, it’s appended with: <code>--&gt; b&quot;...&quot;</code></li>
+<li>Long strings are truncated</li>
+</ul>
+<h3 id="resolving-edges"><a class="header" href="#resolving-edges">Resolving Edges</a></h3>
+<p>Edges are derived from instruction flow and jump destinations:</p>
+<ul>
+<li><strong>Conditional jumps</strong> produce two outgoing edges</li>
+<li><strong>Unconditional jumps</strong> produce one</li>
+<li><strong>Return or syscall</strong> ends a block</li>
+<li><strong>Dominator relationships</strong> (parent-child) are shown with dotted arrows (<code>style=dotted; arrowhead=none</code>)</li>
+</ul>
+<p><strong>Detailed behavior:</strong> <br />
+Sol-azy draws edges based on:</p>
+<ul>
+<li><code>jne</code>, <code>jeq</code>, etc. → conditional edges</li>
+<li><code>ja</code> (jump always) → unconditional</li>
+<li><code>call</code>, <code>exit</code>, and <code>ret</code> → no outgoing edge</li>
+<li><code>dominator_parent</code> → rendered with:
+<pre><code class="language-dot">lbb_A -&gt; lbb_B [style=dotted; arrowhead=none];
+</code></pre>
+</li>
+</ul>
+<hr />
+<h2 id="example-dot-snippet"><a class="header" href="#example-dot-snippet">Example (DOT snippet)</a></h2>
+<p>Here’s a raw <code>.dot</code> snippet generated by Sol-azy:</p>
+<pre><code class="language-dot">lbb_58 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;
+  &lt;tr&gt;&lt;td align=&quot;left&quot;&gt;lddw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 0x1000043e8 --&amp;gt; b&quot;You lose!&quot;&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 9&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td align=&quot;left&quot;&gt;syscall&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[invalid]&lt;/td&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 123456789&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;&gt;];
+</code></pre>
+<p>Graphviz will render this as a block node with a 4-row table inside.</p>
+<hr />
+<h2 id="how-sol-azy-generates-it"><a class="header" href="#how-sol-azy-generates-it">How Sol-azy Generates It</a></h2>
+<p>CFG generation is implemented in:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn export_cfg_to_dot(
+    program: &amp;[u8],
+    analysis: &amp;mut Analysis,
+    path: impl AsRef&lt;Path&gt;,
+)
+<span class="boring">}</span></code></pre></pre>
+<p>It walks:</p>
+<ol>
+<li>The <code>analysis.functions</code> map</li>
+<li>Each function’s set of <code>cfg_nodes</code></li>
+<li>Each node’s instructions (via <code>analysis.instructions</code>)</li>
+<li>Control destinations (e.g., <code>jne</code>, <code>ja</code>, <code>call</code>)</li>
+<li>Dominator relationships (<code>cfg_node.dominator_parent</code>)</li>
+</ol>
+<p>The layout is rendered using Graphviz-style clusters:</p>
+<pre><code class="language-dot">subgraph cluster_42 {
+    label=&quot;function_name&quot;;
+    lbb_42 [ ... ];
+}
+</code></pre>
+<hr />
+<h2 id="strings-from-rodata"><a class="header" href="#strings-from-rodata">Strings from <code>.rodata</code></a></h2>
+<p>CFG generation is enhanced by the same string resolution logic used in disassembly:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn get_string_repr(
+    program: &amp;[u8],
+    insn: &amp;Insn,
+    next_insn: Option&lt;&amp;Insn&gt;
+) -&gt; String
+<span class="boring">}</span></code></pre></pre>
+<p>This makes string loads from <code>.rodata</code> visible directly in the graph, so when an instruction like::</p>
+<pre><code class="language-asm">lddw r1, 0x1000043e8
+</code></pre>
+<p>is followed by:</p>
+<pre><code class="language-asm">mov64 r2, 9
+</code></pre>
+<p>Sol-azy uses this to resolve:</p>
+<pre><code class="language-text">b&quot;You lose!&quot;
+</code></pre>
+<p>It is rendered like this:</p>
+<pre><code class="language-html">&lt;td align=&quot;left&quot;&gt;r1, 0x1000043e8 --&amp;gt; b&quot;You lose!&quot;&lt;/td&gt;
+</code></pre>
+<p>This makes constant decoding directly visible in the graph.</p>
+<hr />
+<h2 id="rendering-the-graph"><a class="header" href="#rendering-the-graph">Rendering the Graph</a></h2>
+<p>Once <code>cfg.dot</code> is generated, use:</p>
+<pre><code class="language-bash">dot -Tsvg cfg.dot -o cfg.svg
+xdot cfg.dot         # for interactive navigation
+</code></pre>
+<blockquote>
+<p>⚠️ For very large programs, even the <code>--reduced</code> version of the CFG can take significant time to generate due to the size and complexity of the bytecode being analyzed and rendered by <code>dot</code>.</p>
+</blockquote>
+<hr />
+<h2 id="function-grouping"><a class="header" href="#function-grouping">Function Grouping</a></h2>
+<p>Each function is placed into a <code>subgraph cluster</code> for clarity. This helps:</p>
+<ul>
+<li>Separate function-level CFGs</li>
+<li>Navigate large programs</li>
+<li>Find easily the main part</li>
+</ul>
+<p>Entrypoint Example:</p>
+<pre><code class="language-dot">subgraph cluster_3 {
+    label=&quot;entrypoint&quot;;
+    tooltip=lbb_3;
+    lbb_3 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -96&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_308&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_7 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r7, [r10-0x48]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r8, [r10-0x58]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x38]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 8&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jgt&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, r1, lbb_91&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_91 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;lddw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 0x1000043f4 --&amp;gt; b&amp;quot;Not enough data. Need two u32 values.&amp;quot;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 37&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;syscall&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[invalid]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0xc8], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -200&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_554&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_100 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r6, r0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jeq&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r7, 0, lbb_107&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_12 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x40]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r1+0x0]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0xa8], r2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r1+0x4]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0xa4], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x40], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;lddw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 0x100004610 --&amp;gt; b&amp;quot;\x00\x00\x00\x00\xd0C\x00\x00\x08\x00\x00\x…&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x60], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x58], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x48], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -136&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x50], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -164&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x78], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;lddw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 0x100004210 --&amp;gt; b&amp;quot;\xbf#\x00\x00\x00\x00\x00\x00a\x11\x00\x00\…&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x70], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x80], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -168&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x88], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -160&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, -96&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_858&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_43 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0xa0]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r10-0x90]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;syscall&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[invalid]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0xa8]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r10-0xa4]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;lsh64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 32&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;rsh64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 32&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jne&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 1337, lbb_58&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_58 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;lddw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 0x1000043e8 --&amp;gt; b&amp;quot;You lose!&amp;quot;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 9&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;syscall&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[invalid]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 123456789&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_52 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;lddw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 0x1000043e0 --&amp;gt; b&amp;quot;You win!&amp;quot;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 8&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;syscall&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[invalid]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 987654321&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ja&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;lbb_63&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_63 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x68], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;lddw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 0x100004630 --&amp;gt; b&amp;quot;\x00\x00\x00\x00\xd8C\x00\x00\x08\x00\x00\x…&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x60], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x58], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x48], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -160&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x50], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;lddw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 0x100004238 --&amp;gt; b&amp;quot;\xbf#\x00\x00\x00\x00\x00\x00y\x11\x00\x00\…&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x98], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -104&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0xa0], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r6, 0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x40], r6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -136&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, -96&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_858&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_86 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x88]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r10-0x78]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;syscall&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[invalid]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jeq&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r7, 0, lbb_107&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_90 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ja&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;lbb_102&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_102 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r8, 16&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ja&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;lbb_109&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_109 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r8+0x0]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r8-0x8]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r3, [r2+0x0]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r3, -1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r2+0x0], r3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jne&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r3, 0, lbb_118&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_115 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r3, [r2+0x8]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r3, -1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r2+0x8], r3&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_118 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r1+0x0]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, -1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r1+0x0], r2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jne&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 0, lbb_104&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_122 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r1+0x8]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, -1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r1+0x8], r2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ja&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;lbb_104&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_104 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r8, 48&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r7, -1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jne&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r7, 0, lbb_109&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_107 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r0, r6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;exit&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+  }
+</code></pre>
+<p><img src="reverse/../images/reverse_cfg_entrypoint_example.png" alt="alt text" /></p>
+<hr />
+<h2 id="full-example-visual"><a class="header" href="#full-example-visual">Full Example (Visual)</a></h2>
+<p>Here’s what a real Sol-azy-generated CFG can look like:</p>
+<ul>
+<li>Each rectangle = basic block</li>
+<li>Arrows = jumps, calls, or branches</li>
+<li>Dashed arrows = dominator links</li>
+</ul>
+<p>Code example:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use solana_program::{
+    account_info::AccountInfo,
+    entrypoint,
+    entrypoint::ProgramResult,
+    pubkey::Pubkey,
+    msg,
+};
+
+entrypoint!(process_instruction);
+
+fn win() -&gt; u64 {
+    msg!(&quot;You win!&quot;);
+    987654321
+}
+
+fn loose() -&gt; u64 {
+    msg!(&quot;You lose!&quot;);
+    123456789
+}
+
+pub fn process_instruction(
+    _program_id: &amp;Pubkey,
+    _accounts: &amp;[AccountInfo],
+    instruction_data: &amp;[u8],
+) -&gt; ProgramResult {
+    if instruction_data.len() &lt; 8 {
+        msg!(&quot;Not enough data. Need two u32 values.&quot;);
+        return Err(solana_program::program_error::ProgramError::InvalidInstructionData);
+    }
+
+    let a = u32::from_le_bytes(instruction_data[0..4].try_into().unwrap());
+    let b = u32::from_le_bytes(instruction_data[4..8].try_into().unwrap());
+
+    msg!(&quot;Inputs: {} + {}&quot;, a, b);
+
+    let result = if a + b == 1337 {
+        win()
+    } else {
+        loose()
+    };
+
+    msg!(&quot;Result: {}&quot;, result);
+
+    Ok(())
+}
+<span class="boring">}</span></code></pre></pre>
+<p>CFG recovered from bytecode:</p>
+<p><img src="reverse/../images/reverse_cfg_full_example.png" alt="CFG Example" />
+<img src="reverse/../images/reverse_cfg_example.png" alt="CFG Example" /></p>
+<hr />
+<h2 id="related-7"><a class="header" href="#related-7">Related</a></h2>
+<ul>
+<li><a href="reverse/reduced_cfg.html">Reduced CFG</a></li>
+<li><a href="reverse/dotting.html">Editing CFG (Dotting command)</a></li>
+<li><a href="reverse/../cli/reverse.html">Reverse CLI Command</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="reduced-control-flow-graph-cfg"><a class="header" href="#reduced-control-flow-graph-cfg">Reduced Control Flow Graph (CFG)</a></h1>
+<p>Analyzing large Solana eBPF programs can produce overwhelming control flow graphs (CFGs) due to the sheer number of functions and basic blocks.
+Sol-azy offers two modes to reduce graph complexity:</p>
+<ul>
+<li><code>--reduced</code>: Only include functions defined <em>after</em> the entrypoint.</li>
+<li><code>--only-entrypoint</code>: Include <strong>only</strong> the function cluster of the entrypoint itself.</li>
+</ul>
+<hr />
+<h2 id="1---reduced"><a class="header" href="#1---reduced">1. <code>--reduced</code></a></h2>
+<p>The <code>--reduced</code> flag filters the generated CFG by discarding functions that are likely part of the runtime or standard library.</p>
+<h3 id="example-7"><a class="header" href="#example-7">Example</a></h3>
+<pre><code class="language-bash">cargo run -- reverse \
+  --mode cfg \
+  --out-dir ./out/ \
+  --bytecodes-file ./program.so \
+  --labeling \
+  --reduced
+</code></pre>
+<h3 id="what-it-does"><a class="header" href="#what-it-does">What It Does</a></h3>
+<ul>
+<li>Keeps only functions that appear <strong>after</strong> the <code>entrypoint</code> in the binary layout.</li>
+<li>Typically corresponds to user-defined logic.</li>
+<li>Excludes Solana runtime boilerplate (e.g., <code>abort_internal</code>, <code>core::fmt</code>, etc.)</li>
+</ul>
+<hr />
+<h2 id="2---only-entrypoint"><a class="header" href="#2---only-entrypoint">2. <code>--only-entrypoint</code></a></h2>
+<p>The <code>--only-entrypoint</code> flag isolates just the <strong>entrypoint function</strong>, without including its callees or any other clusters.</p>
+<h3 id="example-8"><a class="header" href="#example-8">Example</a></h3>
+<pre><code class="language-bash">cargo run -- reverse \
+  --mode cfg \
+  --out-dir ./out/ \
+  --bytecodes-file ./program.so \
+  --labeling \
+  --only-entrypoint
+</code></pre>
+<h3 id="what-it-does-1"><a class="header" href="#what-it-does-1">What It Does</a></h3>
+<ul>
+<li>Only exports the cluster corresponding to the <code>entrypoint</code>.</li>
+<li>Skips all other functions, even if they are part of user logic.</li>
+<li>Ideal for initializing a <strong>minimal CFG</strong> for manual extension.</li>
+</ul>
+<hr />
+<h2 id="why-it-matters"><a class="header" href="#why-it-matters">Why It Matters</a></h2>
+<ul>
+<li>✅ Greatly improves readability for large programs</li>
+<li>✅ Speeds up rendering in tools like <code>xdot</code> or Graphviz</li>
+<li>✅ Useful for focused auditing and vulnerability research</li>
+</ul>
+<p>⚠️ With <code>reduced</code>, depending on program structure, some utility functions may still be present if called after the entrypoint.</p>
+<hr />
+<h2 id="comparison"><a class="header" href="#comparison">Comparison</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Flag</th><th>Includes Entry?</th><th>Includes Callees?</th><th>Includes Library Code?</th></tr></thead><tbody>
+<tr><td>(default / full)</td><td>✅</td><td>✅</td><td>✅</td></tr>
+<tr><td><code>--reduced</code></td><td>✅</td><td>✅</td><td>❌</td></tr>
+<tr><td><code>--only-entrypoint</code></td><td>✅</td><td>❌</td><td>❌</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="visualization-1"><a class="header" href="#visualization-1">Visualization</a></h2>
+<p>You can render the resulting <code>.dot</code> files as usual:</p>
+<pre><code class="language-bash">dot -Tsvg cfg.dot -o cfg.svg
+xdot cfg.dot
+</code></pre>
+<p>Reduced graphs will render faster and be easier to navigate.</p>
+<blockquote>
+<p>⚠️ For very large programs, even the <code>--reduced</code> version of the CFG can take significant time to generate due to the size and complexity of the bytecode being analyzed and rendered by <code>dot</code>.</p>
+</blockquote>
+<hr />
+<h2 id="when-to-use"><a class="header" href="#when-to-use">When to Use</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Scenario</th><th>Recommended Flag</th></tr></thead><tbody>
+<tr><td>You want to analyze app logic only</td><td><code>--reduced</code></td></tr>
+<tr><td>You want to isolate <code>entrypoint</code> manually</td><td><code>--only-entrypoint</code></td></tr>
+<tr><td>You need full picture including libraries</td><td><em>(default - no flags)</em></td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="related-8"><a class="header" href="#related-8">Related</a></h2>
+<ul>
+<li><a href="reverse/cfg.html">Control Flow Graph (CFG)</a></li>
+<li><a href="reverse/dotting.html">Dotting (CFG editing)</a></li>
+<li><a href="reverse/../cli/reverse.html">Reverse CLI Options</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="dotting-customizing-reduced-cfgs"><a class="header" href="#dotting-customizing-reduced-cfgs">Dotting: Customizing Reduced CFGs</a></h1>
+<p>The <code>dotting</code> feature in Sol-azy allows you to <strong>manually augment</strong> a reduced control flow graph (CFG) by reinserting specific function clusters from the full graph.</p>
+<p>This is particularly useful when using <code>--reduced</code> or <code>--only-entrypoint</code> modes, which intentionally drop unused or library-heavy functions. With dotting, you can selectively restore those clusters for <strong>targeted analysis</strong>.</p>
+<hr />
+<h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
+<p>Reduced graphs simplify reverse engineering, but sometimes:</p>
+<ul>
+<li>Important logic is optimized into shared helpers</li>
+<li>Runtime wrappers (e.g. error handling) live outside the entrypoint</li>
+<li>Functions of interest are excluded unintentionally</li>
+</ul>
+<p>With dotting, you don’t need to regenerate a new full CFG.
+Instead, you can <strong>grow your existing graph</strong> by manually appending clusters and their edges.</p>
+<hr />
+<h2 id="how-it-works-3"><a class="header" href="#how-it-works-3">How It Works</a></h2>
+<ol>
+<li>
+<p>You create a small JSON file listing function cluster IDs to reinsert.</p>
+</li>
+<li>
+<p>You run the <code>dotting</code> command pointing to:</p>
+<ul>
+<li>The original full <code>.dot</code> file (reference),</li>
+<li>Your reduced <code>.dot</code> file,</li>
+<li>And the JSON config.</li>
+</ul>
+</li>
+<li>
+<p>Sol-azy:</p>
+<ul>
+<li>Adds matching <code>subgraph cluster_XX</code> blocks.</li>
+<li>Appends new edges <strong>only if both sides already exist</strong> in the reduced graph.</li>
+</ul>
+</li>
+<li>
+<p>The result is saved as <code>updated_&lt;reduced&gt;.dot</code>.</p>
+</li>
+</ol>
+<hr />
+<h2 id="cli-usage-1"><a class="header" href="#cli-usage-1">CLI Usage</a></h2>
+<pre><code class="language-bash">cargo run -- dotting \
+  --config path/to/functions.json \
+  --reduced-dot path/to/reduced.dot \
+  --full-dot path/to/full.dot
+</code></pre>
+<hr />
+<h2 id="config-format"><a class="header" href="#config-format">Config Format</a></h2>
+<p>Your JSON file should look like:</p>
+<pre><code class="language-json">{
+  &quot;functions&quot;: [&quot;10&quot;, &quot;42&quot;, &quot;87&quot;]
+}
+</code></pre>
+<p>Each entry is a cluster ID (i.e., the number in <code>cluster_&lt;id&gt;</code> from the <code>.dot</code> file).
+These are generally assigned incrementally during graph generation.</p>
+<p>You can locate these IDs by inspecting the full <code>.dot</code> or searching for strings like:</p>
+<pre><code class="language-dot">subgraph cluster_42 {
+    label=&quot;function_name&quot;;
+    ...
+}
+</code></pre>
+<hr />
+<h2 id="example-workflow"><a class="header" href="#example-workflow">Example Workflow</a></h2>
+<ol start="0">
+<li>
+<p><strong>[one-time action]</strong> Generate a full graph <em>(It allows for easily selecting specific clusters without re-analyzing the full bytecode every time a function needs to be added)</em>:</p>
+<pre><code class="language-bash">cargo run -- reverse \
+  --mode cfg \
+  --bytecodes-file program.so \
+  --out-dir ./full \
+</code></pre>
+</li>
+<li>
+<p>Generate a reduced graph with only the entrypoint:</p>
+<pre><code class="language-bash">cargo run -- reverse \
+  --mode cfg \
+  --bytecodes-file program.so \
+  --out-dir ./out \
+  --only-entrypoint
+</code></pre>
+</li>
+<li>
+<p>Create a <code>functions.json</code> file:</p>
+<pre><code class="language-json">{
+ &quot;functions&quot;: [&quot;17014&quot;]
+}
+</code></pre>
+</li>
+<li>
+<p>Run dotting:</p>
+<pre><code class="language-bash">cargo run -- dotting \
+  --config ./functions.json \
+  --reduced-dot ./out/cfg.dot \
+  --full-dot ./full/cfg.dot
+</code></pre>
+</li>
+<li>
+<p>Visualize the result:</p>
+<pre><code class="language-bash">xdot ./out/updated_cfg.dot
+</code></pre>
+</li>
+</ol>
+<h2 id="example-showcase"><a class="header" href="#example-showcase">Example showcase</a></h2>
+<h3 id="before"><a class="header" href="#before">Before</a></h3>
+<pre><code class="language-dot">digraph {
+graph [
+rankdir=LR;
+concentrate=True;
+style=filled;
+color=lightgrey;
+];
+node [
+shape=rect;
+style=filled;
+fillcolor=white;
+fontname=&quot;Courier New&quot;;
+];
+edge [
+fontname=&quot;Courier New&quot;;
+];
+  subgraph cluster_369287 {
+    label=&quot;entrypoint&quot;;
+    tooltip=lbb_369287;
+    lbb_369287 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -80&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_387396&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_369291 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r10-0x50]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x48]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x68], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r4, [r10-0x38]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x58], r4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r3, [r10-0x40]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x60], r3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x28]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r5, [r10-0x30]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x1000], r5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0xff8], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -32&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r5, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_336430&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_369306 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r6, 0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x20]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jeq&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 22, lbb_369321&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_369309 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x8]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x38], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x10]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x40], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x18]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x48], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x20]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x50], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -80&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_389183&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_369320 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r6, r0&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_369321 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -104&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_17014&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_369324 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r0, r6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;exit&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+  }
+  lbb_369287 -&gt; lbb_409579 [style=dotted; arrowhead=none];
+  lbb_369287 -&gt; {lbb_369291};
+  lbb_369291 -&gt; lbb_369287 [style=dotted; arrowhead=none];
+  lbb_369291 -&gt; {lbb_369306};
+  lbb_369306 -&gt; lbb_369291 [style=dotted; arrowhead=none];
+  lbb_369306 -&gt; {lbb_369309 lbb_369321};
+  lbb_369309 -&gt; lbb_369306 [style=dotted; arrowhead=none];
+  lbb_369309 -&gt; {lbb_369320};
+  lbb_369320 -&gt; lbb_369309 [style=dotted; arrowhead=none];
+  lbb_369320 -&gt; {lbb_369321};
+  lbb_369321 -&gt; lbb_369306 [style=dotted; arrowhead=none];
+  lbb_369321 -&gt; {lbb_369324};
+  lbb_369324 -&gt; lbb_369321 [style=dotted; arrowhead=none];
+}
+</code></pre>
+<p><img src="reverse/../images/dotting_cfg.svg" alt="before_cfg" /></p>
+<h3 id="after"><a class="header" href="#after">After</a></h3>
+<pre><code class="language-dot">digraph {
+graph [
+rankdir=LR;
+concentrate=True;
+style=filled;
+color=lightgrey;
+];
+node [
+shape=rect;
+style=filled;
+fillcolor=white;
+fontname=&quot;Courier New&quot;;
+];
+edge [
+fontname=&quot;Courier New&quot;;
+];
+  subgraph cluster_369287 {
+    label=&quot;entrypoint&quot;;
+    tooltip=lbb_369287;
+    lbb_369287 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -80&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_387396&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_369291 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r10-0x50]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x48]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x68], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r4, [r10-0x38]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x58], r4&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r3, [r10-0x40]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x60], r3&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x28]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r5, [r10-0x30]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x1000], r5&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0xff8], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -32&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r5, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_336430&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_369306 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r6, 0&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x20]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jeq&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 22, lbb_369321&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_369309 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x8]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x38], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x10]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x40], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x18]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x48], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r10-0x20]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r10-0x50], r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -80&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_389183&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_369320 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r6, r0&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_369321 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, r10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, -104&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_17014&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_369324 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r0, r6&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;exit&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+  }
+  lbb_369287 -&gt; lbb_409579 [style=dotted; arrowhead=none];
+  lbb_369287 -&gt; {lbb_369291};
+  lbb_369291 -&gt; lbb_369287 [style=dotted; arrowhead=none];
+  lbb_369291 -&gt; {lbb_369306};
+  lbb_369306 -&gt; lbb_369291 [style=dotted; arrowhead=none];
+  lbb_369306 -&gt; {lbb_369309 lbb_369321};
+  lbb_369309 -&gt; lbb_369306 [style=dotted; arrowhead=none];
+  lbb_369309 -&gt; {lbb_369320};
+  lbb_369320 -&gt; lbb_369309 [style=dotted; arrowhead=none];
+  lbb_369320 -&gt; {lbb_369321};
+  lbb_369321 -&gt; lbb_369306 [style=dotted; arrowhead=none];
+  lbb_369321 -&gt; {lbb_369324};
+  lbb_369324 -&gt; lbb_369321 [style=dotted; arrowhead=none];
+
+subgraph cluster_17014 {
+    label=&quot;function_17014&quot;;
+    tooltip=lbb_17014;
+    lbb_17014 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r6, r1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r7, [r6+0x10]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jeq&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r7, 0, lbb_17036&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_17017 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r8, [r6+0x8]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mul64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r7, 48&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r8, 16&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ja&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;lbb_17043&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_17043 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r8-0x8]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r1+0x0]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, -1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r1+0x0], r2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jne&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 0, lbb_17021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_17048 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r1+0x8]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, -1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r1+0x8], r2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jne&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 0, lbb_17021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_17052 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 32&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r3, 8&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_373318&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_17055 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ja&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;lbb_17021&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_17021 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r8+0x0]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r1+0x0]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, -1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r1+0x0], r2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jne&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 0, lbb_17033&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_17026 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r1+0x8]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, -1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;stxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;[r1+0x8], r2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jne&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 0, lbb_17033&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_17030 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 40&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r3, 8&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_373318&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_17033 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r8, 48&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;add64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r7, -48&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jne&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r7, 0, lbb_17043&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_17036 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, [r6+0x0]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;jeq&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 0, lbb_17056&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_17038 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ldxdw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, [r6+0x8]&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mul64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 48&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r3, 8&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;call&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;function_373318&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_17042 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;ja&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;lbb_17056&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+    lbb_17056 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;&gt;exit&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&gt;];
+  }
+
+lbb_17014 -&gt; {lbb_17017 lbb_17036};
+lbb_17017 -&gt; {lbb_17043};
+lbb_17021 -&gt; {lbb_17026 lbb_17033};
+lbb_17026 -&gt; {lbb_17030 lbb_17033};
+lbb_17030 -&gt; {lbb_17033};
+lbb_17033 -&gt; {lbb_17036 lbb_17043};
+lbb_17036 -&gt; {lbb_17038 lbb_17056};
+lbb_17038 -&gt; {lbb_17042};
+lbb_17042 -&gt; {lbb_17056};
+lbb_17043 -&gt; {lbb_17021 lbb_17048};
+lbb_17048 -&gt; {lbb_17021 lbb_17052};
+lbb_17052 -&gt; {lbb_17055};
+lbb_17055 -&gt; {lbb_17021};
+lbb_409579 -&gt; {lbb_17014 lbb_369287};
+}
+</code></pre>
+<p><img src="reverse/../images/dotting_cfg_updated.svg" alt="after_cfg" /></p>
+<hr />
+<h2 id="behavior-notes"><a class="header" href="#behavior-notes">Behavior Notes</a></h2>
+<ul>
+<li>Edges are only added if <strong>both</strong> source and target basic blocks are already present.</li>
+<li>If you want edges for new blocks too, consider adding additional clusters.</li>
+<li><code>updated_cfg.dot</code> is created next to your original file.</li>
+<li>The original <code>cfg.dot</code> is <strong>not</strong> modified.</li>
+</ul>
+<hr />
+<h2 id="tips-2"><a class="header" href="#tips-2">Tips</a></h2>
+<ul>
+<li>Combine <code>--only-entrypoint</code> + <code>dotting</code> to <strong>build your CFG incrementally</strong>.</li>
+</ul>
+<hr />
+<h2 id="related-9"><a class="header" href="#related-9">Related</a></h2>
+<ul>
+<li><a href="reverse/reduced_cfg.html">Reduced CFGs</a></li>
+<li><a href="reverse/cfg.html">CFG</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="architecture"><a class="header" href="#architecture">Architecture</a></h1>
+<p>Sol-azy is a modular static analysis toolkit designed to work on Solana programs compiled to eBPF.<br />
+It is capable of disassembling, analyzing control flow, decoding embedded <code>.rodata</code> strings, and performing pattern-based syntactic analysis through rule-based AST matching.</p>
+<hr />
+<h2 id="high-level-design"><a class="header" href="#high-level-design">High-Level Design</a></h2>
+<p>Sol-azy is structured around <strong>three main engines</strong>, supported by <strong>auxiliary modules</strong>:</p>
+<h3 id="core-engines"><a class="header" href="#core-engines">Core Engines</a></h3>
+<ol>
+<li>
+<p><strong>Reverse Engine</strong>
+Handles binary-level disassembly, control flow graph generation, and <code>.rodata</code> analysis.
+→ Triggered via the <code>reverse</code> CLI command.</p>
+</li>
+<li>
+<p><strong>SAST Engine</strong>
+Performs static source-level analysis using Starlark-based rule evaluation on Rust ASTs.
+→ Triggered via the <code>sast</code> CLI command.</p>
+</li>
+<li>
+<p><strong>Build Engine</strong>
+Detects the project type (<code>Anchor</code>, <code>SBF</code>) and compiles the bytecode accordingly.
+→ Triggered via the <code>build</code> CLI command.</p>
+</li>
+</ol>
+<h3 id="supporting-modules"><a class="header" href="#supporting-modules">Supporting Modules</a></h3>
+<ul>
+<li>
+<p><strong>Dotting Module</strong>
+Allows users to manually reintroduce function clusters into reduced CFGs by editing <code>.dot</code> files post-generation.
+→ Useful for large programs or targeted function exploration.</p>
+</li>
+<li>
+<p><strong>Fetcher Module</strong>
+Retrieves deployed program bytecode directly from on-chain Solana accounts via RPC.
+→ Enables reverse analysis even without access to local source code.</p>
+</li>
+</ul>
+<p>Each component is designed to be <strong>composable and scriptable</strong>, making Sol-azy flexible for both auditing and program analysis workflows.</p>
+<hr />
+<h2 id="component-overview"><a class="header" href="#component-overview">Component Overview</a></h2>
+<h3 id="1-reverse"><a class="header" href="#1-reverse">1. <code>reverse/</code></a></h3>
+<p>Handles all operations on compiled <code>.so</code> eBPF files:</p>
+<ul>
+<li><code>disass.rs</code>: Disassembler with inline <code>.rodata</code> resolution</li>
+<li><code>cfg.rs</code>: Generates DOT graphs from the control flow</li>
+<li><code>immediate_tracker.rs</code>: Tracks data regions used by <code>LD_DW_IMM</code></li>
+<li><code>utils.rs</code>: String formatting and decoding</li>
+</ul>
+<p>It produces:</p>
+<ul>
+<li><code>disassembly.out</code></li>
+<li><code>immediate_data_table.out</code></li>
+<li><code>cfg.dot</code></li>
+</ul>
+<p>→ See <a href="reverse/overview.html">Reverse Overview</a></p>
+<hr />
+<h3 id="2-parsers--statesast_staters"><a class="header" href="#2-parsers--statesast_staters">2. <code>parsers/</code> + <code>state/sast_state.rs</code></a></h3>
+<p>Used in source-level static analysis.</p>
+<ul>
+<li>Parses all <code>.rs</code> files into [<code>syn::File</code>] ASTs</li>
+<li>Builds <code>AstPositions</code> with span references</li>
+<li>Applies Starlark-based rules to nodes and attributes</li>
+<li>Aggregates findings into a <code>SastState</code></li>
+</ul>
+<p>→ See <a href="reverse/sast.html">SAST Overview</a></p>
+<hr />
+<h3 id="3-enginesstarlark_enginers"><a class="header" href="#3-enginesstarlark_enginers">3. <code>engines/starlark_engine.rs</code></a></h3>
+<p>Embeds a Starlark interpreter to run user-defined rules against Rust ASTs.</p>
+<ul>
+<li>Prepares the AST (JSON + span tracking)</li>
+<li>Loads <code>.star</code> files from <code>rules/</code></li>
+<li>Invokes <code>syn_ast_rule(...)</code> with context</li>
+<li>Collects <code>matches</code> and metadata as JSON</li>
+</ul>
+<p>→ See <a href="../rules/README.html">Writing Rules</a></p>
+<hr />
+<h3 id="4-commands"><a class="header" href="#4-commands">4. <code>commands/</code></a></h3>
+<p>Command routing layer:</p>
+<ul>
+<li><code>build_command.rs</code>: Uses Anchor/Cargo to compile <code>.so</code> files</li>
+<li><code>reverse_command.rs</code>: Dispatches disass + cfg generation</li>
+<li><code>sast_command.rs</code>: Launches Starlark rule scanning</li>
+</ul>
+<p>Used by <code>AppState::run_cli()</code> to manage flow.</p>
+<hr />
+<h3 id="5-helpers"><a class="header" href="#5-helpers">5. <code>helpers/</code></a></h3>
+<p>Utilities to:</p>
+<ul>
+<li>Detect project type (<code>Anchor.toml</code>, <code>Cargo.toml</code>)</li>
+<li>Check external dependencies (<code>cargo</code>, <code>anchor</code>)</li>
+<li>Run subprocesses with environment overrides</li>
+</ul>
+<hr />
+<h3 id="6-dotting"><a class="header" href="#6-dotting">6. <code>dotting/</code></a></h3>
+<p>Post-processing module for <code>.dot</code> control flow graphs:</p>
+<ul>
+<li>Allows restoring function subgraphs in reduced or entrypoint-only graphs</li>
+<li>Takes as input a list of function IDs (clusters) to reinject</li>
+<li>Outputs an <code>updated_*.dot</code> file with the requested functions and edges</li>
+</ul>
+<p>This module is especially useful when a full CFG is too large or noisy, letting analysts rebuild targeted graphs incrementally.</p>
+<p>→ See <a href="reverse/dotting.html">Dotting</a></p>
+<hr />
+<h3 id="7-fetcher"><a class="header" href="#7-fetcher">7. <code>fetcher/</code></a></h3>
+<p>Bytecode retrieval module for on-chain programs:</p>
+<ul>
+<li>Connects to Solana RPC endpoints</li>
+<li>Downloads the deployed <code>.so</code> bytecode of a program ID</li>
+<li>Saves the ELF file locally for reverse analysis</li>
+</ul>
+<p>This feature is useful for audits where source code is unavailable or unverifiable.</p>
+<p>→ See <a href="cli/fetcher.html">Fetcher</a></p>
+<h2 id="output-flow"><a class="header" href="#output-flow">Output Flow</a></h2>
+<pre><code>        +----------------+
+        | .so Bytecode   | ← built via cargo / anchor
+        +----------------+
+                 |
+         [reverse_command]
+                 ↓
+        +-----------------------+
+        |  Analysis (sbpf-solana)
+        |  + immediate tracker
+        +-----------------------+
+          ↓        ↓        ↓
+    disass  immediate   cfg.dot
+     .out    _data.out
+
+--------------------------------------
+
+        +----------------+
+        |  Rust Source   | ← e.g. Anchor project
+        +----------------+
+                 |
+           [sast_command]
+                 ↓
+        +----------------------+
+        | syn::File + spans    |
+        | + rule evaluation    |
+        +----------------------+
+                 ↓
+             Findings
+           (printed / JSON)
+</code></pre>
+<hr />
+<h2 id="external-dependencies"><a class="header" href="#external-dependencies">External Dependencies</a></h2>
+<ul>
+<li><a href="https://github.com/anza-xyz/sbpf-solana"><code>sbpf-solana (anza-xyz)</code></a>: Disassembly / Analysis core</li>
+<li><a href="https://docs.rs/syn"><code>syn</code></a>: Source AST parsing</li>
+<li><a href="https://github.com/facebook/starlark-rust"><code>starlark-rust</code></a>: Rule evaluation engine</li>
+</ul>
+<hr />
+<h2 id="extensibility"><a class="header" href="#extensibility">Extensibility</a></h2>
+<p>The architecture is modular and designed for extension:</p>
+<ul>
+<li>Add new output formats by extending the <code>ReverseOutputMode</code></li>
+<li>Plug in new analysis passes (e.g., MIR or LLVM IR) in <code>engines/</code></li>
+<li>Write new rules without modifying Rust code (<code>.star</code> files)</li>
+<li>Integrate into CI pipelines via CLI interface</li>
+</ul>
+<hr />
+<h2 id="next-steps-1"><a class="header" href="#next-steps-1">Next Steps</a></h2>
+<ul>
+<li><a href="reverse/disassembly.html">Disassembly</a></li>
+<li><a href="reverse/immediates.html">Immediate Data Tracking</a></li>
+<li><a href="./static_analysis.html">SAST</a></li>
+<li><a href="./cli_usage.html">CLI Usage</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="appstate-architecture"><a class="header" href="#appstate-architecture"><code>AppState</code> Architecture</a></h1>
+<p>The <code>AppState</code> struct acts as the central orchestrator for Sol-azy’s CLI runtime.<br />
+It coordinates the execution of commands like <code>build</code>, <code>sast</code> and <code>reverse</code>, and stores the resulting internal states across executions.</p>
+<hr />
+<h2 id="where-it-lives"><a class="header" href="#where-it-lives">Where It Lives</a></h2>
+<p>File: <code>src/state/app_state.rs</code></p>
+<hr />
+<h2 id="responsibilities"><a class="header" href="#responsibilities">Responsibilities</a></h2>
+<ul>
+<li>Parse and dispatch the correct CLI subcommand via <code>run_cli()</code></li>
+<li>Track cumulative state (e.g., build results, SAST matches)</li>
+<li>Encapsulate application-wide control flow</li>
+</ul>
+<hr />
+<h2 id="structure"><a class="header" href="#structure">Structure</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AppState {
+    pub cli: Cli,
+    pub build_states: Vec&lt;BuildState&gt;,
+    pub sast_states: Vec&lt;SastState&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<ul>
+<li><code>cli</code>: The parsed <code>Cli</code> object from Clap, holding user input</li>
+<li><code>build_states</code>: Stores results of <code>build_command::run(...)</code></li>
+<li><code>sast_states</code>: Stores results of <code>sast_command::run(...)</code></li>
+</ul>
+<hr />
+<h2 id="core-method-run_cli"><a class="header" href="#core-method-run_cli">Core Method: <code>run_cli</code></a></h2>
+<p>This is the entrypoint for CLI usage:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_cli(&amp;mut self)
+<span class="boring">}</span></code></pre></pre>
+<p>It matches on the selected <code>Commands</code> enum variant:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>match &amp;self.cli.command {
+    Commands::Build { ... } =&gt; self.build_project(...),
+    Commands::Sast { ... } =&gt; self.run_sast(...),
+    Commands::Reverse { ... } =&gt; self.run_reverse(...),
+    ...
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Each arm delegates to a method that:</p>
+<ol>
+<li>Executes the logic of the command</li>
+<li>Logs the outcome</li>
+<li>Updates the internal state vector (<code>build_states</code>, <code>sast_states</code>) → <em>except for the reverse command</em></li>
+</ol>
+<hr />
+<h2 id="why-is-appstate-needed"><a class="header" href="#why-is-appstate-needed">Why is <code>AppState</code> needed?</a></h2>
+<p>Sol-azy is a <strong>multi-command CLI application</strong>, and <code>AppState</code> provides:</p>
+<ul>
+<li>A consistent runtime container to track what’s been executed</li>
+<li>A clean separation of CLI logic from actual analysis logic</li>
+</ul>
+<hr />
+<h2 id="example-flow"><a class="header" href="#example-flow">Example Flow</a></h2>
+<pre><code class="language-bash">cargo run -- build --target-dir myproj --out-dir myproj/out
+</code></pre>
+<p>Leads to:</p>
+<ol>
+<li><code>AppState::run_cli()</code></li>
+<li>→ <code>AppState::build_project(...)</code></li>
+<li>→ <code>build_command::run(...)</code></li>
+<li>→ Result stored in <code>app_state.build_states</code></li>
+</ol>
+<hr />
+<h2 id="related-10"><a class="header" href="#related-10">Related</a></h2>
+<ul>
+<li><a href="architecture/../cli/cli_usage.html">CLI Overview</a></li>
+<li><a href="architecture/../architecture.html">Architecture</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sastengine-architecture"><a class="header" href="#sastengine-architecture"><code>SastEngine</code> Architecture</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="evolution-of-sol-azy"><a class="header" href="#evolution-of-sol-azy">Evolution of sol-azy</a></h1>
+<p><strong>Sol-azy</strong> is currently in development, and we have few ideas for new features.</p>
+<h2 id="static-analysis-1"><a class="header" href="#static-analysis-1">Static analysis</a></h2>
+<h3 id="enhance-starlark-libraries"><a class="header" href="#enhance-starlark-libraries">Enhance Starlark libraries</a></h3>
+<h3 id="support-mir"><a class="header" href="#support-mir">Support MIR</a></h3>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

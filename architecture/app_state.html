@@ -1,0 +1,273 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>App State - docs</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../cli_usage.html"><strong aria-hidden="true">3.</strong> CLI Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cli/build.html"><strong aria-hidden="true">3.1.</strong> Build</a></li><li class="chapter-item expanded "><a href="../cli/sast.html"><strong aria-hidden="true">3.2.</strong> SAST</a></li><li class="chapter-item expanded "><a href="../cli/fetcher.html"><strong aria-hidden="true">3.3.</strong> Fetcher</a></li><li class="chapter-item expanded "><a href="../cli/reverse.html"><strong aria-hidden="true">3.4.</strong> Reverse</a></li></ol></li><li class="chapter-item expanded "><a href="../static_analysis.html"><strong aria-hidden="true">4.</strong> Static Analysis</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rules/format.html"><strong aria-hidden="true">4.1.</strong> Rule Format</a></li><li class="chapter-item expanded "><a href="../rules/templates.html"><strong aria-hidden="true">4.2.</strong> Writing Templates</a></li><li class="chapter-item expanded "><a href="../rules/example.html"><strong aria-hidden="true">4.3.</strong> Detection Example</a></li><li class="chapter-item expanded "><a href="../rules/starlark_libs.html"><strong aria-hidden="true">4.4.</strong> Starlark references</a></li></ol></li><li class="chapter-item expanded "><a href="../reverse.html"><strong aria-hidden="true">5.</strong> Reverse Engineering</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../reverse/overview.html"><strong aria-hidden="true">5.1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../reverse/disassembly.html"><strong aria-hidden="true">5.2.</strong> Disassembly</a></li><li class="chapter-item expanded "><a href="../reverse/immediates.html"><strong aria-hidden="true">5.3.</strong> Immediate Tracking</a></li><li class="chapter-item expanded "><a href="../reverse/cfg.html"><strong aria-hidden="true">5.4.</strong> Control Flow Graph (CFG)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../reverse/reduced_cfg.html"><strong aria-hidden="true">5.4.1.</strong> Reduced / Entry-only CFG</a></li><li class="chapter-item expanded "><a href="../reverse/dotting.html"><strong aria-hidden="true">5.4.2.</strong> Manual CFG Editing (Dotting)</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../architecture.html"><strong aria-hidden="true">6.</strong> Architecture</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../architecture/app_state.html" class="active"><strong aria-hidden="true">6.1.</strong> App State</a></li><li class="chapter-item expanded "><a href="../architecture/sast_engine.html"><strong aria-hidden="true">6.2.</strong> SAST Engine</a></li></ol></li><li class="chapter-item expanded "><a href="../future.html"><strong aria-hidden="true">7.</strong> Evolution of the tool</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">docs</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="appstate-architecture"><a class="header" href="#appstate-architecture"><code>AppState</code> Architecture</a></h1>
+<p>The <code>AppState</code> struct acts as the central orchestrator for Sol-azy’s CLI runtime.<br />
+It coordinates the execution of commands like <code>build</code>, <code>sast</code> and <code>reverse</code>, and stores the resulting internal states across executions.</p>
+<hr />
+<h2 id="where-it-lives"><a class="header" href="#where-it-lives">Where It Lives</a></h2>
+<p>File: <code>src/state/app_state.rs</code></p>
+<hr />
+<h2 id="responsibilities"><a class="header" href="#responsibilities">Responsibilities</a></h2>
+<ul>
+<li>Parse and dispatch the correct CLI subcommand via <code>run_cli()</code></li>
+<li>Track cumulative state (e.g., build results, SAST matches)</li>
+<li>Encapsulate application-wide control flow</li>
+</ul>
+<hr />
+<h2 id="structure"><a class="header" href="#structure">Structure</a></h2>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct AppState {
+    pub cli: Cli,
+    pub build_states: Vec&lt;BuildState&gt;,
+    pub sast_states: Vec&lt;SastState&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<ul>
+<li><code>cli</code>: The parsed <code>Cli</code> object from Clap, holding user input</li>
+<li><code>build_states</code>: Stores results of <code>build_command::run(...)</code></li>
+<li><code>sast_states</code>: Stores results of <code>sast_command::run(...)</code></li>
+</ul>
+<hr />
+<h2 id="core-method-run_cli"><a class="header" href="#core-method-run_cli">Core Method: <code>run_cli</code></a></h2>
+<p>This is the entrypoint for CLI usage:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn run_cli(&amp;mut self)
+<span class="boring">}</span></code></pre></pre>
+<p>It matches on the selected <code>Commands</code> enum variant:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>match &amp;self.cli.command {
+    Commands::Build { ... } =&gt; self.build_project(...),
+    Commands::Sast { ... } =&gt; self.run_sast(...),
+    Commands::Reverse { ... } =&gt; self.run_reverse(...),
+    ...
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Each arm delegates to a method that:</p>
+<ol>
+<li>Executes the logic of the command</li>
+<li>Logs the outcome</li>
+<li>Updates the internal state vector (<code>build_states</code>, <code>sast_states</code>) → <em>except for the reverse command</em></li>
+</ol>
+<hr />
+<h2 id="why-is-appstate-needed"><a class="header" href="#why-is-appstate-needed">Why is <code>AppState</code> needed?</a></h2>
+<p>Sol-azy is a <strong>multi-command CLI application</strong>, and <code>AppState</code> provides:</p>
+<ul>
+<li>A consistent runtime container to track what’s been executed</li>
+<li>A clean separation of CLI logic from actual analysis logic</li>
+</ul>
+<hr />
+<h2 id="example-flow"><a class="header" href="#example-flow">Example Flow</a></h2>
+<pre><code class="language-bash">cargo run -- build --target-dir myproj --out-dir myproj/out
+</code></pre>
+<p>Leads to:</p>
+<ol>
+<li><code>AppState::run_cli()</code></li>
+<li>→ <code>AppState::build_project(...)</code></li>
+<li>→ <code>build_command::run(...)</code></li>
+<li>→ Result stored in <code>app_state.build_states</code></li>
+</ol>
+<hr />
+<h2 id="related"><a class="header" href="#related">Related</a></h2>
+<ul>
+<li><a href="../cli/cli_usage.html">CLI Overview</a></li>
+<li><a href="../architecture.html">Architecture</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../architecture.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../architecture/sast_engine.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../architecture.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../architecture/sast_engine.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

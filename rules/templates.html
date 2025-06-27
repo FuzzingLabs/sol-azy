@@ -1,0 +1,316 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Writing Templates - docs</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../cli_usage.html"><strong aria-hidden="true">3.</strong> CLI Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cli/build.html"><strong aria-hidden="true">3.1.</strong> Build</a></li><li class="chapter-item expanded "><a href="../cli/sast.html"><strong aria-hidden="true">3.2.</strong> SAST</a></li><li class="chapter-item expanded "><a href="../cli/fetcher.html"><strong aria-hidden="true">3.3.</strong> Fetcher</a></li><li class="chapter-item expanded "><a href="../cli/reverse.html"><strong aria-hidden="true">3.4.</strong> Reverse</a></li></ol></li><li class="chapter-item expanded "><a href="../static_analysis.html"><strong aria-hidden="true">4.</strong> Static Analysis</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rules/format.html"><strong aria-hidden="true">4.1.</strong> Rule Format</a></li><li class="chapter-item expanded "><a href="../rules/templates.html" class="active"><strong aria-hidden="true">4.2.</strong> Writing Templates</a></li><li class="chapter-item expanded "><a href="../rules/example.html"><strong aria-hidden="true">4.3.</strong> Detection Example</a></li><li class="chapter-item expanded "><a href="../rules/starlark_libs.html"><strong aria-hidden="true">4.4.</strong> Starlark references</a></li></ol></li><li class="chapter-item expanded "><a href="../reverse.html"><strong aria-hidden="true">5.</strong> Reverse Engineering</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../reverse/overview.html"><strong aria-hidden="true">5.1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../reverse/disassembly.html"><strong aria-hidden="true">5.2.</strong> Disassembly</a></li><li class="chapter-item expanded "><a href="../reverse/immediates.html"><strong aria-hidden="true">5.3.</strong> Immediate Tracking</a></li><li class="chapter-item expanded "><a href="../reverse/cfg.html"><strong aria-hidden="true">5.4.</strong> Control Flow Graph (CFG)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../reverse/reduced_cfg.html"><strong aria-hidden="true">5.4.1.</strong> Reduced / Entry-only CFG</a></li><li class="chapter-item expanded "><a href="../reverse/dotting.html"><strong aria-hidden="true">5.4.2.</strong> Manual CFG Editing (Dotting)</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../architecture.html"><strong aria-hidden="true">6.</strong> Architecture</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../architecture/app_state.html"><strong aria-hidden="true">6.1.</strong> App State</a></li><li class="chapter-item expanded "><a href="../architecture/sast_engine.html"><strong aria-hidden="true">6.2.</strong> SAST Engine</a></li></ol></li><li class="chapter-item expanded "><a href="../future.html"><strong aria-hidden="true">7.</strong> Evolution of the tool</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">docs</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="what-are-templates"><a class="header" href="#what-are-templates">What Are Templates?</a></h1>
+<p>Templates in Sol-azy are reusable pattern matchers designed to identify <strong>specific AST fragments</strong> in Rust source code.
+They allow users to describe <strong>common logic constructs</strong> in a simple, declarative way, and can be used as building blocks in Starlark rules or during static pattern matching.</p>
+<p>They are especially useful when:</p>
+<ul>
+<li>A pattern appears frequently (e.g., <code>ctx.accounts.authority.is_signer</code>)</li>
+<li>You want to simplify rule definitions by abstracting repetitive AST shapes</li>
+</ul>
+<h2 id="template-anatomy"><a class="header" href="#template-anatomy">Template Anatomy</a></h2>
+<p>Each template includes:</p>
+<ul>
+<li>A <code>pattern</code>: describing a shape to find in the AST, using simplified <code>idents</code> (Rust path segments)</li>
+<li>A <code>priority_rule</code>: used to guide traversal and maintain node order consistency</li>
+</ul>
+<h3 id="example-template"><a class="header" href="#example-template">Example Template</a></h3>
+<pre><code class="language-python">TEMPLATES[&quot;CHECK_CTX_ACCOUNT_AUTHORITY_KEY_TOKEN_OWNER&quot;] = {
+    &quot;pattern&quot;: {
+        &quot;cond&quot;: {
+            &quot;binary&quot;: {
+                &quot;left&quot;: {&quot;idents&quot;: [&quot;ctx&quot;, &quot;accounts&quot;, &quot;authority&quot;, &quot;key&quot;]},
+                &quot;op&quot;: &quot;!=&quot;,
+                &quot;right&quot;: {&quot;idents&quot;: [&quot;token&quot;, &quot;owner&quot;]},
+            }
+        }
+    },
+    &quot;priority_rule&quot;: [&quot;left&quot;, &quot;op&quot;, &quot;right&quot;],
+}
+</code></pre>
+<p>This matches AST code like:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>if ctx.accounts.authority.key != &amp;token.owner
+<span class="boring">}</span></code></pre></pre>
+<p>Each template defines a <strong>shallow structural pattern</strong> over <strong>AST nodes of maximum depth 3</strong>.</p>
+<blockquote>
+<p>For now, a maximum depth of 3 levels in AST node matching has proven sufficient, but deeper recursive pattern support could be added in the future if needed, directly within the <code>template_manager.star</code> logic</p>
+</blockquote>
+<h2 id="fields-used"><a class="header" href="#fields-used">Fields Used</a></h2>
+<h3 id="idents"><a class="header" href="#idents"><code>idents</code></a></h3>
+<p>Lists of identifier segments (e.g., <code>[&quot;ctx&quot;, &quot;accounts&quot;, &quot;authority&quot;, &quot;key&quot;]</code>) that are matched <strong>in order</strong>, exactly.</p>
+<h3 id="method"><a class="header" href="#method"><code>method</code></a></h3>
+<p>Optional field for method calls like <code>.key()</code>.</p>
+<h3 id="op"><a class="header" href="#op"><code>op</code></a></h3>
+<p>Operator such as <code>&quot;==&quot;</code> or <code>&quot;!=&quot;</code>.</p>
+<h3 id="macro-call-unary-binary-field"><a class="header" href="#macro-call-unary-binary-field"><code>macro</code>, <code>call</code>, <code>unary</code>, <code>binary</code>, <code>field</code></a></h3>
+<p>These correspond to the Rust AST node types (extracted from <code>syn</code>) that can be matched.</p>
+<h2 id="priority_rule"><a class="header" href="#priority_rule"><code>priority_rule</code></a></h2>
+<p>The <code>priority_rule</code> defines the traversal order of keys inside a pattern node.
+It ensures that, during linearization of the AST, the relevant fields are matched in the correct order, especially in constructs like:</p>
+<pre><code class="language-python">&quot;priority_rule&quot;: [&quot;left&quot;, &quot;op&quot;, &quot;right&quot;]
+</code></pre>
+<p>This guarantees consistent matching across pattern instances.</p>
+<h2 id="wildcard-support"><a class="header" href="#wildcard-support">Wildcard Support</a></h2>
+<p>You can use a wildcard <code>*</code> in the <code>idents</code> list to match <strong>any one identifier</strong>.
+For example:</p>
+<pre><code class="language-python">&quot;idents&quot;: [&quot;ctx&quot;, &quot;accounts&quot;, &quot;*&quot;]
+</code></pre>
+<p>...matches any field under <code>ctx.accounts</code>, such as <code>ctx.accounts.user_a</code>.</p>
+<h2 id="dynamic-template-creation"><a class="header" href="#dynamic-template-creation">Dynamic Template Creation</a></h2>
+<p>For convenience, you can add generator for classical templates programmatically, this one is an example:</p>
+<pre><code class="language-python">def generate_call_fn_template(*idents):
+    return {
+        &quot;pattern&quot;: {
+            &quot;call&quot;: {
+                &quot;args&quot;: &quot;&quot;,  # ignored for now
+                &quot;func&quot;: {&quot;idents&quot;: idents},
+            }
+        },
+        &quot;priority_rule&quot;: [&quot;func&quot;, &quot;args&quot;],
+    }
+</code></pre>
+<p>This allows you to match function calls like:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>solana_program::program::invoke(...)
+<span class="boring">}</span></code></pre></pre>
+<p>and by using the dynamic generation with <code>generate_call_fn_template(&quot;solana_program&quot;, &quot;program&quot;, &quot;invoke&quot;)</code>, you don't have to manually write a full template.</p>
+<h2 id="template-testing"><a class="header" href="#template-testing">Template Testing</a></h2>
+<p>The folder <code>test_starlark_condition_template/</code> contains a <code>test.py</code> script that acts as a an example place for templates.</p>
+<p>It defines AST snippets and verifies that each pattern matches correctly:</p>
+<pre><code class="language-python">    # if
+    assert is_matching_template_by_key(AST, &quot;CHECK_CTX_ACCOUNT_AUTHORITY_KEY_TOKEN_OWNER&quot;)
+    assert is_matching_template_by_key(AST2, &quot;CHECK_SPLTOKEN_ID_CTX_ACCOUNT_AUTHORITY_KEY&quot;)
+    assert is_matching_template_by_key(AST3, &quot;CHECK_NOT_CTX_ACCOUNTS_AUTHORITY_ISSIGNER&quot;)
+    assert is_matching_template_by_key(AST4, &quot;CHECK_CTX_ACCOUNTS_WILDCARD_KEY_EQ&quot;)
+
+    # require
+    assert is_matching_template_by_key(AST5, &quot;REQUIRE_CTX_ACCOUNTS_RENT_KEY_SYSVAR_RENT_ID&quot;)
+
+    # called function
+    assert is_matching_template_by_key(AST2, &quot;CALL_FN_SOLANAPROGRAM_PROGRAM_INVOKE&quot;)
+
+    # dynamic template
+    assert is_matching_template(AST2, generate_call_fn_template(&quot;solana_program&quot;, &quot;program&quot;, &quot;invoke&quot;))
+</code></pre>
+<h2 id="summary-of-supported-pattern-types-already-implemented-can-easily-be-extended"><a class="header" href="#summary-of-supported-pattern-types-already-implemented-can-easily-be-extended">Summary of supported pattern types already implemented (can easily be extended)</a></h2>
+<p>Templates can express:</p>
+<ul>
+<li><strong>Binary comparisons</strong> (<code>==</code>, <code>!=</code>)</li>
+<li><strong>Unary operations</strong> (<code>!some_flag</code>)</li>
+<li><strong>Field access</strong> (<code>ctx.accounts.x.is_signer</code>)</li>
+<li><strong>Macro calls</strong> (<code>require_eq!(...)</code>)</li>
+<li><strong>Method calls</strong> (<code>ctx.accounts.user_a.key()</code>)</li>
+<li><strong>Function calls</strong> (example: <code>solana_program::program::invoke(...)</code>)</li>
+</ul>
+<p>They support wildcards like <code>&quot;*&quot;</code> to generalize over certain path segments.</p>
+<h2 id="usage-in-rules"><a class="header" href="#usage-in-rules">Usage in Rules</a></h2>
+<p>Templates are often used within <code>.star</code> files like this:</p>
+<pre><code class="language-python">if template_manager.is_matching_template_by_key(node, &quot;CHECK_CTX_ACCOUNT_AUTHORITY_KEY_TOKEN_OWNER&quot;):
+    continue # continue the loop over all nodes, the check is there, so it's probably not vuln
+</code></pre>
+<p>This allows auditors or developers to write rules that check for high-level semantic conditions without diving into low-level AST fields every time.</p>
+<h2 id="advantages"><a class="header" href="#advantages">Advantages</a></h2>
+<ul>
+<li>🔁 Reusability: templates can be applied across multiple rules</li>
+<li>🔍 Precision: match deeply nested expressions in structured order</li>
+<li>🔧 Extensibility: you can write custom templates without editing core logic</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../rules/format.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../rules/example.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../rules/format.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../rules/example.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
