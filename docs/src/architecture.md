@@ -170,7 +170,7 @@ This feature is useful for audits where source code is unavailable or unverifiab
 
 ## External Dependencies
 
-- [sbpf-solana (anza-xyz)](https://github.com/anza-xyz/sbpf-solana): Disassembly / Analysis core
+- [`sbpf-solana (anza-xyz)`](https://github.com/anza-xyz/sbpf-solana): Disassembly / Analysis core
 - [`syn`](https://docs.rs/syn): Source AST parsing
 - [`starlark-rust`](https://github.com/facebook/starlark-rust): Rule evaluation engine
 

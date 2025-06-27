@@ -40,3 +40,10 @@ The rule engine gives you access to:
 
 - 📘 [How to write Rules](rules/format.md)
 - ✅ [Use case example](rules/example.md) 
+
+## Note
+
+The sast engineering core in Sol-azy is based on the excellent open-source project  
+[`radar`](https://github.com/Auditware/radar) by [Auditware)](https://github.com/Auditware).
+
+We've been heavily inspired by their approach and wanted a standalone binary capable of it.

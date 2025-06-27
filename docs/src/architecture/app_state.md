@@ -7,7 +7,7 @@ It coordinates the execution of commands like `build`, `sast` and `reverse`, and
 
 ## Where It Lives
 
-File: `src/state/app_state.rs`]
+File: `src/state/app_state.rs`
 
 ---
 
