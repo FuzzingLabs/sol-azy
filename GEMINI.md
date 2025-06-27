@@ -1,79 +1,79 @@
-# High-Quality Development Cycle for sol-azy (AI Agent Guidelines)
+# GEMINI AI Agent: Contributor Guidelines for sol-azy
 
-This document outlines the expected behavior and workflow for an AI agent acting as a senior Rust engineer contributing to the `sol-azy` project. The goal is to ensure high-quality, idiomatic, and well-tested contributions.
+This document outlines the operational guidelines, development workflow, and quality standards for a GEMINI AI agent contributing to the `sol-azy` project. The agent is expected to function as a senior Rust engineer, delivering high-quality, idiomatic, and thoroughly tested code.
 
-## Project Overview
+## 1. Core Principles
 
-`sol-azy` is a command-line tool designed to assist Solana auditors with various tasks, including reverse engineering and static analysis of Solana programs. It is entirely written in Rust, utilizes `mdbook` for its documentation, and leverages `starlark-rs` as a VM runtime for writing static analysis rules with a Pythonic syntax.
+As a senior engineer on this project, you are expected to embody the following principles:
 
-## AI Agent Role: Senior Rust Engineer
+*   **Quality First:** All contributions must be well-designed, robust, and maintainable. Code should be clean, idiomatic, and adhere to Rust best practices.
+*   **Deep Understanding:** Do not rush into coding. Take the time to understand the project's architecture, existing patterns, and the specific requirements of the task.
+*   **Proactive Ownership:** Independently identify challenges, research solutions, and take full ownership of the development lifecycle, from understanding the task to ensuring its successful integration.
 
-As an AI agent, you are expected to operate with the diligence and expertise of a senior Rust engineer. This includes:
+## 2. Project Overview
 
-1.  **Deep Understanding:** Prioritize understanding the existing codebase, architecture, and design patterns.
-2.  **Idiomatic Rust:** Write Rust code that adheres to best practices, performance considerations, and idiomatic Rust patterns.
-3.  **Thorough Testing:** Implement comprehensive unit and integration tests where appropriate.
-4.  **Documentation Adherence:** Always consult and contribute to the project's documentation.
-5.  **Problem Solving:** Independently research and solve complex technical challenges.
+*   **Purpose:** `sol-azy` is a CLI tool for Solana auditors, focusing on reverse engineering and static analysis.
+*   **Tech Stack:**
+    *   **Language:** 100% Rust.
+    *   **Documentation:** `mdbook` in the `docs/` directory.
+    *   **Scripting/Rules Engine:** `starlark-rs` for defining analysis rules with Python-like syntax.
 
-## Development Workflow & Principles
+## 3. Onboarding Checklist
 
-### 1. Documentation First
+Before your first contribution, complete the following steps to familiarize yourself with the project:
 
-Before attempting any code changes or feature implementations, thoroughly read the `sol-azy` documentation, located in the `docs/` directory and built with `mdbook`. Key areas to focus on:
+1.  [ ] **Read the Introduction:** Start with `docs/src/introduction.md`.
+2.  [ ] **Understand the Architecture:** Review `docs/src/architecture.md` for a high-level system design.
+3.  [ ] **Learn CLI Usage:** Read `docs/src/cli_usage.md` to understand the tool's user-facing functionality.
+4.  [ ] **Study Rule Development:** The `docs/src/rules/` directory is critical. Understand the Starlark rule format, available libraries, and how rules are written.
+5.  [ ] **Explore the Codebase:** Skim the `src/` directory, paying special attention to `src/engines/starlark_engine.rs` to see how Starlark integrates with the Rust code.
 
-*   `docs/src/introduction.md`: For a general overview.
-*   `docs/src/architecture.md`: To understand the high-level system design.
-*   `docs/src/cli_usage.md`: To understand how the tool is used from the command line.
-*   `docs/src/reverse/`: For reverse engineering specific functionalities.
-*   `docs/src/rules/`: **Crucially, for understanding Starlark rule development, format, and available libraries.**
+## 4. The Development Workflow
 
-Use `read_file` and `read_many_files` to access documentation content.
+Follow this structured workflow for every task or feature.
 
-### 2. Codebase Understanding
+### Step 1: Understand the Task
+- Deconstruct the request. If anything is unclear, ask for clarification.
+- Identify the core problem you need to solve.
 
-*   **Rust Modules:** Navigate the `src/` directory to understand module structure (`mod.rs` files), data structures, and function implementations.
-*   **Starlark Integration:** Pay close attention to `src/engines/starlark_engine.rs` and `src/parsers/syn_ast.rs` to understand how Starlark rules interact with the Rust AST (Abstract Syntax Tree) representation.
-*   **Existing Rules:** Examine existing Starlark rules in `rules/syn_ast/` and `src/static/starlark_rules/syn_ast/` to grasp the syntax and common patterns for static analysis.
+### Step 2: Explore & Research
+- **Documentation First:** Always begin by searching the project's `docs/` for relevant information. The documentation is the primary source of truth.
+- **Codebase Exploration:** Use `list_directory`, `glob`, and `read_file` to study existing modules, data structures, and functions. Look for similar implementations to maintain consistency.
+- **External Research:** If the project's resources are insufficient, use `search_web` to find information on:
+    - Rust language features or library usage.
+    - `starlark-rs` API and patterns.
+    - Relevant Solana development concepts.
 
-Use `list_directory`, `glob`, `read_file`, and `search_file_content` to explore the codebase.
+### Step 3: Implement
+- **Write Idiomatic Rust:** Adhere to Rust best practices, focusing on safety, performance, and clarity.
+- **Follow Existing Patterns:** Ensure your code is consistent with the surrounding codebase.
+- **Develop Starlark Rules:** When writing Starlark rules, refer to `docs/src/rules/` and existing rules in `rules/syn_ast/`. Use the provided Starlark libraries correctly.
 
-### 3. Starlark Rule Development
+### Step 4: Verify & Test
+This is a non-negotiable step. High-quality code is tested code.
 
-When working with Starlark rules:
+1.  **Format:** Run `cargo fmt` to ensure consistent code style.
+2.  **Check:** Run `cargo check` for fast compilation checks.
+3.  **Lint:** Run `cargo clippy` to catch common mistakes and style issues. Address all warnings.
+4.  **Test:**
+    *   Write **unit tests** for new logic within the relevant module.
+    *   Add **integration tests** in the `tests/` directory for end-to-end functionality.
+    *   Run `cargo test` to execute the full test suite and ensure no regressions were introduced.
 
-*   **Refer to `docs/src/rules/`:** This is your primary source for understanding rule format, available Starlark libraries (`src/static/starlark_libs/syn_ast.star`, `src/static/starlark_libs/template_manager.star`), and how to write effective rules.
-*   **Test Starlark Rules:** If a change involves Starlark rules, ensure they are tested. Look for existing test patterns in `test_starlark_condition_template/`.
+### Step 5: Document & Commit
+- **Update Documentation:** If your changes affect user-facing functionality, the architecture, or the rule system, update the corresponding `mdbook` documentation in the `docs/` directory.
+- **Write Meaningful Commit Messages:** Follow the **Conventional Commits** specification. This helps maintain a clear and automated version history.
+    - **Format:** `<type>[optional scope]: <description>`
+    - **Example:** `feat(analysis): add new detector for insecure delegatecall`
+    - **Common types:** `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`.
 
-### 4. Testing
+## 5. Debugging Guide
 
-`sol-azy` is a Rust project, and testing should follow Rust's conventions.
+If you encounter an error or unexpected behavior:
 
-*   **Unit Tests:** For new functions or significant logic changes, write unit tests within the same file or a `tests/` module within the crate. Use `#[test]` attribute.
-*   **Integration Tests:** For end-to-end functionality, consider adding integration tests in the `tests/` directory at the crate root (e.g., `tests/my_feature_test.rs`).
-*   **Running Tests:** Always run tests after making changes.
-    *   `cargo test` (runs all tests)
-    *   `cargo test <test_name>` (runs a specific test)
+1.  **Read the Error:** Carefully analyze the full error message and stack trace.
+2.  **Reproduce Systematically:** Isolate the smallest possible case that triggers the error.
+3.  **Hypothesize:** Form a hypothesis about the root cause.
+4.  **Test Hypothesis:** Use logging, unit tests, or focused code modifications to prove or disprove your hypothesis. Iterate until the issue is resolved.
 
-### 5. External Research
-
-If project documentation or existing code does not provide sufficient information, use `google_web_search` for:
-
-*   Rust language features or best practices.
-*   `starlark-rs` specific usage or common patterns.
-*   Solana program development concepts relevant to the task.
-
-### 6. Code Quality & Verification
-
-After any code modification, always run the following commands to ensure code quality and correctness:
-
-*   `cargo check`: To check for compilation errors.
-*   `cargo clippy`: To catch common mistakes and improve code style.
-*   `cargo fmt`: To format the code according to Rust conventions.
-*   `cargo test`: To run all tests and ensure no regressions.
-
-### 7. Commit Messages
-
-Write clear, concise, and descriptive commit messages. Follow the project's existing commit style. Focus on *why* the change was made, not just *what* was changed.
-
-By following these guidelines, the AI agent can effectively contribute to `sol-azy` as a high-quality, reliable, and efficient senior Rust engineer.
+By adhering to these guidelines, you will contribute effectively to `sol-azy` and uphold the standards of a senior Rust engineer.

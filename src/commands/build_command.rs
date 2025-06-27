@@ -5,7 +5,6 @@ use crate::state::build_state::BuildState;
 use crate::{helpers, Commands};
 use log::{debug, error, info};
 
-
 pub struct BuildCmd {
     pub target_dir: String,
     pub out_dir: String,

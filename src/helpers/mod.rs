@@ -10,11 +10,11 @@
 
 pub mod static_dir;
 
-use std::{fmt, fs, path::Path, process::Command};
-use std::fmt::Formatter;
-use toml::Value;
 use log::{debug, error};
+use std::fmt::Formatter;
 use std::process::Stdio;
+use std::{fmt, fs, path::Path, process::Command};
+use toml::Value;
 
 /// Checks if a binary is available in the system's `$PATH`.
 ///
@@ -117,9 +117,14 @@ pub struct BeforeCheck {
 /// # Returns
 ///
 /// A `Result<String>` containing the command's stdout if successful, or an error.
-pub fn run_command(command_name: &str, args: &[&str], env_vars: Vec<(&str, &str)>) -> Result<String, anyhow::Error> {
+pub fn run_command(
+    command_name: &str,
+    args: &[&str],
+    env_vars: Vec<(&str, &str)>,
+) -> Result<String, anyhow::Error> {
     let mut bind = Command::new(command_name);
-    let command = bind.args(args)
+    let command = bind
+        .args(args)
         .stdout(Stdio::piped())
         .stderr(Stdio::piped());
 
@@ -127,13 +132,20 @@ pub fn run_command(command_name: &str, args: &[&str], env_vars: Vec<(&str, &str)
         command.env(key, value);
     }
 
-    let output = command.output()
+    let output = command
+        .output()
         .map_err(|e| anyhow::anyhow!("Failed to run `{}`: {}", command_name, e))?;
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
-        error!("Error while running `{}`\nStderr:\n{}", command_name, stderr);
-        return Err(anyhow::anyhow!("Error while running `{}`. Check the logs above for details.", command_name));
+        error!(
+            "Error while running `{}`\nStderr:\n{}",
+            command_name, stderr
+        );
+        return Err(anyhow::anyhow!(
+            "Error while running `{}`. Check the logs above for details.",
+            command_name
+        ));
     }
 
     let stdout = String::from_utf8_lossy(&output.stdout);

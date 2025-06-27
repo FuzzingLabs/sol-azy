@@ -141,8 +141,7 @@ impl SastPrinter {
     fn group_results_by_rule_name<'a>(
         results_with_matches: &[(String, &'a SynAstResult)],
     ) -> HashMap<String, Vec<(String, &'a SynAstResult)>> {
-        let mut grouped_results: HashMap<String, Vec<(String, &'a SynAstResult)>> =
-            HashMap::new();
+        let mut grouped_results: HashMap<String, Vec<(String, &'a SynAstResult)>> = HashMap::new();
 
         for (filename, ast_res) in results_with_matches {
             let rule_name = ast_res.rule_metadata.name.clone();

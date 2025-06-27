@@ -30,19 +30,40 @@ impl AppState {
                 bytecodes_file,
                 labeling,
                 reduced,
-                only_entrypoint
-            } => self.run_reverse(mode.clone(), out_dir.clone(), bytecodes_file.clone(), *labeling, *reduced, *only_entrypoint),
-            Commands::Dotting { config, reduced_dot_path, full_dot_path } => {
-                self.run_dotting(config.clone(), reduced_dot_path.clone(), full_dot_path.clone())
-            }
-            Commands::Fetcher { program_id, out_dir, rpc_url } => {
-                self.run_fetcher(program_id.clone(), out_dir.clone(), rpc_url.clone()).await;
+                only_entrypoint,
+            } => self.run_reverse(
+                mode.clone(),
+                out_dir.clone(),
+                bytecodes_file.clone(),
+                *labeling,
+                *reduced,
+                *only_entrypoint,
+            ),
+            Commands::Dotting {
+                config,
+                reduced_dot_path,
+                full_dot_path,
+            } => self.run_dotting(
+                config.clone(),
+                reduced_dot_path.clone(),
+                full_dot_path.clone(),
+            ),
+            Commands::Fetcher {
+                program_id,
+                out_dir,
+                rpc_url,
+            } => {
+                self.run_fetcher(program_id.clone(), out_dir.clone(), rpc_url.clone())
+                    .await;
             }
             cmd @ Commands::Build { .. } => {
                 self.build_project(&commands::build_command::BuildCmd::new_from_clap(cmd))
             }
             cmd @ Commands::Sast { .. } => {
                 self.run_sast(&commands::sast_command::SastCmd::new_from_clap(cmd))
+            },
+            cmd@ Commands::AstUtils { .. } => {
+                self.run_ast_utils(&commands::ast_utils_command::AstUtilsCmd::new_from_clap(cmd)).await;
             }
             _ => info!("No command selected"),
         }
@@ -80,9 +101,7 @@ impl AppState {
     /// On failure, an error is logged.
     fn run_sast(&mut self, cmd: &commands::sast_command::SastCmd) {
         match commands::sast_command::run(cmd) {
-            Ok(ss) => {
-                self.sast_states.extend(ss)
-            },
+            Ok(ss) => self.sast_states.extend(ss),
             Err(e) => error!("An error occurred during SAST of {} {}", cmd.target_dir, e),
         }
     }
@@ -99,8 +118,23 @@ impl AppState {
     /// # Side Effects
     ///
     /// Logs success or error messages based on the result.
-    fn run_reverse(&mut self, mode: String, out_dir: String, bytecodes_file: String, labeling: bool, reduced: bool, only_entrypoint: bool) {
-        match commands::reverse_command::run(mode, out_dir, bytecodes_file, labeling, reduced, only_entrypoint) {
+    fn run_reverse(
+        &mut self,
+        mode: String,
+        out_dir: String,
+        bytecodes_file: String,
+        labeling: bool,
+        reduced: bool,
+        only_entrypoint: bool,
+    ) {
+        match commands::reverse_command::run(
+            mode,
+            out_dir,
+            bytecodes_file,
+            labeling,
+            reduced,
+            only_entrypoint,
+        ) {
             Ok(_) => info!("Reverse (static analysis) completed."),
             Err(e) => error!("An error occurred during reverse (static analysis): {}", e),
         }
@@ -148,20 +182,31 @@ impl AppState {
     /// # Errors
     ///
     /// This function logs but does not propagate errors. All failure handling is internal.
-    async fn run_fetcher(&mut self, program_id: String, output_path: String, rpc_url: Option<String>) {
+    async fn run_fetcher(
+        &mut self,
+        program_id: String,
+        output_path: String,
+        rpc_url: Option<String>,
+    ) {
         let display_rpc_url = match &rpc_url {
             Some(url) => format!("{url}"),
             None => format!("https://api.mainnet-beta.solana.com (by default)"),
         };
 
-        match commands::fetcher_command::run(program_id, output_path.clone(), rpc_url.clone()).await {
+        match commands::fetcher_command::run(program_id, output_path.clone(), rpc_url.clone()).await
+        {
             Ok(_) => info!(
                 "Bytecode successfully fetched from RPC '{}' and saved to '{}/fetched_program.so'",
-                display_rpc_url,
-                output_path
+                display_rpc_url, output_path
             ),
             Err(e) => error!("Fetcher failed: {}", e),
         }
     }
-
+    
+    async fn run_ast_utils(&mut self, cmd: &commands::ast_utils_command::AstUtilsCmd) {
+        match commands::ast_utils_command::run(cmd) {
+            Ok(_) => info!("AST utils completed."),
+            Err(e) => error!("An error occurred during AST utils: {}", e),
+        }
+    }
 }

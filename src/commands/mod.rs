@@ -10,8 +10,9 @@
 //! Each subcommand encapsulates its logic, parsing, validation, and execution paths.
 //! These are used internally by [`AppState`](crate::state::app_state::AppState) to handle `clap` commands.
 
+pub mod ast_utils_command;
 pub mod build_command;
-pub mod sast_command;
-pub mod reverse_command;
 pub mod dotting_command;
 pub mod fetcher_command;
+pub mod reverse_command;
+pub mod sast_command;

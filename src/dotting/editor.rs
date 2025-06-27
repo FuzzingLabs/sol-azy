@@ -1,8 +1,13 @@
-use std::{collections::{HashMap, HashSet}, fs, path::Path, time::Duration};
+use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
 use log::debug;
 use regex::Regex;
-use serde::{Serialize, Deserialize};
-use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
+use serde::{Deserialize, Serialize};
+use std::{
+    collections::{HashMap, HashSet},
+    fs,
+    path::Path,
+    time::Duration,
+};
 
 #[derive(Debug, Deserialize)]
 struct Config {
@@ -31,12 +36,14 @@ fn load_or_build_cluster_cache(full_dot: &str) -> std::io::Result<ClusterCache> 
 
         let spinner = ProgressBar::new_spinner();
         spinner.set_message("Regexing & capturing requested clusters from 'full' .dot file...");
-        spinner.set_style(ProgressStyle::default_spinner()
-            .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"])
-            .template("{spinner} {msg}")
-            .unwrap());
+        spinner.set_style(
+            ProgressStyle::default_spinner()
+                .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"])
+                .template("{spinner} {msg}")
+                .unwrap(),
+        );
         spinner.enable_steady_tick(Duration::from_millis(50));
-        
+
         for cap in re.captures_iter(full_dot) {
             let cluster_id = cap[1].to_string();
             let full_block = cap[0].to_string();
@@ -171,7 +178,6 @@ pub fn editor_add_functions<P: AsRef<Path> + ToString>(
                 new_edges.push(cleaned_line);
             }
         }
-        
     }
 
     // Inject new edges before the last closing brace
@@ -192,13 +198,12 @@ pub fn editor_add_functions<P: AsRef<Path> + ToString>(
     Ok(())
 }
 
-
 #[test]
 fn test() -> Result<(), Box<dyn std::error::Error>> {
     editor_add_functions(
         "src/dotting/functions.json",
         "src/dotting/cfg_reduced.dot",
-        "src/dotting/cfg.dot"
+        "src/dotting/cfg.dot",
     )?;
     Ok(())
 }

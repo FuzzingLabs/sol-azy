@@ -1,11 +1,11 @@
 use crate::engines::starlark_engine::{StarlarkEngine, StarlarkRuleDirExt, StarlarkRulesDir};
+use crate::parsers::syn_ast::{AstPositions, SourcePosition};
+use crate::printers::sast_printer::SastPrinter;
 use anyhow::{Context, Result};
 use log::{debug, error};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt;
-use crate::parsers::syn_ast::{AstPositions, SourcePosition};
-use crate::printers::sast_printer::SastPrinter;
 
 /// Represents the severity level of a rule match in static analysis.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -78,7 +78,10 @@ impl SynMatchResult {
         if let serde_json::Value::Object(_obj) = value {
             match serde_json::from_value::<SourcePosition>(value.clone()) {
                 Ok(position) => Ok(position),
-                Err(err) => Err(anyhow::anyhow!("Failed to parse 'position' metadata: {}", err)),
+                Err(err) => Err(anyhow::anyhow!(
+                    "Failed to parse 'position' metadata: {}",
+                    err
+                )),
             }
         } else {
             Err(anyhow::anyhow!(
@@ -86,7 +89,6 @@ impl SynMatchResult {
             ))
         }
     }
-
 }
 
 /// Stores the result of evaluating a single syntactic rule against a file's AST.
@@ -200,7 +202,11 @@ impl SynAst {
     /// # Returns
     ///
     /// `true` if at least one rule was applied successfully, otherwise `false`.
-    pub fn scan_ast(&mut self, rules_dir: &StarlarkRulesDir, starlark_engine: &StarlarkEngine) -> bool {
+    pub fn scan_ast(
+        &mut self,
+        rules_dir: &StarlarkRulesDir,
+        starlark_engine: &StarlarkEngine,
+    ) -> bool {
         rules_dir
             .iter()
             .map(|rule| {
@@ -242,7 +248,11 @@ pub trait SynAstMapExt {
     /// # Returns
     ///
     /// `Ok(true)` if at least one rule matched across all files, otherwise `Ok(false)` or an error.
-    fn apply_rules(&mut self, rules_dir: &StarlarkRulesDir, starlark_engine: &StarlarkEngine) -> Result<bool>;
+    fn apply_rules(
+        &mut self,
+        rules_dir: &StarlarkRulesDir,
+        starlark_engine: &StarlarkEngine,
+    ) -> Result<bool>;
     /// Returns all file paths present in the syntax map.
     #[allow(dead_code)]
     fn get_file_paths(&self) -> Vec<&String>;
@@ -251,7 +261,11 @@ pub trait SynAstMapExt {
 }
 
 impl SynAstMapExt for SynAstMap {
-    fn apply_rules(&mut self, rules_dir: &StarlarkRulesDir, starlark_engine: &StarlarkEngine) -> Result<bool> {
+    fn apply_rules(
+        &mut self,
+        rules_dir: &StarlarkRulesDir,
+        starlark_engine: &StarlarkEngine,
+    ) -> Result<bool> {
         let results = self
             .values_mut()
             .map(|syn_ast| syn_ast.scan_ast(rules_dir, starlark_engine))
@@ -289,13 +303,16 @@ impl SastState {
     ///
     /// A new `SastState` instance, or an error if the rule directory couldn't be parsed.
     pub fn new(
-        syn_ast_map: SynAstMap, 
+        syn_ast_map: SynAstMap,
         starlark_rules_dir_path: &String,
         use_internal_rules: bool,
     ) -> Result<Self> {
         Ok(Self {
             syn_ast_map,
-            starlark_rules_dir: StarlarkRulesDir::new_from_dir(starlark_rules_dir_path, use_internal_rules)?,
+            starlark_rules_dir: StarlarkRulesDir::new_from_dir(
+                starlark_rules_dir_path,
+                use_internal_rules,
+            )?,
             starlark_engine: StarlarkEngine::new(),
         })
     }
@@ -306,7 +323,8 @@ impl SastState {
     ///
     /// A boolean indicating whether any rules were successfully applied.
     pub fn apply_rules(&mut self) -> Result<bool> {
-        self.syn_ast_map.apply_rules(&self.starlark_rules_dir, &self.starlark_engine)
+        self.syn_ast_map
+            .apply_rules(&self.starlark_rules_dir, &self.starlark_engine)
     }
 
     /// Delegates printing of the rule evaluation results to a printer component.

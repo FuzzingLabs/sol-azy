@@ -19,7 +19,11 @@ pub static STATIC_DIR: Dir<'_> = include_dir!("./src/static");
 pub fn list_files(path: &str) -> Result<Vec<String>> {
     STATIC_DIR
         .get_dir(path)
-        .map(|dir| dir.files().map(|f| f.path().display().to_string()).collect())
+        .map(|dir| {
+            dir.files()
+                .map(|f| f.path().display().to_string())
+                .collect()
+        })
         .context("Failed to list static files")
 }
 
@@ -75,7 +79,8 @@ pub fn read_all_files_in_dir(path: &str) -> Result<Vec<(String, String)>> {
             dir.files()
                 .filter_map(|file| {
                     let name = file.path().display().to_string();
-                    file.contents_utf8().map(|contents| (name, contents.to_string()))
+                    file.contents_utf8()
+                        .map(|contents| (name, contents.to_string()))
                 })
                 .collect()
         })

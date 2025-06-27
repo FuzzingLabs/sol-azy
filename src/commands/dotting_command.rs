@@ -1,7 +1,7 @@
 use crate::dotting::editor::editor_add_functions;
 use crate::helpers::BeforeCheck;
-use log::{error, debug};
 use anyhow::Result;
+use log::{debug, error};
 use std::path::Path;
 
 /// Verifies that all necessary files exist before performing any dotting operation.
@@ -72,7 +72,6 @@ pub fn run(config_path: String, reduced_dot_path: String, full_dot_path: String)
     editor_add_functions(config_path, reduced_dot_path, full_dot_path)?;
     Ok(())
 }
-
 
 #[cfg(test)]
 mod tests {

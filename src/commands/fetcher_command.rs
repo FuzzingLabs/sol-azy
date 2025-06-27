@@ -1,10 +1,10 @@
 use crate::fetcher::fetch_bytecode_to;
+use crate::fetcher::MAINNET_RPC;
 use anyhow::Result;
 use log::{debug, error};
-use std::path::Path;
 use reqwest::Client;
 use serde_json::json;
-use crate::fetcher::MAINNET_RPC;
+use std::path::Path;
 
 /// Represents possible validation errors when preparing to fetch a program's bytecode.
 ///
@@ -27,7 +27,6 @@ enum FetchPrecheckError {
     #[error("Program ID '{0}' exists but is not executable.")]
     ProgramNotExecutable(String),
 }
-
 
 /// Validates all necessary preconditions before attempting to fetch a Solana program's bytecode.
 ///
@@ -64,28 +63,34 @@ async fn checks_before_fetch(
         ]
     });
 
-    let res = client.post(rpc_url)
+    let res = client
+        .post(rpc_url)
         .json(&request_body)
         .send()
         .await
         .map_err(|_| FetchPrecheckError::ProgramAccountNotFound(program_id.to_string()))?;
 
-    let res_json: serde_json::Value = res.json().await
+    let res_json: serde_json::Value = res
+        .json()
+        .await
         .map_err(|_| FetchPrecheckError::ProgramAccountNotFound(program_id.to_string()))?;
 
     let account = &res_json["result"]["value"];
     if account.is_null() {
-        return Err(FetchPrecheckError::ProgramAccountNotFound(program_id.to_string()));
+        return Err(FetchPrecheckError::ProgramAccountNotFound(
+            program_id.to_string(),
+        ));
     }
 
     let executable = account["executable"].as_bool().unwrap_or(false);
     if !executable {
-        return Err(FetchPrecheckError::ProgramNotExecutable(program_id.to_string()));
+        return Err(FetchPrecheckError::ProgramNotExecutable(
+            program_id.to_string(),
+        ));
     }
 
     Ok(())
 }
-
 
 /// Runs the fetcher command to download bytecode of a program from the Solana blockchain.
 ///
@@ -103,7 +108,11 @@ async fn checks_before_fetch(
 /// * `Ok(())` if fetching and writing succeed.
 /// * `Err(anyhow::Error)` if the program doesn't exist, isn't executable,
 ///   the RPC fails, or the output file can't be written.
-pub async fn run(program_id: String, out_dir: String, rpc_url: Option<String>) -> anyhow::Result<()> {
+pub async fn run(
+    program_id: String,
+    out_dir: String,
+    rpc_url: Option<String>,
+) -> anyhow::Result<()> {
     let rpc_url_unwrapped = rpc_url.clone().unwrap_or_else(|| MAINNET_RPC.to_string());
 
     debug!("Starting fetch for program ID '{}'", program_id);
@@ -111,7 +120,10 @@ pub async fn run(program_id: String, out_dir: String, rpc_url: Option<String>) -
     match checks_before_fetch(&out_dir, &program_id, &rpc_url_unwrapped).await {
         Ok(_) => {} // continue
         Err(FetchPrecheckError::OutputDirCreationFailed(dir)) => {
-            return Err(anyhow::anyhow!("Failed to create output directory '{}'", dir));
+            return Err(anyhow::anyhow!(
+                "Failed to create output directory '{}'",
+                dir
+            ));
         }
         Err(FetchPrecheckError::ProgramAccountNotFound(pid)) => {
             error!("Program ID not found on-chain: {}", pid);
@@ -128,8 +140,6 @@ pub async fn run(program_id: String, out_dir: String, rpc_url: Option<String>) -
     Ok(())
 }
 
-
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -143,7 +153,10 @@ mod tests {
         let fake_program = "Missing11111111111111111111111111111111111111";
 
         let result = checks_before_fetch(out_dir, fake_program, MAINNET_RPC).await;
-        assert!(matches!(result, Err(FetchPrecheckError::ProgramAccountNotFound(_))));
+        assert!(matches!(
+            result,
+            Err(FetchPrecheckError::ProgramAccountNotFound(_))
+        ));
 
         fs::remove_dir_all(out_dir).unwrap();
     }
@@ -157,7 +170,10 @@ mod tests {
         let non_exec_account = "SysvarC1ock11111111111111111111111111111111"; // Clock sysvar is not executable
 
         let result = checks_before_fetch(out_dir, non_exec_account, MAINNET_RPC).await;
-        assert!(matches!(result, Err(FetchPrecheckError::ProgramNotExecutable(_))));
+        assert!(matches!(
+            result,
+            Err(FetchPrecheckError::ProgramNotExecutable(_))
+        ));
 
         fs::remove_dir_all(out_dir).unwrap();
     }
@@ -175,4 +191,3 @@ mod tests {
         fs::remove_dir_all(out_dir).unwrap();
     }
 }
-

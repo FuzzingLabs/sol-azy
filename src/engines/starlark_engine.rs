@@ -142,7 +142,10 @@ fn load_internal_rules() -> anyhow::Result<Vec<StarlarkRule>> {
 /// # Returns
 ///
 /// A `Result` containing a vector of `StarlarkRule` objects, or an I/O error.
-fn load_external_rules(path: &std::path::Path, rules_dir: &String) -> anyhow::Result<Vec<StarlarkRule>> {
+fn load_external_rules(
+    path: &std::path::Path,
+    rules_dir: &String,
+) -> anyhow::Result<Vec<StarlarkRule>> {
     std::fs::read_dir(path)?
         .filter_map(Result::ok)
         .map(|entry| entry.path())
@@ -161,11 +164,7 @@ fn load_external_rules(path: &std::path::Path, rules_dir: &String) -> anyhow::Re
             // TODO: get rule_type
             let rule_type = StarlarkRuleType::Syn;
 
-            info!(
-                "Loaded rule {} from directory {}",
-                filename,
-                rules_dir
-            );
+            info!("Loaded rule {} from directory {}", filename, rules_dir);
 
             Ok(StarlarkRule {
                 filename,
@@ -206,13 +205,13 @@ impl StarlarkEngine {
             },
             // ? https://github.com/facebook/starlark-rust/blob/main/starlark/src/stdlib.rs#L131
             globals: GlobalsBuilder::extended_by(&[
-                LibraryExtension::Json,         // ? To communicate with the Rust parts easily
-                LibraryExtension::Map,          // ? For `map(lambda x: x * 2, [1, 2, 3, 4]) == [2, 4, 6, 8]`
-                LibraryExtension::Filter,       // ? For `filter(lambda x: x > 2, [1, 2, 3, 4]) == [3, 4]`
-                LibraryExtension::Typing,       // ? Type annotation and strict type checking
-                LibraryExtension::StructType,   // ? For export in a pythonic way
-                LibraryExtension::Print,        // ? Access to `print`
-                LibraryExtension::SetType,      // ? Access to `set`
+                LibraryExtension::Json,       // ? To communicate with the Rust parts easily
+                LibraryExtension::Map, // ? For `map(lambda x: x * 2, [1, 2, 3, 4]) == [2, 4, 6, 8]`
+                LibraryExtension::Filter, // ? For `filter(lambda x: x > 2, [1, 2, 3, 4]) == [3, 4]`
+                LibraryExtension::Typing, // ? Type annotation and strict type checking
+                LibraryExtension::StructType, // ? For export in a pythonic way
+                LibraryExtension::Print, // ? Access to `print`
+                LibraryExtension::SetType, // ? Access to `set`
             ])
             .build(),
         }
@@ -300,9 +299,7 @@ syn_rule_loader
         let heap = eval.heap();
         eval.eval_function(
             syn_rule,
-            &[
-                heap.alloc(serde_json::to_string(&syn_ast.ast_json).unwrap_or(String::new())),
-            ],
+            &[heap.alloc(serde_json::to_string(&syn_ast.ast_json).unwrap_or(String::new()))],
             &[],
         )
         .map(|v| v.to_json())

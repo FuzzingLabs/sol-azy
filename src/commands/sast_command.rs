@@ -56,15 +56,15 @@ fn checks_before_sast(cmd: &SastCmd) -> bool {
             result: std::path::Path::new(&cmd.rules_dir).exists(),
         },
     ]
-        .iter()
-        .map(|check| {
-            if !check.result {
-                error!("{}", check.error_msg);
-                return false;
-            }
-            return true;
-        })
-        .all(|check| check)
+    .iter()
+    .map(|check| {
+        if !check.result {
+            error!("{}", check.error_msg);
+            return false;
+        }
+        return true;
+    })
+    .all(|check| check)
 }
 
 /// Launches the static analysis (SAST) workflow.

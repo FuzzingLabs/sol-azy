@@ -234,10 +234,7 @@ pub fn enrich_ast_with_source_lines(ast: &syn::File, source_file_path: &Path) ->
 /// # Returns
 ///
 /// A `serde_json::Value` representing the AST with embedded position data.
-pub fn ast_to_json_with_positions(
-    ast: &syn::File,
-    positions: &AstPositions,
-) -> serde_json::Value {
+pub fn ast_to_json_with_positions(ast: &syn::File, positions: &AstPositions) -> serde_json::Value {
     let ast_json_string = syn_serde::json::to_string(ast);
 
     let mut ast_json: serde_json::Value =

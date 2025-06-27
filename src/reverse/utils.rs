@@ -1,4 +1,7 @@
-use solana_sbpf::ebpf::{Insn, HOR64_IMM, LD_B_REG, LD_DW_IMM, LD_DW_REG, LD_H_REG, LD_W_REG, MM_RODATA_START, MOV32_IMM, MOV64_IMM};
+use solana_sbpf::ebpf::{
+    Insn, HOR64_IMM, LD_B_REG, LD_DW_IMM, LD_DW_REG, LD_H_REG, LD_W_REG, MM_RODATA_START,
+    MOV32_IMM, MOV64_IMM,
+};
 use std::collections::HashMap;
 use std::fmt::Write as _;
 
@@ -77,13 +80,18 @@ impl RegisterTracker {
 ///
 /// A formatted string representation (`b"..."`) of the resolved memory slice,
 /// or an empty string if resolution fails or is not applicable.
-pub fn update_string_resolution(program: &[u8], insn: &Insn, next_insn_wrapped: Option<&Insn>, register_tracker: &mut RegisterTracker) -> String {
+pub fn update_string_resolution(
+    program: &[u8],
+    insn: &Insn,
+    next_insn_wrapped: Option<&Insn>,
+    register_tracker: &mut RegisterTracker,
+) -> String {
     register_tracker.update(insn);
     match insn.opc {
         // used for sBPF_version >= 2
         LD_DW_REG | LD_B_REG | LD_H_REG | LD_W_REG => {
             let reg_value = register_tracker.get(insn.dst);
-            let offset = insn.off as i32; // avoiding potential panics due to overflowing while getting absolute value 
+            let offset = insn.off as i32; // avoiding potential panics due to overflowing while getting absolute value
             match reg_value {
                 Some(Value::Const(value)) => {
                     let offset_base = MM_RODATA_START as usize;
@@ -118,9 +126,9 @@ pub fn update_string_resolution(program: &[u8], insn: &Insn, next_insn_wrapped: 
                     let slice = &program[start..end];
                     format_bytes(slice)
                 }
-            _ => "".to_string(),
+                _ => "".to_string(),
             }
-        },
+        }
         LD_DW_IMM => {
             let offset_base = MM_RODATA_START as usize;
             let start = if insn.imm > 0 && insn.imm as usize > offset_base {

@@ -6,18 +6,18 @@
 //! Commands are parsed using `clap`, and executed through the central `AppState` dispatcher.
 
 mod commands;
-mod state;
+mod dotting;
+mod engines;
+mod fetcher;
 mod helpers;
 mod parsers;
-mod engines;
 mod printers;
 mod reverse;
-mod dotting;
-mod fetcher;
+mod state;
 
+use crate::state::app_state::AppState;
 use clap::{Parser, Subcommand};
 use tracing_subscriber::fmt;
-use crate::state::app_state::AppState;
 
 #[derive(Parser)]
 #[clap(name = "sol-azy", version = "0.1", author = "FuzzingLabs")]
@@ -47,13 +47,10 @@ pub enum Commands {
         recursive: bool,
         // TODO: use Build out-dir in options
     },
-    Fuzz {
-    },
-    Test {
-    },
-    Clean {
-    },
-    // example: cargo run -- reverse --mode both --out-dir test_cases/base_sbf_addition_checker/out1/  --bytecodes-file ./test_cases/base_sbf_addition_checker/bytecodes/addition_checker.so --labeling 
+    Fuzz {},
+    Test {},
+    Clean {},
+    // example: cargo run -- reverse --mode both --out-dir test_cases/base_sbf_addition_checker/out1/  --bytecodes-file ./test_cases/base_sbf_addition_checker/bytecodes/addition_checker.so --labeling
     Reverse {
         #[clap(long = "mode", value_parser = clap::builder::PossibleValuesParser::new(["disass", "cfg", "both"]))]
         mode: String,
@@ -72,29 +69,56 @@ pub enum Commands {
 
         #[clap(long = "only-entrypoint", action)]
         only_entrypoint: bool,
-
     },
     // example: cargo run -- dotting -c functions.json -f cfg.dot -r cfg_reduced.dot
     Dotting {
-        #[clap(short = 'c', long = "config", help = "Path to the JSON configuration file (e.g. to specify which functions to add)")]
+        #[clap(
+            short = 'c',
+            long = "config",
+            help = "Path to the JSON configuration file (e.g. to specify which functions to add)"
+        )]
         config: String,
-    
-        #[clap(short = 'r', long = "reduced-dot-path", help = "Path to the reduced .dot file")]
+
+        #[clap(
+            short = 'r',
+            long = "reduced-dot-path",
+            help = "Path to the reduced .dot file"
+        )]
         reduced_dot_path: String,
-    
-        #[clap(short = 'f', long = "full-dot-path", help = "Path to the full .dot file")]
+
+        #[clap(
+            short = 'f',
+            long = "full-dot-path",
+            help = "Path to the full .dot file"
+        )]
         full_dot_path: String,
-    },    
+    },
     Fetcher {
-        #[clap(short = 'p', long = "program-id", help = "Solana Program ID to fetch bytecode from")]
+        #[clap(
+            short = 'p',
+            long = "program-id",
+            help = "Solana Program ID to fetch bytecode from"
+        )]
         program_id: String,
 
-        #[clap(short = 'o', long = "out-dir", help = "Path to write the program.so file")]
+        #[clap(
+            short = 'o',
+            long = "out-dir",
+            help = "Path to write the program.so file"
+        )]
         out_dir: String,
 
-        #[clap(short = 'r', long = "rpc-url", help = "Optional Solana RPC endpoint (by default it will use https://api.mainnet-beta.solana.com)")]
+        #[clap(
+            short = 'r',
+            long = "rpc-url",
+            help = "Optional Solana RPC endpoint (by default it will use https://api.mainnet-beta.solana.com)"
+        )]
         rpc_url: Option<String>,
-    }
+    },
+    AstUtils {
+        #[clap(short = 'f', long = "file-path", help = "Path to the file to parse")]
+        file_path: String,
+    },
 }
 
 #[tokio::main]
@@ -107,7 +131,7 @@ async fn main() {
     let mut app = AppState {
         cli: Cli::parse(),
         build_states: vec![],
-        sast_states: vec![]
+        sast_states: vec![],
     };
 
     app.run_cli().await

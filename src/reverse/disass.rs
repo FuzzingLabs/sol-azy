@@ -5,9 +5,12 @@ use std::time::Duration;
 use std::u8;
 
 use crate::reverse::immediate_tracker::ImmediateTracker;
-use crate::reverse::utils::{format_bytes, update_string_resolution, RegisterTracker, MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR};
-use crate::reverse::OutputFile;
 use crate::reverse::rusteq::translate_to_rust;
+use crate::reverse::utils::{
+    format_bytes, update_string_resolution, RegisterTracker,
+    MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR,
+};
+use crate::reverse::OutputFile;
 use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
@@ -120,15 +123,23 @@ pub fn disassemble_wrapper<P: AsRef<Path>>(
     mut reg_tracker_wrapped: Option<&mut RegisterTracker>,
     path: P,
 ) -> std::io::Result<()> {
-    disassemble(program, analysis, imm_tracker_wrapped.as_deref_mut(), reg_tracker_wrapped.as_deref_mut(), &path)?;
+    disassemble(
+        program,
+        analysis,
+        imm_tracker_wrapped.as_deref_mut(),
+        reg_tracker_wrapped.as_deref_mut(),
+        &path,
+    )?;
     debug!("Tracking Immediates...");
 
     let spinner = ProgressBar::new_spinner();
     spinner.set_message("Performing binary analysis...");
-    spinner.set_style(ProgressStyle::default_spinner()
+    spinner.set_style(
+        ProgressStyle::default_spinner()
             .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"])
             .template("{spinner} {msg}")
-            .unwrap());
+            .unwrap(),
+    );
     spinner.enable_steady_tick(Duration::from_millis(50));
 
     if let Some(imm_tracker) = imm_tracker_wrapped {
@@ -159,7 +170,6 @@ pub fn disassemble_wrapper<P: AsRef<Path>>(
                 writeln!(output, "0x{:x} (+ 0x{:x}): {}", start, start_idx, repr)?;
             }
         }
-        
     }
 
     spinner.finish_using_style();
