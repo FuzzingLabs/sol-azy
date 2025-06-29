@@ -1,7 +1,7 @@
 use crate::helpers::{get_project_type, BeforeCheck, ProjectType};
 use crate::parsers::syn_ast;
 use crate::state::sast_state::SastState;
-use crate::Commands;
+use crate::{helpers, Commands};
 use log::{debug, error, info};
 
 pub struct SastCmd {
@@ -183,6 +183,8 @@ fn scan_directory_recursively(cmd: &SastCmd) -> anyhow::Result<Vec<SastState>> {
 ///
 /// A `Result` containing a populated `SastState` on success, or an error if analysis fails.
 fn sast_anchor_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
+    let spinner = helpers::spinner::get_new_spinner(format!("Performing sast scan on {} anchor project...", cmd.target_dir));
+    
     // ? FUTURE: Use Anchor.toml to get programs paths?
     let mut sast_state = SastState::new(
         syn_ast::get_syn_ast_recursive(&format!("{}/programs", cmd.target_dir))?,
@@ -194,13 +196,15 @@ fn sast_anchor_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
         Ok(_) => {}
         Err(_e) => {
             error!("Cannot apply rules to the project: {}", cmd.target_dir);
+            spinner.finish_using_style();
             return Err(anyhow::anyhow!(
                 "Cannot apply rules to the project: {}",
                 cmd.target_dir
             ));
         }
     }
-
+    spinner.finish_using_style();
+    
     sast_state.print_results(&cmd.target_dir)?;
 
     if cmd.syn_scan_only {
@@ -221,6 +225,8 @@ fn sast_anchor_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
 ///
 /// A `Result` containing a populated `SastState` on success, or an error if analysis fails.
 fn sast_sbf_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
+    let spinner = helpers::spinner::get_new_spinner(format!("Performing sast scan on {} sbf project...", cmd.target_dir));
+    
     // ? FUTURE: Use Cargo.toml to get programs paths?
     let mut sast_state = SastState::new(
         syn_ast::get_syn_ast_recursive(&format!("{}/src", cmd.target_dir))?,
@@ -232,12 +238,14 @@ fn sast_sbf_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
         Ok(_) => {}
         Err(_e) => {
             error!("Cannot apply rules to the project: {}", cmd.target_dir);
+            spinner.finish_using_style();
             return Err(anyhow::anyhow!(
                 "Cannot apply rules to the project: {}",
                 cmd.target_dir
             ));
         }
     }
+    spinner.finish_using_style();
 
     sast_state.print_results(&cmd.target_dir)?;
 

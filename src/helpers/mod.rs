@@ -9,6 +9,7 @@
 //! It also defines helper types like `ProjectType` and `BeforeCheck` used in build and analysis workflows.
 
 pub mod static_dir;
+pub mod spinner;
 
 use log::{debug, error};
 use std::fmt::Formatter;
