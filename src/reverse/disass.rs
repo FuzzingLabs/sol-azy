@@ -1,7 +1,6 @@
-use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
+use indicatif::{ProgressIterator};
 use log::debug;
 use solana_sbpf::{ebpf::LD_DW_IMM, static_analysis::Analysis};
-use std::time::Duration;
 use std::u8;
 
 use crate::reverse::immediate_tracker::ImmediateTracker;
@@ -14,6 +13,7 @@ use crate::reverse::OutputFile;
 use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
+use crate::helpers;
 
 /// Performs the core disassembly process of the program based on a provided static analysis.
 ///
@@ -132,15 +132,7 @@ pub fn disassemble_wrapper<P: AsRef<Path>>(
     )?;
     debug!("Tracking Immediates...");
 
-    let spinner = ProgressBar::new_spinner();
-    spinner.set_message("Performing binary analysis...");
-    spinner.set_style(
-        ProgressStyle::default_spinner()
-            .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"])
-            .template("{spinner} {msg}")
-            .unwrap(),
-    );
-    spinner.enable_steady_tick(Duration::from_millis(50));
+    let spinner = helpers::spinner::get_new_spinner(String::from("Performing binary analysis..."));
 
     if let Some(imm_tracker) = imm_tracker_wrapped {
         let mut table_path = PathBuf::from(path.as_ref());

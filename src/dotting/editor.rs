@@ -1,4 +1,4 @@
-use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
+use indicatif::{ProgressIterator};
 use log::debug;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
@@ -6,8 +6,8 @@ use std::{
     collections::{HashMap, HashSet},
     fs,
     path::Path,
-    time::Duration,
 };
+use crate::helpers;
 
 #[derive(Debug, Deserialize)]
 struct Config {
@@ -34,15 +34,7 @@ fn load_or_build_cluster_cache(full_dot: &str) -> std::io::Result<ClusterCache> 
         let mut map = HashMap::new();
         let re = Regex::new(r"(?s)subgraph cluster_(\d+)\s*\{.*?\}").unwrap();
 
-        let spinner = ProgressBar::new_spinner();
-        spinner.set_message("Regexing & capturing requested clusters from 'full' .dot file...");
-        spinner.set_style(
-            ProgressStyle::default_spinner()
-                .tick_strings(&["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"])
-                .template("{spinner} {msg}")
-                .unwrap(),
-        );
-        spinner.enable_steady_tick(Duration::from_millis(50));
+        let spinner = helpers::spinner::get_new_spinner(String::from("Regexing & capturing requested clusters from 'full' .dot file..."));
 
         for cap in re.captures_iter(full_dot) {
             let cluster_id = cap[1].to_string();
