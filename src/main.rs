@@ -38,14 +38,13 @@ pub enum Commands {
         #[clap(short = 'd', long = "target-dir")]
         target_dir: String,
         #[clap(short = 'r', long = "rules-dir")]
-        rules_dir: String,
+        rules_dir: Option<String>,
         #[clap(short = 's', long = "syn-scan-only", default_value_t = false)]
         syn_scan_only: bool,
         #[clap(long = "no-internal-rules", action = clap::ArgAction::SetFalse, default_value_t = true)]
         use_internal_rules: bool,
         #[clap(long = "recursive", default_value_t = true)]
         recursive: bool,
-        // TODO: use Build out-dir in options
     },
     Fuzz {},
     Test {},

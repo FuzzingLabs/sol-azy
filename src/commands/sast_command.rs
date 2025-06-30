@@ -6,15 +6,15 @@ use log::{debug, error, info};
 
 pub struct SastCmd {
     pub target_dir: String,
-    pub rules_dir: String,
+    pub rules_dir: Option<String>,
     pub syn_scan_only: bool,
     pub use_internal_rules: bool,
     pub recursive: bool,
-    // TODO: use Build out-dir in options
 }
 
 impl SastCmd {
     pub fn new_from_clap(cmd: &Commands) -> Self {
+
         match cmd {
             Commands::Sast {
                 target_dir,
@@ -22,12 +22,19 @@ impl SastCmd {
                 syn_scan_only,
                 use_internal_rules,
                 recursive,
-            } => Self {
-                target_dir: target_dir.clone(),
-                rules_dir: rules_dir.clone(),
-                syn_scan_only: *syn_scan_only,
-                use_internal_rules: *use_internal_rules,
-                recursive: *recursive,
+            } => {
+
+                if !use_internal_rules && rules_dir.is_none() {
+                    error!("Rules directory must be specified when only using external rules.");
+                    std::process::exit(1);
+                }
+                Self {
+                    target_dir: target_dir.clone(),
+                    rules_dir: rules_dir.clone(),
+                    syn_scan_only: *syn_scan_only,
+                    use_internal_rules: *use_internal_rules,
+                    recursive: *recursive,
+                }
             },
             _ => unreachable!(),
         }
@@ -52,8 +59,8 @@ fn checks_before_sast(cmd: &SastCmd) -> bool {
             result: std::path::Path::new(&cmd.target_dir).exists(),
         },
         BeforeCheck {
-            error_msg: format!("Rules directory {} doesn't exist", cmd.rules_dir),
-            result: std::path::Path::new(&cmd.rules_dir).exists(),
+            error_msg: format!("Rules directory {:?} doesn't exist", cmd.rules_dir),
+            result: std::path::Path::new(&cmd.rules_dir.clone().unwrap_or(std::env::temp_dir().to_string_lossy().to_string())).exists(),
         },
     ]
     .iter()
@@ -188,7 +195,7 @@ fn sast_anchor_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
     // ? FUTURE: Use Anchor.toml to get programs paths?
     let mut sast_state = SastState::new(
         syn_ast::get_syn_ast_recursive(&format!("{}/programs", cmd.target_dir))?,
-        &cmd.rules_dir,
+        cmd.rules_dir.clone(),
         cmd.use_internal_rules,
     )?;
 
@@ -230,7 +237,7 @@ fn sast_sbf_project(cmd: &SastCmd) -> anyhow::Result<SastState> {
     // ? FUTURE: Use Cargo.toml to get programs paths?
     let mut sast_state = SastState::new(
         syn_ast::get_syn_ast_recursive(&format!("{}/src", cmd.target_dir))?,
-        &cmd.rules_dir,
+        cmd.rules_dir.clone(),
         cmd.use_internal_rules,
     )?;
 

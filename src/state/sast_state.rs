@@ -304,7 +304,7 @@ impl SastState {
     /// A new `SastState` instance, or an error if the rule directory couldn't be parsed.
     pub fn new(
         syn_ast_map: SynAstMap,
-        starlark_rules_dir_path: &String,
+        starlark_rules_dir_path: Option<String>,
         use_internal_rules: bool,
     ) -> Result<Self> {
         Ok(Self {

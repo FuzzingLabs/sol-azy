@@ -44,7 +44,7 @@ where
     ///
     /// * `rules_dir` - The path to the directory containing the rule files.
     /// * `use_internal_rules` - A boolean indicating whether to include built-in rules.
-    fn new_from_dir(rules_dir: &String, use_internal_rules: bool) -> anyhow::Result<Self>;
+    fn new_from_dir(rules_dir: Option<String>, use_internal_rules: bool) -> anyhow::Result<Self>;
 }
 
 impl StarlarkRuleDirExt for StarlarkRulesDir {
@@ -60,10 +60,7 @@ impl StarlarkRuleDirExt for StarlarkRulesDir {
     ///
     /// A `Result` containing a vector of `StarlarkRule` objects on success, or an error
     /// if the directory is invalid or contains faulty files.
-    fn new_from_dir(rules_dir: &String, use_internal_rules: bool) -> anyhow::Result<Self> {
-        let path = std::path::Path::new(rules_dir);
-        validate_rules_directory(path, rules_dir)?;
-
+    fn new_from_dir(rules_dir: Option<String>, use_internal_rules: bool) -> anyhow::Result<Self> {
         let mut rules = Vec::new();
 
         if use_internal_rules {
@@ -71,8 +68,12 @@ impl StarlarkRuleDirExt for StarlarkRulesDir {
             rules.extend(internal_rules);
         }
 
-        let external_rules = load_external_rules(path, rules_dir)?;
-        rules.extend(external_rules);
+        if let Some(dir_path) = rules_dir {
+            let path = std::path::Path::new(&dir_path);
+            validate_rules_directory(path, &dir_path)?;
+            let external_rules = load_external_rules(path, &dir_path)?;
+            rules.extend(external_rules);
+        }
 
         Ok(rules)
     }
