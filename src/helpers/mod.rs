@@ -50,7 +50,7 @@ pub fn create_dir_if_not_exists(dir: &String) -> bool {
     fs::create_dir_all(path).is_ok()
 }
 
-/// Enum representing the detected type of a Solana-based project.
+/// Enum representing the detected type of Solana-based project.
 ///
 /// - `Anchor`: Project contains an `Anchor.toml` file.
 /// - `Sbf`: Project is identified as a native Solana SBF crate.
@@ -153,4 +153,87 @@ pub fn run_command(
     debug!("Command output:\n{}", stdout);
 
     Ok(stdout.into())
+}
+
+/// Switches the Anchor CLI version by installing a specific version from the official repository.
+///
+/// This function executes `cargo install --git https://github.com/coral-xyz/anchor --tag vXXX anchor-cli --force`
+/// where XXX is the provided version parameter.
+///
+/// # Arguments
+///
+/// * `version` - The version string to install (e.g., "0.31.0"). The "v" prefix will be added automatically.
+///
+/// # Returns
+///
+/// Returns `Ok(String)` with the command output on success, or an `anyhow::Error` on failure.
+///
+/// # Example
+///
+/// ```rust
+/// // Install Anchor CLI version 0.31.0
+/// switch_anchor_version("0.31.0")?;
+/// ```
+pub fn switch_anchor_version(version: &str) -> Result<String, anyhow::Error> {
+    let command_name = "cargo";
+    let args = &[
+        "install",
+        "--git",
+        "https://github.com/coral-xyz/anchor",
+        "--tag",
+        &format!("v{}", version),
+        "anchor-cli",
+        "--force",
+    ];
+    let env_vars = vec![];
+
+    run_command(command_name, args, env_vars)
+}
+
+/// Retrieves the Anchor version from an Anchor.toml file in the specified directory.
+///
+/// This function looks for an `Anchor.toml` file in the given path and attempts to parse
+/// the anchor version from the `[toolchain]` section using generic TOML parsing.
+///
+/// # Arguments
+///
+/// * `project_path` - Path to the directory containing the Anchor.toml file
+///
+/// # Returns
+///
+/// Returns `Ok(Some(String))` with the anchor version if found, `Ok(None)` if no version
+/// is specified in the file, or an `anyhow::Error` if the file doesn't exist or cannot be parsed.
+///
+/// # Example
+///
+/// ```rust
+/// use std::path::Path;
+///
+/// // Get anchor version from current directory
+/// let version = get_anchor_version(Path::new("."))?;
+/// match version {
+///     Some(v) => println!("Anchor version: {}", v),
+///     None => println!("No anchor version specified in Anchor.toml"),
+/// }
+/// ```
+pub fn get_anchor_version(project_path: &Path) -> Result<Option<String>, anyhow::Error> {
+    let anchor_toml_path = project_path.join("Anchor.toml");
+
+    if !anchor_toml_path.exists() {
+        return Err(anyhow::anyhow!("Anchor.toml file not found in {}", project_path.display()));
+    }
+
+    let content = fs::read_to_string(&anchor_toml_path)
+        .map_err(|e| anyhow::anyhow!("Failed to read {}: {}", anchor_toml_path.display(), e))?;
+
+    let value = toml::from_str::<Value>(&content)
+        .map_err(|e| anyhow::anyhow!("Failed to parse Anchor.toml: {}", e))?;
+
+    if let Some(toolchain) = value.get("toolchain").and_then(|t| t.as_table()) {
+        if let Some(anchor_ver) = toolchain.get("anchor_version").and_then(|v| v.as_str()) {
+            return Ok(Some(anchor_ver.to_string()));
+        }
+    }
+
+    Ok(None)
 }

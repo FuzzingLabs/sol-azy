@@ -15,6 +15,7 @@ cargo run -- build --target-dir ./examples/my_project --out-dir ./out/
 
 - `--target-dir`: Path to the Solana project root.
 - `--out-dir`: Path where build outputs should be saved.
+- `--unsafe-version-switch`: (Optional) Flag to auto switch the anchor version
 
 ---
 
