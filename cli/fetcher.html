@@ -171,6 +171,40 @@
   --out-dir ./out
 </code></pre>
 <p>This will fetch the bytecode of the program and save it to <code>./out/fetched_program.so</code>.</p>
+<h2 id="how-does-it-works"><a class="header" href="#how-does-it-works">How does it works?</a></h2>
+<h3 id="data-accounts-vs-executable-accounts"><a class="header" href="#data-accounts-vs-executable-accounts">Data Accounts vs Executable Accounts</a></h3>
+<p>On Solana every account is just a blob of bytes, but the <strong>runtime</strong> sets one special flag:</p>
+<div class="table-wrapper"><table><thead><tr><th>Flag <code>executable</code></th><th>Typical content</th><th>File saved by <strong>fetcher</strong></th></tr></thead><tbody>
+<tr><td><strong><code>true</code></strong></td><td>BPF byte-code of a program (optionally behind an <em>Upgradeable Loader</em> “Program → ProgramData” indirection).</td><td><code>fetched_program.so</code></td></tr>
+<tr><td><strong><code>false</code></strong></td><td>Arbitrary user-defined state: SPL token mints, AMM pools, governance realms, Anchor structs, sysvars, …</td><td><code>fetched_account.bin</code></td></tr>
+</tbody></table>
+</div>
+<p><code>fetcher</code> detects this flag automatically:</p>
+<ul>
+<li>If the account is executable it resolves the <strong>ProgramData</strong> pointer (when present), trims everything <strong>before</strong> the ELF header, then writes a clean shared object.</li>
+<li>Otherwise it dumps the raw data unchanged.</li>
+</ul>
+<p>If you want to look at the code, there are unit tests that illustrate both paths:</p>
+<ul>
+<li><code>test_fetch_executable</code> fetches the <strong>Serum DEX v3</strong> program and asserts the ELF header is present.</li>
+<li><code>test_fetch_non_executable_sysvar</code> fetches the <strong>Sysvar Rent</strong> account and checks its 17-byte layout.</li>
+<li><code>test_anchor_discriminator_for_onchain_account_info</code> fetches the <strong>Marinade State</strong> PDA (a non-executable Anchor account) and verifies its first 8 bytes match the Anchor <em>discriminator</em> for the struct <code>State</code>.</li>
+</ul>
+<h3 id="why-the-first-8-bytes-matter-anchor-discriminator"><a class="header" href="#why-the-first-8-bytes-matter-anchor-discriminator">Why the first 8 bytes matter (Anchor discriminator)</a></h3>
+<p>Anchor-based programs prefix every account with a <strong>discriminator</strong>:</p>
+<pre><code>discriminator = sha256(&quot;account:&lt;StructName&gt;&quot;)[..8]
+</code></pre>
+<p>Those 8 bytes uniquely identify the struct on-chain. <code>fetcher</code> already prints them for any data account it downloads.
+In a <strong>future</strong> version we’ll <strong>reverse-map</strong> the discriminator to the struct name whenever the hash matches a known Anchor IDL, giving you an instant hint such as:</p>
+<pre><code>[fetcher] First 8 bytes (possible Anchor discriminator): 0xd8926b... -&gt; looks like &quot;State&quot; struct name
+</code></pre>
+<p>This automatic recognition will only be possible for accounts that follow the Anchor convention; plain Borsh-only projects will continue to appear as raw bytes.</p>
+<p>With these distinctions in mind you can:</p>
+<ul>
+<li>Pull down byte-code for offline disassembly (<code>.so</code>).</li>
+<li>Snapshot any on-chain state for local inspection or unit-test fixtures (<code>.bin</code>).</li>
+<li>Potentially confirm whether a PDA is an Anchor account and which struct it represents. (WIP)</li>
+</ul>
 
                     </main>
 
