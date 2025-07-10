@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Overview - docs</title>
+        <title>Ast utils - docs</title>
 
 
         <!-- Custom HTML head -->
@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../cli_usage.html"><strong aria-hidden="true">3.</strong> CLI Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cli/build.html"><strong aria-hidden="true">3.1.</strong> Build</a></li><li class="chapter-item expanded "><a href="../cli/sast.html"><strong aria-hidden="true">3.2.</strong> SAST</a></li><li class="chapter-item expanded "><a href="../cli/fetcher.html"><strong aria-hidden="true">3.3.</strong> Fetcher</a></li><li class="chapter-item expanded "><a href="../cli/reverse.html"><strong aria-hidden="true">3.4.</strong> Reverse</a></li><li class="chapter-item expanded "><a href="../cli/ast_utils.html"><strong aria-hidden="true">3.5.</strong> Ast utils</a></li></ol></li><li class="chapter-item expanded "><a href="../static_analysis.html"><strong aria-hidden="true">4.</strong> Static Analysis</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rules/format.html"><strong aria-hidden="true">4.1.</strong> Rule Format</a></li><li class="chapter-item expanded "><a href="../rules/templates.html"><strong aria-hidden="true">4.2.</strong> Writing Templates</a></li><li class="chapter-item expanded "><a href="../rules/example.html"><strong aria-hidden="true">4.3.</strong> Detection Example</a></li><li class="chapter-item expanded "><a href="../rules/starlark_libs.html"><strong aria-hidden="true">4.4.</strong> Starlark references</a></li></ol></li><li class="chapter-item expanded "><a href="../reverse.html"><strong aria-hidden="true">5.</strong> Reverse Engineering</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../reverse/overview.html" class="active"><strong aria-hidden="true">5.1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../reverse/disassembly.html"><strong aria-hidden="true">5.2.</strong> Disassembly</a></li><li class="chapter-item expanded "><a href="../reverse/immediates.html"><strong aria-hidden="true">5.3.</strong> Immediate Tracking</a></li><li class="chapter-item expanded "><a href="../reverse/cfg.html"><strong aria-hidden="true">5.4.</strong> Control Flow Graph (CFG)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../reverse/reduced_cfg.html"><strong aria-hidden="true">5.4.1.</strong> Reduced / Entry-only CFG</a></li><li class="chapter-item expanded "><a href="../reverse/dotting.html"><strong aria-hidden="true">5.4.2.</strong> Manual CFG Editing (Dotting)</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../architecture.html"><strong aria-hidden="true">6.</strong> Architecture</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../architecture/app_state.html"><strong aria-hidden="true">6.1.</strong> App State</a></li><li class="chapter-item expanded "><a href="../architecture/sast_engine.html"><strong aria-hidden="true">6.2.</strong> SAST Engine</a></li></ol></li><li class="chapter-item expanded "><a href="../future.html"><strong aria-hidden="true">7.</strong> Evolution of the tool</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../cli_usage.html"><strong aria-hidden="true">3.</strong> CLI Usage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cli/build.html"><strong aria-hidden="true">3.1.</strong> Build</a></li><li class="chapter-item expanded "><a href="../cli/sast.html"><strong aria-hidden="true">3.2.</strong> SAST</a></li><li class="chapter-item expanded "><a href="../cli/fetcher.html"><strong aria-hidden="true">3.3.</strong> Fetcher</a></li><li class="chapter-item expanded "><a href="../cli/reverse.html"><strong aria-hidden="true">3.4.</strong> Reverse</a></li><li class="chapter-item expanded "><a href="../cli/ast_utils.html" class="active"><strong aria-hidden="true">3.5.</strong> Ast utils</a></li></ol></li><li class="chapter-item expanded "><a href="../static_analysis.html"><strong aria-hidden="true">4.</strong> Static Analysis</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../rules/format.html"><strong aria-hidden="true">4.1.</strong> Rule Format</a></li><li class="chapter-item expanded "><a href="../rules/templates.html"><strong aria-hidden="true">4.2.</strong> Writing Templates</a></li><li class="chapter-item expanded "><a href="../rules/example.html"><strong aria-hidden="true">4.3.</strong> Detection Example</a></li><li class="chapter-item expanded "><a href="../rules/starlark_libs.html"><strong aria-hidden="true">4.4.</strong> Starlark references</a></li></ol></li><li class="chapter-item expanded "><a href="../reverse.html"><strong aria-hidden="true">5.</strong> Reverse Engineering</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../reverse/overview.html"><strong aria-hidden="true">5.1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../reverse/disassembly.html"><strong aria-hidden="true">5.2.</strong> Disassembly</a></li><li class="chapter-item expanded "><a href="../reverse/immediates.html"><strong aria-hidden="true">5.3.</strong> Immediate Tracking</a></li><li class="chapter-item expanded "><a href="../reverse/cfg.html"><strong aria-hidden="true">5.4.</strong> Control Flow Graph (CFG)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../reverse/reduced_cfg.html"><strong aria-hidden="true">5.4.1.</strong> Reduced / Entry-only CFG</a></li><li class="chapter-item expanded "><a href="../reverse/dotting.html"><strong aria-hidden="true">5.4.2.</strong> Manual CFG Editing (Dotting)</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../architecture.html"><strong aria-hidden="true">6.</strong> Architecture</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../architecture/app_state.html"><strong aria-hidden="true">6.1.</strong> App State</a></li><li class="chapter-item expanded "><a href="../architecture/sast_engine.html"><strong aria-hidden="true">6.2.</strong> SAST Engine</a></li></ol></li><li class="chapter-item expanded "><a href="../future.html"><strong aria-hidden="true">7.</strong> Evolution of the tool</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -144,76 +144,103 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="reverse-overview"><a class="header" href="#reverse-overview">Reverse Overview</a></h1>
-<p>This section explains how Sol-azy performs static reverse engineering on Solana programs compiled to SBF.</p>
-<p>The reverse module combines disassembly, control flow analysis, and memory inspection, using a customized static analysis engine adapted from <a href="https://github.com/anza-xyz/sbpf-solana"><code>sbpf-solana</code></a>.</p>
+                        <h1 id="ast-utils-command"><a class="header" href="#ast-utils-command"><code>ast-utils</code> Command</a></h1>
+<p>The <code>ast-utils</code> command generates and displays the Abstract Syntax Tree (AST) representation of Rust source files in
+JSON format.<br />
+It uses the <code>syn</code> crate to parse Rust code and <code>syn-serde</code> for JSON serialization.</p>
 <hr />
-<h2 id="how-it-works"><a class="header" href="#how-it-works">How It Works</a></h2>
-<ol>
-<li>
-<p><strong>ELF Parsing</strong></p>
-<p>Sol-azy loads the <code>.so</code> bytecode using Solana’s <code>Executable</code> abstraction (from <code>solana_rbpf</code>), which parses the ELF and loads its segments (e.g., <code>.text</code>, <code>.rodata</code>).</p>
-</li>
-<li>
-<p><strong>Instruction Analysis</strong></p>
-<p>Using the <code>Analysis</code> struct from <code>sbpf-solana</code>, the tool walks through all valid instruction addresses, building:</p>
-<ul>
-<li>A disassembled instruction list</li>
-<li>Basic block boundaries</li>
-<li>Cross-references and destination mappings</li>
-</ul>
-</li>
-<li>
-<p><strong>Immediate Tracking</strong></p>
-<p>When <code>LD_DW_IMM</code> instructions reference <code>MM_RODATA</code>, Sol-azy tries to:</p>
-<ul>
-<li>Interpret the referenced memory slice</li>
-<li>Associate it with a <code>MOV64_IMM</code> or <code>MOV32_IMM</code> defining its length</li>
-<li>Format the result as a printable string (e.g., <code>b&quot;hello world&quot;</code>)</li>
-</ul>
-</li>
-<li>
-<p><strong>Graph Generation</strong></p>
-<p>For control flow graphs, each basic block becomes a node in a <code>.dot</code> file, with edges linking jumps, calls, and returns.</p>
-</li>
-</ol>
-<hr />
-<h2 id="internal-components"><a class="header" href="#internal-components">Internal Components</a></h2>
-<ul>
-<li><a href="./immediates.html"><code>ImmediateTracker</code></a>: Tracks memory ranges referenced by LD_DW_IMM</li>
-<li><a href="./cfg.html#strings-from-rodata"><code>get_string_repr</code></a>: Converts slices from <code>.rodata</code> into readable strings</li>
-<li><a href="./cfg.html#overview"><code>export_cfg_to_dot</code></a>: Emits Graphviz-compatible control flow graphs</li>
-<li><a href="./immediates.html#behind-the-scenes"><code>disassemble_wrapper</code></a>: Main entrypoint for disassembly + data extraction</li>
-</ul>
-<hr />
-<h2 id="reverseoutputmode"><a class="header" href="#reverseoutputmode">ReverseOutputMode</a></h2>
-<p>The CLI dispatches different logic depending on this enum:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>pub enum ReverseOutputMode {
-    Disassembly(String),
-    ControlFlowGraph(String),
-    DisassemblyAndCFG(String),
-}
-<span class="boring">}</span></code></pre></pre>
-<hr />
-<h2 id="example-workflow-recap"><a class="header" href="#example-workflow-recap">Example Workflow (Recap)</a></h2>
-<pre><code class="language-bash">cargo run -- reverse \
-  --mode both \
-  --out-dir ./out/ \
-  --bytecodes-file ./bytecodes/program.so \
-  --labeling
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<pre><code class="language-bash">cargo run -- ast-utils --file-path ./src/main.rs
 </code></pre>
+<p><strong>Arguments:</strong></p>
+<ul>
+<li><code>--file-path</code> (or ): Path to the Rust source file to parse <code>-f</code></li>
+</ul>
+<h2 id="behavior"><a class="header" href="#behavior">Behavior</a></h2>
+<p>The tool performs the following operations:</p>
+<ol>
+<li><strong>File Reading</strong>: Reads the specified Rust source file</li>
+<li><strong>AST Parsing</strong>: Uses <code>syn::parse_file()</code> to generate the AST</li>
+<li><strong>JSON Output</strong>: Converts the AST to pretty-printed JSON using <code>syn-serde</code></li>
+</ol>
+<p>The output includes detailed structural information about:</p>
+<ul>
+<li>Function definitions</li>
+<li>Struct and enum declarations</li>
+<li>Import statements</li>
+<li>Type definitions</li>
+<li>Expression trees</li>
+<li>And all other Rust language constructs</li>
+</ul>
+<h2 id="output"><a class="header" href="#output">Output</a></h2>
+<p>The command outputs a JSON representation of the AST directly to stdout. The JSON contains:</p>
+<ul>
+<li><strong>Structural Information</strong>: Complete syntax tree with all language constructs</li>
+<li><strong>Pretty Formatting</strong>: Human-readable JSON with proper indentation</li>
+<li><strong>Comprehensive Details</strong>: All tokens, spans, and syntactic elements</li>
+</ul>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<pre><code class="language-bash">cargo run -- ast-utils --file-path examples/simple_program.rs
+</code></pre>
+<p>This would output something like:</p>
+<pre><code class="language-json">{
+  &quot;shebang&quot;: null,
+  &quot;attrs&quot;: [],
+  &quot;items&quot;: [
+    {
+      &quot;Fn&quot;: {
+        &quot;attrs&quot;: [],
+        &quot;vis&quot;: {
+          &quot;Public&quot;: {
+            &quot;pub_token&quot;: {
+              &quot;span&quot;: {
+                &quot;start&quot;: 0,
+                &quot;end&quot;: 3
+              }
+            }
+          }
+        },
+        &quot;sig&quot;: {
+          &quot;constness&quot;: null,
+          &quot;asyncness&quot;: null,
+          &quot;unsafety&quot;: null,
+          &quot;abi&quot;: null,
+          &quot;fn_token&quot;: {
+            &quot;span&quot;: {
+              &quot;start&quot;: 4,
+              &quot;end&quot;: 6
+            }
+          },
+          &quot;ident&quot;: &quot;main&quot;,
+          // ... more AST structure
+        }
+      }
+    }
+  ]
+}
+</code></pre>
+<h2 id="use-cases"><a class="header" href="#use-cases">Use Cases</a></h2>
+<ul>
+<li><strong>Code Analysis</strong>: Understanding the structure of Rust source code</li>
+<li><strong>Tooling Development</strong>: Building custom analysis tools that work with Rust AST</li>
+<li><strong>Educational</strong>: Learning about Rust's syntax tree representation</li>
+<li><strong>Debugging</strong>: Inspecting how the compiler parses your code</li>
+</ul>
+<h2 id="related"><a class="header" href="#related">Related</a></h2>
+<ul>
+<li><a href="./sast.html">SAST</a> — Static analysis that operates on similar AST structures</li>
+<li><a href="./build.html">Build</a> — Compiles the source files that can be analyzed with ast-utils</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../reverse.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../cli/reverse.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../reverse/disassembly.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../static_analysis.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -223,11 +250,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../reverse.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../cli/reverse.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../reverse/disassembly.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../static_analysis.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
