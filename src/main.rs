@@ -33,6 +33,8 @@ pub enum Commands {
         target_dir: String,
         #[clap(short = 'r', long = "out-dir")]
         out_dir: String,
+        #[clap(long = "unsafe-version-switch", default_value_t = false)]
+        unsafe_version_switch: bool,
     },
     Sast {
         #[clap(short = 'd', long = "target-dir")]

@@ -1,13 +1,15 @@
+use std::path::Path;
 use crate::helpers::{
     check_binary_installed, create_dir_if_not_exists, get_project_type, BeforeCheck, ProjectType,
 };
 use crate::state::build_state::BuildState;
 use crate::{helpers, Commands};
-use log::{debug, error, info};
+use log::{debug, error};
 
 pub struct BuildCmd {
     pub target_dir: String,
     pub out_dir: String,
+    pub unsafe_version_switch: bool,
 }
 
 impl BuildCmd {
@@ -16,9 +18,11 @@ impl BuildCmd {
             Commands::Build {
                 target_dir,
                 out_dir,
+                unsafe_version_switch
             } => Self {
                 target_dir: target_dir.clone(),
                 out_dir: out_dir.clone(),
+                unsafe_version_switch: *unsafe_version_switch,
             },
             _ => unreachable!(),
         }
@@ -113,19 +117,34 @@ pub fn run(cmd: &BuildCmd) -> anyhow::Result<BuildState> {
 /// A `BuildState` object if the build is successful, or an error otherwise.
 fn build_anchor_project(cmd: &BuildCmd) -> anyhow::Result<BuildState> {
     debug!("Building anchor project {}", cmd.target_dir);
+    
+    let anchor_version = helpers::get_anchor_version(Path::new(&cmd.target_dir.clone()))?;
+    match anchor_version { 
+        Some(version) => {
+            debug!("Detected Anchor version {}", version);
+            if cmd.unsafe_version_switch {
+                let spinner = helpers::spinner::get_new_spinner(format!("Switching Anchor to {}...", version));
+                helpers::switch_anchor_version(version.as_str())?;
+                spinner.finish_with_message(format!("Switched Anchor to {}", version));
+            }
+        },
+        None => {}
+    }
+    
 
     let current_dir = std::env::current_dir()?;
     std::env::set_current_dir(cmd.target_dir.clone())?;
 
-    info!("Running `cargo clean` in {}", cmd.target_dir);
+    let spinner = helpers::spinner::get_new_spinner(format!("Running `cargo clean` in {}", cmd.target_dir));
     let res = helpers::run_command("cargo", &["clean"], vec![]);
+    spinner.finish_with_message("Cleaned previous build artifacts");
 
     std::env::set_current_dir(current_dir)?;
     res?;
     let current_dir = std::env::current_dir()?;
     std::env::set_current_dir(cmd.target_dir.clone())?;
 
-    info!("Running `anchor build` in {}", cmd.target_dir);
+    let spinner = helpers::spinner::get_new_spinner(format!("Running `anchor build` in {}", cmd.target_dir));
     let res = helpers::run_command(
         "anchor",
         &["build", "--skip-lint"],
@@ -134,6 +153,7 @@ fn build_anchor_project(cmd: &BuildCmd) -> anyhow::Result<BuildState> {
             "--emit=asm,llvm-bc,llvm-ir,obj,metadata,link,dep-info,mir",
         )],
     );
+    spinner.finish_with_message("Built project");
 
     std::env::set_current_dir(current_dir)?;
     res?;
@@ -164,15 +184,16 @@ pub fn build_sbf_project(cmd: &BuildCmd) -> anyhow::Result<BuildState> {
     let current_dir = std::env::current_dir()?;
     std::env::set_current_dir(cmd.target_dir.clone())?;
 
-    info!("Running `cargo clean` in {}", cmd.target_dir);
+    let spinner = helpers::spinner::get_new_spinner(format!("Running `cargo clean` in {}", cmd.target_dir));
     let res = helpers::run_command("cargo", &["clean"], vec![]);
-
+    spinner.finish_with_message("Cleaned previous build artifacts");
+    
     std::env::set_current_dir(current_dir)?;
     res?;
     let current_dir = std::env::current_dir()?;
     std::env::set_current_dir(cmd.target_dir.clone())?;
 
-    info!("Running `cargo build-sbf` in {}", cmd.target_dir);
+    let spinner = helpers::spinner::get_new_spinner(format!("Running `cargo build-sbf` in {}", cmd.target_dir));
     let res = helpers::run_command(
         "cargo",
         &["build-sbf"],
@@ -181,6 +202,7 @@ pub fn build_sbf_project(cmd: &BuildCmd) -> anyhow::Result<BuildState> {
             "--emit=asm,llvm-bc,llvm-ir,obj,metadata,link,dep-info,mir",
         )],
     );
+    spinner.finish_with_message("Built project");
 
     std::env::set_current_dir(current_dir)?;
     res?;
