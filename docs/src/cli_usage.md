@@ -15,6 +15,8 @@ All commands are accessible via:
 cargo run -- <command> [options]
 ```
 
+> IMPORTANT: Using the --release is wayyyyy faster, so if you don’t need debug logs, I’d recommend using it
+
 ---
 
 ## Available Commands
