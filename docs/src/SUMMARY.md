@@ -7,6 +7,7 @@
   - [SAST](cli/sast.md)
   - [Fetcher](cli/fetcher.md)
   - [Reverse](cli/reverse.md)
+  - [Ast utils](cli/ast_utils.md)
 - [Static Analysis](static_analysis.md)
   - [Rule Format](rules/format.md)
   - [Writing Templates](rules/templates.md)
