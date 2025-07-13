@@ -75,8 +75,9 @@ def ast_node_add_child(node: dict, child: dict) -> dict:
     return node
 
 
-def to_result(node: dict, position = {}) -> dict:
+def to_result(node: dict) -> dict:
     metadata = node.get("metadata", {})
+    position = metadata.get("position", {})
     parent = node.get("parent", {})
 
     if position == {}:
@@ -502,76 +503,115 @@ def prepare_syn_ast(ast, access_path, parent) -> list[dict]:
 def prepare_syn_ast_iterative(ast, access_path, parent):
     nodes = []
     stack = [(ast, access_path, parent)]
+    last_known_position = None
 
     # Use a for loop over a large range to simulate a while loop,
     # as 'while' is not supported in all Starlark environments.
-    # The loop will exit with 'break' once the stack is empty.
-    for _ in range(100000):  # A sufficiently large number to act as a safeguard.
+    for _ in range(100000000):
         if not stack:
             break
 
         current_ast, current_path, current_parent = stack.pop()
 
         if type(current_ast) == "list":
-            for i in range(len(current_ast) - 1, -1, -1):
-                item = current_ast[i]
-                new_path = "{}[{}]".format(current_path, i)
-                stack.append((item, new_path, current_parent))
+            _handle_list_node(current_ast, current_path, current_parent, stack)
             continue
 
         if type(current_ast) == "dict":
-            parent_for_children = current_parent
-
-            node = None
-            if current_ast.get("method", False):
-                metadata = {}
-                if "position" in current_ast:
-                    metadata["position"] = current_ast["position"]
-                if "mut" in current_ast:
-                    metadata["mut"] = current_ast["mut"]
-                # Assuming new_ast_node is defined elsewhere
-                node = new_ast_node(current_ast, metadata, current_path)
-                node["parent"] = current_parent
-                node["ident"] = current_ast["method"]
-            elif current_ast.get("int", False):
-                metadata = {}
-                if "position" in current_ast:
-                    metadata["position"] = current_ast["position"]
-                if "mut" in current_ast:
-                    metadata["mut"] = current_ast["mut"]
-                node = new_ast_node(current_ast, metadata, current_path)
-                node["parent"] = current_parent
-                node["ident"] = str(current_ast["int"])
-            elif current_ast.get("mut", False):
-                metadata = {"mut": current_ast["mut"]}
-                if "position" in current_ast:
-                    metadata["position"] = current_ast["position"]
-
-                # Assuming find_ident_src_node, ast_node_add_child, and EMPTY_NODE are defined
-                found_node = find_ident_src_node(current_ast, current_path, metadata)
-                if found_node != EMPTY_NODE:
-                    ast_node_add_child(current_parent, found_node)
-                    node = found_node
-            elif current_ast.get("ident", False):
-                metadata = {}
-                if "position" in current_ast:
-                    metadata["position"] = current_ast["position"]
-                if "mut" in current_ast:
-                    metadata["mut"] = current_ast["mut"]
-                node = new_ast_node(current_ast, metadata, current_path)
-                node["parent"] = current_parent
+            node, last_known_position = _handle_dict_node(
+                current_ast, current_path, current_parent, last_known_position
+            )
 
             if node:
                 nodes.append(node)
                 parent_for_children = node
+            else:
+                parent_for_children = current_parent
 
-            child_items = list(current_ast.items())
-            for i in range(len(child_items) - 1, -1, -1):
-                key, value = child_items[i]
-                new_path = "{}.{}".format(current_path, key) if current_path else key
-                stack.append((value, new_path, parent_for_children))
+            _add_children_to_stack(current_ast, current_path, parent_for_children, stack)
 
     return nodes
+
+
+def _handle_list_node(ast_list, current_path, current_parent, stack):
+    """Handle processing of list nodes by adding items to stack in reverse order."""
+    for i in range(len(ast_list) - 1, -1, -1):
+        item = ast_list[i]
+        new_path = "{}[{}]".format(current_path, i)
+        stack.append((item, new_path, current_parent))
+
+
+def _handle_dict_node(ast_dict, current_path, current_parent, last_known_position):
+    """Handle processing of dict nodes and return created node and updated position."""
+    node_type = _get_node_type(ast_dict)
+
+    if not node_type:
+        return None, last_known_position
+
+    metadata, updated_position = _build_metadata(ast_dict, last_known_position)
+
+    if node_type == "mut":
+        return _handle_mut_node(ast_dict, current_path, metadata, current_parent), updated_position
+    else:
+        return _create_standard_node(ast_dict, node_type, metadata, current_path, current_parent), updated_position
+
+
+def _get_node_type(ast_dict):
+    """Determine the type of AST node based on its keys."""
+    node_types = ["method", "int", "mut", "ident"]
+    for node_type in node_types:
+        if ast_dict.get(node_type, False):
+            return node_type
+    return None
+
+
+def _build_metadata(ast_dict, last_known_position):
+    """Build metadata dict with position and mut information."""
+    metadata = {}
+    updated_position = last_known_position
+
+    if "position" in ast_dict:
+        metadata["position"] = ast_dict["position"]
+        updated_position = ast_dict["position"]
+    elif last_known_position:
+        metadata["position"] = last_known_position
+
+    if "mut" in ast_dict:
+        metadata["mut"] = ast_dict["mut"]
+
+    return metadata, updated_position
+
+
+def _handle_mut_node(ast_dict, current_path, metadata, current_parent):
+    """Handle mut node type specifically."""
+    found_node = find_ident_src_node(ast_dict, current_path, metadata)
+    if found_node != EMPTY_NODE:
+        ast_node_add_child(current_parent, found_node)
+        return found_node
+    return None
+
+
+def _create_standard_node(ast_dict, node_type, metadata, current_path, current_parent):
+    """Create a standard AST node for method, int, or ident types."""
+    node = new_ast_node(ast_dict, metadata, current_path)
+    node["parent"] = current_parent
+
+    if node_type == "method":
+        node["ident"] = ast_dict["method"]
+    elif node_type == "int":
+        node["ident"] = str(ast_dict["int"])
+    # For ident type, no additional processing needed
+
+    return node
+
+
+def _add_children_to_stack(ast_dict, current_path, parent_for_children, stack):
+    """Add all child items to the stack in reverse order."""
+    child_items = list(ast_dict.items())
+    for i in range(len(child_items) - 1, -1, -1):
+        key, value = child_items[i]
+        new_path = "{}.{}".format(current_path, key) if current_path else key
+        stack.append((value, new_path, parent_for_children))
 
 def prepare_ast(ast: list[dict]) -> dict:
     nodes = prepare_syn_ast_iterative(ast, "", EMPTY_NODE)
@@ -590,7 +630,7 @@ def prepare_ast(ast: list[dict]) -> dict:
                 assigned_children.add(node.get("access_path", EMPTY_ACCESS_PATH))
                 break
             parent_path = ".".join(parent_path.split(".")[:-1])
-    root = new_ast_node({}, {}, "root")
+    root = new_ast_node({ "root": True }, {}, "root")
     for node in nodes:
         if node.get("parent", EMPTY_NODE) == EMPTY_NODE:
             ast_node_add_child(root, node)
