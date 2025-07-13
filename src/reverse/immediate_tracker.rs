@@ -66,6 +66,7 @@ impl ImmediateTracker {
     ///
     /// An optional tuple `(start, end)` representing the registered range,
     /// or `None` if no range begins at that offset.
+    #[allow(dead_code)]
     pub fn get_range(&self, start: usize) -> Option<(usize, usize)> {
         self.ranges.get(&start).map(|&end| (start, end))
     }

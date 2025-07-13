@@ -119,6 +119,8 @@ pub enum Commands {
     AstUtils {
         #[clap(short = 'f', long = "file-path", help = "Path to the file to parse")]
         file_path: String,
+        #[clap(short = 's', long = "starlark-syn-ast", default_value_t = false)]
+        starlark_syn_ast: bool,
     },
 }
 
