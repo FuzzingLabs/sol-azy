@@ -244,12 +244,34 @@ def syn_rule_loader(ast: str) -> dict:
     return {{
         "matches": syn_ast.filter_result(syn_ast_rule(
             syn_ast.prepare_ast(json.decode(ast)["items"]),
+            # json.decode(ast),
         )),
         "metadata": RULE_METADATA,
     }}
 
 
 syn_rule_loader
+# ! GENERATED
+"#,
+            code
+        )
+    }
+    
+    fn wrap_get_prepared_ast(code: String) -> String {
+        format!(
+            r#"# ! GENERATED
+load("syn_ast.star", "syn_ast")
+load("template_manager.star", "template_manager")
+# ! GENERATED
+
+{}
+
+# ! GENERATED
+def get_prepared_ast(ast: str) -> dict:
+    return syn_ast.prepare_ast(json.decode(ast)["items"])
+
+
+get_prepared_ast
 # ! GENERATED
 "#,
             code
@@ -301,11 +323,66 @@ syn_rule_loader
         eval.eval_function(
             syn_rule,
             &[heap.alloc(serde_json::to_string(&syn_ast.ast_json).unwrap_or(String::new()))],
+            // &[heap.alloc(serde_json::to_string(
+            //     &starlark_syn_ast::prepare_ast(&syn_ast.ast_json)
+            // ).unwrap_or(String::new()))],
             &[],
         )
         .map(|v| v.to_json())
         .map_err(|e| e.into_anyhow())?
     }
+
+    /// Evaluates a Starlark script to get the prepared AST structure.
+    ///
+    /// This method parses the code, loads its dependencies, sets up an evaluator, and
+    /// invokes the `get_prepared_ast` function with the provided syntax tree.
+    ///
+    /// # Arguments
+    ///
+    /// * `filename` - The path or name of the script file, used for diagnostics.
+    /// * `code` - The source code of the Starlark script.
+    /// * `syn_ast` - A reference to the syntax tree structure to be prepared.
+    ///
+    /// # Returns
+    ///
+    /// A `Result` containing a JSON string with the prepared AST, or an error if evaluation fails.
+    pub fn eval_get_prepared_ast(
+        &self,
+        filename: &str,
+        code: String,
+        syn_ast: &SynAst,
+    ) -> anyhow::Result<String> {
+        let starlark_ast = AstModule::parse(filename, Self::wrap_get_prepared_ast(code), &self.dialect)
+            .map_err(|e| e.into_anyhow())?;
+
+        let binding = starlark_ast.clone();
+        let modules_owned = self.load_modules(&binding)?;
+
+        let modules_ref: HashMap<&str, &FrozenModule> =
+            modules_owned.iter().map(|(k, v)| (*k, v)).collect();
+
+        let loader = ReturnFileLoader {
+            modules: &modules_ref,
+        };
+
+        let module = Module::new();
+        let mut eval = Evaluator::new(&module);
+        eval.set_loader(&loader);
+
+        let get_prepared_ast_fn = eval
+            .eval_module(starlark_ast, &self.globals)
+            .map_err(|e| e.into_anyhow())?;
+
+        let heap = eval.heap();
+        eval.eval_function(
+            get_prepared_ast_fn,
+            &[heap.alloc(serde_json::to_string(&syn_ast.ast_json).unwrap_or(String::new()))],
+            &[],
+        )
+            .map(|v| v.to_json())
+            .map_err(|e| e.into_anyhow())?
+    }
+
 
     /// Loads a Starlark module and freezes it, making its values immutable.
     ///
