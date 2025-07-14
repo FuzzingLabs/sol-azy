@@ -7,6 +7,7 @@ use std::collections::HashMap;
 use std::fmt::Formatter;
 use std::path::Path;
 use std::{fmt, fs};
+use syn::spanned::Spanned;
 use syn::visit;
 use syn::visit::Visit;
 
@@ -187,21 +188,232 @@ struct SpanCollector<'a> {
     positions: AstPositions,
 }
 
-impl<'a, 'ast> Visit<'ast> for SpanCollector<'a> {
-    fn visit_ident(&mut self, node: &'ast syn::Ident) {
-        let span = node.span();
 
+impl<'a, 'ast> SpanCollector<'a> {
+    /// Helper method to add position information for a span with a given prefix and name
+    fn add_span_position(&mut self, name: &str, span: &proc_macro2::Span) {
         self.positions.add_position(
-            node.to_string(),
+            name.parse().unwrap(),
             SourcePosition::from_span(
-                &span,
+                span,
                 match self.source_file_path.to_str() {
                     Some(path) => path.to_string(),
                     None => "no_source_path".to_string(),
                 },
             ),
         );
+    }
+
+    /// Helper method to extract path as string from syn::Path
+    fn path_to_string(path: &syn::Path) -> String {
+        path.segments.iter()
+            .map(|seg| seg.ident.to_string())
+            .collect::<Vec<_>>()
+            .join("::")
+    }
+}
+
+impl<'a, 'ast> Visit<'ast> for SpanCollector<'a> {
+    // Basic identifiers
+    fn visit_ident(&mut self, node: &'ast syn::Ident) {
+        self.add_span_position(&node.to_string(), &node.span());
         visit::visit_ident(self, node);
+    }
+
+    // Function definitions
+    fn visit_item_fn(&mut self, node: &'ast syn::ItemFn) {
+        self.add_span_position(&node.sig.ident.to_string(), &node.sig.ident.span());
+        visit::visit_item_fn(self, node);
+    }
+
+    // Struct definitions
+    fn visit_item_struct(&mut self, node: &'ast syn::ItemStruct) {
+        self.add_span_position(&node.ident.to_string(), &node.ident.span());
+        visit::visit_item_struct(self, node);
+    }
+
+    // Enum definitions
+    fn visit_item_enum(&mut self, node: &'ast syn::ItemEnum) {
+        self.add_span_position(&node.ident.to_string(), &node.ident.span());
+        visit::visit_item_enum(self, node);
+    }
+
+    // Enum variants
+    fn visit_variant(&mut self, node: &'ast syn::Variant) {
+        self.add_span_position(&node.ident.to_string(), &node.ident.span());
+        visit::visit_variant(self, node);
+    }
+
+    // Trait definitions
+    fn visit_item_trait(&mut self, node: &'ast syn::ItemTrait) {
+        self.add_span_position(&node.ident.to_string(), &node.ident.span());
+        visit::visit_item_trait(self, node);
+    }
+
+    // Impl blocks
+    fn visit_item_impl(&mut self, node: &'ast syn::ItemImpl) {
+        let type_name = match &*node.self_ty {
+            syn::Type::Path(type_path) => Self::path_to_string(&type_path.path),
+            _ => "unknown".to_string(),
+        };
+        self.add_span_position(&type_name, &node.impl_token.span);
+        visit::visit_item_impl(self, node);
+    }
+
+    // Variables and patterns
+    fn visit_pat_ident(&mut self, node: &'ast syn::PatIdent) {
+        self.add_span_position(&node.ident.to_string(), &node.ident.span());
+        visit::visit_pat_ident(self, node);
+    }
+
+    // Type definitions
+    fn visit_item_type(&mut self, node: &'ast syn::ItemType) {
+        self.add_span_position(&node.ident.to_string(), &node.ident.span());
+        visit::visit_item_type(self, node);
+    }
+
+    // Constants
+    fn visit_item_const(&mut self, node: &'ast syn::ItemConst) {
+        self.add_span_position(&node.ident.to_string(), &node.ident.span());
+        visit::visit_item_const(self, node);
+    }
+
+    // Static items
+    fn visit_item_static(&mut self, node: &'ast syn::ItemStatic) {
+        self.add_span_position(&node.ident.to_string(), &node.ident.span());
+        visit::visit_item_static(self, node);
+    }
+
+    // Modules
+    fn visit_item_mod(&mut self, node: &'ast syn::ItemMod) {
+        self.add_span_position(&node.ident.to_string(), &node.ident.span());
+        visit::visit_item_mod(self, node);
+    }
+
+    // Use statements
+    fn visit_item_use(&mut self, node: &'ast syn::ItemUse) {
+        let use_path = match &node.tree {
+            syn::UseTree::Path(path) => path.ident.to_string(),
+            syn::UseTree::Name(name) => name.ident.to_string(),
+            syn::UseTree::Glob(_) => "*".to_string(),
+            syn::UseTree::Group(_) => {
+                format!("{{...}}")
+            }
+            syn::UseTree::Rename(rename) => {
+                format!("{} as {}", rename.ident, rename.rename)
+            }
+        };
+        self.add_span_position(&use_path, &node.use_token.span);
+        visit::visit_item_use(self, node);
+    }
+
+    // Macro calls
+    fn visit_macro(&mut self, node: &'ast syn::Macro) {
+        let macro_name = Self::path_to_string(&node.path);
+        self.add_span_position(&macro_name, &node.path.span());
+        visit::visit_macro(self, node);
+    }
+
+    // Field definitions
+    fn visit_field(&mut self, node: &'ast syn::Field) {
+        if let Some(ident) = &node.ident {
+            self.add_span_position(&ident.to_string(), &ident.span());
+        }
+        visit::visit_field(self, node);
+    }
+
+    // Path expressions (function calls, variable references, etc.)
+    fn visit_expr_path(&mut self, node: &'ast syn::ExprPath) {
+        let path_str = Self::path_to_string(&node.path);
+        self.add_span_position(&path_str, &node.path.span());
+        visit::visit_expr_path(self, node);
+    }
+
+    // Function calls
+    fn visit_expr_call(&mut self, node: &'ast syn::ExprCall) {
+        if let syn::Expr::Path(path) = &*node.func {
+            let func_name = Self::path_to_string(&path.path);
+            self.add_span_position(&func_name, &path.path.span());
+        }
+        visit::visit_expr_call(self, node);
+    }
+
+    // Method calls
+    fn visit_expr_method_call(&mut self, node: &'ast syn::ExprMethodCall) {
+        self.add_span_position(&node.method.to_string(), &node.method.span());
+        visit::visit_expr_method_call(self, node);
+    }
+
+    // Match expressions
+    fn visit_expr_match(&mut self, node: &'ast syn::ExprMatch) {
+        self.add_span_position("match_expr", &node.match_token.span);
+        visit::visit_expr_match(self, node);
+    }
+
+    // If expressions
+    fn visit_expr_if(&mut self, node: &'ast syn::ExprIf) {
+        self.add_span_position("if_expr", &node.if_token.span);
+        visit::visit_expr_if(self, node);
+    }
+
+    // For loops
+    fn visit_expr_for_loop(&mut self, node: &'ast syn::ExprForLoop) {
+        self.add_span_position("for_expr", &node.for_token.span);
+        visit::visit_expr_for_loop(self, node);
+    }
+
+    // While loops
+    fn visit_expr_while(&mut self, node: &'ast syn::ExprWhile) {
+        self.add_span_position("while_expr", &node.while_token.span);
+        visit::visit_expr_while(self, node);
+    }
+
+    // Loop expressions
+    fn visit_expr_loop(&mut self, node: &'ast syn::ExprLoop) {
+        self.add_span_position("loop_expr", &node.loop_token.span);
+        visit::visit_expr_loop(self, node);
+    }
+
+    // Let statements
+    fn visit_local(&mut self, node: &'ast syn::Local) {
+        self.add_span_position("let_stmt", &node.let_token.span);
+        visit::visit_local(self, node);
+    }
+
+    // Struct field access
+    fn visit_expr_field(&mut self, node: &'ast syn::ExprField) {
+        if let syn::Member::Named(ident) = &node.member {
+            self.add_span_position(&ident.to_string(), &ident.span());
+        }
+        visit::visit_expr_field(self, node);
+    }
+
+    // Struct initialization
+    fn visit_expr_struct(&mut self, node: &'ast syn::ExprStruct) {
+        let struct_name = Self::path_to_string(&node.path);
+        self.add_span_position(&struct_name, &node.path.span());
+        visit::visit_expr_struct(self, node);
+    }
+
+    // Literals
+    fn visit_lit_str(&mut self, node: &'ast syn::LitStr) {
+        self.add_span_position(&node.value(), &node.span());
+        visit::visit_lit_str(self, node);
+    }
+
+    fn visit_lit_int(&mut self, node: &'ast syn::LitInt) {
+        self.add_span_position(&node.base10_digits(), &node.span());
+        visit::visit_lit_int(self, node);
+    }
+
+    fn visit_lit_float(&mut self, node: &'ast syn::LitFloat) {
+        self.add_span_position(&node.base10_digits(), &node.span());
+        visit::visit_lit_float(self, node);
+    }
+
+    fn visit_lit_bool(&mut self, node: &'ast syn::LitBool) {
+        self.add_span_position(&node.value.to_string(), &node.span);
+        visit::visit_lit_bool(self, node);
     }
 }
 

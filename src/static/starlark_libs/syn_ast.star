@@ -77,18 +77,6 @@ def ast_node_add_child(node: dict, child: dict) -> dict:
 
 def to_result(node: dict) -> dict:
     metadata = node.get("metadata", {})
-    position = metadata.get("position", {})
-    parent = node.get("parent", {})
-
-    if position == {}:
-        raw_node = {}
-        if parent != {}:
-            raw_node = parent.get("raw_node", {})
-        if raw_node != {} and "position" in raw_node:
-            position = raw_node.get("position")
-            metadata["position"] = position
-    else:
-        metadata["position"] = position
 
     children = []
     if "children" in node:
@@ -178,7 +166,7 @@ def find_by_similar_access_path(self: dict, access_path: str, stop_keyword: str)
     return list(filter(predicate, flatten_tree(self)))
 
 
-def find_comparisons(self: dict, ident1: str, ident2: str) -> list[dict]:
+def find_comparisons(self: dict, ident1: str, ident2: str) -> list:
     nodes = flatten_tree(self)
 
     def find_node_by_access_path(access_path: str):
@@ -438,67 +426,6 @@ def find_raw_nodes(ast):
     fn_names = find_fn_names(ast)
     return find_raw_nodes_by_fn_names(ast, fn_names)
 
-def prepare_syn_ast(ast, access_path, parent) -> list[dict]:
-    nodes = []
-
-    if type(ast) == "list":
-        for i, item in enumerate(ast):
-            new_path = f"{access_path}[{i}]"
-            nodes.extend(prepare_syn_ast(item, new_path, parent))
-        return nodes
-
-    if type(ast) == "dict":
-        # ? Method node https://github.com/Auditware/radar/blob/main/api/utils/ast.py#L95
-        if ast.get("method", False):
-            metadata = {}
-            if "position" in ast:
-                metadata["position"] = ast["position"]
-            if "mut" in ast:
-                metadata["mut"] = ast["mut"]
-            node = new_ast_node(ast, metadata, access_path)
-            node["parent"] = parent
-            node["ident"] = ast["method"]
-            nodes.append(node)
-            parent = node
-        # ? Int node https://github.com/Auditware/radar/blob/main/api/utils/ast.py#L95
-        elif ast.get("int", False):
-            metadata = {}
-            if "position" in ast:
-                metadata["position"] = ast["position"]
-            if "mut" in ast:
-                metadata["mut"] = ast["mut"]
-            node = new_ast_node(ast, metadata, access_path)
-            node["parent"] = parent
-            node["ident"] = str(ast["int"])
-            nodes.append(node)
-            parent = node
-        elif ast.get("mut", False):
-            metadata = {"mut": ast["mut"]}
-            if "position" in ast:
-                metadata["position"] = ast["position"]
-            node = find_ident_src_node(ast, access_path, metadata)
-            if node != EMPTY_NODE:
-                ast_node_add_child(parent, node)
-                nodes.append(node)
-                parent = node
-        # ? Ident node
-        elif ast.get("ident", False):
-            metadata = {}
-            if "position" in ast:
-                metadata["position"] = ast["position"]
-            if "mut" in ast:
-                metadata["mut"] = ast["mut"]
-            node = new_ast_node(ast, metadata, access_path)
-            node["parent"] = parent
-            nodes.append(node)
-            parent = node
-
-        for key, value in ast.items():
-            new_path = f"{access_path}.{key}" if access_path else key
-            nodes.extend(prepare_syn_ast(value, new_path, parent))
-
-    return nodes
-
 
 def prepare_syn_ast_iterative(ast, access_path, parent):
     nodes = []
@@ -600,8 +527,6 @@ def _create_standard_node(ast_dict, node_type, metadata, current_path, current_p
         node["ident"] = ast_dict["method"]
     elif node_type == "int":
         node["ident"] = str(ast_dict["int"])
-    # For ident type, no additional processing needed
-
     return node
 
 

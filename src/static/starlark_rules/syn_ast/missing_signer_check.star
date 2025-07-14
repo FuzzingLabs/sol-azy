@@ -9,6 +9,8 @@ RULE_METADATA = {
 
 def syn_ast_rule(root: dict) -> list[dict]:
     matches = []
+    if syn_ast.find_by_names(root, "Signer"):
+        return matches
     for sink in syn_ast.find_chained_calls(root, "derive", "Accounts"):
         if sink.get("identifier") == "Accounts":
             continue
