@@ -422,4 +422,5 @@ if __name__ == "__main__":
     assert is_matching_template_by_key(AST2, "CALL_FN_SOLANAPROGRAM_PROGRAM_INVOKE")
     assert is_matching_template(AST2, generate_call_fn_template("solana_program", "program", "invoke"))
 
-    
+    # if & call other test
+    assert is_matching_template(AST7, generate_call_fn_template("solana_program", "program", "invoke")) and not is_matching_template_by_key(AST7, "CHECK_SPLTOKEN_ID_CTX_ACCOUNT_AUTHORITY_KEY")

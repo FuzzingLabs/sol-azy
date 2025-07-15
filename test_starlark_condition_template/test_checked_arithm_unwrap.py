@@ -45,6 +45,14 @@ def find_checked_unwrap_patterns(ast_nodes):
 
 
 matches = find_checked_unwrap_patterns(AST6)
+matches = matches[:len(matches)//2]
 
-for m in matches:
-    print(m)
+assert len(matches) == 8
+assert matches[0][0]["raw_node"]["receiver"]["method_call"]["method"] == "checked_add" and matches[0][1]["end_line"] == 9
+assert matches[1][0]["raw_node"]["receiver"]["method_call"]["method"] == "checked_sub" and matches[1][1]["end_line"] == 10
+assert matches[2][0]["raw_node"]["receiver"]["method_call"]["method"] == "checked_mul" and matches[2][1]["end_line"] == 11
+assert matches[3][0]["raw_node"]["receiver"]["method_call"]["method"] == "checked_div" and matches[3][1]["end_line"] == 12
+assert matches[4][0]["raw_node"]["receiver"]["method_call"]["method"] == "checked_rem" and matches[4][1]["end_line"] == 13
+assert matches[5][0]["raw_node"]["receiver"]["method_call"]["method"] == "checked_pow" and matches[5][1]["end_line"] == 15
+assert matches[6][0]["raw_node"]["receiver"]["method_call"]["method"] == "checked_shl" and matches[6][1]["end_line"] == 16
+assert matches[7][0]["raw_node"]["receiver"]["method_call"]["method"] == "checked_shr" and matches[7][1]["end_line"] == 17
