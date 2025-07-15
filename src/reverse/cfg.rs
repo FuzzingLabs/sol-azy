@@ -1,3 +1,7 @@
+// Portions of this file are adapted from the `sbpf` project from anza,
+// licensed under the MIT license.
+// See https://github.com/anza-xyz/sbpf
+
 use solana_sbpf::static_analysis::Analysis;
 use std::collections::{BTreeMap, HashSet};
 use std::u8;

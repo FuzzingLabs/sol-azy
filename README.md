@@ -3,17 +3,13 @@
 **sol-azy** is a modular CLI toolchain for static analysis and reverse engineering of Solana sBPF programs.  
 It supports disassembly, control flow analysis, and custom Starlark-based rule evaluation.
 
----
-
 ## Features
 
 - Compile Solana programs (Anchor or native SBF)
 - Perform static AST-based security analysis with Starlark rules
 - Reverse-engineer `.so` bytecode: disassembly (& rust equivalences), control flow graphs, and immediate value decoding
 - Modular CFG editing (`dotting`)
-- On-chain binary retrieval (`fetcher`)
-
----
+- On-chain binary or raw AccountInfo retrieval (`fetcher`)
 
 ## Getting Started
 
@@ -37,8 +33,6 @@ Or for development:
 cargo run -- <command> [options]
 ```
 
----
-
 ## Usage
 
 Here are some basic examples. See [`docs/book`](docs/book) for full documentation.
@@ -54,6 +48,8 @@ cargo run -- build --target-dir ./my_project --out-dir ./out/
 ```bash
 cargo run -- sast --target-dir ./my_project --rules-dir ./rules/
 ```
+
+> HIGHLY RECOMMENDED: Using the --release is wayyyyy faster, so if you don’t need debug logs, I’d recommend using it
 
 ### Reverse engineer a compiled `.so`
 
@@ -73,8 +69,6 @@ cargo run -- fetcher --program-id <PROGRAM_ID> --out-dir ./out/
 cargo run -- dotting -c functions.json -r reduced.dot -f full.dot
 ```
 
----
-
 ## Documentation
 
 The project includes full [mdBook documentation](https://github.com/FuzzingLabs/sol-azy/tree/master/docs):
@@ -93,13 +87,9 @@ cd book
 mdbook build
 ```
 
----
-
 ## License
 
-Distributed under the [GNU GPL V3 License](./LICENSE)
-
----
+This project is licensed under the [Server Side Public License v1](./LICENSE)
 
 ## Contact
 

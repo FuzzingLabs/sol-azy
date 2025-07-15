@@ -116,7 +116,7 @@ def ast_node_add_child(node: dict, child: dict) -> dict:
     return node
 
 
-def to_result(node: dict) -> dict:
+def to_result(node: dict, position = {}) -> dict:
     """
     Converts an AST node to a result format suitable for output.
 
@@ -131,6 +131,9 @@ def to_result(node: dict) -> dict:
     children = []
     if "children" in node:
         children = map(to_result, node["children"])
+
+    if position != {}:
+        metadata["position"] = position
 
     return {
         "children": children,

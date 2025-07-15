@@ -20,6 +20,8 @@ cargo run -- sast \
 - `--rules-dir`: Directory containing `.star` rule files.
 - `--syn-scan-only`: If true, only perform syntactic scanning (no build required).
 
+> HIGHLY RECOMMENDED: Using the --release is wayyyyy faster, so if you don’t need debug logs, I’d recommend using it
+
 ---
 
 ## How It Works

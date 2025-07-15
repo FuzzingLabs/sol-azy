@@ -1,3 +1,7 @@
+// Portions of this file are adapted from the `sbpf` project from anza,
+// licensed under the MIT license.
+// See https://github.com/anza-xyz/sbpf
+
 use indicatif::{ProgressIterator};
 use log::debug;
 use solana_sbpf::{ebpf::LD_DW_IMM, static_analysis::Analysis};
