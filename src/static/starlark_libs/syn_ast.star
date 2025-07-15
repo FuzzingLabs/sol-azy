@@ -13,11 +13,30 @@ EMPTY_NODE = {
 
 
 def _sum(lists: list[list], start: list[dict]) -> list[dict]:
+    """
+    Combines multiple lists into a single list, filtering out None values.
+
+    Args:
+        lists: List of lists to combine
+        start: Starting list to extend with items from other lists
+
+    Returns:
+        Combined list with None values filtered out
+    """
     # TODO: Investigate why need to filter, can be due to starlark-rust typing considering empty array as [None]
     return list(filter(lambda l: type(l) == 'dict', map(start.extend, lists))) or start
 
 
 def _deduplicate(nodes: list[dict]) -> list[dict]:
+    """
+    Removes duplicate nodes from a list based on their string representation.
+
+    Args:
+        nodes: List of nodes to deduplicate
+
+    Returns:
+        List with duplicate nodes removed
+    """
     unique_items = []
     seen = set()
 
@@ -31,6 +50,17 @@ def _deduplicate(nodes: list[dict]) -> list[dict]:
 
 
 def new_ast_node(syn_ast_node: dict, metadata: dict, access_path: str) -> dict:
+    """
+    Creates a new AST node with the given syntax node data, metadata, and access path.
+
+    Args:
+        syn_ast_node: Raw syntax AST node data
+        metadata: Metadata dictionary to attach to the node
+        access_path: String representing the path to this node in the AST
+
+    Returns:
+        New AST node dictionary with all required fields
+    """
     children = syn_ast_node.get("children", [])
     parent = syn_ast_node.get("parent", EMPTY_NODE)
     if parent != EMPTY_NODE:
@@ -68,6 +98,17 @@ def new_ast_node(syn_ast_node: dict, metadata: dict, access_path: str) -> dict:
 
 
 def ast_node_add_child(node: dict, child: dict) -> dict:
+    """
+    Adds a child node to a parent node's children list.
+    Sets the child's parent to EMPTY_NODE to avoid circular references.
+
+    Args:
+        node: Parent node to add child to
+        child: Child node to be added
+
+    Returns:
+        The parent node with the child added
+    """
     if node == EMPTY_NODE:
         return node
     node["children"].append(child)
@@ -76,6 +117,15 @@ def ast_node_add_child(node: dict, child: dict) -> dict:
 
 
 def to_result(node: dict) -> dict:
+    """
+    Converts an AST node to a result format suitable for output.
+
+    Args:
+        node: AST node to convert
+
+    Returns:
+        Dictionary containing the node's essential information in result format
+    """
     metadata = node.get("metadata", {})
 
     children = []
@@ -93,6 +143,16 @@ def to_result(node: dict) -> dict:
 
 
 def filter_result(result: list[dict]) -> list[dict]:
+    """
+    Filters a result list to remove duplicates based on metadata position.
+    Items without position metadata are always included.
+
+    Args:
+        result: List of result nodes to filter
+
+    Returns:
+        Filtered list with position-based duplicates removed
+    """
     unique_items = []
     seen_positions = set()
 
@@ -108,6 +168,16 @@ def filter_result(result: list[dict]) -> list[dict]:
 
 
 def traverse_tree(node: dict, collector) -> list[dict]:
+    """
+    Traverses an AST tree and applies a collector function to each node.
+
+    Args:
+        node: Root node to start traversal from
+        collector: Function to apply to each node during traversal
+
+    Returns:
+        List of collected results from all nodes
+    """
     return collector(node) + _sum(
         list(map(lambda child: traverse_tree(child, collector), node.get("children", []))),
         []
@@ -115,10 +185,29 @@ def traverse_tree(node: dict, collector) -> list[dict]:
 
 
 def flatten_tree(root: dict) -> list[dict]:
+    """
+    Flattens an AST tree into a list of all nodes.
+
+    Args:
+        root: Root node of the tree to flatten
+
+    Returns:
+        List containing all nodes in the tree
+    """
     return traverse_tree(root, lambda node: [node])
 
 
 def find_by_child(self: dict, child_ident: str) -> list[dict]:
+    """
+    Finds all nodes that have a direct child with the specified identifier.
+
+    Args:
+        self: Root node to search from
+        child_ident: Identifier of the child to look for
+
+    Returns:
+        List of nodes that have a child with the given identifier
+    """
     matches = []
 
     def check_node(node: dict):
@@ -131,6 +220,16 @@ def find_by_child(self: dict, child_ident: str) -> list[dict]:
 
 
 def find_chained_calls(self: dict, *idents: tuple[str, ...]) -> list[dict]:
+    """
+    Finds sequences of chained method calls with the specified identifiers.
+
+    Args:
+        self: Root node to search from
+        *idents: Sequence of identifiers to match in order
+
+    Returns:
+        List of nodes representing the chained calls
+    """
     matches = []
 
     def check_node(node: dict):
@@ -148,6 +247,16 @@ def find_chained_calls(self: dict, *idents: tuple[str, ...]) -> list[dict]:
 
 
 def find_macro_attribute_by_names(self: dict, *idents: tuple[str, ...]) -> list[dict]:
+    """
+    Finds macro attributes by their names in the AST.
+
+    Args:
+        self: Root node to search from
+        *idents: Identifiers of macro attributes to find
+
+    Returns:
+        List of nodes representing macro attributes with the given names
+    """
     matches = []
 
     def check_node(node: dict):
@@ -159,6 +268,17 @@ def find_macro_attribute_by_names(self: dict, *idents: tuple[str, ...]) -> list[
 
 
 def find_by_similar_access_path(self: dict, access_path: str, stop_keyword: str) -> list[dict]:
+    """
+    Finds nodes with access paths similar to the given path, truncated at the stop keyword.
+
+    Args:
+        self: Root node to search from
+        access_path: Access path to match against
+        stop_keyword: Keyword to truncate the path at
+
+    Returns:
+        List of nodes with similar access paths
+    """
     index = access_path.rfind(stop_keyword)
     truncated_path = access_path[: index + len(stop_keyword)] if index != -1 else access_path
     predicate = lambda node: (truncated_path in node.get("access_path", "")
@@ -167,6 +287,17 @@ def find_by_similar_access_path(self: dict, access_path: str, stop_keyword: str)
 
 
 def find_comparisons(self: dict, ident1: str, ident2: str) -> list:
+    """
+    Finds binary comparison operations between two specific identifiers.
+
+    Args:
+        self: Root node to search from
+        ident1: First identifier to compare
+        ident2: Second identifier to compare
+
+    Returns:
+        List of comparison pairs [left_node, right_node]
+    """
     nodes = flatten_tree(self)
 
     def find_node_by_access_path(access_path: str):
@@ -201,6 +332,16 @@ def find_comparisons(self: dict, ident1: str, ident2: str) -> list:
 
 
 def find_comparison_to_any(self: dict, ident: str) -> list[dict]:
+    """
+    Finds any comparison operations (binary or unary) involving the specified identifier.
+
+    Args:
+        self: Root node to search from
+        ident: Identifier to find in comparisons
+
+    Returns:
+        List of nodes representing comparisons involving the identifier
+    """
     matches = []
 
     def check_ident(node: dict, _ident: str) -> bool:
@@ -218,6 +359,16 @@ def find_comparison_to_any(self: dict, ident: str) -> list[dict]:
 
 
 def find_functions_by_names(self: dict, *function_names: tuple[str, ...]) -> list[dict]:
+    """
+    Finds function declarations by their names.
+
+    Args:
+        self: Root node to search from
+        *function_names: Names of functions to find
+
+    Returns:
+        List of nodes representing functions with the given names
+    """
     matches = []
 
     def check_node(node: dict):
@@ -229,6 +380,16 @@ def find_functions_by_names(self: dict, *function_names: tuple[str, ...]) -> lis
 
 
 def find_by_names(self: dict, *idents: tuple[str, ...]) -> list[dict]:
+    """
+    Finds nodes by their identifiers.
+
+    Args:
+        self: Root node to search from
+        *idents: Identifiers to search for
+
+    Returns:
+        List of nodes with matching identifiers
+    """
     matches = []
 
     def check_node(node: dict):
@@ -240,6 +401,17 @@ def find_by_names(self: dict, *idents: tuple[str, ...]) -> list[dict]:
 
 
 def find_method_calls(self: dict, caller: str, method: str) -> list[dict]:
+    """
+    Finds method call expressions with a specific caller and method name.
+
+    Args:
+        self: Root node to search from
+        caller: Identifier of the object calling the method
+        method: Name of the method being called
+
+    Returns:
+        List of nodes representing method calls matching the criteria
+    """
     matches = []
 
     def check_node(node: dict):
@@ -253,6 +425,17 @@ def find_method_calls(self: dict, caller: str, method: str) -> list[dict]:
 
 
 def find_assignments(self: dict, ident: str, value_ident: str) -> list[dict]:
+    """
+    Finds assignment expressions where a specific identifier is assigned a specific value.
+
+    Args:
+        self: Root node to search from
+        ident: Identifier being assigned to
+        value_ident: Identifier of the value being assigned
+
+    Returns:
+        List of nodes representing assignments matching the criteria
+    """
     matches = []
 
     nodes = flatten_tree(self)
@@ -280,6 +463,15 @@ def find_assignments(self: dict, ident: str, value_ident: str) -> list[dict]:
 
 
 def find_mutables(self: dict) -> list[dict]:
+    """
+    Finds all mutable variable declarations in the AST.
+
+    Args:
+        self: Root node to search from
+
+    Returns:
+        List of nodes representing mutable variables
+    """
     matches = []
 
     def check_node(node: dict):
@@ -291,6 +483,16 @@ def find_mutables(self: dict) -> list[dict]:
 
 
 def find_account_typed_nodes(self: dict, ident: str) -> list[dict]:
+    """
+    Finds nodes related to account types with a specific identifier.
+
+    Args:
+        self: Root node to search from
+        ident: Identifier to match for account types
+
+    Returns:
+        List of nodes representing account-typed elements
+    """
     matches = []
 
     def ends_with_ty_path_segments(access_path: str) -> bool:
@@ -316,6 +518,16 @@ def find_account_typed_nodes(self: dict, ident: str) -> list[dict]:
 
 
 def find_member_accesses(self: dict, ident: str) -> list[dict]:
+    """
+    Finds member access expressions for a specific identifier.
+
+    Args:
+        self: Root node to search from
+        ident: Identifier to find member accesses for
+
+    Returns:
+        List of nodes representing member access expressions
+    """
     matches = []
 
     def check_node(node: dict):
@@ -328,10 +540,30 @@ def find_member_accesses(self: dict, ident: str) -> list[dict]:
 
 
 def first(nodes: list[dict]) -> dict:
+    """
+    Returns the first node from a list, or EMPTY_NODE if the list is empty.
+
+    Args:
+        nodes: List of nodes
+
+    Returns:
+        First node in the list or EMPTY_NODE if empty
+    """
     return nodes[0] if nodes else EMPTY_NODE
 
 
 def find_ident_src_node(sub_data, sub_access_path: str, metadata: dict) -> dict:
+    """
+    Recursively searches for a node containing an 'ident' key and creates an AST node.
+
+    Args:
+        sub_data: Data structure to search through
+        sub_access_path: Access path for the current search location
+        metadata: Metadata to attach to the found node
+
+    Returns:
+        New AST node if ident found, otherwise EMPTY_NODE
+    """
     if type(sub_data) == "dict":
         if "ident" in sub_data:
             return new_ast_node(sub_data, metadata, sub_access_path)
@@ -355,6 +587,15 @@ def find_ident_src_node(sub_data, sub_access_path: str, metadata: dict) -> dict:
 
 
 def find_fn_names(node):
+    """
+    Finds all function names in an AST node by searching for 'fn.ident' patterns.
+
+    Args:
+        node: AST node to search through
+
+    Returns:
+        List of function names found in the node
+    """
     found = []
     stack = [node]
     seen = set()
@@ -389,6 +630,16 @@ def find_fn_names(node):
     return found
 
 def find_raw_nodes_by_fn_names(node, func_names):
+    """
+    Finds raw AST nodes that match specific function names.
+
+    Args:
+        node: AST node to search through
+        func_names: List of function names to match
+
+    Returns:
+        List of dictionaries containing matched raw nodes and their metadata
+    """
     found = []
 
     stack = [node]
@@ -423,11 +674,31 @@ def find_raw_nodes_by_fn_names(node, func_names):
     return found
 
 def find_raw_nodes(ast):
+    """
+    Finds all raw nodes in an AST by first extracting function names and then finding matching nodes.
+
+    Args:
+        ast: AST to search through
+
+    Returns:
+        List of raw nodes with their metadata
+    """
     fn_names = find_fn_names(ast)
     return find_raw_nodes_by_fn_names(ast, fn_names)
 
 
 def prepare_syn_ast_iterative(ast, access_path, parent):
+    """
+    Iteratively processes a syntax AST to create structured nodes with metadata and relationships.
+
+    Args:
+        ast: Raw AST data structure to process
+        access_path: Current access path in the AST
+        parent: Parent node for the current processing context
+
+    Returns:
+        List of processed AST nodes with proper structure and metadata
+    """
     nodes = []
     stack = [(ast, access_path, parent)]
     last_known_position = None
@@ -461,7 +732,15 @@ def prepare_syn_ast_iterative(ast, access_path, parent):
 
 
 def _handle_list_node(ast_list, current_path, current_parent, stack):
-    """Handle processing of list nodes by adding items to stack in reverse order."""
+    """
+    Handle processing of list nodes by adding items to stack in reverse order.
+
+    Args:
+        ast_list: List of AST items to process
+        current_path: Current access path
+        current_parent: Parent node for the list items
+        stack: Processing stack to add items to
+    """
     for i in range(len(ast_list) - 1, -1, -1):
         item = ast_list[i]
         new_path = "{}[{}]".format(current_path, i)
@@ -469,7 +748,18 @@ def _handle_list_node(ast_list, current_path, current_parent, stack):
 
 
 def _handle_dict_node(ast_dict, current_path, current_parent, last_known_position):
-    """Handle processing of dict nodes and return created node and updated position."""
+    """
+    Handle processing of dict nodes and return created node and updated position.
+
+    Args:
+        ast_dict: Dictionary AST node to process
+        current_path: Current access path
+        current_parent: Parent node
+        last_known_position: Last known position for metadata
+
+    Returns:
+        Tuple of (created_node, updated_position)
+    """
     node_type = _get_node_type(ast_dict)
 
     if not node_type:
@@ -484,7 +774,15 @@ def _handle_dict_node(ast_dict, current_path, current_parent, last_known_positio
 
 
 def _get_node_type(ast_dict):
-    """Determine the type of AST node based on its keys."""
+    """
+    Determine the type of AST node based on its keys.
+
+    Args:
+        ast_dict: Dictionary to check for node type
+
+    Returns:
+        String representing the node type, or None if no type found
+    """
     node_types = ["method", "int", "mut", "ident"]
     for node_type in node_types:
         if ast_dict.get(node_type, False):
@@ -493,7 +791,16 @@ def _get_node_type(ast_dict):
 
 
 def _build_metadata(ast_dict, last_known_position):
-    """Build metadata dict with position and mut information."""
+    """
+    Build metadata dict with position and mut information.
+
+    Args:
+        ast_dict: Dictionary to extract metadata from
+        last_known_position: Previous position to use if current has none
+
+    Returns:
+        Tuple of (metadata_dict, updated_position)
+    """
     metadata = {}
     updated_position = last_known_position
 
@@ -510,7 +817,18 @@ def _build_metadata(ast_dict, last_known_position):
 
 
 def _handle_mut_node(ast_dict, current_path, metadata, current_parent):
-    """Handle mut node type specifically."""
+    """
+    Handle mut node type specifically.
+
+    Args:
+        ast_dict: Dictionary containing mut node data
+        current_path: Current access path
+        metadata: Metadata for the node
+        current_parent: Parent node
+
+    Returns:
+        Created node or None if no ident found
+    """
     found_node = find_ident_src_node(ast_dict, current_path, metadata)
     if found_node != EMPTY_NODE:
         ast_node_add_child(current_parent, found_node)
@@ -519,7 +837,19 @@ def _handle_mut_node(ast_dict, current_path, metadata, current_parent):
 
 
 def _create_standard_node(ast_dict, node_type, metadata, current_path, current_parent):
-    """Create a standard AST node for method, int, or ident types."""
+    """
+    Create a standard AST node for method, int, or ident types.
+
+    Args:
+        ast_dict: Dictionary containing node data
+        node_type: Type of node to create
+        metadata: Metadata for the node
+        current_path: Current access path
+        current_parent: Parent node
+
+    Returns:
+        Created AST node
+    """
     node = new_ast_node(ast_dict, metadata, current_path)
     node["parent"] = current_parent
 
@@ -531,7 +861,15 @@ def _create_standard_node(ast_dict, node_type, metadata, current_path, current_p
 
 
 def _add_children_to_stack(ast_dict, current_path, parent_for_children, stack):
-    """Add all child items to the stack in reverse order."""
+    """
+    Add all child items to the stack in reverse order.
+
+    Args:
+        ast_dict: Dictionary containing child items
+        current_path: Current access path
+        parent_for_children: Parent node for the children
+        stack: Processing stack to add items to
+    """
     child_items = list(ast_dict.items())
     for i in range(len(child_items) - 1, -1, -1):
         key, value = child_items[i]
@@ -539,6 +877,15 @@ def _add_children_to_stack(ast_dict, current_path, parent_for_children, stack):
         stack.append((value, new_path, parent_for_children))
 
 def prepare_ast(ast: list[dict]) -> dict:
+    """
+    Prepares a complete AST from raw syntax data by processing nodes and establishing parent-child relationships.
+
+    Args:
+        ast: List of raw AST dictionaries to process
+
+    Returns:
+        Root AST node with all children properly linked
+    """
     nodes = prepare_syn_ast_iterative(ast, "", EMPTY_NODE)
     assigned_children = set()
     path_to_node = {}

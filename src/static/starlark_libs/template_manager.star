@@ -95,6 +95,15 @@ TEMPLATES["CALL_FN_SOLANAPROGRAM_PROGRAM_INVOKE"] = {
 }
 
 def generate_call_fn_template(*idents):
+    """
+    Generates a template for matching function calls with specified identifiers.
+
+    Args:
+        *idents: Variable number of identifiers representing the function path
+
+    Returns:
+        Dictionary containing pattern and priority_rule for function call matching
+    """
     return { 
         "pattern": {
         "call": {
@@ -106,6 +115,16 @@ def generate_call_fn_template(*idents):
     }
 
 def generate_symmetric_template(template):
+    """
+    Generates a symmetric version of a binary comparison template.
+    Swaps left and right operands for == and != operations.
+
+    Args:
+        template: Template dictionary containing pattern and priority_rule
+
+    Returns:
+        Symmetric template dictionary or None if not applicable
+    """
     template = template.get("pattern", {})
     if template == {}:
         return None
@@ -140,6 +159,15 @@ def generate_symmetric_template(template):
 
 
 def template_to_linear_pattern(template):
+    """
+    Converts a template dictionary to a linear pattern sequence.
+
+    Args:
+        template: Template dictionary with pattern and priority_rule
+
+    Returns:
+        List of tuples representing the linear pattern sequence
+    """
     pattern = []
     priority_rule = template["priority_rule"]
 
@@ -182,15 +210,45 @@ def template_to_linear_pattern(template):
     return pattern
 
 def all_templates_to_patterns(templates):
+    """
+    Converts all templates in a dictionary to their linear pattern representations.
+
+    Args:
+        templates: Dictionary of template names to template dictionaries
+
+    Returns:
+        Dictionary mapping template names to their linear patterns
+    """
     return {key: template_to_linear_pattern(value) for key, value in templates.items()}
 
 def get_keys_from_pattern(pattern):
+    """
+    Extracts unique keys from a pattern sequence.
+
+    Args:
+        pattern: List of tuples representing a pattern
+
+    Returns:
+        List of unique keys found in the pattern
+    """
     keys = set([duo[0] for duo in pattern])
     return list(keys)
 
 def extract_info(
     node, pattern, priority_rule, result
 ):
+    """
+    Extracts information from a node based on pattern and priority rules.
+
+    Args:
+        node: AST node to extract information from
+        pattern: Pattern to match against
+        priority_rule: List defining the priority order for extraction
+        result: List to append extracted information to
+
+    Returns:
+        Updated result list with extracted information
+    """
     pattern_keys = get_keys_from_pattern(pattern)
 
     def _extract(n):
@@ -222,6 +280,18 @@ def extract_info(
     return result
 
 def extract_ast_to_sequence(node, pattern, priority_rule, template):
+    """
+    Extracts a sequence of tokens from an AST node based on template pattern.
+
+    Args:
+        node: AST node to extract sequence from
+        pattern: Pattern to match against
+        priority_rule: List defining the priority order for extraction
+        template: Template dictionary containing pattern structure
+
+    Returns:
+        List of tuples representing the extracted token sequence
+    """
     result = []
     stack = [node]
     seen = set()
@@ -282,6 +352,16 @@ def extract_ast_to_sequence(node, pattern, priority_rule, template):
     return result
 
 def match_tokens(pattern, tokens):
+    """
+    Checks if a pattern matches a sequence of tokens using sliding window approach.
+
+    Args:
+        pattern: List of tuples representing the pattern to match
+        tokens: List of tuples representing the token sequence
+
+    Returns:
+        Boolean indicating whether the pattern matches the tokens
+    """
     len_pattern = len(pattern)
     len_tokens = len(tokens)
 
@@ -307,6 +387,18 @@ def match_tokens(pattern, tokens):
 def match_sequence_in_ast(
     ast, pattern, priority_rule, template
 ) -> bool:
+    """
+    Matches a pattern sequence within an AST, including symmetric patterns.
+
+    Args:
+        ast: AST node to search within
+        pattern: Pattern sequence to match
+        priority_rule: Priority order for pattern matching
+        template: Template dictionary for generating symmetric patterns
+
+    Returns:
+        Boolean indicating whether the pattern matches in the AST
+    """
     tokens = extract_ast_to_sequence(ast, pattern, priority_rule, template)
 
     sym_pattern = generate_symmetric_template(template) # used to check for a symmetrical rules like == or != (since a != b is the same than b != a for example)
@@ -321,6 +413,16 @@ def match_sequence_in_ast(
 
 
 def is_matching_template_by_key(ast, template_key):
+    """
+    Checks if an AST matches a template identified by its key.
+
+    Args:
+        ast: AST node to check against the template
+        template_key: String key identifying the template in TEMPLATES dictionary
+
+    Returns:
+        Boolean indicating whether the AST matches the template
+    """
     template = TEMPLATES.get(template_key)
     if not template:
         return False
@@ -330,6 +432,16 @@ def is_matching_template_by_key(ast, template_key):
     )
 
 def is_matching_template(ast, template):
+    """
+    Checks if an AST matches a given template dictionary.
+
+    Args:
+        ast: AST node to check against the template
+        template: Template dictionary containing pattern and priority_rule
+
+    Returns:
+        Boolean indicating whether the AST matches the template
+    """
     if isinstance(template, str):
         print("Should use is_matching_template_by_key instead of is_matching_template")
     return match_sequence_in_ast(
