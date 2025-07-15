@@ -159,7 +159,7 @@ cargo run --release -- \
 
 ![alt text](../images/sast_result_abr_cpi_example.png)
 
-Sol-azy successfully detects **three instances** of the vulnerability, reported as:
+sol-azy successfully detects **three instances** of the vulnerability, reported as:
 
 ```text
 ../SolanaPlayground/sealevel-attacks//programs/5-arbitrary-cpi/secure/src/lib.rs:73:11
@@ -171,7 +171,7 @@ Two are found in the `secure/` module (the source code provided above), and one 
 
 ## Summary
 
-Thanks to this template-based pattern matcher, **Sol-azy** is able to:
+Thanks to this template-based pattern matcher, **sol-azy** is able to:
 
 * Statistically identify unvalidated CPI targets,
 * Highlight affected source locations with precision,

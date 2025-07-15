@@ -21,7 +21,7 @@ cargo run -- build --target-dir ./examples/my_project --out-dir ./out/
 
 ## Behavior
 
-Sol-azy automatically detects the project type based on its contents:
+sol-azy automatically detects the project type based on its contents:
 
 | Type      | Detection Criteria                    |
 |-----------|----------------------------------------|

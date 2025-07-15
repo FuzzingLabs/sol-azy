@@ -78,7 +78,7 @@ This command will disassemble the program and generate reduced CFG.
 
 ## Advanced Use Case
 
-If using `--only-entrypoint`, Sol-azy will generate a minimal CFG with only the entrypoint's subgraph.
+If using `--only-entrypoint`, sol-azy will generate a minimal CFG with only the entrypoint's subgraph.
 You can later extend this graph manually using [`dotting`](../reverse/dotting.md) with a JSON list of function clusters to add.
 
 ---

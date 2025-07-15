@@ -1,6 +1,6 @@
 # sol-azy
 
-**Sol-azy** is a modular CLI toolchain for static analysis and reverse engineering of Solana sBPF programs.  
+**sol-azy** is a modular CLI toolchain for static analysis and reverse engineering of Solana sBPF programs.  
 It supports disassembly, control flow analysis, and custom Starlark-based rule evaluation.
 
 ---

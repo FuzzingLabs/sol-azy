@@ -1,7 +1,7 @@
 # Reduced Control Flow Graph (CFG)
 
 Analyzing large Solana eBPF programs can produce overwhelming control flow graphs (CFGs) due to the sheer number of functions and basic blocks.
-Sol-azy offers two modes to reduce graph complexity:
+sol-azy offers two modes to reduce graph complexity:
 
 * `--reduced`: Only include functions defined *after* the entrypoint.
 * `--only-entrypoint`: Include **only** the function cluster of the entrypoint itself.

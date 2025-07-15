@@ -1,13 +1,13 @@
 # Introduction
 
-**Sol-azy** is a modular, CLI-based toolchain designed for working with Solana programs.  
+**sol-azy** is a modular, CLI-based toolchain designed for working with Solana programs.  
 It combines **static analysis**, **reverse engineering**, and **project building** features in one streamlined developer and auditor experience.
 
 ---
 
-## What Is Sol-azy?
+## What Is sol-azy?
 
-Sol-azy provides tools for:
+sol-azy provides tools for:
 
 - **Building Solana programs**:
   - Supports both `Anchor` and native `SBF` workflows
@@ -35,9 +35,9 @@ Sol-azy provides tools for:
 
 ---
 
-## Why Sol-azy?
+## Why sol-azy?
 
-While tools like `solana`, `cargo build-sbf`, or `anchor build` focus on building and deployment, Sol-azy targets:
+While tools like `solana`, `cargo build-sbf`, or `anchor build` focus on building and deployment, sol-azy targets:
 
 - **Security auditing workflows**
 - **Automated code review pipelines**
@@ -50,7 +50,7 @@ It integrates tightly with Solana's BPF toolchain and `syn` parsing to provide s
 
 ## Project Structure
 
-Sol-azy is structured into several engines and CLI commands:
+sol-azy is structured into several engines and CLI commands:
 
 * [`build`](cli/build.md) – Compile programs and prepare artifacts
 * [`sast`](cli/sast.md) – Run static analysis with Starlark rules

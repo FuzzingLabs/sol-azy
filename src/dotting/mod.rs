@@ -14,7 +14,7 @@
 //!
 //! ## Example Use Case
 //!
-//! Suppose you ran Sol-azy in `--reduced` or `--only-entrypoint` mode and the resulting CFG omitted a function
+//! Suppose you ran sol-azy in `--reduced` or `--only-entrypoint` mode and the resulting CFG omitted a function
 //! you care about (e.g., because it's from a standard library or wasn't reachable from entrypoint).
 //! You can use this module by:
 //!

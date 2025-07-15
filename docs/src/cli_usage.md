@@ -1,6 +1,6 @@
 # CLI Usage
 
-Sol-azy provides a command-line interface (CLI) for interacting with Solana programs through various operations:
+sol-azy provides a command-line interface (CLI) for interacting with Solana programs through various operations:
 
 - Building programs
 - Running static analysis
@@ -97,7 +97,7 @@ cargo run -- fetcher \
 
 ## Quickstart
 
-To get started with Sol-azy:
+To get started with sol-azy:
 
 1. [Install prerequisites](installation.md)
 2. [Build your project](cli/build.md)

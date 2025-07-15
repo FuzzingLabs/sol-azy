@@ -1,6 +1,6 @@
 # `AppState` Architecture
 
-The `AppState` struct acts as the central orchestrator for Sol-azy’s CLI runtime.  
+The `AppState` struct acts as the central orchestrator for sol-azy’s CLI runtime.  
 It coordinates the execution of commands like `build`, `sast` and `reverse`, and stores the resulting internal states across executions.
 
 ---
@@ -64,7 +64,7 @@ Each arm delegates to a method that:
 
 ## Why is `AppState` needed?
 
-Sol-azy is a **multi-command CLI application**, and `AppState` provides:
+sol-azy is a **multi-command CLI application**, and `AppState` provides:
 
 - A consistent runtime container to track what’s been executed
 - A clean separation of CLI logic from actual analysis logic

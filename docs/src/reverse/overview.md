@@ -1,6 +1,6 @@
 # Reverse Overview
 
-This section explains how Sol-azy performs static reverse engineering on Solana programs compiled to SBF.
+This section explains how sol-azy performs static reverse engineering on Solana programs compiled to SBF.
 
 The reverse module combines disassembly, control flow analysis, and memory inspection, using a customized static analysis engine adapted from [`sbpf-solana`](https://github.com/anza-xyz/sbpf-solana).
 
@@ -10,7 +10,7 @@ The reverse module combines disassembly, control flow analysis, and memory inspe
 
 1. **ELF Parsing**
 
-   Sol-azy loads the `.so` bytecode using Solana’s `Executable` abstraction (from `solana_rbpf`), which parses the ELF and loads its segments (e.g., `.text`, `.rodata`).
+   sol-azy loads the `.so` bytecode using Solana’s `Executable` abstraction (from `solana_rbpf`), which parses the ELF and loads its segments (e.g., `.text`, `.rodata`).
 
 2. **Instruction Analysis**
 
@@ -22,7 +22,7 @@ The reverse module combines disassembly, control flow analysis, and memory inspe
 
 3. **Immediate Tracking**
 
-   When `LD_DW_IMM` instructions reference `MM_RODATA`, Sol-azy tries to:
+   When `LD_DW_IMM` instructions reference `MM_RODATA`, sol-azy tries to:
 
    - Interpret the referenced memory slice
    - Associate it with a `MOV64_IMM` or `MOV32_IMM` defining its length

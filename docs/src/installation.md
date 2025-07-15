@@ -1,6 +1,6 @@
 # Installation
 
-This page describes how to set up Sol-azy and its required dependencies.
+This page describes how to set up sol-azy and its required dependencies.
 
 ---
 
@@ -8,12 +8,12 @@ This page describes how to set up Sol-azy and its required dependencies.
 
 Make sure the following tools are installed on your system:
 
-| Tool         | Purpose                            | Install link / command                     |
-|--------------|------------------------------------|--------------------------------------------|
-| **Rust**     | Required to compile Sol-azy        | https://rustup.rs                          |
-| **cargo**    | Rust package manager               | Included with `rustup`                     |
-| **Solana CLI** | Needed for SBF builds            | https://docs.solana.com/cli/install-solana-cli |
-| **anchor** *(optional)* | For Anchor-based projects | `cargo install --git https://github.com/coral-xyz/anchor anchor-cli --locked` |
+| Tool         | Purpose                     | Install link / command                     |
+|--------------|-----------------------------|--------------------------------------------|
+| **Rust**     | Required to compile sol-azy | https://rustup.rs                          |
+| **cargo**    | Rust package manager        | Included with `rustup`                     |
+| **Solana CLI** | Needed for SBF builds       | https://docs.solana.com/cli/install-solana-cli |
+| **anchor** *(optional)* | For Anchor-based projects   | `cargo install --git https://github.com/coral-xyz/anchor anchor-cli --locked` |
 
 Verify installations:
 
@@ -47,7 +47,7 @@ The binary will be available at:
 ./target/release/sol-azy
 ```
 
-You can also run Sol-azy in development using:
+You can also run sol-azy in development using:
 
 ```bash
 cargo run -- <command> [options]

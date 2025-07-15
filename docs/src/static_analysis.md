@@ -1,6 +1,6 @@
 # Static Analysis
 
-Sol-azy includes a flexible static analysis engine designed to scan Solana Rust source code for programs vulnerabilities, code smells, or user-defined patterns.
+sol-azy includes a flexible static analysis engine designed to scan Solana Rust source code for programs vulnerabilities, code smells, or user-defined patterns.
 
 This engine leverages the `Starlark` language to express detection logic in `.star` files, and operates directly on the parsed Rust Abstract Syntax Tree (AST).
 
@@ -43,7 +43,7 @@ The rule engine gives you access to:
 
 ## Note
 
-The sast engineering core in Sol-azy is based on the excellent open-source project  
+The sast engineering core in sol-azy is based on the excellent open-source project  
 [`radar`](https://github.com/Auditware/radar) by [Auditware)](https://github.com/Auditware).
 
 We've been heavily inspired by their approach and wanted a standalone binary capable of it.

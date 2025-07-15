@@ -60,7 +60,7 @@ def syn_ast_rule(ast):
 
 ## Output
 
-Sol-azy prints results in a terminal table or as JSON.
+sol-azy prints result in a terminal table or as JSON.
 
 - Rule metadata
 - File names

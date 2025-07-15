@@ -1,6 +1,6 @@
 # What Are Templates?
 
-Templates in Sol-azy are reusable pattern matchers designed to identify **specific AST fragments** in Rust source code.
+Templates in sol-azy are reusable pattern matchers designed to identify **specific AST fragments** in Rust source code.
 They allow users to describe **common logic constructs** in a simple, declarative way, and can be used as building blocks in Starlark rules or during static pattern matching.
 
 They are especially useful when:

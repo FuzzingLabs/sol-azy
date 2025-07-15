@@ -1,13 +1,13 @@
 # Disassembly
 
-Sol-azy statically disassembles compiled Solana eBPF programs into a readable, instruction-by-instruction view.  
+sol-azy statically disassembles compiled Solana eBPF programs into a readable, instruction-by-instruction view.  
 This view is enhanced with **immediate data decoding**, especially for strings loaded from `.rodata`.
 
 ---
 
 ## Overview
 
-The disassembly engine in Sol-azy builds upon `sbpf-solana`'s instruction decoder.  
+The disassembly engine in sol-azy builds upon `sbpf-solana`'s instruction decoder.  
 It adds layers of audit-focused context by:
 
 - Labeling basic blocks (e.g., `lbb_42`)
@@ -19,7 +19,7 @@ It adds layers of audit-focused context by:
 
 ## Example
 
-Here’s a disassembly snippet produced by Sol-azy:
+Here’s a disassembly snippet produced by sol-azy:
 
 ```
 entrypoint:
@@ -92,7 +92,7 @@ Instructions like:
 lddw   r1, 0x1000043e0
 ```
 
-point into `.rodata`. Sol-azy:
+point into `.rodata`. sol-azy:
 
 1. Checks if `imm >= MM_RODATA_START`
 2. Extracts the corresponding bytes from the `.so`
@@ -113,7 +113,7 @@ pub fn update_string_resolution(program: &[u8], insn: &Insn, next_insn_wrapped: 
 > hor64  r1, 0x10000000     ; set upper 32 bits → r1 = 0x1000000000003000
 > ```
 >
-> Sol-azy handles this by:
+> sol-azy handles this by:
 >
 > 1. **Tracking register values** using a `RegisterTracker`
 > 2. **Do an "emulation"** of `mov` and `hor64`

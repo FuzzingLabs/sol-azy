@@ -1,6 +1,6 @@
 # Rule Format
 
-Sol-azy allows developers and auditors to write custom **static analysis rules** using the [Starlark language](https://github.com/bazelbuild/starlark) — a Python-like configuration language used by projects like [Bazel](https://bazel.build/rules/language) and [Buck/Buck2](https://github.com/facebook/buck2) ([Buck2 docs](https://buck2.build/docs/developers/starlark/environment/)).
+sol-azy allows developers and auditors to write custom **static analysis rules** using the [Starlark language](https://github.com/bazelbuild/starlark) — a Python-like configuration language used by projects like [Bazel](https://bazel.build/rules/language) and [Buck/Buck2](https://github.com/facebook/buck2) ([Buck2 docs](https://buck2.build/docs/developers/starlark/environment/)).
 
 These rules are evaluated against the **Rust AST** (Abstract Syntax Tree) of a Solana program, enabling precise pattern matching to detect vulnerabilities or code smells.
 
@@ -45,7 +45,7 @@ def syn_ast_rule(root: dict) -> list[dict]:
 
 ## Execution Flow
 
-When Sol-azy runs a rule:
+When sol-azy runs a rule:
 
 1. It parses the source code into an AST
 2. Converts it to JSON
@@ -55,7 +55,7 @@ When Sol-azy runs a rule:
 
 ## Helper Libraries
 
-Sol-azy ships with built-in Sol-azy helpers (written in Starlark):
+sol-azy ships with built-in sol-azy helpers (written in Starlark):
 
 ```
 src/static/starlark_libs/

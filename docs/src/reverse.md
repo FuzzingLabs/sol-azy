@@ -1,6 +1,6 @@
 # Reverse Engineering
 
-Sol-azy provides a reverse engineering module tailored for Solana programs compiled to eBPF.  
+sol-azy provides a reverse engineering module tailored for Solana programs compiled to eBPF.  
 It allows you to **disassemble** `.so` binaries, **extract control flow**, and **track embedded immediate data**.
 
 This tooling is especially useful for:
@@ -37,7 +37,7 @@ You pass the `.so` file using `--bytecodes-file`.
 
 ## Output
 
-Depending on the selected mode, Sol-azy produces one or more of the following:
+Depending on the selected mode, sol-azy produces one or more of the following:
 
 | File                          | Description                                       |
 |-------------------------------|---------------------------------------------------|
@@ -55,7 +55,7 @@ dot -Tpng cfg.dot -o cfg.png
 
 ## Subsections
 
-To dive deeper into how reverse analysis works in Sol-azy:
+To dive deeper into how reverse analysis works in sol-azy:
 
 - [Disassembly](./reverse/disassembly.md)
 - [Control Flow Graph](./reverse/cfg.md)
@@ -85,8 +85,8 @@ cargo run -- reverse \
 
 ## Note
 
-The reverse engineering core in Sol-azy is based on the excellent open-source project  
+The reverse engineering core in sol-azy is based on the excellent open-source project  
 [`sbpf-solana`](https://github.com/anza-xyz/sbpf) by [Anza (anza-xyz)](https://github.com/anza-xyz).
 
-We have modified and extended its disassembly and control flow analysis logic to better fit Sol-azy’s needs,
+We have modified and extended its disassembly and control flow analysis logic to better fit sol-azy’s needs,
 especially for static audits, immediate tracking, and custom export formats.

@@ -1,6 +1,6 @@
 # Dotting: Customizing Reduced CFGs
 
-The `dotting` feature in Sol-azy allows you to **manually augment** a reduced control flow graph (CFG) by reinserting specific function clusters from the full graph.
+The `dotting` feature in sol-azy allows you to **manually augment** a reduced control flow graph (CFG) by reinserting specific function clusters from the full graph.
 
 This is particularly useful when using `--reduced` or `--only-entrypoint` modes, which intentionally drop unused or library-heavy functions. With dotting, you can selectively restore those clusters for **targeted analysis**.
 
@@ -27,7 +27,7 @@ Instead, you can **grow your existing graph** by manually appending clusters and
    * The original full `.dot` file (reference),
    * Your reduced `.dot` file,
    * And the JSON config.
-3. Sol-azy:
+3. sol-azy:
 
    * Adds matching `subgraph cluster_XX` blocks.
    * Appends new edges **only if both sides already exist** in the reduced graph.
