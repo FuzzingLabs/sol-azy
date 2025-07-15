@@ -258,7 +258,21 @@ lddw r2, 0x1000043e8      ; key #2, appears later in bytecode
 </code></pre>
 <p>Even if the length for key #1 is unclear (or too long), sol-azy will <strong>truncate its range</strong> to stop at <code>0x1000043e8</code>.</p>
 <p>This avoids having <code>&quot;You win!&quot; + &quot;You lose!&quot;</code> accidentally merged into one blob, since both of them will be used independently by separate <code>LD_DW_IMM</code> instructions.</p>
-<hr />
+<blockquote>
+<p>Support for sBPF v2+: Address Construction via <code>mov32</code> + <code>hor64</code>
+In sBPF version 2 and above, the use of <code>lddw</code> for loading 64-bit constants is forbidden. Instead, addresses are <strong>manually constructed</strong> using:</p>
+<pre><code class="language-text">mov32  r1, 0x3000         ; load lower 32 bits
+hor64  r1, 0x10000000     ; set upper 32 bits → r1 = 0x1000000000003000
+</code></pre>
+<p>sol-azy handles this by:</p>
+<ol>
+<li><strong>Tracking register values</strong> using a <code>RegisterTracker</code></li>
+<li><strong>Do an &quot;emulation&quot;</strong> of <code>mov</code> and <code>hor64</code></li>
+<li><strong>Resolving loads like</strong> <code>ldxdw r2, [dst + off]</code> where <code>dst + off</code> points into <code>.rodata</code></li>
+<li><strong>Extracting and decoding the pointed memory</strong>, same as for <code>lddw</code></li>
+</ol>
+<p>This lets the disassembler annotate pointer-based loads even when addresses are assembled dynamically.</p>
+</blockquote>
 <h2 id="internal-implementation"><a class="header" href="#internal-implementation">Internal Implementation</a></h2>
 <p>The tracking structure is a <code>BTreeMap&lt;usize, usize&gt;</code>:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
