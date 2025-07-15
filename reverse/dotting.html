@@ -145,7 +145,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="dotting-customizing-reduced-cfgs"><a class="header" href="#dotting-customizing-reduced-cfgs">Dotting: Customizing Reduced CFGs</a></h1>
-<p>The <code>dotting</code> feature in Sol-azy allows you to <strong>manually augment</strong> a reduced control flow graph (CFG) by reinserting specific function clusters from the full graph.</p>
+<p>The <code>dotting</code> feature in sol-azy allows you to <strong>manually augment</strong> a reduced control flow graph (CFG) by reinserting specific function clusters from the full graph.</p>
 <p>This is particularly useful when using <code>--reduced</code> or <code>--only-entrypoint</code> modes, which intentionally drop unused or library-heavy functions. With dotting, you can selectively restore those clusters for <strong>targeted analysis</strong>.</p>
 <hr />
 <h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
@@ -172,7 +172,7 @@ Instead, you can <strong>grow your existing graph</strong> by manually appending
 </ul>
 </li>
 <li>
-<p>Sol-azy:</p>
+<p>sol-azy:</p>
 <ul>
 <li>Adds matching <code>subgraph cluster_XX</code> blocks.</li>
 <li>Appends new edges <strong>only if both sides already exist</strong> in the reduced graph.</li>

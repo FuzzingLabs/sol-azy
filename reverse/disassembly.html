@@ -145,11 +145,11 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="disassembly"><a class="header" href="#disassembly">Disassembly</a></h1>
-<p>Sol-azy statically disassembles compiled Solana eBPF programs into a readable, instruction-by-instruction view.<br />
+<p>sol-azy statically disassembles compiled Solana eBPF programs into a readable, instruction-by-instruction view.<br />
 This view is enhanced with <strong>immediate data decoding</strong>, especially for strings loaded from <code>.rodata</code>.</p>
 <hr />
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
-<p>The disassembly engine in Sol-azy builds upon <code>sbpf-solana</code>'s instruction decoder.<br />
+<p>The disassembly engine in sol-azy builds upon <code>sbpf-solana</code>'s instruction decoder.<br />
 It adds layers of audit-focused context by:</p>
 <ul>
 <li>Labeling basic blocks (e.g., <code>lbb_42</code>)</li>
@@ -159,7 +159,7 @@ It adds layers of audit-focused context by:</p>
 </ul>
 <hr />
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
-<p>Here’s a disassembly snippet produced by Sol-azy:</p>
+<p>Here’s a disassembly snippet produced by sol-azy:</p>
 <pre><code>entrypoint:
     mov64 r2, r1                                    r2 = r1
     mov64 r1, r10                                   r1 = r10
@@ -224,7 +224,7 @@ lbb_58:
 <p>Instructions like:</p>
 <pre><code class="language-text">lddw   r1, 0x1000043e0
 </code></pre>
-<p>point into <code>.rodata</code>. Sol-azy:</p>
+<p>point into <code>.rodata</code>. sol-azy:</p>
 <ol>
 <li>Checks if <code>imm &gt;= MM_RODATA_START</code></li>
 <li>Extracts the corresponding bytes from the <code>.so</code></li>
@@ -242,7 +242,7 @@ In sBPF version 2 and above, the use of <code>lddw</code> for loading 64-bit con
 <pre><code class="language-text">mov32  r1, 0x3000         ; load lower 32 bits
 hor64  r1, 0x10000000     ; set upper 32 bits → r1 = 0x1000000000003000
 </code></pre>
-<p>Sol-azy handles this by:</p>
+<p>sol-azy handles this by:</p>
 <ol>
 <li><strong>Tracking register values</strong> using a <code>RegisterTracker</code></li>
 <li><strong>Do an &quot;emulation&quot;</strong> of <code>mov</code> and <code>hor64</code></li>

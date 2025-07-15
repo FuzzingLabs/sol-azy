@@ -291,14 +291,14 @@ pub struct Cpi&lt;'info&gt; {
   --rules-dir rules/syn_ast
 </code></pre>
 <p><img src="../images/sast_result_abr_cpi_example.png" alt="alt text" /></p>
-<p>Sol-azy successfully detects <strong>three instances</strong> of the vulnerability, reported as:</p>
+<p>sol-azy successfully detects <strong>three instances</strong> of the vulnerability, reported as:</p>
 <pre><code class="language-text">../SolanaPlayground/sealevel-attacks//programs/5-arbitrary-cpi/secure/src/lib.rs:73:11
 ../SolanaPlayground/sealevel-attacks//programs/5-arbitrary-cpi/secure/src/lib.rs:29:11
 ../SolanaPlayground/sealevel-attacks//programs/5-arbitrary-cpi/insecure/src/lib.rs:10:11
 </code></pre>
 <p>Two are found in the <code>secure/</code> module (the source code provided above), and one in the <code>insecure/</code> module, which defines the same logic in a separate file with 1 vulnerable function.</p>
 <h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
-<p>Thanks to this template-based pattern matcher, <strong>Sol-azy</strong> is able to:</p>
+<p>Thanks to this template-based pattern matcher, <strong>sol-azy</strong> is able to:</p>
 <ul>
 <li>Statistically identify unvalidated CPI targets,</li>
 <li>Highlight affected source locations with precision,</li>

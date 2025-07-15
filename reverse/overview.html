@@ -145,14 +145,14 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="reverse-overview"><a class="header" href="#reverse-overview">Reverse Overview</a></h1>
-<p>This section explains how Sol-azy performs static reverse engineering on Solana programs compiled to SBF.</p>
+<p>This section explains how sol-azy performs static reverse engineering on Solana programs compiled to SBF.</p>
 <p>The reverse module combines disassembly, control flow analysis, and memory inspection, using a customized static analysis engine adapted from <a href="https://github.com/anza-xyz/sbpf-solana"><code>sbpf-solana</code></a>.</p>
 <hr />
 <h2 id="how-it-works"><a class="header" href="#how-it-works">How It Works</a></h2>
 <ol>
 <li>
 <p><strong>ELF Parsing</strong></p>
-<p>Sol-azy loads the <code>.so</code> bytecode using Solana’s <code>Executable</code> abstraction (from <code>solana_rbpf</code>), which parses the ELF and loads its segments (e.g., <code>.text</code>, <code>.rodata</code>).</p>
+<p>sol-azy loads the <code>.so</code> bytecode using Solana’s <code>Executable</code> abstraction (from <code>solana_rbpf</code>), which parses the ELF and loads its segments (e.g., <code>.text</code>, <code>.rodata</code>).</p>
 </li>
 <li>
 <p><strong>Instruction Analysis</strong></p>
@@ -165,7 +165,7 @@
 </li>
 <li>
 <p><strong>Immediate Tracking</strong></p>
-<p>When <code>LD_DW_IMM</code> instructions reference <code>MM_RODATA</code>, Sol-azy tries to:</p>
+<p>When <code>LD_DW_IMM</code> instructions reference <code>MM_RODATA</code>, sol-azy tries to:</p>
 <ul>
 <li>Interpret the referenced memory slice</li>
 <li>Associate it with a <code>MOV64_IMM</code> or <code>MOV32_IMM</code> defining its length</li>

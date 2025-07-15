@@ -145,7 +145,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="immediate-data-tracking"><a class="header" href="#immediate-data-tracking">Immediate Data Tracking</a></h1>
-<p>Sol-azy performs tracking of immediate values loaded from <code>.rodata</code> via <code>LD_DW_IMM</code> instructions.<br />
+<p>sol-azy performs tracking of immediate values loaded from <code>.rodata</code> via <code>LD_DW_IMM</code> instructions.<br />
 This feature is crucial to recover strings, error messages, and embedded constants that are otherwise opaque in the bytecode.</p>
 <hr />
 <h2 id="how-it-works"><a class="header" href="#how-it-works">How it works</a></h2>
@@ -156,7 +156,7 @@ mov64  r2, 9
 <ul>
 <li>The <code>lddw</code> instruction loads an offset in <code>.rodata</code></li>
 <li>The <code>mov64</code> gives a length (usually in bytes)</li>
-<li>Sol-azy uses these two to extract a slice of memory and decode it</li>
+<li>sol-azy uses these two to extract a slice of memory and decode it</li>
 </ul>
 <p>If the memory region looks printable (ASCII-compatible), it is rendered as a string like:</p>
 <pre><code class="language-text">b&quot;You lose!&quot;
@@ -217,7 +217,7 @@ mov64  r2, 9
 <p>which escapes non-printables and prints ASCII as-is.</p>
 <h3 id="ld_dw_imm-key-instructions-and-address-keys"><a class="header" href="#ld_dw_imm-key-instructions-and-address-keys">LD_DW_IMM: Key Instructions and Address Keys</a></h3>
 <p>The tracking system is triggered <strong>exclusively</strong> by <code>LD_DW_IMM</code> instructions, which are used to load 64-bit constants.<br />
-When such an instruction loads an address greater than or equal to <code>MM_RODATA_START</code>, Sol-azy considers it a <code>.rodata</code> access.</p>
+When such an instruction loads an address greater than or equal to <code>MM_RODATA_START</code>, sol-azy considers it a <code>.rodata</code> access.</p>
 <p>These addresses become the <strong>keys</strong> of the <code>immediate_data_table.out</code> output.</p>
 <p>Example:</p>
 <pre><code class="language-text">lddw   r1, 0x1000043e0   ; ← This address becomes a key
@@ -228,7 +228,7 @@ mov64  r2, 8             ; ← Length hint
 </code></pre>
 <h3 id="range-truncation-avoiding-overlaps"><a class="header" href="#range-truncation-avoiding-overlaps">Range Truncation: Avoiding Overlaps</a></h3>
 <p>In programs with many <code>LD_DW_IMM</code>, multiple memory regions may point into the same <code>.rodata</code> segment.<br />
-To avoid overlap between two string regions, Sol-azy performs a <strong>forward truncation</strong>:</p>
+To avoid overlap between two string regions, sol-azy performs <strong>forward truncation</strong>:</p>
 <ul>
 <li>It registers each <code>LD_DW_IMM</code> address (<code>new_start</code>)</li>
 <li>It finds the <strong>next closest start</strong> already known</li>
@@ -256,7 +256,7 @@ To avoid overlap between two string regions, Sol-azy performs a <strong>forward 
 <pre><code class="language-text">lddw r1, 0x1000043e0      ; key #1
 lddw r2, 0x1000043e8      ; key #2, appears later in bytecode
 </code></pre>
-<p>Even if the length for key #1 is unclear (or too long), Sol-azy will <strong>truncate its range</strong> to stop at <code>0x1000043e8</code>.</p>
+<p>Even if the length for key #1 is unclear (or too long), sol-azy will <strong>truncate its range</strong> to stop at <code>0x1000043e8</code>.</p>
 <p>This avoids having <code>&quot;You win!&quot; + &quot;You lose!&quot;</code> accidentally merged into one blob, since both of them will be used independently by separate <code>LD_DW_IMM</code> instructions.</p>
 <hr />
 <h2 id="internal-implementation"><a class="header" href="#internal-implementation">Internal Implementation</a></h2>

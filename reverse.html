@@ -145,7 +145,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="reverse-engineering"><a class="header" href="#reverse-engineering">Reverse Engineering</a></h1>
-<p>Sol-azy provides a reverse engineering module tailored for Solana programs compiled to eBPF.<br />
+<p>sol-azy provides a reverse engineering module tailored for Solana programs compiled to eBPF.<br />
 It allows you to <strong>disassemble</strong> <code>.so</code> binaries, <strong>extract control flow</strong>, and <strong>track embedded immediate data</strong>.</p>
 <p>This tooling is especially useful for:</p>
 <ul>
@@ -171,7 +171,7 @@ cargo build-sbf
 <p>You pass the <code>.so</code> file using <code>--bytecodes-file</code>.</p>
 <hr />
 <h2 id="output"><a class="header" href="#output">Output</a></h2>
-<p>Depending on the selected mode, Sol-azy produces one or more of the following:</p>
+<p>Depending on the selected mode, sol-azy produces one or more of the following:</p>
 <div class="table-wrapper"><table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>disassembly.out</code></td><td>Instruction-by-instruction disassembly</td></tr>
 <tr><td><code>immediate_data_table.out</code></td><td>Extracted strings or data from RODATA</td></tr>
@@ -183,7 +183,7 @@ cargo build-sbf
 </code></pre>
 <hr />
 <h2 id="subsections"><a class="header" href="#subsections">Subsections</a></h2>
-<p>To dive deeper into how reverse analysis works in Sol-azy:</p>
+<p>To dive deeper into how reverse analysis works in sol-azy:</p>
 <ul>
 <li><a href="./reverse/disassembly.html">Disassembly</a></li>
 <li><a href="./reverse/cfg.html">Control Flow Graph</a></li>
@@ -206,9 +206,9 @@ cargo build-sbf
 </ul>
 <hr />
 <h2 id="note"><a class="header" href="#note">Note</a></h2>
-<p>The reverse engineering core in Sol-azy is based on the excellent open-source project<br />
+<p>The reverse engineering core in sol-azy is based on the excellent open-source project<br />
 <a href="https://github.com/anza-xyz/sbpf"><code>sbpf-solana</code></a> by <a href="https://github.com/anza-xyz">Anza (anza-xyz)</a>.</p>
-<p>We have modified and extended its disassembly and control flow analysis logic to better fit Sol-azy’s needs,
+<p>We have modified and extended its disassembly and control flow analysis logic to better fit sol-azy’s needs,
 especially for static audits, immediate tracking, and custom export formats.</p>
 
                     </main>

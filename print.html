@@ -146,11 +146,11 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
-<p><strong>Sol-azy</strong> is a modular, CLI-based toolchain designed for working with Solana programs.<br />
+<p><strong>sol-azy</strong> is a modular, CLI-based toolchain designed for working with Solana programs.<br />
 It combines <strong>static analysis</strong>, <strong>reverse engineering</strong>, and <strong>project building</strong> features in one streamlined developer and auditor experience.</p>
 <hr />
-<h2 id="what-is-sol-azy"><a class="header" href="#what-is-sol-azy">What Is Sol-azy?</a></h2>
-<p>Sol-azy provides tools for:</p>
+<h2 id="what-is-sol-azy"><a class="header" href="#what-is-sol-azy">What Is sol-azy?</a></h2>
+<p>sol-azy provides tools for:</p>
 <ul>
 <li>
 <p><strong>Building Solana programs</strong>:</p>
@@ -192,8 +192,8 @@ It combines <strong>static analysis</strong>, <strong>reverse engineering</stron
 </li>
 </ul>
 <hr />
-<h2 id="why-sol-azy"><a class="header" href="#why-sol-azy">Why Sol-azy?</a></h2>
-<p>While tools like <code>solana</code>, <code>cargo build-sbf</code>, or <code>anchor build</code> focus on building and deployment, Sol-azy targets:</p>
+<h2 id="why-sol-azy"><a class="header" href="#why-sol-azy">Why sol-azy?</a></h2>
+<p>While tools like <code>solana</code>, <code>cargo build-sbf</code>, or <code>anchor build</code> focus on building and deployment, sol-azy targets:</p>
 <ul>
 <li><strong>Security auditing workflows</strong></li>
 <li><strong>Automated code review pipelines</strong></li>
@@ -203,7 +203,7 @@ It combines <strong>static analysis</strong>, <strong>reverse engineering</stron
 <p>It integrates tightly with Solana's BPF toolchain and <code>syn</code> parsing to provide source-level and binary-level insights in one place.</p>
 <hr />
 <h2 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h2>
-<p>Sol-azy is structured into several engines and CLI commands:</p>
+<p>sol-azy is structured into several engines and CLI commands:</p>
 <ul>
 <li><a href="cli/build.html"><code>build</code></a> – Compile programs and prepare artifacts</li>
 <li><a href="cli/sast.html"><code>sast</code></a> – Run static analysis with Starlark rules</li>
@@ -228,12 +228,12 @@ It combines <strong>static analysis</strong>, <strong>reverse engineering</stron
 <li>👉 <a href="rules/format.html">Write a custom rule</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
-<p>This page describes how to set up Sol-azy and its required dependencies.</p>
+<p>This page describes how to set up sol-azy and its required dependencies.</p>
 <hr />
 <h2 id="1-prerequisites"><a class="header" href="#1-prerequisites">1. Prerequisites</a></h2>
 <p>Make sure the following tools are installed on your system:</p>
 <div class="table-wrapper"><table><thead><tr><th>Tool</th><th>Purpose</th><th>Install link / command</th></tr></thead><tbody>
-<tr><td><strong>Rust</strong></td><td>Required to compile Sol-azy</td><td>https://rustup.rs</td></tr>
+<tr><td><strong>Rust</strong></td><td>Required to compile sol-azy</td><td>https://rustup.rs</td></tr>
 <tr><td><strong>cargo</strong></td><td>Rust package manager</td><td>Included with <code>rustup</code></td></tr>
 <tr><td><strong>Solana CLI</strong></td><td>Needed for SBF builds</td><td>https://docs.solana.com/cli/install-solana-cli</td></tr>
 <tr><td><strong>anchor</strong> <em>(optional)</em></td><td>For Anchor-based projects</td><td><code>cargo install --git https://github.com/coral-xyz/anchor anchor-cli --locked</code></td></tr>
@@ -257,7 +257,7 @@ cd sol-azy
 <p>The binary will be available at:</p>
 <pre><code class="language-bash">./target/release/sol-azy
 </code></pre>
-<p>You can also run Sol-azy in development using:</p>
+<p>You can also run sol-azy in development using:</p>
 <pre><code class="language-bash">cargo run -- &lt;command&gt; [options]
 </code></pre>
 <hr />
@@ -343,7 +343,7 @@ test_cases/base_sbf_addition_checker/bytecodes/addition_checker_sbpf_solana.so: 
 </code></pre>
 <p>You can also open an issue or contact the maintainers.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cli-usage"><a class="header" href="#cli-usage">CLI Usage</a></h1>
-<p>Sol-azy provides a command-line interface (CLI) for interacting with Solana programs through various operations:</p>
+<p>sol-azy provides a command-line interface (CLI) for interacting with Solana programs through various operations:</p>
 <ul>
 <li>Building programs</li>
 <li>Running static analysis</li>
@@ -403,7 +403,7 @@ Useful when you want to analyze a program without having its local source or com
 <h3 id="fuzz-to-do"><a class="header" href="#fuzz-to-do"><code>fuzz</code> <em>(TO DO)</em></a></h3>
 <hr />
 <h2 id="quickstart"><a class="header" href="#quickstart">Quickstart</a></h2>
-<p>To get started with Sol-azy:</p>
+<p>To get started with sol-azy:</p>
 <ol>
 <li><a href="installation.html">Install prerequisites</a></li>
 <li><a href="cli/build.html">Build your project</a></li>
@@ -431,7 +431,7 @@ It supports both <a href="https://www.anchor-lang.com/">Anchor</a> projects and 
 </ul>
 <hr />
 <h2 id="behavior"><a class="header" href="#behavior">Behavior</a></h2>
-<p>Sol-azy automatically detects the project type based on its contents:</p>
+<p>sol-azy automatically detects the project type based on its contents:</p>
 <div class="table-wrapper"><table><thead><tr><th>Type</th><th>Detection Criteria</th></tr></thead><tbody>
 <tr><td>Anchor</td><td>Presence of <code>Anchor.toml</code></td></tr>
 <tr><td>Native SBF</td><td><code>Cargo.toml</code> includes <code>solana-program</code></td></tr>
@@ -517,7 +517,7 @@ def syn_ast_rule(ast):
 </code></pre>
 <hr />
 <h2 id="output-1"><a class="header" href="#output-1">Output</a></h2>
-<p>Sol-azy prints results in a terminal table or as JSON.</p>
+<p>sol-azy prints result in a terminal table or as JSON.</p>
 <ul>
 <li>Rule metadata</li>
 <li>File names</li>
@@ -672,7 +672,7 @@ xdot cfg.dot
 <p>This command will disassemble the program and generate reduced CFG.</p>
 <hr />
 <h2 id="advanced-use-case"><a class="header" href="#advanced-use-case">Advanced Use Case</a></h2>
-<p>If using <code>--only-entrypoint</code>, Sol-azy will generate a minimal CFG with only the entrypoint's subgraph.
+<p>If using <code>--only-entrypoint</code>, sol-azy will generate a minimal CFG with only the entrypoint's subgraph.
 You can later extend this graph manually using <a href="cli/../reverse/dotting.html"><code>dotting</code></a> with a JSON list of function clusters to add.</p>
 <hr />
 <h2 id="related-3"><a class="header" href="#related-3">Related</a></h2>
@@ -770,7 +770,7 @@ It uses the <code>syn</code> crate to parse Rust code and <code>syn-serde</code>
 <li><a href="cli/./build.html">Build</a> — Compiles the source files that can be analyzed with ast-utils</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="static-analysis"><a class="header" href="#static-analysis">Static Analysis</a></h1>
-<p>Sol-azy includes a flexible static analysis engine designed to scan Solana Rust source code for programs vulnerabilities, code smells, or user-defined patterns.</p>
+<p>sol-azy includes a flexible static analysis engine designed to scan Solana Rust source code for programs vulnerabilities, code smells, or user-defined patterns.</p>
 <p>This engine leverages the <code>Starlark</code> language to express detection logic in <code>.star</code> files, and operates directly on the parsed Rust Abstract Syntax Tree (AST).</p>
 <hr />
 <h2 id="key-concepts"><a class="header" href="#key-concepts">Key Concepts</a></h2>
@@ -805,11 +805,11 @@ It uses the <code>syn</code> crate to parse Rust code and <code>syn-serde</code>
 <li>✅ <a href="rules/example.html">Use case example</a> </li>
 </ul>
 <h2 id="note"><a class="header" href="#note">Note</a></h2>
-<p>The sast engineering core in Sol-azy is based on the excellent open-source project<br />
+<p>The sast engineering core in sol-azy is based on the excellent open-source project<br />
 <a href="https://github.com/Auditware/radar"><code>radar</code></a> by <a href="https://github.com/Auditware">Auditware)</a>.</p>
 <p>We've been heavily inspired by their approach and wanted a standalone binary capable of it.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="rule-format"><a class="header" href="#rule-format">Rule Format</a></h1>
-<p>Sol-azy allows developers and auditors to write custom <strong>static analysis rules</strong> using the <a href="https://github.com/bazelbuild/starlark">Starlark language</a> — a Python-like configuration language used by projects like <a href="https://bazel.build/rules/language">Bazel</a> and <a href="https://github.com/facebook/buck2">Buck/Buck2</a> (<a href="https://buck2.build/docs/developers/starlark/environment/">Buck2 docs</a>).</p>
+<p>sol-azy allows developers and auditors to write custom <strong>static analysis rules</strong> using the <a href="https://github.com/bazelbuild/starlark">Starlark language</a> — a Python-like configuration language used by projects like <a href="https://bazel.build/rules/language">Bazel</a> and <a href="https://github.com/facebook/buck2">Buck/Buck2</a> (<a href="https://buck2.build/docs/developers/starlark/environment/">Buck2 docs</a>).</p>
 <p>These rules are evaluated against the <strong>Rust AST</strong> (Abstract Syntax Tree) of a Solana program, enabling precise pattern matching to detect vulnerabilities or code smells.</p>
 <h2 id="rule-file-structure"><a class="header" href="#rule-file-structure">Rule File Structure</a></h2>
 <p>A valid rule file is a <code>.star</code> script containing two main parts:</p>
@@ -845,7 +845,7 @@ def syn_ast_rule(root: dict) -&gt; list[dict]:
     return matches
 </code></pre>
 <h2 id="execution-flow"><a class="header" href="#execution-flow">Execution Flow</a></h2>
-<p>When Sol-azy runs a rule:</p>
+<p>When sol-azy runs a rule:</p>
 <ol>
 <li>It parses the source code into an AST</li>
 <li>Converts it to JSON</li>
@@ -854,7 +854,7 @@ def syn_ast_rule(root: dict) -&gt; list[dict]:
 <li>Any result added to <code>matches</code> is reported</li>
 </ol>
 <h2 id="helper-libraries"><a class="header" href="#helper-libraries">Helper Libraries</a></h2>
-<p>Sol-azy ships with built-in Sol-azy helpers (written in Starlark):</p>
+<p>sol-azy ships with built-in sol-azy helpers (written in Starlark):</p>
 <pre><code>src/static/starlark_libs/
 ├── syn_ast.star            # AST navigation utilities
 └── template_manager.star   # Match against common templates
@@ -887,7 +887,7 @@ template_manager.is_matching_template_by_key(node, &quot;CHECK_INSTRUCTION_DISCR
 <li><a href="rules/../cli/sast.html">Running Static Analysis</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="what-are-templates"><a class="header" href="#what-are-templates">What Are Templates?</a></h1>
-<p>Templates in Sol-azy are reusable pattern matchers designed to identify <strong>specific AST fragments</strong> in Rust source code.
+<p>Templates in sol-azy are reusable pattern matchers designed to identify <strong>specific AST fragments</strong> in Rust source code.
 They allow users to describe <strong>common logic constructs</strong> in a simple, declarative way, and can be used as building blocks in Starlark rules or during static pattern matching.</p>
 <p>They are especially useful when:</p>
 <ul>
@@ -1151,14 +1151,14 @@ pub struct Cpi&lt;'info&gt; {
   --rules-dir rules/syn_ast
 </code></pre>
 <p><img src="rules/../images/sast_result_abr_cpi_example.png" alt="alt text" /></p>
-<p>Sol-azy successfully detects <strong>three instances</strong> of the vulnerability, reported as:</p>
+<p>sol-azy successfully detects <strong>three instances</strong> of the vulnerability, reported as:</p>
 <pre><code class="language-text">../SolanaPlayground/sealevel-attacks//programs/5-arbitrary-cpi/secure/src/lib.rs:73:11
 ../SolanaPlayground/sealevel-attacks//programs/5-arbitrary-cpi/secure/src/lib.rs:29:11
 ../SolanaPlayground/sealevel-attacks//programs/5-arbitrary-cpi/insecure/src/lib.rs:10:11
 </code></pre>
 <p>Two are found in the <code>secure/</code> module (the source code provided above), and one in the <code>insecure/</code> module, which defines the same logic in a separate file with 1 vulnerable function.</p>
 <h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
-<p>Thanks to this template-based pattern matcher, <strong>Sol-azy</strong> is able to:</p>
+<p>Thanks to this template-based pattern matcher, <strong>sol-azy</strong> is able to:</p>
 <ul>
 <li>Statistically identify unvalidated CPI targets,</li>
 <li>Highlight affected source locations with precision,</li>
@@ -1242,7 +1242,7 @@ analysis. </p>
 <p>This documentation provides an overview of the functionality available in these Starlark libraries, which are designed
 for security analysis of Solana programs by detecting specific code patterns in their AST representations.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="reverse-engineering"><a class="header" href="#reverse-engineering">Reverse Engineering</a></h1>
-<p>Sol-azy provides a reverse engineering module tailored for Solana programs compiled to eBPF.<br />
+<p>sol-azy provides a reverse engineering module tailored for Solana programs compiled to eBPF.<br />
 It allows you to <strong>disassemble</strong> <code>.so</code> binaries, <strong>extract control flow</strong>, and <strong>track embedded immediate data</strong>.</p>
 <p>This tooling is especially useful for:</p>
 <ul>
@@ -1268,7 +1268,7 @@ cargo build-sbf
 <p>You pass the <code>.so</code> file using <code>--bytecodes-file</code>.</p>
 <hr />
 <h2 id="output-3"><a class="header" href="#output-3">Output</a></h2>
-<p>Depending on the selected mode, Sol-azy produces one or more of the following:</p>
+<p>Depending on the selected mode, sol-azy produces one or more of the following:</p>
 <div class="table-wrapper"><table><thead><tr><th>File</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>disassembly.out</code></td><td>Instruction-by-instruction disassembly</td></tr>
 <tr><td><code>immediate_data_table.out</code></td><td>Extracted strings or data from RODATA</td></tr>
@@ -1280,7 +1280,7 @@ cargo build-sbf
 </code></pre>
 <hr />
 <h2 id="subsections"><a class="header" href="#subsections">Subsections</a></h2>
-<p>To dive deeper into how reverse analysis works in Sol-azy:</p>
+<p>To dive deeper into how reverse analysis works in sol-azy:</p>
 <ul>
 <li><a href="./reverse/disassembly.html">Disassembly</a></li>
 <li><a href="./reverse/cfg.html">Control Flow Graph</a></li>
@@ -1303,19 +1303,19 @@ cargo build-sbf
 </ul>
 <hr />
 <h2 id="note-1"><a class="header" href="#note-1">Note</a></h2>
-<p>The reverse engineering core in Sol-azy is based on the excellent open-source project<br />
+<p>The reverse engineering core in sol-azy is based on the excellent open-source project<br />
 <a href="https://github.com/anza-xyz/sbpf"><code>sbpf-solana</code></a> by <a href="https://github.com/anza-xyz">Anza (anza-xyz)</a>.</p>
-<p>We have modified and extended its disassembly and control flow analysis logic to better fit Sol-azy’s needs,
+<p>We have modified and extended its disassembly and control flow analysis logic to better fit sol-azy’s needs,
 especially for static audits, immediate tracking, and custom export formats.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="reverse-overview"><a class="header" href="#reverse-overview">Reverse Overview</a></h1>
-<p>This section explains how Sol-azy performs static reverse engineering on Solana programs compiled to SBF.</p>
+<p>This section explains how sol-azy performs static reverse engineering on Solana programs compiled to SBF.</p>
 <p>The reverse module combines disassembly, control flow analysis, and memory inspection, using a customized static analysis engine adapted from <a href="https://github.com/anza-xyz/sbpf-solana"><code>sbpf-solana</code></a>.</p>
 <hr />
 <h2 id="how-it-works-1"><a class="header" href="#how-it-works-1">How It Works</a></h2>
 <ol>
 <li>
 <p><strong>ELF Parsing</strong></p>
-<p>Sol-azy loads the <code>.so</code> bytecode using Solana’s <code>Executable</code> abstraction (from <code>solana_rbpf</code>), which parses the ELF and loads its segments (e.g., <code>.text</code>, <code>.rodata</code>).</p>
+<p>sol-azy loads the <code>.so</code> bytecode using Solana’s <code>Executable</code> abstraction (from <code>solana_rbpf</code>), which parses the ELF and loads its segments (e.g., <code>.text</code>, <code>.rodata</code>).</p>
 </li>
 <li>
 <p><strong>Instruction Analysis</strong></p>
@@ -1328,7 +1328,7 @@ especially for static audits, immediate tracking, and custom export formats.</p>
 </li>
 <li>
 <p><strong>Immediate Tracking</strong></p>
-<p>When <code>LD_DW_IMM</code> instructions reference <code>MM_RODATA</code>, Sol-azy tries to:</p>
+<p>When <code>LD_DW_IMM</code> instructions reference <code>MM_RODATA</code>, sol-azy tries to:</p>
 <ul>
 <li>Interpret the referenced memory slice</li>
 <li>Associate it with a <code>MOV64_IMM</code> or <code>MOV32_IMM</code> defining its length</li>
@@ -1368,11 +1368,11 @@ especially for static audits, immediate tracking, and custom export formats.</p>
   --labeling
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="disassembly"><a class="header" href="#disassembly">Disassembly</a></h1>
-<p>Sol-azy statically disassembles compiled Solana eBPF programs into a readable, instruction-by-instruction view.<br />
+<p>sol-azy statically disassembles compiled Solana eBPF programs into a readable, instruction-by-instruction view.<br />
 This view is enhanced with <strong>immediate data decoding</strong>, especially for strings loaded from <code>.rodata</code>.</p>
 <hr />
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
-<p>The disassembly engine in Sol-azy builds upon <code>sbpf-solana</code>'s instruction decoder.<br />
+<p>The disassembly engine in sol-azy builds upon <code>sbpf-solana</code>'s instruction decoder.<br />
 It adds layers of audit-focused context by:</p>
 <ul>
 <li>Labeling basic blocks (e.g., <code>lbb_42</code>)</li>
@@ -1382,7 +1382,7 @@ It adds layers of audit-focused context by:</p>
 </ul>
 <hr />
 <h2 id="example-6"><a class="header" href="#example-6">Example</a></h2>
-<p>Here’s a disassembly snippet produced by Sol-azy:</p>
+<p>Here’s a disassembly snippet produced by sol-azy:</p>
 <pre><code>entrypoint:
     mov64 r2, r1                                    r2 = r1
     mov64 r1, r10                                   r1 = r10
@@ -1447,7 +1447,7 @@ lbb_58:
 <p>Instructions like:</p>
 <pre><code class="language-text">lddw   r1, 0x1000043e0
 </code></pre>
-<p>point into <code>.rodata</code>. Sol-azy:</p>
+<p>point into <code>.rodata</code>. sol-azy:</p>
 <ol>
 <li>Checks if <code>imm &gt;= MM_RODATA_START</code></li>
 <li>Extracts the corresponding bytes from the <code>.so</code></li>
@@ -1465,7 +1465,7 @@ In sBPF version 2 and above, the use of <code>lddw</code> for loading 64-bit con
 <pre><code class="language-text">mov32  r1, 0x3000         ; load lower 32 bits
 hor64  r1, 0x10000000     ; set upper 32 bits → r1 = 0x1000000000003000
 </code></pre>
-<p>Sol-azy handles this by:</p>
+<p>sol-azy handles this by:</p>
 <ol>
 <li><strong>Tracking register values</strong> using a <code>RegisterTracker</code></li>
 <li><strong>Do an &quot;emulation&quot;</strong> of <code>mov</code> and <code>hor64</code></li>
@@ -1512,7 +1512,7 @@ hor64  r1, 0x10000000     ; set upper 32 bits → r1 = 0x1000000000003000
 <li><a href="reverse/../cli/reverse.html">Reverse CLI Command</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="immediate-data-tracking"><a class="header" href="#immediate-data-tracking">Immediate Data Tracking</a></h1>
-<p>Sol-azy performs tracking of immediate values loaded from <code>.rodata</code> via <code>LD_DW_IMM</code> instructions.<br />
+<p>sol-azy performs tracking of immediate values loaded from <code>.rodata</code> via <code>LD_DW_IMM</code> instructions.<br />
 This feature is crucial to recover strings, error messages, and embedded constants that are otherwise opaque in the bytecode.</p>
 <hr />
 <h2 id="how-it-works-2"><a class="header" href="#how-it-works-2">How it works</a></h2>
@@ -1523,7 +1523,7 @@ mov64  r2, 9
 <ul>
 <li>The <code>lddw</code> instruction loads an offset in <code>.rodata</code></li>
 <li>The <code>mov64</code> gives a length (usually in bytes)</li>
-<li>Sol-azy uses these two to extract a slice of memory and decode it</li>
+<li>sol-azy uses these two to extract a slice of memory and decode it</li>
 </ul>
 <p>If the memory region looks printable (ASCII-compatible), it is rendered as a string like:</p>
 <pre><code class="language-text">b&quot;You lose!&quot;
@@ -1584,7 +1584,7 @@ mov64  r2, 9
 <p>which escapes non-printables and prints ASCII as-is.</p>
 <h3 id="ld_dw_imm-key-instructions-and-address-keys"><a class="header" href="#ld_dw_imm-key-instructions-and-address-keys">LD_DW_IMM: Key Instructions and Address Keys</a></h3>
 <p>The tracking system is triggered <strong>exclusively</strong> by <code>LD_DW_IMM</code> instructions, which are used to load 64-bit constants.<br />
-When such an instruction loads an address greater than or equal to <code>MM_RODATA_START</code>, Sol-azy considers it a <code>.rodata</code> access.</p>
+When such an instruction loads an address greater than or equal to <code>MM_RODATA_START</code>, sol-azy considers it a <code>.rodata</code> access.</p>
 <p>These addresses become the <strong>keys</strong> of the <code>immediate_data_table.out</code> output.</p>
 <p>Example:</p>
 <pre><code class="language-text">lddw   r1, 0x1000043e0   ; ← This address becomes a key
@@ -1595,7 +1595,7 @@ mov64  r2, 8             ; ← Length hint
 </code></pre>
 <h3 id="range-truncation-avoiding-overlaps"><a class="header" href="#range-truncation-avoiding-overlaps">Range Truncation: Avoiding Overlaps</a></h3>
 <p>In programs with many <code>LD_DW_IMM</code>, multiple memory regions may point into the same <code>.rodata</code> segment.<br />
-To avoid overlap between two string regions, Sol-azy performs a <strong>forward truncation</strong>:</p>
+To avoid overlap between two string regions, sol-azy performs <strong>forward truncation</strong>:</p>
 <ul>
 <li>It registers each <code>LD_DW_IMM</code> address (<code>new_start</code>)</li>
 <li>It finds the <strong>next closest start</strong> already known</li>
@@ -1623,7 +1623,7 @@ To avoid overlap between two string regions, Sol-azy performs a <strong>forward 
 <pre><code class="language-text">lddw r1, 0x1000043e0      ; key #1
 lddw r2, 0x1000043e8      ; key #2, appears later in bytecode
 </code></pre>
-<p>Even if the length for key #1 is unclear (or too long), Sol-azy will <strong>truncate its range</strong> to stop at <code>0x1000043e8</code>.</p>
+<p>Even if the length for key #1 is unclear (or too long), sol-azy will <strong>truncate its range</strong> to stop at <code>0x1000043e8</code>.</p>
 <p>This avoids having <code>&quot;You win!&quot; + &quot;You lose!&quot;</code> accidentally merged into one blob, since both of them will be used independently by separate <code>LD_DW_IMM</code> instructions.</p>
 <hr />
 <h2 id="internal-implementation"><a class="header" href="#internal-implementation">Internal Implementation</a></h2>
@@ -1665,7 +1665,7 @@ lddw r2, 0x1000043e8      ; key #2, appears later in bytecode
 <li><a href="reverse/../cli/reverse.html">Reverse CLI Command</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="control-flow-graph-cfg"><a class="header" href="#control-flow-graph-cfg">Control Flow Graph (CFG)</a></h1>
-<p>Sol-azy can extract a static control flow graph (CFG) from a compiled Solana eBPF program.<br />
+<p>sol-azy can extract a static control flow graph (CFG) from a compiled Solana eBPF program.<br />
 The output is a Graphviz-compatible <code>.dot</code> file representing function-level control flow between basic blocks.</p>
 <p>This is useful for:</p>
 <ul>
@@ -1687,7 +1687,7 @@ The output is a Graphviz-compatible <code>.dot</code> file representing function
     only_entrypoint: bool,
 ) -&gt; std::io::Result&lt;()&gt;
 <span class="boring">}</span></code></pre></pre>
-<p>Sol-azy uses the static <code>Analysis</code> engine to:</p>
+<p>sol-azy uses the static <code>Analysis</code> engine to:</p>
 <ol>
 <li>Identify all <strong>functions</strong></li>
 <li>Segment them into <strong>basic blocks</strong></li>
@@ -1718,7 +1718,7 @@ The output is a Graphviz-compatible <code>.dot</code> file representing function
 <li><strong>Dominator relationships</strong> (parent-child) are shown with dotted arrows (<code>style=dotted; arrowhead=none</code>)</li>
 </ul>
 <p><strong>Detailed behavior:</strong> <br />
-Sol-azy draws edges based on:</p>
+sol-azy draws edges based on:</p>
 <ul>
 <li><code>jne</code>, <code>jeq</code>, etc. → conditional edges</li>
 <li><code>ja</code> (jump always) → unconditional</li>
@@ -1730,7 +1730,7 @@ Sol-azy draws edges based on:</p>
 </ul>
 <hr />
 <h2 id="example-dot-snippet"><a class="header" href="#example-dot-snippet">Example (DOT snippet)</a></h2>
-<p>Here’s a raw <code>.dot</code> snippet generated by Sol-azy:</p>
+<p>Here’s a raw <code>.dot</code> snippet generated by sol-azy:</p>
 <pre><code class="language-dot">lbb_58 [label=&lt;&lt;table border=&quot;0&quot; cellborder=&quot;0&quot; cellpadding=&quot;3&quot;&gt;
   &lt;tr&gt;&lt;td align=&quot;left&quot;&gt;lddw&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r1, 0x1000043e8 --&amp;gt; b&quot;You lose!&quot;&lt;/td&gt;&lt;/tr&gt;
   &lt;tr&gt;&lt;td align=&quot;left&quot;&gt;mov64&lt;/td&gt;&lt;td align=&quot;left&quot;&gt;r2, 9&lt;/td&gt;&lt;/tr&gt;
@@ -1740,7 +1740,7 @@ Sol-azy draws edges based on:</p>
 </code></pre>
 <p>Graphviz will render this as a block node with a 4-row table inside.</p>
 <hr />
-<h2 id="how-sol-azy-generates-it"><a class="header" href="#how-sol-azy-generates-it">How Sol-azy Generates It</a></h2>
+<h2 id="how-sol-azy-generates-it"><a class="header" href="#how-sol-azy-generates-it">How sol-azy Generates It</a></h2>
 <p>CFG generation is implemented in:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -1781,7 +1781,7 @@ Sol-azy draws edges based on:</p>
 <p>is followed by:</p>
 <pre><code class="language-asm">mov64 r2, 9
 </code></pre>
-<p>Sol-azy uses this to resolve:</p>
+<p>sol-azy uses this to resolve:</p>
 <pre><code class="language-text">b&quot;You lose!&quot;
 </code></pre>
 <p>It is rendered like this:</p>
@@ -1832,7 +1832,7 @@ xdot cfg.dot         # for interactive navigation
 <p><img src="reverse/../images/reverse_cfg_entrypoint_example.png" alt="alt text" /></p>
 <hr />
 <h2 id="full-example-visual"><a class="header" href="#full-example-visual">Full Example (Visual)</a></h2>
-<p>Here’s what a real Sol-azy-generated CFG can look like:</p>
+<p>Here’s what a real sol-azy-generated CFG can look like:</p>
 <ul>
 <li>Each rectangle = basic block</li>
 <li>Arrows = jumps, calls, or branches</li>
@@ -1899,7 +1899,7 @@ pub fn process_instruction(
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="reduced-control-flow-graph-cfg"><a class="header" href="#reduced-control-flow-graph-cfg">Reduced Control Flow Graph (CFG)</a></h1>
 <p>Analyzing large Solana eBPF programs can produce overwhelming control flow graphs (CFGs) due to the sheer number of functions and basic blocks.
-Sol-azy offers two modes to reduce graph complexity:</p>
+sol-azy offers two modes to reduce graph complexity:</p>
 <ul>
 <li><code>--reduced</code>: Only include functions defined <em>after</em> the entrypoint.</li>
 <li><code>--only-entrypoint</code>: Include <strong>only</strong> the function cluster of the entrypoint itself.</li>
@@ -1980,7 +1980,7 @@ xdot cfg.dot
 <li><a href="reverse/../cli/reverse.html">Reverse CLI Options</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dotting-customizing-reduced-cfgs"><a class="header" href="#dotting-customizing-reduced-cfgs">Dotting: Customizing Reduced CFGs</a></h1>
-<p>The <code>dotting</code> feature in Sol-azy allows you to <strong>manually augment</strong> a reduced control flow graph (CFG) by reinserting specific function clusters from the full graph.</p>
+<p>The <code>dotting</code> feature in sol-azy allows you to <strong>manually augment</strong> a reduced control flow graph (CFG) by reinserting specific function clusters from the full graph.</p>
 <p>This is particularly useful when using <code>--reduced</code> or <code>--only-entrypoint</code> modes, which intentionally drop unused or library-heavy functions. With dotting, you can selectively restore those clusters for <strong>targeted analysis</strong>.</p>
 <hr />
 <h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
@@ -2007,7 +2007,7 @@ Instead, you can <strong>grow your existing graph</strong> by manually appending
 </ul>
 </li>
 <li>
-<p>Sol-azy:</p>
+<p>sol-azy:</p>
 <ul>
 <li>Adds matching <code>subgraph cluster_XX</code> blocks.</li>
 <li>Appends new edges <strong>only if both sides already exist</strong> in the reduced graph.</li>
@@ -2223,11 +2223,11 @@ lbb_409579 -&gt; {lbb_17014 lbb_369287};
 <li><a href="reverse/cfg.html">CFG</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="architecture"><a class="header" href="#architecture">Architecture</a></h1>
-<p>Sol-azy is a modular static analysis toolkit designed to work on Solana programs compiled to eBPF.<br />
+<p>sol-azy is a modular static analysis toolkit designed to work on Solana programs compiled to eBPF.<br />
 It is capable of disassembling, analyzing control flow, decoding embedded <code>.rodata</code> strings, and performing pattern-based syntactic analysis through rule-based AST matching.</p>
 <hr />
 <h2 id="high-level-design"><a class="header" href="#high-level-design">High-Level Design</a></h2>
-<p>Sol-azy is structured around <strong>three main engines</strong>, supported by <strong>auxiliary modules</strong>:</p>
+<p>sol-azy is structured around <strong>three main engines</strong>, supported by <strong>auxiliary modules</strong>:</p>
 <h3 id="core-engines"><a class="header" href="#core-engines">Core Engines</a></h3>
 <ol>
 <li>
@@ -2259,7 +2259,7 @@ Retrieves deployed program bytecode directly from on-chain Solana accounts via R
 → Enables reverse analysis even without access to local source code.</p>
 </li>
 </ul>
-<p>Each component is designed to be <strong>composable and scriptable</strong>, making Sol-azy flexible for both auditing and program analysis workflows.</p>
+<p>Each component is designed to be <strong>composable and scriptable</strong>, making sol-azy flexible for both auditing and program analysis workflows.</p>
 <hr />
 <h2 id="component-overview"><a class="header" href="#component-overview">Component Overview</a></h2>
 <h3 id="1-reverse"><a class="header" href="#1-reverse">1. <code>reverse/</code></a></h3>
@@ -2390,7 +2390,7 @@ Retrieves deployed program bytecode directly from on-chain Solana accounts via R
 <li><a href="./cli_usage.html">CLI Usage</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="appstate-architecture"><a class="header" href="#appstate-architecture"><code>AppState</code> Architecture</a></h1>
-<p>The <code>AppState</code> struct acts as the central orchestrator for Sol-azy’s CLI runtime.<br />
+<p>The <code>AppState</code> struct acts as the central orchestrator for sol-azy’s CLI runtime.<br />
 It coordinates the execution of commands like <code>build</code>, <code>sast</code> and <code>reverse</code>, and stores the resulting internal states across executions.</p>
 <hr />
 <h2 id="where-it-lives"><a class="header" href="#where-it-lives">Where It Lives</a></h2>
@@ -2442,7 +2442,7 @@ It coordinates the execution of commands like <code>build</code>, <code>sast</co
 </ol>
 <hr />
 <h2 id="why-is-appstate-needed"><a class="header" href="#why-is-appstate-needed">Why is <code>AppState</code> needed?</a></h2>
-<p>Sol-azy is a <strong>multi-command CLI application</strong>, and <code>AppState</code> provides:</p>
+<p>sol-azy is a <strong>multi-command CLI application</strong>, and <code>AppState</code> provides:</p>
 <ul>
 <li>A consistent runtime container to track what’s been executed</li>
 <li>A clean separation of CLI logic from actual analysis logic</li>
@@ -2466,7 +2466,7 @@ It coordinates the execution of commands like <code>build</code>, <code>sast</co
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sastengine-architecture"><a class="header" href="#sastengine-architecture"><code>SastEngine</code> Architecture</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="evolution-of-sol-azy"><a class="header" href="#evolution-of-sol-azy">Evolution of sol-azy</a></h1>
-<p><strong>Sol-azy</strong> is currently in development, and we have few ideas for new features.</p>
+<p><strong>sol-azy</strong> is currently in development, and we have few ideas for new features.</p>
 <h2 id="static-analysis-1"><a class="header" href="#static-analysis-1">Static analysis</a></h2>
 <h3 id="enhance-starlark-libraries"><a class="header" href="#enhance-starlark-libraries">Enhance Starlark libraries</a></h3>
 <h3 id="support-mir"><a class="header" href="#support-mir">Support MIR</a></h3>

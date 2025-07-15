@@ -145,7 +145,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="rule-format"><a class="header" href="#rule-format">Rule Format</a></h1>
-<p>Sol-azy allows developers and auditors to write custom <strong>static analysis rules</strong> using the <a href="https://github.com/bazelbuild/starlark">Starlark language</a> — a Python-like configuration language used by projects like <a href="https://bazel.build/rules/language">Bazel</a> and <a href="https://github.com/facebook/buck2">Buck/Buck2</a> (<a href="https://buck2.build/docs/developers/starlark/environment/">Buck2 docs</a>).</p>
+<p>sol-azy allows developers and auditors to write custom <strong>static analysis rules</strong> using the <a href="https://github.com/bazelbuild/starlark">Starlark language</a> — a Python-like configuration language used by projects like <a href="https://bazel.build/rules/language">Bazel</a> and <a href="https://github.com/facebook/buck2">Buck/Buck2</a> (<a href="https://buck2.build/docs/developers/starlark/environment/">Buck2 docs</a>).</p>
 <p>These rules are evaluated against the <strong>Rust AST</strong> (Abstract Syntax Tree) of a Solana program, enabling precise pattern matching to detect vulnerabilities or code smells.</p>
 <h2 id="rule-file-structure"><a class="header" href="#rule-file-structure">Rule File Structure</a></h2>
 <p>A valid rule file is a <code>.star</code> script containing two main parts:</p>
@@ -181,7 +181,7 @@ def syn_ast_rule(root: dict) -&gt; list[dict]:
     return matches
 </code></pre>
 <h2 id="execution-flow"><a class="header" href="#execution-flow">Execution Flow</a></h2>
-<p>When Sol-azy runs a rule:</p>
+<p>When sol-azy runs a rule:</p>
 <ol>
 <li>It parses the source code into an AST</li>
 <li>Converts it to JSON</li>
@@ -190,7 +190,7 @@ def syn_ast_rule(root: dict) -&gt; list[dict]:
 <li>Any result added to <code>matches</code> is reported</li>
 </ol>
 <h2 id="helper-libraries"><a class="header" href="#helper-libraries">Helper Libraries</a></h2>
-<p>Sol-azy ships with built-in Sol-azy helpers (written in Starlark):</p>
+<p>sol-azy ships with built-in sol-azy helpers (written in Starlark):</p>
 <pre><code>src/static/starlark_libs/
 ├── syn_ast.star            # AST navigation utilities
 └── template_manager.star   # Match against common templates
