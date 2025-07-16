@@ -35,7 +35,7 @@ cargo run -- <command> [options]
 
 ## Usage
 
-Here are some basic examples. See [`docs/book`](docs/book) for full documentation.
+Here are some basic examples. See [docs](https://fuzzinglabs.github.io/sol-azy/introduction.html) for full documentation.
 
 ### Build a project
 
