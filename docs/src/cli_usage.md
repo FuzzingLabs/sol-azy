@@ -3,6 +3,7 @@
 sol-azy provides a command-line interface (CLI) for interacting with Solana programs through various operations:
 
 - Building programs
+- Generate Anchor programs audit-friendly summary
 - Running static analysis
 - Reversing compiled bytecode
 - Modifying CFG .dot files
@@ -27,6 +28,16 @@ Compiles a Solana project using either Anchor or the native SBF toolchain.
 
 ```bash
 cargo run -- build --target-dir ./my_project --out-dir ./out/
+```
+
+---
+
+### [`recap`](cli/recap.md)
+
+Generate a compact, audit-friendly summary (per IDL / program) of an Anchor project.  
+
+```bash
+cargo run -- recap -d ../my-solana-project
 ```
 
 ---

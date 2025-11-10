@@ -6,6 +6,7 @@ It supports disassembly, control flow analysis, and custom Starlark-based rule e
 ## Features
 
 - Compile Solana programs (Anchor or native SBF)
+- Build an audit-friendly snapshot of each program in an Anchor project. **(NEW)**
 - Perform static AST-based security analysis with Starlark rules
 - Reverse-engineer `.so` bytecode: disassembly (& rust equivalences), control flow graphs, and immediate value decoding
 - Modular CFG editing (`dotting`)
@@ -42,6 +43,48 @@ Here are some basic examples. See [docs](https://fuzzinglabs.github.io/sol-azy/i
 ```bash
 cargo run -- build --target-dir ./my_project --out-dir ./out/
 ```
+
+### Generate an audit-friendly snapshot of each program
+
+```bash
+cargo run -- recap -d ../my-solana-project
+```
+
+> Helium protocol used as an example here
+
+#### Program `fanout`
+_Crate: /home/ectario/Documents/solana/helium-program-library/programs/fanout_
+
+| Instruction | Signers | Writable | Constrained | Seeded | Memory |
+|---|---|---|---|---|---|
+| distribute_v0 | payer | fanout, payer, to_account, token_account, voucher | fanout(has_one); receipt_account(constraint,spl); to_account(spl); voucher(has_one) | voucher | — |
+| initialize_fanout_v0 | payer | collection, collection_account, fanout, master_edition, metadata, payer, token_account | collection(spl); collection_account(spl); token_account(spl) | collection, fanout, master_edition, metadata | fanout(space) |
+| stake_v0 | payer, staker | collection_metadata, fanout, from_account, master_edition, metadata, mint, payer, receipt_account, stake_account, voucher | fanout(has_one); from_account(spl); mint(constraint,spl); receipt_account(spl); stake_account(spl) | collection_master_edition, collection_metadata, master_edition, metadata, voucher | voucher(space) |
+| unstake_v0 | payer, voucher_authority | fanout, mint, payer, receipt_account, sol_destination, stake_account, to_account, voucher | fanout(has_one); receipt_account(constraint,spl); to_account(spl); voucher(has_one) | voucher | — |
+
+#### Program `rewards_oracle`
+_Crate: /home/ectario/Documents/solana/helium-program-library/programs/rewards-oracle_
+
+| Instruction | Signers | Writable | Constrained | Seeded | Memory |
+|---|---|---|---|---|---|
+| set_current_rewards_wrapper_v0 | oracle | oracle, recipient | key_to_asset(constraint); recipient(has_one) | oracle_signer | — |
+| set_current_rewards_wrapper_v1 | oracle | oracle, recipient | key_to_asset(constraint); recipient(has_one) | oracle_signer | — |
+| set_current_rewards_wrapper_v2 | payer | payer, recipient | key_to_asset(constraint); recipient(has_one); sysvar_instructions(address) | oracle_signer | — |
+
+#### Program `lazy_transactions`
+_Crate: /home/ectario/Documents/solana/helium-program-library/programs/lazy-transactions_
+
+| Instruction | Signers | Writable | Constrained | Seeded | Memory |
+|---|---|---|---|---|---|
+| close_canopy_v0 | authority | canopy, lazy_transactions, refund | lazy_transactions(has_one) | — | — |
+| close_marker_v0 | authority | block, executed_transactions, lazy_transactions, refund | lazy_transactions(has_one) | block | — |
+| execute_transaction_v0 | payer | executed_transactions, lazy_signer, lazy_transactions, payer | block(constraint); lazy_transactions(has_one,constraint) | block, lazy_signer | — |
+| initialize_lazy_transactions_v0 | payer | canopy, executed_transactions, lazy_transactions, payer | canopy(owner,constraint); executed_transactions(owner,constraint) | lazy_transactions | lazy_transactions(space) |
+| set_canopy_v0 | authority | canopy, lazy_transactions | lazy_transactions(has_one) | — | — |
+| update_lazy_transactions_v0 | authority | canopy, executed_transactions, lazy_transactions | canopy(owner,constraint); executed_transactions(owner,constraint); lazy_transactions(has_one) | — | — |
+
+**.... SNIP ....**
+
 
 ### Run static analysis
 

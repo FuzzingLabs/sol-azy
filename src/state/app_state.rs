@@ -56,6 +56,9 @@ impl AppState {
                 self.run_fetcher(program_id.clone(), out_dir.clone(), rpc_url.clone())
                     .await;
             }
+            cmd @ Commands::Recap { .. } => {
+                self.run_recap(&commands::recap_command::RecapCmd::new_from_clap(cmd))
+            },
             cmd @ Commands::Build { .. } => {
                 self.build_project(&commands::build_command::BuildCmd::new_from_clap(cmd))
             }
@@ -207,6 +210,18 @@ impl AppState {
         match commands::ast_utils_command::run(cmd) {
             Ok(_) => info!("AST utils completed."),
             Err(e) => error!("An error occurred during AST utils: {}", e),
+        }
+    }
+
+    fn run_recap(
+        &mut self,
+        cmd: &commands::recap_command::RecapCmd,
+    ) {
+        match commands::recap_command::run(
+            cmd
+        ) {
+            Ok(_) => info!("Recap completed."),
+            Err(e) => error!("An error occurred during recap: {}", e),
         }
     }
 }

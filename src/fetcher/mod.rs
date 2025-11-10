@@ -229,7 +229,7 @@ mod tests {
     /// Ensure the function returns a readable error on an invalid pubkey
     #[tokio::test]
     async fn test_invalid_pubkey_error() {
-        let err = fetch_account_contents(MAINNET_RPC, TEST_INVALID_PUBKEY)
+        let _err = fetch_account_contents(MAINNET_RPC, TEST_INVALID_PUBKEY)
             .await
             .expect_err("Account not found: can't fetch any value using this pubkey, probably invalid pubkey");
     }
