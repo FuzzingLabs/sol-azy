@@ -16,3 +16,4 @@ pub mod dotting_command;
 pub mod fetcher_command;
 pub mod reverse_command;
 pub mod sast_command;
+pub mod recap_command;

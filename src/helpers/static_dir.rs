@@ -37,7 +37,7 @@ pub fn list_files(path: &str) -> Result<Vec<String>> {
 ///
 /// A vector of `File` references cloned from the directory, or an error if the directory is invalid.
 #[allow(dead_code)]
-pub fn get_all_files(path: &str) -> Result<Vec<File>> {
+pub fn get_all_files(path: &'_ str) -> Result<Vec<File<'_>>> {
     STATIC_DIR
         .get_dir(path)
         .map(|dir| dir.files().cloned().collect())

@@ -12,6 +12,7 @@ mod fetcher;
 mod helpers;
 mod parsers;
 mod printers;
+mod recap;
 mod reverse;
 mod state;
 
@@ -121,6 +122,14 @@ pub enum Commands {
         file_path: String,
         #[clap(short = 's', long = "starlark-syn-ast", default_value_t = false)]
         starlark_syn_ast: bool,
+    },
+    Recap {
+        #[clap(
+            short = 'd',
+            long = "target-dir",
+            help = "Path to the root of an Anchor project (with an IDL)"
+        )]
+        anchor_path: Option<String>,
     },
 }
 

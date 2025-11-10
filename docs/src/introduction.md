@@ -13,6 +13,12 @@ sol-azy provides tools for:
   - Supports both `Anchor` and native `SBF` workflows
   - Handles compilation and artifact organization
 
+- **Recap**:
+  - Produces a compact, audit-friendly summary per program/IDL
+  - Extracts instruction-level metadata (Signers, Writable, Constrained, Seeded, Memory)
+  - Maps IDLs to Anchor crates and performs lightweight source parsing to surface constraints, seeds and memory usage
+  - Ideal as a quick starting report for security reviews and audits
+
 - **Static Application Security Testing (SAST)**:
   - Uses a custom Starlark-based rule engine
   - Applies pattern-matching on the Rust AST
@@ -53,6 +59,7 @@ It integrates tightly with Solana's BPF toolchain and `syn` parsing to provide s
 sol-azy is structured into several engines and CLI commands:
 
 * [`build`](cli/build.md) – Compile programs and prepare artifacts
+* [`recap`](cli/recap.md) – Generate quick IDL+source summaries for audits (instruction tables, constraints, seeds, memory flags)
 * [`sast`](cli/sast.md) – Run static analysis with Starlark rules
 * [`reverse`](cli/reverse.md) – Perform bytecode reverse engineering
 * [`dotting`](reverse/dotting.md) – Post-process `.dot` graphs to manually restore functions in reduced CFGs
@@ -76,4 +83,3 @@ See the full [CLI Usage](cli_usage.md) section for more details.
 - 👉 [Installation](installation.md)
 - 👉 [Build your first project](cli/build.md)
 - 👉 [Write a custom rule](rules/format.md)
-
