@@ -4,7 +4,7 @@
 
 use indicatif::{ProgressIterator};
 use log::debug;
-use solana_sbpf::{ebpf::LD_DW_IMM, static_analysis::Analysis};
+use solana_sbpf::{ebpf::LD_DW_IMM, program::SBPFVersion, static_analysis::Analysis};
 use std::u8;
 
 use crate::reverse::immediate_tracker::ImmediateTracker;
@@ -29,6 +29,7 @@ use crate::helpers;
 /// * `analysis` - The static analysis object containing instructions and metadata.
 /// * `imm_tracker_wrapped` - An optional mutable reference to an `ImmediateTracker`
 ///   used to track offsets of immediate values.
+/// * `sbpf_version` - The sBPF version from the executable.
 /// * `path` - Base path where the disassembly file should be written.
 ///
 /// # Returns
@@ -44,6 +45,7 @@ fn disassemble<P: AsRef<Path>>(
     analysis: &mut Analysis,
     mut imm_tracker_wrapped: Option<&mut ImmediateTracker>,
     mut reg_tracker_wrapped: Option<&mut RegisterTracker>,
+    sbpf_version: SBPFVersion,
     path: P,
 ) -> std::io::Result<()> {
     debug!("Disassembling...");
@@ -91,7 +93,7 @@ fn disassemble<P: AsRef<Path>>(
         }
 
         // add rust equivalence repr
-        let wrapped_rust_eq = translate_to_rust(insn, analysis.sbpf_version);
+        let wrapped_rust_eq = translate_to_rust(insn, sbpf_version);
         let mut rust_eq: String = "".to_string();
         if wrapped_rust_eq != None {
             rust_eq.push_str("        ");
@@ -115,6 +117,7 @@ fn disassemble<P: AsRef<Path>>(
 /// * `program` - The raw bytecode of the eBPF program.
 /// * `analysis` - The static analysis object containing instructions and metadata.
 /// * `imm_tracker_wrapped` - Optional mutable reference to an `ImmediateTracker` for tracking.
+/// * `sbpf_version` - The sBPF version from the executable.
 /// * `path` - Base path for writing output files (`disassembly.out`, `immediate_data_table.out`).
 ///
 /// # Returns
@@ -125,6 +128,7 @@ pub fn disassemble_wrapper<P: AsRef<Path>>(
     analysis: &mut Analysis,
     mut imm_tracker_wrapped: Option<&mut ImmediateTracker>,
     mut reg_tracker_wrapped: Option<&mut RegisterTracker>,
+    sbpf_version: SBPFVersion,
     path: P,
 ) -> std::io::Result<()> {
     disassemble(
@@ -132,6 +136,7 @@ pub fn disassemble_wrapper<P: AsRef<Path>>(
         analysis,
         imm_tracker_wrapped.as_deref_mut(),
         reg_tracker_wrapped.as_deref_mut(),
+        sbpf_version,
         &path,
     )?;
     debug!("Tracking Immediates...");

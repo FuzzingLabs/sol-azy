@@ -20,7 +20,7 @@ entrypoint:
     stxw [r10-0xa4], r1                     
     mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
     stxdw [r10-0x40], r1                    
-    lddw r1, 0x100004610 --> b"\x00\x00\x00\x00\xd0C\x00\x00\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…        r1 load str located at 4294985232
+    lddw r1, 0x100004610                            r1 load str located at 4294985232
     stxdw [r10-0x60], r1                    
     mov64 r1, 2                                     r1 = 2 as i32 as i64 as u64
     stxdw [r10-0x58], r1                    
@@ -31,7 +31,7 @@ entrypoint:
     mov64 r1, r10                                   r1 = r10
     add64 r1, -164                                  r1 += -164   ///  r1 = r1.wrapping_add(-164 as i32 as i64 as u64)
     stxdw [r10-0x78], r1                    
-    lddw r1, 0x100004210 --> b"\xbf#\x00\x00\x00\x00\x00\x00a\x11\x00\x00\x00\x00\x00\x00\xb7\x02\x00\x0…        r1 load str located at 4294984208
+    lddw r1, 0x100004210                            r1 load str located at 4294984208
     stxdw [r10-0x70], r1                    
     stxdw [r10-0x80], r1                    
     mov64 r1, r10                                   r1 = r10
@@ -44,26 +44,26 @@ entrypoint:
     call function_858                       
     ldxdw r1, [r10-0xa0]                    
     ldxdw r2, [r10-0x90]                    
-    syscall [invalid]                       
+    syscall 544561597                       
     ldxw r1, [r10-0xa8]                     
     ldxw r2, [r10-0xa4]                     
     add64 r2, r1                                    r2 += r1   ///  r2 = r2.wrapping_add(r1)
     lsh64 r2, 32                                    r2 <<= 32   ///  r2 = r2.wrapping_shl(32)
     rsh64 r2, 32                                    r2 >>= 32   ///  r2 = r2.wrapping_shr(32)
     jne r2, 1337, lbb_58                            if r2 != (1337 as i32 as i64 as u64) { pc += 6 }
-    lddw r1, 0x1000043e0 --> b"You win!"            r1 load str located at 4294984672
+    lddw r1, 0x1000043e0                            r1 load str located at 4294984672
     mov64 r2, 8                                     r2 = 8 as i32 as i64 as u64
-    syscall [invalid]                       
+    syscall 544561597                       
     mov64 r1, 987654321                             r1 = 987654321 as i32 as i64 as u64
     ja lbb_63                                       if true { pc += 5 }
 lbb_58:
-    lddw r1, 0x1000043e8 --> b"You lose!"           r1 load str located at 4294984680
+    lddw r1, 0x1000043e8                            r1 load str located at 4294984680
     mov64 r2, 9                                     r2 = 9 as i32 as i64 as u64
-    syscall [invalid]                       
+    syscall 544561597                       
     mov64 r1, 123456789                             r1 = 123456789 as i32 as i64 as u64
 lbb_63:
     stxdw [r10-0x68], r1                    
-    lddw r1, 0x100004630 --> b"\x00\x00\x00\x00\xd8C\x00\x00\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…        r1 load str located at 4294985264
+    lddw r1, 0x100004630                            r1 load str located at 4294985264
     stxdw [r10-0x60], r1                    
     mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
     stxdw [r10-0x58], r1                    
@@ -71,7 +71,7 @@ lbb_63:
     mov64 r1, r10                                   r1 = r10
     add64 r1, -160                                  r1 += -160   ///  r1 = r1.wrapping_add(-160 as i32 as i64 as u64)
     stxdw [r10-0x50], r1                    
-    lddw r1, 0x100004238 --> b"\xbf#\x00\x00\x00\x00\x00\x00y\x11\x00\x00\x00\x00\x00\x00\xb7\x02\x00\x0…        r1 load str located at 4294984248
+    lddw r1, 0x100004238                            r1 load str located at 4294984248
     stxdw [r10-0x98], r1                    
     mov64 r1, r10                                   r1 = r10
     add64 r1, -104                                  r1 += -104   ///  r1 = r1.wrapping_add(-104 as i32 as i64 as u64)
@@ -85,13 +85,13 @@ lbb_63:
     call function_858                       
     ldxdw r1, [r10-0x88]                    
     ldxdw r2, [r10-0x78]                    
-    syscall [invalid]                       
+    syscall 544561597                       
     jeq r7, 0, lbb_107                              if r7 == (0 as i32 as i64 as u64) { pc += 17 }
     ja lbb_102                                      if true { pc += 11 }
 lbb_91:
-    lddw r1, 0x1000043f4 --> b"Not enough data. Need two u32 values."        r1 load str located at 4294984692
+    lddw r1, 0x1000043f4                            r1 load str located at 4294984692
     mov64 r2, 37                                    r2 = 37 as i32 as i64 as u64
-    syscall [invalid]                       
+    syscall 544561597                       
     mov64 r1, 2                                     r1 = 2 as i32 as i64 as u64
     stxw [r10-0xc8], r1                     
     mov64 r1, r10                                   r1 = r10
@@ -200,7 +200,7 @@ custom_panic:
     stxdw [r10-0x90], r1                    
     mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
     stxdw [r10-0x50], r1                    
-    lddw r1, 0x100004640 --> b"\x00\x00\x00\x00\xd0C\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…        r1 load str located at 4294985280
+    lddw r1, 0x100004640                            r1 load str located at 4294985280
     stxdw [r10-0x70], r1                    
     mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
     stxdw [r10-0x68], r1                    
@@ -208,7 +208,7 @@ custom_panic:
     mov64 r1, r10                                   r1 = r10
     add64 r1, -64                                   r1 += -64   ///  r1 = r1.wrapping_add(-64 as i32 as i64 as u64)
     stxdw [r10-0x60], r1                    
-    lddw r1, 0x100000120 --> b"y\x11\x00\x00\x00\x00\x00\x00\x85\x10\x00\x00#\x04\x00\x00\x95\x00\x00\x0…        r1 load str located at 4294967584
+    lddw r1, 0x100000120                            r1 load str located at 4294967584
     stxdw [r10-0x38], r1                    
     mov64 r1, r10                                   r1 = r10
     add64 r1, -144                                  r1 += -144   ///  r1 = r1.wrapping_add(-144 as i32 as i64 as u64)
@@ -220,7 +220,7 @@ custom_panic:
     call function_858                       
     ldxdw r1, [r10-0x88]                    
     ldxdw r2, [r10-0x78]                    
-    syscall [invalid]                       
+    syscall 544561597                       
     exit                                    
 
 function_213:
@@ -334,11 +334,11 @@ lbb_299:
     jne r1, 0, lbb_305                              if r1 != (0 as i32 as i64 as u64) { pc += 2 }
 lbb_303:
     call function_836                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 lbb_305:
     ldxdw r2, [r10-0x20]                    
     call function_853                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_308:
     mov64 r4, r2                                    r4 = r2
@@ -374,7 +374,7 @@ lbb_336:
     lddw r1, 0x2aaaaaaaaaaaaab                      r1 load str located at 192153584101141163
     jgt r1, r6, lbb_341                             if r1 > r6 { pc += 2 }
     call function_836                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 lbb_341:
     mov64 r7, r6                                    r7 = r6
     mul64 r7, 48                                    r7 *= 48   ///  r7 = r7.wrapping_mul(48 as u64)
@@ -390,7 +390,7 @@ lbb_341:
     mov64 r1, 8                                     r1 = 8 as i32 as i64 as u64
     mov64 r2, r7                                    r2 = r7
     call function_853                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 lbb_356:
     stxdw [r10-0x18], r6                    
     stxdw [r10-0x20], r0                    
@@ -455,8 +455,8 @@ lbb_410:
     stxdw [r6+0x0], r3                      
     jne r4, 1, lbb_415                              if r4 != (1 as i32 as i64 as u64) { pc += 2 }
 lbb_413:
-    syscall [invalid]                       
-    syscall [invalid]                       
+    syscall -1224992239                     
+    syscall -1224992239                     
 lbb_415:
     mov64 r2, r0                                    r2 = r0
     add64 r2, r1                                    r2 += r1   ///  r2 = r2.wrapping_add(r1)
@@ -511,7 +511,7 @@ lbb_449:
     mov64 r1, 8                                     r1 = 8 as i32 as i64 as u64
     mov64 r2, 32                                    r2 = 32 as i32 as i64 as u64
     call function_853                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 lbb_466:
     mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
     stxdw [r0+0x10], r1                     
@@ -532,7 +532,7 @@ lbb_466:
     mov64 r1, 8                                     r1 = 8 as i32 as i64 as u64
     mov64 r2, 40                                    r2 = 40 as i32 as i64 as u64
     call function_853                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 lbb_486:
     ldxdw r1, [r10-0x50]                    
     mov64 r3, r1                                    r3 = r1
@@ -603,9 +603,9 @@ lbb_532:
     stxdw [r3+0x0], r6                      
     ja lbb_385                                      if true { pc += -165 }
 lbb_550:
-    lddw r3, 0x100004650 --> b"\x00\x00\x00\x00\x19D\x00\x00\x11\x00\x00\x00\x00\x00\x00\x00a\x01\x00\x0…        r3 load str located at 4294985296
+    lddw r3, 0x100004650                            r3 load str located at 4294985296
     call function_1175                      
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_554:
     ldxw r2, [r1+0x0]                       
@@ -716,37 +716,37 @@ lbb_657:
 
 function_659:
     call function_668                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_661:
     call function_665                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_663:
-    syscall [invalid]                       
+    syscall 544561597                       
     exit                                    
 
 function_665:
     call custom_panic                       
-    syscall [invalid]                       
-    syscall [invalid]                       
+    syscall -1224992239                     
+    syscall -1224992239                     
 
 function_668:
-    syscall [invalid]                       
-    syscall [invalid]                       
+    syscall -1224992239                     
+    syscall -1224992239                     
 
 function_670:
-    lddw r1, 0x10000442a --> b"Error: memory allocation failed, out of memory"        r1 load str located at 4294984746
+    lddw r1, 0x10000442a                            r1 load str located at 4294984746
     mov64 r2, 46                                    r2 = 46 as i32 as i64 as u64
     call function_663                       
     call function_659                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_676:
     call function_670                       
-    syscall [invalid]                       
+    syscall -1224992239                     
     mov64 r3, r2                                    r3 = r2
-    lddw r2, 0x100004668 --> b"\x00\x00\x00\x00\x80\x16\x00\x00\x18\x00\x00\x00\x00\x00\x00\x00\x08\x00\…        r2 load str located at 4294985320
+    lddw r2, 0x100004668                            r2 load str located at 4294985320
     call function_1261                      
     exit                                    
 
@@ -764,7 +764,7 @@ lbb_689:
 
 function_690:
     mov64 r1, r2                                    r1 = r2
-    lddw r2, 0x100004458 --> b"Error"               r2 load str located at 4294984792
+    lddw r2, 0x100004458                            r2 load str located at 4294984792
     mov64 r3, 5                                     r3 = 5 as i32 as i64 as u64
     call function_1795                      
     exit                                    
@@ -821,11 +821,11 @@ lbb_735:
     jne r1, 0, lbb_741                              if r1 != (0 as i32 as i64 as u64) { pc += 2 }
 lbb_739:
     call function_836                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 lbb_741:
     ldxdw r2, [r10-0x20]                    
     call function_853                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_744:
     mov64 r6, r1                                    r6 = r1
@@ -878,11 +878,11 @@ lbb_782:
     jne r1, 0, lbb_788                              if r1 != (0 as i32 as i64 as u64) { pc += 2 }
 lbb_786:
     call function_836                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 lbb_788:
     ldxdw r2, [r10-0x20]                    
     call function_853                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_791:
     mov64 r7, r3                                    r7 = r3
@@ -940,25 +940,25 @@ lbb_834:
 function_836:
     mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
     stxdw [r10-0x28], r1                    
-    lddw r1, 0x100004698 --> b"\x00\x00\x00\x00yD\x00\x00\x11\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0…        r1 load str located at 4294985368
+    lddw r1, 0x100004698                            r1 load str located at 4294985368
     stxdw [r10-0x30], r1                    
     mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
     stxdw [r10-0x10], r1                    
     stxdw [r10-0x18], r1                    
-    lddw r1, 0x100004458 --> b"Errorlibrary/alloc/src/raw_vec.rscapacity overflow"        r1 load str located at 4294984792
+    lddw r1, 0x100004458                            r1 load str located at 4294984792
     stxdw [r10-0x20], r1                    
     mov64 r1, r10                                   r1 = r10
     add64 r1, -48                                   r1 += -48   ///  r1 = r1.wrapping_add(-48 as i32 as i64 as u64)
-    lddw r2, 0x1000046a8 --> b"\x00\x00\x00\x00]D\x00\x00\x1c\x00\x00\x00\x00\x00\x00\x00!\x02\x00\x00\x…        r2 load str located at 4294985384
+    lddw r2, 0x1000046a8                            r2 load str located at 4294985384
     call function_1161                      
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_853:
     mov64 r3, r1                                    r3 = r1
     mov64 r1, r2                                    r1 = r2
     mov64 r2, r3                                    r2 = r3
     call function_213                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_858:
     mov64 r7, r2                                    r7 = r2
@@ -1001,7 +1001,7 @@ lbb_888:
     jeq r8, 0, lbb_909                              if r8 == (0 as i32 as i64 as u64) { pc += 18 }
     jsgt r8, -1, lbb_894                            if (r8 as i64) > (-1 as i32 as i64) { pc += 2 }
     call function_836                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 lbb_894:
     mov64 r1, r8                                    r1 = r8
     mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
@@ -1011,7 +1011,7 @@ lbb_894:
     mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
     mov64 r2, r8                                    r2 = r8
     call function_853                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 lbb_903:
     mov64 r8, 0                                     r8 = 0 as i32 as i64 as u64
     ldxdw r1, [r7+0x18]                     
@@ -1027,7 +1027,7 @@ lbb_909:
     stxdw [r10-0x20], r0                    
     mov64 r1, r10                                   r1 = r10
     add64 r1, -32                                   r1 += -32   ///  r1 = r1.wrapping_add(-32 as i32 as i64 as u64)
-    lddw r2, 0x100004668 --> b"\x00\x00\x00\x00\x80\x16\x00\x00\x18\x00\x00\x00\x00\x00\x00\x00\x08\x00\…        r2 load str located at 4294985320
+    lddw r2, 0x100004668                            r2 load str located at 4294985320
     mov64 r3, r7                                    r3 = r7
     call function_1261                      
     jne r0, 0, lbb_927                              if r0 != (0 as i32 as i64 as u64) { pc += 7 }
@@ -1041,12 +1041,12 @@ lbb_909:
 lbb_927:
     mov64 r3, r10                                   r3 = r10
     add64 r3, -1                                    r3 += -1   ///  r3 = r3.wrapping_add(-1 as i32 as i64 as u64)
-    lddw r1, 0x10000448a --> b"a formatting trait implementation returned an error"        r1 load str located at 4294984842
+    lddw r1, 0x10000448a                            r1 load str located at 4294984842
     mov64 r2, 51                                    r2 = 51 as i32 as i64 as u64
-    lddw r4, 0x1000046c0 --> b"\x00\x00\x00\x00x\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00…        r4 load str located at 4294985408
-    lddw r5, 0x1000046e0 --> b"\x00\x00\x00\x00\xbdD\x00\x00\x18\x00\x00\x00\x00\x00\x00\x00d\x02\x00\x0…        r5 load str located at 4294985440
+    lddw r4, 0x1000046c0                            r4 load str located at 4294985408
+    lddw r5, 0x1000046e0                            r5 load str located at 4294985440
     call function_1202                      
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_938:
     mov64 r7, r2                                    r7 = r2
@@ -1197,7 +1197,7 @@ function_1061:
     ldxdw r7, [r2+0x28]                     
     ldxdw r9, [r7+0x18]                     
     mov64 r1, r6                                    r1 = r6
-    lddw r2, 0x100004520 --> b"panicked at "        r2 load str located at 4294984992
+    lddw r2, 0x100004520                            r2 load str located at 4294984992
     mov64 r3, 12                                    r3 = 12 as i32 as i64 as u64
     callx r9                                
     mov64 r1, r0                                    r1 = r0
@@ -1206,7 +1206,7 @@ function_1061:
     ldxdw r1, [r8+0x18]                     
     mov64 r2, 0                                     r2 = 0 as i32 as i64 as u64
     stxdw [r10-0x70], r2                    
-    lddw r2, 0x100004708 --> b"\x00\x00\x00\x00\xd8D\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…        r2 load str located at 4294985480
+    lddw r2, 0x100004708                            r2 load str located at 4294985480
     stxdw [r10-0x90], r2                    
     mov64 r2, 3                                     r2 = 3 as i32 as i64 as u64
     stxdw [r10-0x88], r2                    
@@ -1217,13 +1217,13 @@ function_1061:
     mov64 r2, r1                                    r2 = r1
     add64 r2, 20                                    r2 += 20   ///  r2 = r2.wrapping_add(20 as i32 as i64 as u64)
     stxdw [r10-0x40], r2                    
-    lddw r2, 0x100004210 --> b"\xbf#\x00\x00\x00\x00\x00\x00a\x11\x00\x00\x00\x00\x00\x00\xb7\x02\x00\x0…        r2 load str located at 4294984208
+    lddw r2, 0x100004210                            r2 load str located at 4294984208
     stxdw [r10-0x38], r2                    
     stxdw [r10-0x48], r2                    
     mov64 r2, r1                                    r2 = r1
     add64 r2, 16                                    r2 += 16   ///  r2 = r2.wrapping_add(16 as i32 as i64 as u64)
     stxdw [r10-0x50], r2                    
-    lddw r2, 0x100004290 --> b"\xbf$\x00\x00\x00\x00\x00\x00y\x13\x08\x00\x00\x00\x00\x00y\x12\x00\x00\x…        r2 load str located at 4294984336
+    lddw r2, 0x100004290                            r2 load str located at 4294984336
     stxdw [r10-0x58], r2                    
     stxdw [r10-0x60], r1                    
     mov64 r3, r10                                   r3 = r10
@@ -1238,7 +1238,7 @@ function_1061:
     jeq r1, 0, lbb_1129                             if r1 == (0 as i32 as i64 as u64) { pc += 20 }
     stxdw [r10-0xa8], r1                    
     mov64 r1, r6                                    r1 = r6
-    lddw r2, 0x10000452c --> b":\x0a"               r2 load str located at 4294985004
+    lddw r2, 0x10000452c                            r2 load str located at 4294985004
     mov64 r3, 2                                     r3 = 2 as i32 as i64 as u64
     callx r9                                
     mov64 r1, r0                                    r1 = r0
@@ -1275,7 +1275,7 @@ lbb_1129:
     ja lbb_1160                                     if true { pc += 12 }
 lbb_1148:
     mov64 r1, r6                                    r1 = r6
-    lddw r2, 0x10000452c --> b":\x0a"               r2 load str located at 4294985004
+    lddw r2, 0x10000452c                            r2 load str located at 4294985004
     mov64 r3, 2                                     r3 = 2 as i32 as i64 as u64
     callx r9                                
     mov64 r1, r0                                    r1 = r0
@@ -1293,14 +1293,14 @@ function_1161:
     stxh [r10-0x8], r3                      
     stxdw [r10-0x10], r2                    
     stxdw [r10-0x18], r1                    
-    lddw r1, 0x100004738 --> b"\x00\x00\x00\x00\x08"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00…        r1 load str located at 4294985528
+    lddw r1, 0x100004738                            r1 load str located at 4294985528
     stxdw [r10-0x20], r1                    
-    lddw r1, 0x1000044d8 --> b"invalid argslibrary/core/src/fmt/mod.rsindex out o"        r1 load str located at 4294984920
+    lddw r1, 0x1000044d8                            r1 load str located at 4294984920
     stxdw [r10-0x28], r1                    
     mov64 r1, r10                                   r1 = r10
     add64 r1, -40                                   r1 += -40   ///  r1 = r1.wrapping_add(-40 as i32 as i64 as u64)
     call function_661                       
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_1175:
     mov64 r6, r3                                    r6 = r3
@@ -1309,7 +1309,7 @@ function_1175:
     mov64 r1, r10                                   r1 = r10
     add64 r1, -96                                   r1 += -96   ///  r1 = r1.wrapping_add(-96 as i32 as i64 as u64)
     stxdw [r10-0x10], r1                    
-    lddw r1, 0x100004238 --> b"\xbf#\x00\x00\x00\x00\x00\x00y\x11\x00\x00\x00\x00\x00\x00\xb7\x02\x00\x0…        r1 load str located at 4294984248
+    lddw r1, 0x100004238                            r1 load str located at 4294984248
     stxdw [r10-0x8], r1                     
     stxdw [r10-0x18], r1                    
     mov64 r1, r10                                   r1 = r10
@@ -1320,14 +1320,14 @@ function_1175:
     mov64 r4, r10                                   r4 = r10
     add64 r4, -32                                   r4 += -32   ///  r4 = r4.wrapping_add(-32 as i32 as i64 as u64)
     mov64 r1, r7                                    r1 = r7
-    lddw r2, 0x100004758 --> b"\x00\x00"            r2 load str located at 4294985560
+    lddw r2, 0x100004758                            r2 load str located at 4294985560
     mov64 r3, 2                                     r3 = 2 as i32 as i64 as u64
     mov64 r5, 2                                     r5 = 2 as i32 as i64 as u64
     call function_1233                      
     mov64 r1, r7                                    r1 = r7
     mov64 r2, r6                                    r2 = r6
     call function_1161                      
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_1202:
     mov64 r6, r5                                    r6 = r5
@@ -1335,12 +1335,12 @@ function_1202:
     stxdw [r10-0x70], r1                    
     stxdw [r10-0x58], r4                    
     stxdw [r10-0x60], r3                    
-    lddw r1, 0x100004260 --> b"y\x13\x00\x00\x00\x00\x00\x00y\x11\x08\x00\x00\x00\x00\x00y\x14\x18\x00\x…        r1 load str located at 4294984288
+    lddw r1, 0x100004260                            r1 load str located at 4294984288
     stxdw [r10-0x8], r1                     
     mov64 r1, r10                                   r1 = r10
     add64 r1, -96                                   r1 += -96   ///  r1 = r1.wrapping_add(-96 as i32 as i64 as u64)
     stxdw [r10-0x10], r1                    
-    lddw r1, 0x100004290 --> b"\xbf$\x00\x00\x00\x00\x00\x00y\x13\x08\x00\x00\x00\x00\x00y\x12\x00\x00\x…        r1 load str located at 4294984336
+    lddw r1, 0x100004290                            r1 load str located at 4294984336
     stxdw [r10-0x18], r1                    
     mov64 r1, r10                                   r1 = r10
     add64 r1, -112                                  r1 += -112   ///  r1 = r1.wrapping_add(-112 as i32 as i64 as u64)
@@ -1350,14 +1350,14 @@ function_1202:
     mov64 r4, r10                                   r4 = r10
     add64 r4, -32                                   r4 += -32   ///  r4 = r4.wrapping_add(-32 as i32 as i64 as u64)
     mov64 r1, r7                                    r1 = r7
-    lddw r2, 0x100004778 --> b"\x00\x00"            r2 load str located at 4294985592
+    lddw r2, 0x100004778                            r2 load str located at 4294985592
     mov64 r3, 2                                     r3 = 2 as i32 as i64 as u64
     mov64 r5, 2                                     r5 = 2 as i32 as i64 as u64
     call function_1233                      
     mov64 r1, r7                                    r1 = r7
     mov64 r2, r6                                    r2 = r6
     call function_1161                      
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_1233:
     mov64 r0, r5                                    r0 = r5
@@ -1374,18 +1374,18 @@ function_1233:
 lbb_1244:
     mov64 r1, 1                                     r1 = 1 as i32 as i64 as u64
     stxdw [r10-0x28], r1                    
-    lddw r1, 0x1000046f8 --> b"\x00\x00\x00\x00\xd8D\x00\x00\x0c\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00…        r1 load str located at 4294985464
+    lddw r1, 0x1000046f8                            r1 load str located at 4294985464
     stxdw [r10-0x30], r1                    
     mov64 r1, 0                                     r1 = 0 as i32 as i64 as u64
     stxdw [r10-0x10], r1                    
     stxdw [r10-0x18], r1                    
-    lddw r1, 0x1000044d8 --> b"invalid argslibrary/core/src/fmt/mod.rsindex out o"        r1 load str located at 4294984920
+    lddw r1, 0x1000044d8                            r1 load str located at 4294984920
     stxdw [r10-0x20], r1                    
     mov64 r1, r10                                   r1 = r10
     add64 r1, -48                                   r1 += -48   ///  r1 = r1.wrapping_add(-48 as i32 as i64 as u64)
-    lddw r2, 0x100004798 --> b"\x00\x00\x00\x00\xe4D\x00\x00\x1b\x00\x00\x00\x00\x00\x00\x00M\x01\x00\x0…        r2 load str located at 4294985624
+    lddw r2, 0x100004798                            r2 load str located at 4294985624
     call function_1161                      
-    syscall [invalid]                       
+    syscall -1224992239                     
 
 function_1261:
     mov64 r4, 3                                     r4 = 3 as i32 as i64 as u64
@@ -1491,7 +1491,7 @@ lbb_1351:
     ldxdw r3, [r10-0x48]                    
     add64 r3, r1                                    r3 += r1   ///  r3 = r3.wrapping_add(r1)
     ldxdw r4, [r3+0x8]                      
-    lddw r5, 0x1000021f8 --> b"y\x11\x00\x00\x00\x00\x00\x00\x05\x00\xff\xff\x00\x00\x00\x00\x95\x00\x00…        r5 load str located at 4294975992
+    lddw r5, 0x1000021f8                            r5 load str located at 4294975992
     jne r4, r5, lbb_1361                            if r4 != r5 { pc += 3 }
     mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
     ldxdw r1, [r3+0x0]                      
@@ -1513,7 +1513,7 @@ lbb_1371:
     ldxdw r3, [r10-0x48]                    
     add64 r3, r1                                    r3 += r1   ///  r3 = r3.wrapping_add(r1)
     ldxdw r4, [r3+0x8]                      
-    lddw r5, 0x1000021f8 --> b"y\x11\x00\x00\x00\x00\x00\x00\x05\x00\xff\xff\x00\x00\x00\x00\x95\x00\x00…        r5 load str located at 4294975992
+    lddw r5, 0x1000021f8                            r5 load str located at 4294975992
     jne r4, r5, lbb_1312                            if r4 != r5 { pc += -66 }
     mov64 r2, 1                                     r2 = 1 as i32 as i64 as u64
     ldxdw r1, [r3+0x0]                      
@@ -2231,13 +2231,13 @@ lbb_1994:
     add64 r7, -39                                   r7 += -39   ///  r7 = r7.wrapping_add(-39 as i32 as i64 as u64)
     add64 r7, r4                                    r7 += r4   ///  r7 = r7.wrapping_add(r4)
     lsh64 r6, 1                                     r6 <<= 1   ///  r6 = r6.wrapping_shl(1)
-    lddw r8, 0x100004542 --> b"00010203040506070809101112131415161718192021222324"        r8 load str located at 4294985026
+    lddw r8, 0x100004542                            r8 load str located at 4294985026
     add64 r8, r6                                    r8 += r6   ///  r8 = r8.wrapping_add(r6)
     ldxh r6, [r8+0x0]                       
     stxh [r7+0x23], r6                      
     lsh64 r0, 1                                     r0 <<= 1   ///  r0 = r0.wrapping_shl(1)
     and64 r0, 65534                                 r0 &= 65534   ///  r0 = r0.and(65534)
-    lddw r6, 0x100004542 --> b"00010203040506070809101112131415161718192021222324"        r6 load str located at 4294985026
+    lddw r6, 0x100004542                            r6 load str located at 4294985026
     add64 r6, r0                                    r6 += r0   ///  r6 = r6.wrapping_add(r0)
     ldxh r0, [r6+0x0]                       
     stxh [r7+0x25], r0                      
@@ -2256,7 +2256,7 @@ lbb_2027:
     sub64 r1, r0                                    r1 -= r0   ///  r1 = r1.wrapping_sub(r0)
     lsh64 r1, 1                                     r1 <<= 1   ///  r1 = r1.wrapping_shl(1)
     and64 r1, 65534                                 r1 &= 65534   ///  r1 = r1.and(65534)
-    lddw r0, 0x100004542 --> b"00010203040506070809101112131415161718192021222324"        r0 load str located at 4294985026
+    lddw r0, 0x100004542                            r0 load str located at 4294985026
     add64 r0, r1                                    r0 += r1   ///  r0 = r0.wrapping_add(r1)
     add64 r4, -2                                    r4 += -2   ///  r4 = r4.wrapping_add(-2 as i32 as i64 as u64)
     mov64 r1, r10                                   r1 = r10
@@ -2269,7 +2269,7 @@ lbb_2045:
     mov64 r5, 10                                    r5 = 10 as i32 as i64 as u64
     jgt r5, r1, lbb_2058                            if r5 > r1 { pc += 11 }
     lsh64 r1, 1                                     r1 <<= 1   ///  r1 = r1.wrapping_shl(1)
-    lddw r5, 0x100004542 --> b"00010203040506070809101112131415161718192021222324"        r5 load str located at 4294985026
+    lddw r5, 0x100004542                            r5 load str located at 4294985026
     add64 r5, r1                                    r5 += r1   ///  r5 = r5.wrapping_add(r1)
     add64 r4, -2                                    r4 += -2   ///  r4 = r4.wrapping_add(-2 as i32 as i64 as u64)
     mov64 r1, r10                                   r1 = r10
@@ -2295,7 +2295,7 @@ lbb_2064:
     stxdw [r10-0xff8], r1                   
     mov64 r5, r10                                   r5 = r10
     mov64 r1, r3                                    r1 = r3
-    lddw r3, 0x1000044d8 --> b"invalid argslibrary/core/src/fmt/mod.rsindex out o"        r3 load str located at 4294984920
+    lddw r3, 0x1000044d8                            r3 load str located at 4294984920
     mov64 r4, 0                                     r4 = 0 as i32 as i64 as u64
     call function_1401                      
     exit                                    
@@ -2368,5 +2368,5 @@ lbb_2129:
     exit                                    
 lbb_2131:
     mov64 r1, r6                                    r1 = r6
-    syscall [invalid]                       
+    syscall 1904002211                      
     ja lbb_2129                                     if true { pc += -5 }

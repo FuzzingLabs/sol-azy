@@ -100,7 +100,6 @@ pub fn analyze_program(
 ) -> Result<()> {
     // Mocking a loader & create an executable
     let loader = Arc::new(BuiltinProgram::new_loader(Config {
-        enable_instruction_tracing: true,
         enable_symbol_and_section_labels: labeling,
         ..Config::default()
     }));
@@ -122,6 +121,8 @@ pub fn analyze_program(
     let spinner = helpers::spinner::get_new_spinner(String::from("Performing binary analysis..."));
     // Perform analysis on the executable (e.g., necessary for disassembly, control flow graph, etc..).
     let mut analysis = Analysis::from_executable(&executable).unwrap();
+    // Extract sbpf_version from the executable to use where needed
+    let sbpf_version = executable.get_sbpf_version();
     spinner.finish_using_style();
 
     // Used to track all immediate datas in order to create a table with their possible associated values
@@ -138,6 +139,7 @@ pub fn analyze_program(
                 &mut analysis,
                 imm_tracker_wrapped,
                 reg_tracker_wrapped,
+                sbpf_version,
                 &path,
             );
         }
@@ -157,6 +159,7 @@ pub fn analyze_program(
                 &mut analysis,
                 imm_tracker_wrapped,
                 reg_tracker_wrapped,
+                sbpf_version,
                 &path,
             );
             // shadowing old one ref
