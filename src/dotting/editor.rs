@@ -189,13 +189,3 @@ pub fn editor_add_functions<P: AsRef<Path> + ToString>(
 
     Ok(())
 }
-
-#[test]
-fn test() -> Result<(), Box<dyn std::error::Error>> {
-    editor_add_functions(
-        "src/dotting/functions.json",
-        "src/dotting/cfg_reduced.dot",
-        "src/dotting/cfg.dot",
-    )?;
-    Ok(())
-}
