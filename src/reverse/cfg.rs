@@ -6,6 +6,7 @@ use solana_sbpf::static_analysis::Analysis;
 use std::collections::{BTreeMap, HashSet};
 use std::u8;
 
+use crate::reverse::syscalls::lookup_syscall;
 use crate::reverse::utils::{
     update_string_resolution, MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR,
 };
@@ -97,6 +98,16 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
             analysis.instructions[cfg_node.instructions.clone()].iter()
             .enumerate().map(|(pc, insn)| {
                 let mut desc = analysis.disassemble_instruction(insn, pc);
+
+                // Resolve syscall names if it's a syscall with a hash
+                if let Some(hash_str) = desc.strip_prefix("syscall ") {
+                    if let Ok(hash) = hash_str.trim().parse::<i32>() {
+                        if let Some(name) = lookup_syscall(hash as u32) {
+                            desc = format!("syscall {name}");
+                        }
+                    }
+                }
+
                 // next instruction lookup to gather information (like for string and their length when it uses MOV64_IMM)
                 let next_insn = insns.get(pc + 1);
                 // add immediate string repr if it does exists on bytecode 

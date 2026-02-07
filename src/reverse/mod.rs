@@ -15,6 +15,7 @@ pub mod cfg;
 pub mod disass;
 pub mod immediate_tracker;
 pub mod rusteq;
+pub mod syscalls;
 pub mod utils;
 
 use cfg::*;

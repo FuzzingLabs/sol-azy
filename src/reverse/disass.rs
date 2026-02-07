@@ -5,10 +5,10 @@
 use indicatif::{ProgressIterator};
 use log::debug;
 use solana_sbpf::{ebpf::LD_DW_IMM, program::SBPFVersion, static_analysis::Analysis};
-use std::u8;
 
 use crate::reverse::immediate_tracker::ImmediateTracker;
 use crate::reverse::rusteq::translate_to_rust;
+use crate::reverse::syscalls::lookup_syscall;
 use crate::reverse::utils::{
     format_bytes, update_string_resolution, RegisterTracker,
     MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR,
@@ -75,6 +75,15 @@ fn disassemble<P: AsRef<Path>>(
         // next instruction lookup to gather information (like for string and their length when it uses MOV64_IMM)
         let next_insn = analysis.instructions.get(pc + 1);
         let mut insn_line = analysis.disassemble_instruction(insn, pc);
+
+        // Resolve syscall names if it's a syscall with a hash
+        if let Some(hash_str) = insn_line.strip_prefix("syscall ") {
+            if let Ok(hash) = hash_str.trim().parse::<i32>() {
+                if let Some(name) = lookup_syscall(hash as u32) {
+                    insn_line = format!("syscall {name}");
+                }
+            }
+        }
 
         // add immediate string repr if it does exists on bytecode
         let str_repr = reg_tracker_wrapped.as_mut().map_or_else(
