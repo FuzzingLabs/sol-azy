@@ -101,6 +101,7 @@ pub fn analyze_program(
 ) -> Result<()> {
     // Mocking a loader & create an executable
     let loader = Arc::new(BuiltinProgram::new_loader(Config {
+        enable_register_tracing: true,
         enable_symbol_and_section_labels: labeling,
         ..Config::default()
     }));
