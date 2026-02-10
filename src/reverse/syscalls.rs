@@ -1,5 +1,5 @@
-//! Solana syscall registry for resolving syscall hashes to the function names that there ID is
-//! created from.
+//! Solana syscall registry for resolving syscall hashes to the function names
+//! their IDs are derived from.
 
 use once_cell::sync::Lazy;
 use std::collections::HashMap;
