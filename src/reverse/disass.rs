@@ -2,22 +2,22 @@
 // licensed under the MIT license.
 // See https://github.com/anza-xyz/sbpf
 
-use indicatif::{ProgressIterator};
+use indicatif::ProgressIterator;
 use log::debug;
-use solana_sbpf::{ebpf::LD_DW_IMM, program::SBPFVersion, static_analysis::Analysis};
+use solana_sbpf::{ebpf, program::SBPFVersion, static_analysis::Analysis};
 
+use crate::helpers;
 use crate::reverse::immediate_tracker::ImmediateTracker;
 use crate::reverse::rusteq::translate_to_rust;
 use crate::reverse::syscalls::lookup_syscall;
 use crate::reverse::utils::{
-    format_bytes, update_string_resolution, RegisterTracker,
+    format_bytes, get_rodata_region_start, update_string_resolution, RegisterTracker,
     MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR,
 };
 use crate::reverse::OutputFile;
 use std::fs::File;
 use std::io::Write;
 use std::path::{Path, PathBuf};
-use crate::helpers;
 
 /// Performs the core disassembly process of the program based on a provided static analysis.
 ///
@@ -54,6 +54,9 @@ fn disassemble<P: AsRef<Path>>(
     let mut output = File::create(disass_path)?;
     let mut last_basic_block = usize::MAX;
 
+    // Determine the correct memory region start for read-only data based on SBPF version
+    let rodata_start = get_rodata_region_start(sbpf_version);
+
     for (pc, insn) in analysis.instructions.iter().enumerate().progress() {
         analysis.disassemble_label(
             &mut output,
@@ -62,11 +65,11 @@ fn disassemble<P: AsRef<Path>>(
             &mut last_basic_block,
         )?;
 
-        if insn.opc == LD_DW_IMM
-            && (insn.imm as u64) < solana_sbpf::ebpf::MM_STACK_START
-            && (insn.imm as u64) >= solana_sbpf::ebpf::MM_RODATA_START
+        if insn.opc == ebpf::LD_DW_IMM
+            && (insn.imm as u64) < ebpf::MM_STACK_START
+            && (insn.imm as u64) >= rodata_start
         {
-            // in memory mapping it's: RODATA | STACK | HEAP | INPUTS
+            // Memory mapping: RODATA (or BYTECODE in v<3) | STACK | HEAP | INPUTS
             if let Some(ref mut imm_tracker) = imm_tracker_wrapped {
                 imm_tracker.register_offset(insn.imm as usize)
             }
@@ -85,10 +88,12 @@ fn disassemble<P: AsRef<Path>>(
             }
         }
 
-        // add immediate string repr if it does exists on bytecode
+        // append immediate string representation if available
         let str_repr = reg_tracker_wrapped.as_mut().map_or_else(
             || String::new(),
-            |reg_tracker| update_string_resolution(program, insn, next_insn, reg_tracker),
+            |reg_tracker| {
+                update_string_resolution(program, insn, next_insn, reg_tracker, sbpf_version)
+            },
         );
 
         if str_repr != "" {
@@ -157,12 +162,13 @@ pub fn disassemble_wrapper<P: AsRef<Path>>(
         table_path.push(OutputFile::ImmediateDataTable.default_filename());
         let mut output = File::create(table_path)?;
 
-        let offset_base = solana_sbpf::ebpf::MM_RODATA_START as usize;
+        // Determine the correct offset base based on SBPF version
+        let offset_base = get_rodata_region_start(sbpf_version) as usize;
 
         for (&start, &end) in imm_tracker.get_ranges() {
             assert!(
                 start >= offset_base,
-                "start address and end address should be > than the RODATA MemoryMapping section"
+                "start address and end address should be >= the data MemoryMapping section base"
             );
             let start_idx = start.checked_sub(offset_base);
             let end_idx = if end > offset_base {

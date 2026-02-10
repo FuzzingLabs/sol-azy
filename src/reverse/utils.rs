@@ -1,13 +1,30 @@
-use solana_sbpf::ebpf::{
-    Insn, HOR64_IMM, LD_B_REG, LD_DW_IMM, LD_DW_REG, LD_H_REG, LD_W_REG, MM_RODATA_START,
-    MOV32_IMM, MOV64_IMM,
-};
+use solana_sbpf::{ebpf, ebpf::Insn, program::SBPFVersion};
 use std::collections::HashMap;
 use std::fmt::Write as _;
 
 /// Maximum number of bytes used to represents the extracted string representation
 /// from a load immediate instruction (useful if no explicit length is provided).
 pub const MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR: u8 = 50;
+
+/// Returns the starting address for read-only data based on the SBPF version.
+///
+/// In SBPF versions < V3, read-only data is located in the bytecode region.
+/// In SBPF version V3 and later, read-only data has its own dedicated region.
+///
+/// # Arguments
+///
+/// * `sbpf_version` - The SBPF version from the executable.
+///
+/// # Returns
+///
+/// The starting virtual address for read-only data.
+pub(crate) fn get_rodata_region_start(sbpf_version: SBPFVersion) -> u64 {
+    if sbpf_version < SBPFVersion::V3 {
+        ebpf::MM_BYTECODE_START
+    } else {
+        ebpf::MM_RODATA_START
+    }
+}
 
 #[derive(Clone, Debug)]
 pub enum Value {
@@ -29,16 +46,16 @@ impl RegisterTracker {
 
     pub fn update(&mut self, insn: &Insn) {
         match insn.opc {
-            MOV32_IMM => {
+            ebpf::MOV32_IMM => {
                 // used for string repr and low bits of an address can only be > 0 (see issue #45)
                 self.registers
                     .insert(insn.dst, Value::Const(insn.imm as u32 as u64));
             }
-            MOV64_IMM => {
+            ebpf::MOV64_IMM => {
                 self.registers
                     .insert(insn.dst, Value::Const(insn.imm as u64));
             }
-            HOR64_IMM => {
+            ebpf::HOR64_IMM => {
                 if let Some(Value::Const(low)) = self.registers.get(&insn.dst) {
                     // used for string repr and high bits of an address can, also, only be > 0
                     let high = (insn.imm as u32 as u64) << 32;
@@ -75,6 +92,7 @@ impl RegisterTracker {
 /// * `insn` - The current instruction being processed.
 /// * `next_insn_wrapped` - Optional reference to the next instruction, possibly providing string length.
 /// * `register_tracker` - Mutable reference to a [`RegisterTracker`] that maintains register state.
+/// * `sbpf_version` - The SBPF version from the executable.
 ///
 /// # Returns
 ///
@@ -85,16 +103,20 @@ pub fn update_string_resolution(
     insn: &Insn,
     next_insn_wrapped: Option<&Insn>,
     register_tracker: &mut RegisterTracker,
+    sbpf_version: SBPFVersion,
 ) -> String {
     register_tracker.update(insn);
+
+    // Determine the correct memory region start for read-only data
+    let offset_base = get_rodata_region_start(sbpf_version) as usize;
+
     match insn.opc {
         // used for sBPF_version >= 2
-        LD_DW_REG | LD_B_REG | LD_H_REG | LD_W_REG => {
+        ebpf::LD_DW_REG | ebpf::LD_B_REG | ebpf::LD_H_REG | ebpf::LD_W_REG => {
             let reg_value = register_tracker.get(insn.dst);
             let offset = insn.off as i32; // avoiding potential panics due to overflowing while getting absolute value
             match reg_value {
                 Some(Value::Const(value)) => {
-                    let offset_base = MM_RODATA_START as usize;
                     if *value < offset.abs() as u64 {
                         return "".to_string();
                     }
@@ -112,9 +134,7 @@ pub fn update_string_resolution(
                     let mut length = MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize;
 
                     if let Some(next_insn) = next_insn_wrapped {
-                        if next_insn.opc == solana_sbpf::ebpf::MOV64_IMM
-                            || next_insn.opc == solana_sbpf::ebpf::MOV32_IMM
-                        {
+                        if next_insn.opc == ebpf::MOV64_IMM || next_insn.opc == ebpf::MOV32_IMM {
                             let maybe_len = next_insn.imm as usize;
                             if maybe_len > 0 {
                                 length = maybe_len;
@@ -129,8 +149,7 @@ pub fn update_string_resolution(
                 _ => "".to_string(),
             }
         }
-        LD_DW_IMM => {
-            let offset_base = MM_RODATA_START as usize;
+        ebpf::LD_DW_IMM => {
             let start = if insn.imm > 0 && insn.imm as usize > offset_base {
                 insn.imm as usize - offset_base
             } else {
@@ -144,9 +163,7 @@ pub fn update_string_resolution(
             let mut length = MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize;
 
             if let Some(next_insn) = next_insn_wrapped {
-                if next_insn.opc == solana_sbpf::ebpf::MOV64_IMM
-                    || next_insn.opc == solana_sbpf::ebpf::MOV32_IMM
-                {
+                if next_insn.opc == ebpf::MOV64_IMM || next_insn.opc == ebpf::MOV32_IMM {
                     let maybe_len = next_insn.imm as usize;
                     if maybe_len > 0 {
                         length = maybe_len;

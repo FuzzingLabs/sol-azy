@@ -2,9 +2,8 @@
 // licensed under the MIT license.
 // See https://github.com/anza-xyz/sbpf
 
-use solana_sbpf::static_analysis::Analysis;
+use solana_sbpf::{program::SBPFVersion, static_analysis::Analysis};
 use std::collections::{BTreeMap, HashSet};
-use std::u8;
 
 use crate::reverse::syscalls::lookup_syscall;
 use crate::reverse::utils::{
@@ -27,6 +26,8 @@ use super::utils::RegisterTracker;
 ///
 /// * `program` - Raw bytecode of the program
 /// * `analysis` - A mutable reference to the `Analysis` structure containing disassembly and CFG data.
+/// * `reg_tracker_wrapped` - Optional mutable reference to a `RegisterTracker` for tracking register states.
+/// * `sbpf_version` - The SBPF version from the executable.
 /// * `path` - Path to the output directory where the `.dot` file will be saved.
 /// * `reduced` - If `true`, only includes functions defined **after** the program entrypoint in the CFG output.
 ///   This is useful to exclude prelude or system/library functions and focus on the main logic.
@@ -41,6 +42,7 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
     program: &[u8],
     analysis: &mut Analysis,
     reg_tracker_wrapped: Option<&mut RegisterTracker>,
+    sbpf_version: SBPFVersion,
     path: P,
     reduced: bool,
     only_entrypoint: bool,
@@ -71,14 +73,18 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
     /// * `program` - The bytecode
     /// * `output` - Output writer
     /// * `analysis` - Reference to the analysis data
+    /// * `reg_tracker` - Mutable reference to register tracker
+    /// * `sbpf_version` - The SBPF version from the executable
     /// * `function_range` - Bytecode range of the current function
     /// * `alias_nodes` - Set of alias node indices
     /// * `cfg_node_start` - Entry point of the current node
+    /// * `reduced` - Whether to emit reduced CFG
     fn emit_cfg_node<W: std::io::Write>(
         program: &[u8],
         output: &mut W,
         analysis: &Analysis,
         reg_tracker: &mut RegisterTracker,
+        sbpf_version: SBPFVersion,
         function_range: std::ops::Range<usize>,
         alias_nodes: &mut HashSet<usize>,
         visited_nodes: &mut HashSet<usize>,
@@ -110,8 +116,8 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
 
                 // next instruction lookup to gather information (like for string and their length when it uses MOV64_IMM)
                 let next_insn = insns.get(pc + 1);
-                // add immediate string repr if it does exists on bytecode 
-                let str_repr = update_string_resolution(program, insn, next_insn, reg_tracker);
+                // append immediate string representation if available
+                let str_repr = update_string_resolution(program, insn, next_insn, reg_tracker, sbpf_version);
 
                 if str_repr != "" {
                     desc.push_str(" --> ");
@@ -136,6 +142,7 @@ pub fn export_cfg_to_dot<P: AsRef<Path>>(
                 output,
                 analysis,
                 reg_tracker,
+                sbpf_version,
                 function_range.clone(),
                 alias_nodes,
                 visited_nodes,
@@ -206,6 +213,7 @@ fontname=\"Courier New\";
             &mut output,
             &analysis,
             reg_tracker,
+            sbpf_version,
             *function_start..function_end,
             &mut alias_nodes,
             &mut visited_nodes,

@@ -1,8 +1,8 @@
 //! Solana syscall registry for resolving syscall hashes to the function names that there ID is
 //! created from.
 
-use std::collections::HashMap;
 use once_cell::sync::Lazy;
+use std::collections::HashMap;
 
 /// Registry mapping syscall hash values to their function names.
 static SYSCALL_REGISTRY: Lazy<HashMap<u32, &'static str>> = Lazy::new(|| {
