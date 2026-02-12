@@ -1,7 +1,7 @@
 use solana_sbpf::ebpf::{self, Insn};
 use solana_sbpf::program::SBPFVersion;
 
-/// Return the Rust equivalent of an eBPF instruction if available
+/// Return the Rust equivalent of an SBPF instruction if available
 pub fn translate_to_rust(insn: &ebpf::Insn, sbpf_version: SBPFVersion) -> Option<String> {
     // Handle version-specific opcodes (conflicts and version-exclusive instructions)
     let versioned = if sbpf_version >= SBPFVersion::V2 {

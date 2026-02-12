@@ -9,7 +9,6 @@ use solana_sbpf::{ebpf, program::SBPFVersion, static_analysis::Analysis};
 use crate::helpers;
 use crate::reverse::immediate_tracker::ImmediateTracker;
 use crate::reverse::rusteq::translate_to_rust;
-use crate::reverse::syscalls::lookup_syscall;
 use crate::reverse::utils::{
     format_bytes, get_rodata_region_start, is_rodata_address, update_string_resolution,
     RegisterTracker, MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR,
@@ -29,7 +28,7 @@ use std::path::{Path, PathBuf};
 /// * `analysis` - The static analysis object containing instructions and metadata.
 /// * `imm_tracker_wrapped` - An optional mutable reference to an `ImmediateTracker`
 ///   used to track offsets of immediate values.
-/// * `sbpf_version` - The sBPF version from the executable.
+/// * `sbpf_version` - The SBPF version from the executable.
 /// * `path` - Base path where the disassembly file should be written.
 ///
 /// # Returns
@@ -77,15 +76,6 @@ fn disassemble<P: AsRef<Path>>(
         let next_insn = analysis.instructions.get(pc + 1);
         let mut insn_line = analysis.disassemble_instruction(insn, pc);
 
-        // Resolve syscall names if it's a syscall with a hash
-        if let Some(hash_str) = insn_line.strip_prefix("syscall ") {
-            if let Ok(hash) = hash_str.trim().parse::<i32>() {
-                if let Some(name) = lookup_syscall(hash as u32) {
-                    insn_line = format!("syscall {name}");
-                }
-            }
-        }
-
         // append immediate string representation if available
         let str_repr = reg_tracker_wrapped.as_mut().map_or_else(
             || String::new(),
@@ -122,10 +112,10 @@ fn disassemble<P: AsRef<Path>>(
 ///
 /// # Arguments
 ///
-/// * `program` - The raw bytecode of the eBPF program.
+/// * `program` - The raw bytecode of the SBPF program.
 /// * `analysis` - The static analysis object containing instructions and metadata.
 /// * `imm_tracker_wrapped` - Optional mutable reference to an `ImmediateTracker` for tracking.
-/// * `sbpf_version` - The sBPF version from the executable.
+/// * `sbpf_version` - The SBPF version from the executable.
 /// * `path` - Base path for writing output files (`disassembly.out`, `immediate_data_table.out`).
 ///
 /// # Returns

@@ -113,7 +113,7 @@ impl RegisterTracker {
 ///
 /// # Arguments
 ///
-/// * `program` - Raw bytecode of the eBPF program.
+/// * `program` - Raw bytecode of the SBPF program.
 /// * `insn` - The current instruction being processed.
 /// * `next_insn_wrapped` - Optional reference to the next instruction, possibly providing string length.
 /// * `register_tracker` - Mutable reference to a [`RegisterTracker`] that maintains register state.
