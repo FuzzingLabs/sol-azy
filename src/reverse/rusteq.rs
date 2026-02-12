@@ -205,14 +205,18 @@ fn add32_reg(insn: &Insn, sbpf_version: SBPFVersion) -> String {
 
 fn sub32_imm(insn: &Insn, sbpf_version: SBPFVersion) -> String {
     if sbpf_version < SBPFVersion::V2 {
+        // V0 and V1: dst = dst - imm (normal subtraction order)
+        // Sign-extends: negative results set upper 32 bits to 0xFFFFFFFF
         format!(
-            "r{d} = {i} - r{d}   ///  r{d} = (r{d} as u32).wrapping_sub({i}) as u64",
+            "r{d} = r{d} - {i}   ///  r{d} = (r{d} as i32).wrapping_sub({i}) as i64 as u64",
             d = insn.dst,
             i = insn.imm
         )
     } else {
+        // V2+: dst = imm - dst (operands swapped per SIMD-0174)
+        // Zero-extends: upper 32 bits always 0
         format!(
-            "r{d} = {i} - r{d}   ///  r{d} = {i}.wrapping_sub(r{d} as u32) as u64",
+            "r{d} = {i} - r{d}   ///  r{d} = ({i} as i32).wrapping_sub(r{d} as i32) as u32 as u64",
             d = insn.dst,
             i = insn.imm
         )
@@ -282,7 +286,7 @@ fn mod32_reg(insn: &Insn) -> String {
 
 fn or32_imm(insn: &Insn) -> String {
     format!(
-        "r{d} |= {i}   ///  r{d} = (r{d} as u32).or({i}) as u64",
+        "r{d} |= {i}   ///  r{d} = ((r{d} as u32) | ({i} as u32)) as u64",
         d = insn.dst,
         i = insn.imm
     )
@@ -290,7 +294,7 @@ fn or32_imm(insn: &Insn) -> String {
 
 fn or32_reg(insn: &Insn) -> String {
     format!(
-        "r{d} |= r{s}   ///  r{d} = (r{d} as u32).or(r{s} as u32) as u64",
+        "r{d} |= r{s}   ///  r{d} = ((r{d} as u32) | (r{s} as u32)) as u64",
         d = insn.dst,
         s = insn.src
     )
@@ -298,7 +302,7 @@ fn or32_reg(insn: &Insn) -> String {
 
 fn and32_imm(insn: &Insn) -> String {
     format!(
-        "r{d} &= {i}   ///  r{d} = (r{d} as u32).and({i}) as u64",
+        "r{d} &= {i}   ///  r{d} = ((r{d} as u32) & ({i} as u32)) as u64",
         d = insn.dst,
         i = insn.imm
     )
@@ -306,7 +310,7 @@ fn and32_imm(insn: &Insn) -> String {
 
 fn and32_reg(insn: &Insn) -> String {
     format!(
-        "r{d} &= r{s}   ///  r{d} = (r{d} as u32).and(r{s} as u32) as u64",
+        "r{d} &= r{s}   ///  r{d} = ((r{d} as u32) & (r{s} as u32)) as u64",
         d = insn.dst,
         s = insn.src
     )
@@ -314,7 +318,7 @@ fn and32_reg(insn: &Insn) -> String {
 
 fn xor32_imm(insn: &Insn) -> String {
     format!(
-        "r{d} ^= {i}   ///  r{d} = (r{d} as u32).xor({i}) as u64",
+        "r{d} ^= {i}   ///  r{d} = ((r{d} as u32) ^ ({i} as u32)) as u64",
         d = insn.dst,
         i = insn.imm
     )
@@ -322,7 +326,7 @@ fn xor32_imm(insn: &Insn) -> String {
 
 fn xor32_reg(insn: &Insn) -> String {
     format!(
-        "r{d} ^= r{s}   ///  r{d} = (r{d} as u32).xor(r{s} as u32) as u64",
+        "r{d} ^= r{s}   ///  r{d} = ((r{d} as u32) ^ (r{s} as u32)) as u64",
         d = insn.dst,
         s = insn.src
     )
@@ -429,14 +433,16 @@ fn add64_reg(insn: &Insn) -> String {
 
 fn sub64_imm(insn: &Insn, sbpf_version: SBPFVersion) -> String {
     if sbpf_version < SBPFVersion::V2 {
+        // V0 and V1: dst = dst - imm (normal subtraction order)
         format!(
             "r{d} -= {i}   ///  r{d} = r{d}.wrapping_sub({i} as i32 as i64 as u64)",
             d = insn.dst,
             i = insn.imm
         )
     } else {
+        // V2+: dst = imm - dst (operands swapped per SIMD-0174)
         format!(
-            "r{d} -= {i}   ///  r{d} = ({i} as i32 as i64 as u64).wrapping_sub(r{d})",
+            "r{d} = {i} - r{d}   ///  r{d} = ({i} as i32 as i64 as u64).wrapping_sub(r{d})",
             d = insn.dst,
             i = insn.imm
         )
@@ -501,7 +507,7 @@ fn mod64_reg(insn: &Insn) -> String {
 
 fn or64_imm(insn: &Insn) -> String {
     format!(
-        "r{d} |= {i}   ///  r{d} = r{d}.or({i})",
+        "r{d} |= {i}   ///  r{d} = r{d} | ({i} as i32 as i64 as u64)",
         d = insn.dst,
         i = insn.imm
     )
@@ -509,7 +515,7 @@ fn or64_imm(insn: &Insn) -> String {
 
 fn or64_reg(insn: &Insn) -> String {
     format!(
-        "r{d} |= r{s}   ///  r{d} = r{d}.or(r{s})",
+        "r{d} |= r{s}   ///  r{d} = r{d} | r{s}",
         d = insn.dst,
         s = insn.src
     )
@@ -517,7 +523,7 @@ fn or64_reg(insn: &Insn) -> String {
 
 fn and64_imm(insn: &Insn) -> String {
     format!(
-        "r{d} &= {i}   ///  r{d} = r{d}.and({i})",
+        "r{d} &= {i}   ///  r{d} = r{d} & ({i} as i32 as i64 as u64)",
         d = insn.dst,
         i = insn.imm
     )
@@ -525,7 +531,7 @@ fn and64_imm(insn: &Insn) -> String {
 
 fn and64_reg(insn: &Insn) -> String {
     format!(
-        "r{d} &= r{s}   ///  r{d} = r{d}.and(r{s})",
+        "r{d} &= r{s}   ///  r{d} = r{d} & r{s}",
         d = insn.dst,
         s = insn.src
     )
@@ -533,7 +539,7 @@ fn and64_reg(insn: &Insn) -> String {
 
 fn xor64_imm(insn: &Insn) -> String {
     format!(
-        "r{d} ^= {i}   ///  r{d} = r{d}.xor({i})",
+        "r{d} ^= {i}   ///  r{d} = r{d} ^ ({i} as i32 as i64 as u64)",
         d = insn.dst,
         i = insn.imm
     )
@@ -541,7 +547,7 @@ fn xor64_imm(insn: &Insn) -> String {
 
 fn xor64_reg(insn: &Insn) -> String {
     format!(
-        "r{d} ^= r{s}   ///  r{d} = r{d}.xor(r{s})",
+        "r{d} ^= r{s}   ///  r{d} = r{d} ^ r{s}",
         d = insn.dst,
         s = insn.src
     )
@@ -603,11 +609,7 @@ fn neg64(insn: &Insn) -> String {
 }
 
 fn mov64_imm(insn: &Insn) -> String {
-    format!(
-        "r{d} = {i} as i32 as i64 as u64",
-        d = insn.dst,
-        i = insn.imm
-    )
+    format!("r{d} = {i} as u64", d = insn.dst, i = insn.imm)
 }
 
 fn mov64_reg(insn: &Insn) -> String {
@@ -616,7 +618,7 @@ fn mov64_reg(insn: &Insn) -> String {
 
 fn hor64_imm(insn: &Insn) -> String {
     format!(
-        "r{d} = r{d} | (({i} as u64) << 32)   ///  r{d} = r{d}.or(({i} as u64).wrapping_shl(32))",
+        "r{d} |= ({i} as u64) << 32   ///  r{d} = r{d} | ({i} as u64).wrapping_shl(32)",
         d = insn.dst,
         i = insn.imm
     )
@@ -624,7 +626,7 @@ fn hor64_imm(insn: &Insn) -> String {
 
 fn uhmul64_imm(insn: &Insn) -> String {
     format!(
-        "r{d} = (r{d} * {i}) >> 64   ///  r{d} = (r{d} as u128).wrapping_mul({i} as u128).wrapping_shr(64) as u64",
+        "r{d} = (r{d} * {i}) >> 64   ///  r{d} = (r{d} as u128).wrapping_mul({i} as u32 as u128).wrapping_shr(64) as u64",
         d = insn.dst, i = insn.imm
     )
 }
@@ -653,7 +655,11 @@ fn udiv32_reg(insn: &Insn) -> String {
 }
 
 fn udiv64_imm(insn: &Insn) -> String {
-    format!("r{d} = r{d} / ({i} as u64)", d = insn.dst, i = insn.imm)
+    format!(
+        "r{d} /= {i}   ///  r{d} = r{d} / ({i} as u32 as u64)",
+        d = insn.dst,
+        i = insn.imm
+    )
 }
 
 fn udiv64_reg(insn: &Insn) -> String {
@@ -677,7 +683,11 @@ fn urem32_reg(insn: &Insn) -> String {
 }
 
 fn urem64_imm(insn: &Insn) -> String {
-    format!("r{d} = r{d} % ({i} as u64)", d = insn.dst, i = insn.imm)
+    format!(
+        "r{d} %= {i}   ///  r{d} = r{d} % ({i} as u32 as u64)",
+        d = insn.dst,
+        i = insn.imm
+    )
 }
 
 fn urem64_reg(insn: &Insn) -> String {
@@ -716,7 +726,7 @@ fn lmul64_reg(insn: &Insn) -> String {
 
 fn shmul64_imm(insn: &Insn) -> String {
     format!(
-        "r{d} = (r{d} * {i}) >> 64   ///  r{d} = (r{d} as i128).wrapping_mul({i} as i32 as i128).wrapping_shr(64) as i64 as u64",
+        "r{d} = (r{d} * {i}) >> 64   ///  r{d} = (r{d} as i64 as i128).wrapping_mul({i} as i128).wrapping_shr(64) as u64",
         d = insn.dst, i = insn.imm
     )
 }
