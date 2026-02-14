@@ -44,7 +44,7 @@ entrypoint:
     call 
     ldxdw r1, [r10-0xa0]
     ldxdw r2, [r10-0x90]
-    syscall sol_log_
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     ldxw r1, [r10-0xa8]
     ldxw r2, [r10-0xa4]
     add64 r2, r1                                    r2 += r1   ///  r2 = r2.wrapping_add(r1)
@@ -53,13 +53,13 @@ entrypoint:
     jne r2, 1337, lbb_58                            if r2 != (1337_i32 as i64 as u64) { pc += 6 }
     lddw r1, 0x1000043e0 --> b"You win!"            r1 load str located at 4294984672
     mov64 r2, 8                                     r2 = 8_i32 as i64 as u64
-    syscall sol_log_
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     mov64 r1, 987654321                             r1 = 987654321_i32 as i64 as u64
     ja lbb_63                                       if true { pc += 5 }
 lbb_58:
     lddw r1, 0x1000043e8 --> b"You lose!"           r1 load str located at 4294984680
     mov64 r2, 9                                     r2 = 9_i32 as i64 as u64
-    syscall sol_log_
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     mov64 r1, 123456789                             r1 = 123456789_i32 as i64 as u64
 lbb_63:
     stxdw [r10-0x68], r1
@@ -85,13 +85,13 @@ lbb_63:
     call 
     ldxdw r1, [r10-0x88]
     ldxdw r2, [r10-0x78]
-    syscall sol_log_
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     jeq r7, 0, lbb_107                              if r7 == (0_i32 as i64 as u64) { pc += 17 }
     ja lbb_102                                      if true { pc += 11 }
 lbb_91:
     lddw r1, 0x1000043f4 --> b"Not enough data. Need two u32 values."        r1 load str located at 4294984692
     mov64 r2, 37                                    r2 = 37_i32 as i64 as u64
-    syscall sol_log_
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     mov64 r1, 2                                     r1 = 2_i32 as i64 as u64
     stxw [r10-0xc8], r1
     mov64 r1, r10                                   r1 = r10
@@ -220,7 +220,7 @@ lbb_185:
     call 
     ldxdw r1, [r10-0x88]
     ldxdw r2, [r10-0x78]
-    syscall sol_log_
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     exit
 
 :
@@ -334,11 +334,11 @@ lbb_299:
     jne r1, 0, lbb_305                              if r1 != (0_i32 as i64 as u64) { pc += 2 }
 lbb_303:
     call 
-    syscall abort
+    syscall abort                                   abort()
 lbb_305:
     ldxdw r2, [r10-0x20]
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
     mov64 r4, r2                                    r4 = r2
@@ -374,7 +374,7 @@ lbb_336:
     lddw r1, 0x2aaaaaaaaaaaaab                      r1 load str located at 192153584101141163
     jgt r1, r6, lbb_341                             if r1 > r6 { pc += 2 }
     call 
-    syscall abort
+    syscall abort                                   abort()
 lbb_341:
     mov64 r7, r6                                    r7 = r6
     mul64 r7, 48                                    r7 *= 48   ///  r7 = r7.wrapping_mul(48 as u64)
@@ -390,7 +390,7 @@ lbb_341:
     mov64 r1, 8                                     r1 = 8_i32 as i64 as u64
     mov64 r2, r7                                    r2 = r7
     call 
-    syscall abort
+    syscall abort                                   abort()
 lbb_356:
     stxdw [r10-0x18], r6
     stxdw [r10-0x20], r0
@@ -455,8 +455,8 @@ lbb_410:
     stxdw [r6+0x0], r3
     jne r4, 1, lbb_415                              if r4 != (1_i32 as i64 as u64) { pc += 2 }
 lbb_413:
-    syscall abort
-    syscall abort
+    syscall abort                                   abort()
+    syscall abort                                   abort()
 lbb_415:
     mov64 r2, r0                                    r2 = r0
     add64 r2, r1                                    r2 += r1   ///  r2 = r2.wrapping_add(r1)
@@ -511,7 +511,7 @@ lbb_449:
     mov64 r1, 8                                     r1 = 8_i32 as i64 as u64
     mov64 r2, 32                                    r2 = 32_i32 as i64 as u64
     call 
-    syscall abort
+    syscall abort                                   abort()
 lbb_466:
     mov64 r1, 0                                     r1 = 0_i32 as i64 as u64
     stxdw [r0+0x10], r1
@@ -532,7 +532,7 @@ lbb_466:
     mov64 r1, 8                                     r1 = 8_i32 as i64 as u64
     mov64 r2, 40                                    r2 = 40_i32 as i64 as u64
     call 
-    syscall abort
+    syscall abort                                   abort()
 lbb_486:
     ldxdw r1, [r10-0x50]
     mov64 r3, r1                                    r3 = r1
@@ -605,7 +605,7 @@ lbb_532:
 lbb_550:
     lddw r3, 0x100004650 --> b"\x00\x00\x00\x00\x19D\x00\x00\x11\x00\x00\x00\x00\x00\x00\x00a\x01\x00\x0…        r3 load str located at 4294985296
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
     ldxw r2, [r1+0x0]
@@ -716,35 +716,35 @@ lbb_657:
 
 :
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
-    syscall sol_log_
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     exit
 
 :
     call 
-    syscall abort
-    syscall abort
+    syscall abort                                   abort()
+    syscall abort                                   abort()
 
 :
-    syscall abort
-    syscall abort
+    syscall abort                                   abort()
+    syscall abort                                   abort()
 
 :
     lddw r1, 0x10000442a --> b"Error: memory allocation failed, out of memory"        r1 load str located at 4294984746
     mov64 r2, 46                                    r2 = 46_i32 as i64 as u64
     call 
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
     call 
-    syscall abort
+    syscall abort                                   abort()
     mov64 r3, r2                                    r3 = r2
     lddw r2, 0x100004668 --> b"\x00\x00\x00\x00\x80\x16\x00\x00\x18\x00\x00\x00\x00\x00\x00\x00\x08\x00\…        r2 load str located at 4294985320
     call 
@@ -821,11 +821,11 @@ lbb_735:
     jne r1, 0, lbb_741                              if r1 != (0_i32 as i64 as u64) { pc += 2 }
 lbb_739:
     call 
-    syscall abort
+    syscall abort                                   abort()
 lbb_741:
     ldxdw r2, [r10-0x20]
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
     mov64 r6, r1                                    r6 = r1
@@ -878,11 +878,11 @@ lbb_782:
     jne r1, 0, lbb_788                              if r1 != (0_i32 as i64 as u64) { pc += 2 }
 lbb_786:
     call 
-    syscall abort
+    syscall abort                                   abort()
 lbb_788:
     ldxdw r2, [r10-0x20]
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
     mov64 r7, r3                                    r7 = r3
@@ -951,14 +951,14 @@ lbb_834:
     add64 r1, -48                                   r1 += -48   ///  r1 = r1.wrapping_add(-48_i32 as i64 as u64)
     lddw r2, 0x1000046a8 --> b"\x00\x00\x00\x00]D\x00\x00\x1c\x00\x00\x00\x00\x00\x00\x00!\x02\x00\x00\x…        r2 load str located at 4294985384
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
     mov64 r3, r1                                    r3 = r1
     mov64 r1, r2                                    r1 = r2
     mov64 r2, r3                                    r2 = r3
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
     mov64 r7, r2                                    r7 = r2
@@ -1001,7 +1001,7 @@ lbb_888:
     jeq r8, 0, lbb_909                              if r8 == (0_i32 as i64 as u64) { pc += 18 }
     jsgt r8, -1, lbb_894                            if (r8 as i64) > (-1 as i32 as i64) { pc += 2 }
     call 
-    syscall abort
+    syscall abort                                   abort()
 lbb_894:
     mov64 r1, r8                                    r1 = r8
     mov64 r2, 1                                     r2 = 1_i32 as i64 as u64
@@ -1011,7 +1011,7 @@ lbb_894:
     mov64 r1, 1                                     r1 = 1_i32 as i64 as u64
     mov64 r2, r8                                    r2 = r8
     call 
-    syscall abort
+    syscall abort                                   abort()
 lbb_903:
     mov64 r8, 0                                     r8 = 0_i32 as i64 as u64
     ldxdw r1, [r7+0x18]
@@ -1046,7 +1046,7 @@ lbb_927:
     lddw r4, 0x1000046c0 --> b"\x00\x00\x00\x00x\x16\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00…        r4 load str located at 4294985408
     lddw r5, 0x1000046e0 --> b"\x00\x00\x00\x00\xbdD\x00\x00\x18\x00\x00\x00\x00\x00\x00\x00d\x02\x00\x0…        r5 load str located at 4294985440
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
     mov64 r7, r2                                    r7 = r2
@@ -1300,7 +1300,7 @@ lbb_1160:
     mov64 r1, r10                                   r1 = r10
     add64 r1, -40                                   r1 += -40   ///  r1 = r1.wrapping_add(-40_i32 as i64 as u64)
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
     mov64 r6, r3                                    r6 = r3
@@ -1327,7 +1327,7 @@ lbb_1160:
     mov64 r1, r7                                    r1 = r7
     mov64 r2, r6                                    r2 = r6
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
     mov64 r6, r5                                    r6 = r5
@@ -1357,7 +1357,7 @@ lbb_1160:
     mov64 r1, r7                                    r1 = r7
     mov64 r2, r6                                    r2 = r6
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
     mov64 r0, r5                                    r0 = r5
@@ -1385,7 +1385,7 @@ lbb_1244:
     add64 r1, -48                                   r1 += -48   ///  r1 = r1.wrapping_add(-48_i32 as i64 as u64)
     lddw r2, 0x100004798 --> b"\x00\x00\x00\x00\xe4D\x00\x00\x1b\x00\x00\x00\x00\x00\x00\x00M\x01\x00\x0…        r2 load str located at 4294985624
     call 
-    syscall abort
+    syscall abort                                   abort()
 
 :
     mov64 r4, 3                                     r4 = 3_i32 as i64 as u64
@@ -2368,5 +2368,5 @@ lbb_2129:
     exit
 lbb_2131:
     mov64 r1, r6                                    r1 = r6
-    syscall sol_memcpy_
+    syscall sol_memcpy_                             r0 = sol_memcpy_(r1, r2, r3)
     ja lbb_2129                                     if true { pc += -5 }

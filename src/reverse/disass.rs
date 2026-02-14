@@ -9,6 +9,7 @@ use solana_sbpf::{ebpf, program::SBPFVersion, static_analysis::Analysis};
 use crate::helpers;
 use crate::reverse::immediate_tracker::ImmediateTracker;
 use crate::reverse::rusteq::translate_to_rust;
+use crate::reverse::syscalls::get_syscall_signature;
 use crate::reverse::utils::{
     format_bytes, get_rodata_region_start, is_rodata_address, update_string_resolution,
     RegisterTracker, MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR,
@@ -75,6 +76,19 @@ fn disassemble<P: AsRef<Path>>(
         // next instruction lookup to gather information (like for string and their length when it uses MOV64_IMM)
         let next_insn = analysis.instructions.get(pc + 1);
         let mut insn_line = analysis.disassemble_instruction(insn, pc);
+
+        // `disassemble_instruction` provides a human string after the assembly instruction for most
+        // instructions, but not syscalls. Here we add a string in the same position to show which
+        // registers individual syscalls are reading.
+        if insn_line.starts_with("syscall ") {
+            // parse the disassembled output instead of looking for the CALL_IMM opcode
+            // as complicated logic has already separated syscalls from regular calls
+            if let Some(syscall_name) = insn_line.strip_prefix("syscall ").map(|s| s.trim()) {
+                if let Some(signature) = get_syscall_signature(syscall_name) {
+                    insn_line = format!("{:<48}{}", format!("syscall {}", syscall_name), signature);
+                }
+            }
+        }
 
         // append immediate string representation if available
         let str_repr = reg_tracker_wrapped.as_mut().map_or_else(
