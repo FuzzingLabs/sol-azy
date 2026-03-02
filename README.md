@@ -181,7 +181,7 @@ entrypoint:
     call function_858                       
     ldxdw r1, [r10-0xa0]                    
     ldxdw r2, [r10-0x90]                    
-    syscall [invalid]                       
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     ldxw r1, [r10-0xa8]                     
     ldxw r2, [r10-0xa4]                     
     add64 r2, r1                                    r2 += r1   ///  r2 = r2.wrapping_add(r1)
@@ -189,13 +189,13 @@ entrypoint:
     jne r2, 1337, lbb_58                            if r2 != (1337 as i32 as i64 as u64) { pc += 6 }
     lddw r1, 0x1000043e0 --> b"You win!"            r1 load str located at 4294984672
     mov64 r2, 8                                     r2 = 8 as i32 as i64 as u64
-    syscall [invalid]                       
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     mov64 r1, 987654321                             r1 = 987654321 as i32 as i64 as u64
     ja lbb_63                                       if true { pc += 5 }
 lbb_58:
     lddw r1, 0x1000043e8 --> b"You lose!"           r1 load str located at 4294984680
     mov64 r2, 9                                     r2 = 9 as i32 as i64 as u64
-    syscall [invalid]                       
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     mov64 r1, 123456789                             r1 = 123456789 as i32 as i64 as u64
     
 ...SNIP...
