@@ -101,7 +101,6 @@ pub fn analyze_program(
 ) -> Result<()> {
     // Mocking a loader & create an executable
     let mut loader = BuiltinProgram::new_loader(Config {
-        enable_instruction_meter: true,
         enable_symbol_and_section_labels: labeling,
         ..Config::default()
     });

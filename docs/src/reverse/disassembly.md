@@ -12,6 +12,7 @@ It adds layers of audit-focused context by:
 
 - Labeling basic blocks (e.g., `lbb_42`)
 - Resolving immediate values from `.rodata`
+- Resolving known syscalls by name (for example, `sol_log_`, `sol_memcpy_`, `abort`, etc..)
 - Emitting annotated output into `disassembly.out`
 - Adding Rust-like comparison for better understanding
 
@@ -63,7 +64,7 @@ entrypoint:
     call function_858                       
     ldxdw r1, [r10-0xa0]                    
     ldxdw r2, [r10-0x90]                    
-    syscall [invalid]                       
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     ldxw r1, [r10-0xa8]                     
     ldxw r2, [r10-0xa4]                     
     add64 r2, r1                                    r2 += r1   ///  r2 = r2.wrapping_add(r1)
@@ -72,15 +73,40 @@ entrypoint:
     jne r2, 1337, lbb_58                            if r2 != (1337 as i32 as i64 as u64) { pc += 6 }
     lddw r1, 0x1000043e0 --> b"You win!"            r1 load str located at 4294984672
     mov64 r2, 8                                     r2 = 8 as i32 as i64 as u64
-    syscall [invalid]                       
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     mov64 r1, 987654321                             r1 = 987654321 as i32 as i64 as u64
     ja lbb_63                                       if true { pc += 5 }
 lbb_58:
     lddw r1, 0x1000043e8 --> b"You lose!"           r1 load str located at 4294984680
     mov64 r2, 9                                     r2 = 9 as i32 as i64 as u64
-    syscall [invalid]                       
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     mov64 r1, 123456789                             r1 = 123456789 as i32 as i64 as u64
 ```
+
+---
+
+## Syscall resolution logic
+
+Step 1: sol-azy registers syscall names from `SYSCALL_NAMES` with `register_solana_syscalls()`, which calls `loader.register_function(name, SyscallStub::vm)`.
+
+Step 2: in Anza SBPF, `BuiltinProgram::register_function` hashes exactly `name.as_bytes()` with `ebpf::hash_symbol_name`, then stores `(hash -> name, function)` in the loader `FunctionRegistry`.
+
+Step 3: during `Executable::from_elf`, each unresolved `R_Bpf_64_32` call relocation reads the symbol name from the ELF dynamic symbol table, hashes that symbol name bytes with the same `ebpf::hash_symbol_name`, then writes the hash into `CALL_IMM.imm`.
+
+Step 4: during disassembly/execution, `CALL_IMM` is treated as syscall when `!static_syscalls || insn.src == 0`, and the immediate value (`insn.imm as u32`) is used as the lookup key in `loader.get_function_registry().lookup_by_key(...)`.
+
+Step 5: if lookup succeeds, output is `syscall <name>` and sol-azy appends the readable signature from `SYSCALL_SIGNATURES`; if lookup fails, output falls back to the raw immediate value.
+
+Example:
+
+```text
+syscall sol_log_                                r0 = sol_log_(r1, r2)
+syscall sol_memcpy_                             r0 = sol_memcpy_(r1, r2, r3)
+syscall abort                                   abort()
+...                                             ...
+```
+
+_Special thanks to [@dimalinux](https://github.com/dimalinux) for contributing to this add-on._
 
 ---
 
