@@ -1,4 +1,4 @@
-//! Static analysis and reverse engineering for Solana eBPF programs.
+//! Static analysis and reverse engineering for Solana SBPF programs.
 //!
 //! This module provides functionality to disassemble compiled bytecode, generate control flow graphs,
 //! and track immediate values from read-only memory segments.
@@ -15,6 +15,7 @@ pub mod cfg;
 pub mod disass;
 pub mod immediate_tracker;
 pub mod rusteq;
+pub mod syscalls;
 pub mod utils;
 
 use cfg::*;
@@ -72,7 +73,7 @@ impl ReverseOutputMode {
     }
 }
 
-/// Analyzes a compiled eBPF program and generates output depending on the selected `ReverseOutputMode`.
+/// Analyzes a compiled SBPF program and generates output depending on the selected `ReverseOutputMode`.
 ///
 /// This function supports optional configurations to reduce the complexity of the generated Control Flow Graph (CFG),
 /// or to restrict the output to only the entrypoint function for manual extension via tools like `dotting`.
@@ -80,7 +81,7 @@ impl ReverseOutputMode {
 /// # Parameters
 ///
 /// * `mode` - Output mode that determines the type of reverse engineering output to generate (disassembly, CFG, both, or rust equivalent).
-/// * `target_bytecode` - Path to the ELF binary of the eBPF program.
+/// * `target_bytecode` - Path to the ELF binary of the SBPF program.
 /// * `labeling` - Enables symbol and section labeling if `true`. Useful for better disassembly readability.
 /// * `reduced` - If `true`, only includes functions defined after the program's entrypoint in the generated CFG,
 ///   omitting system-level or library-defined functions that may not be relevant.
@@ -99,11 +100,17 @@ pub fn analyze_program(
     only_entrypoint: bool,
 ) -> Result<()> {
     // Mocking a loader & create an executable
-    let loader = Arc::new(BuiltinProgram::new_loader(Config {
-        enable_instruction_tracing: true,
+    let mut loader = BuiltinProgram::new_loader(Config {
+        enable_instruction_meter: true,
         enable_symbol_and_section_labels: labeling,
         ..Config::default()
-    }));
+    });
+
+    // Register all Solana syscalls so the disassembler can resolve their names
+    syscalls::register_solana_syscalls(&mut loader)
+        .map_err(|e| anyhow::anyhow!("Failed to register syscalls: {:?}", e))?;
+
+    let loader = Arc::new(loader);
     let mut file = File::open(Path::new(&target_bytecode)).unwrap();
     let mut elf = Vec::new();
     file.read_to_end(&mut elf).unwrap();
@@ -122,6 +129,8 @@ pub fn analyze_program(
     let spinner = helpers::spinner::get_new_spinner(String::from("Performing binary analysis..."));
     // Perform analysis on the executable (e.g., necessary for disassembly, control flow graph, etc..).
     let mut analysis = Analysis::from_executable(&executable).unwrap();
+    // Extract sbpf_version from the executable to use where needed
+    let sbpf_version = executable.get_sbpf_version();
     spinner.finish_using_style();
 
     // Used to track all immediate datas in order to create a table with their possible associated values
@@ -138,6 +147,7 @@ pub fn analyze_program(
                 &mut analysis,
                 imm_tracker_wrapped,
                 reg_tracker_wrapped,
+                sbpf_version,
                 &path,
             );
         }
@@ -146,6 +156,7 @@ pub fn analyze_program(
                 &program,
                 &mut analysis,
                 reg_tracker_wrapped,
+                sbpf_version,
                 &path,
                 reduced,
                 only_entrypoint,
@@ -157,6 +168,7 @@ pub fn analyze_program(
                 &mut analysis,
                 imm_tracker_wrapped,
                 reg_tracker_wrapped,
+                sbpf_version,
                 &path,
             );
             // shadowing old one ref
@@ -166,6 +178,7 @@ pub fn analyze_program(
                 &program,
                 &mut analysis,
                 reg_tracker_wrapped,
+                sbpf_version,
                 &path,
                 reduced,
                 only_entrypoint,

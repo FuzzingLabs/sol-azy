@@ -1,13 +1,55 @@
-use solana_sbpf::ebpf::{
-    Insn, HOR64_IMM, LD_B_REG, LD_DW_IMM, LD_DW_REG, LD_H_REG, LD_W_REG, MM_RODATA_START,
-    MOV32_IMM, MOV64_IMM,
-};
+use solana_sbpf::{ebpf, ebpf::Insn, program::SBPFVersion};
 use std::collections::HashMap;
 use std::fmt::Write as _;
 
 /// Maximum number of bytes used to represents the extracted string representation
 /// from a load immediate instruction (useful if no explicit length is provided).
 pub const MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR: u8 = 50;
+
+/// Returns the base address of the memory region containing the .rodata section.
+///
+/// In SBPF V1/V2, the .rodata section is mapped within the BYTECODE region (after the code).
+/// This function returns `MM_BYTECODE_START`, which is the start of the entire region.
+///
+/// In SBPF V3+, the .rodata section has its own dedicated RODATA region starting at address 0.
+///
+/// # Arguments
+///
+/// * `sbpf_version` - The SBPF version from the executable.
+///
+/// # Returns
+///
+/// The starting virtual address of the memory region containing .rodata.
+pub(crate) fn get_rodata_region_start(sbpf_version: SBPFVersion) -> u64 {
+    if sbpf_version < SBPFVersion::V3 {
+        ebpf::MM_BYTECODE_START
+    } else {
+        ebpf::MM_RODATA_START
+    }
+}
+
+/// Checks if an address points to the .rodata section based on SBPF version.
+///
+/// In SBPF V1/V2, .rodata is mapped within the BYTECODE region.
+/// In SBPF V3+, .rodata has its own dedicated RODATA region.
+///
+/// # Arguments
+///
+/// * `addr` - The virtual address to check
+/// * `sbpf_version` - The SBPF version from the executable
+///
+/// # Returns
+///
+/// `true` if the address maps to the .rodata section, `false` otherwise.
+pub(crate) fn is_rodata_address(addr: u64, sbpf_version: SBPFVersion) -> bool {
+    if sbpf_version < SBPFVersion::V3 {
+        // V1/V2: .rodata is within BYTECODE region
+        addr >= ebpf::MM_BYTECODE_START && addr < ebpf::MM_STACK_START
+    } else {
+        // V3+: .rodata has dedicated RODATA region
+        addr >= ebpf::MM_RODATA_START && addr < ebpf::MM_BYTECODE_START
+    }
+}
 
 #[derive(Clone, Debug)]
 pub enum Value {
@@ -29,16 +71,16 @@ impl RegisterTracker {
 
     pub fn update(&mut self, insn: &Insn) {
         match insn.opc {
-            MOV32_IMM => {
+            ebpf::MOV32_IMM => {
                 // used for string repr and low bits of an address can only be > 0 (see issue #45)
                 self.registers
                     .insert(insn.dst, Value::Const(insn.imm as u32 as u64));
             }
-            MOV64_IMM => {
+            ebpf::MOV64_IMM => {
                 self.registers
                     .insert(insn.dst, Value::Const(insn.imm as u64));
             }
-            HOR64_IMM => {
+            ebpf::HOR64_IMM => {
                 if let Some(Value::Const(low)) = self.registers.get(&insn.dst) {
                     // used for string repr and high bits of an address can, also, only be > 0
                     let high = (insn.imm as u32 as u64) << 32;
@@ -71,10 +113,11 @@ impl RegisterTracker {
 ///
 /// # Arguments
 ///
-/// * `program` - Raw bytecode of the eBPF program.
+/// * `program` - Raw bytecode of the SBPF program.
 /// * `insn` - The current instruction being processed.
 /// * `next_insn_wrapped` - Optional reference to the next instruction, possibly providing string length.
 /// * `register_tracker` - Mutable reference to a [`RegisterTracker`] that maintains register state.
+/// * `sbpf_version` - The SBPF version from the executable.
 ///
 /// # Returns
 ///
@@ -85,25 +128,32 @@ pub fn update_string_resolution(
     insn: &Insn,
     next_insn_wrapped: Option<&Insn>,
     register_tracker: &mut RegisterTracker,
+    sbpf_version: SBPFVersion,
 ) -> String {
     register_tracker.update(insn);
+
+    let rodata_region_start = get_rodata_region_start(sbpf_version);
+
     match insn.opc {
         // used for sBPF_version >= 2
-        LD_DW_REG | LD_B_REG | LD_H_REG | LD_W_REG => {
-            let reg_value = register_tracker.get(insn.dst);
+        ebpf::LD_DW_REG | ebpf::LD_B_REG | ebpf::LD_H_REG | ebpf::LD_W_REG => {
+            let reg_value = register_tracker.get(insn.src);
             let offset = insn.off as i32; // avoiding potential panics due to overflowing while getting absolute value
             match reg_value {
                 Some(Value::Const(value)) => {
-                    let offset_base = MM_RODATA_START as usize;
                     if *value < offset.abs() as u64 {
                         return "".to_string();
                     }
                     let addr = value.wrapping_add(offset as i64 as u64);
-                    let start = if addr as usize > offset_base {
-                        addr as usize - offset_base
-                    } else {
+
+                    // Verify the address is in the .rodata section
+                    if !is_rodata_address(addr, sbpf_version) {
                         return "".to_string();
-                    };
+                    }
+
+                    // Convert virtual address to offset into program bytecode array
+                    // Safe: is_rodata_address() guarantees addr >= rodata_region_start
+                    let start = (addr - rodata_region_start) as usize;
 
                     if start >= program.len() {
                         return "".to_string();
@@ -112,9 +162,7 @@ pub fn update_string_resolution(
                     let mut length = MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize;
 
                     if let Some(next_insn) = next_insn_wrapped {
-                        if next_insn.opc == solana_sbpf::ebpf::MOV64_IMM
-                            || next_insn.opc == solana_sbpf::ebpf::MOV32_IMM
-                        {
+                        if next_insn.opc == ebpf::MOV64_IMM || next_insn.opc == ebpf::MOV32_IMM {
                             let maybe_len = next_insn.imm as usize;
                             if maybe_len > 0 {
                                 length = maybe_len;
@@ -129,13 +177,17 @@ pub fn update_string_resolution(
                 _ => "".to_string(),
             }
         }
-        LD_DW_IMM => {
-            let offset_base = MM_RODATA_START as usize;
-            let start = if insn.imm > 0 && insn.imm as usize > offset_base {
-                insn.imm as usize - offset_base
-            } else {
+        ebpf::LD_DW_IMM => {
+            let addr = insn.imm as u64;
+
+            // Verify the address is in the .rodata section
+            if !is_rodata_address(addr, sbpf_version) {
                 return "".to_string();
-            };
+            }
+
+            // Convert virtual address to offset into program bytecode array
+            // Safe: is_rodata_address() guarantees addr >= rodata_region_start
+            let start = ((insn.imm as u64) - rodata_region_start) as usize;
 
             if start >= program.len() {
                 return "".to_string();
@@ -144,9 +196,7 @@ pub fn update_string_resolution(
             let mut length = MAX_BYTES_USED_TO_READ_FOR_IMMEDIATE_STRING_REPR as usize;
 
             if let Some(next_insn) = next_insn_wrapped {
-                if next_insn.opc == solana_sbpf::ebpf::MOV64_IMM
-                    || next_insn.opc == solana_sbpf::ebpf::MOV32_IMM
-                {
+                if next_insn.opc == ebpf::MOV64_IMM || next_insn.opc == ebpf::MOV32_IMM {
                     let maybe_len = next_insn.imm as usize;
                     if maybe_len > 0 {
                         length = maybe_len;
