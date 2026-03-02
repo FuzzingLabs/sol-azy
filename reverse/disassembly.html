@@ -154,6 +154,7 @@ It adds layers of audit-focused context by:</p>
 <ul>
 <li>Labeling basic blocks (e.g., <code>lbb_42</code>)</li>
 <li>Resolving immediate values from <code>.rodata</code></li>
+<li>Resolving known syscalls by name (for example, <code>sol_log_</code>, <code>sol_memcpy_</code>, <code>abort</code>, etc..)</li>
 <li>Emitting annotated output into <code>disassembly.out</code></li>
 <li>Adding Rust-like comparison for better understanding</li>
 </ul>
@@ -201,7 +202,7 @@ It adds layers of audit-focused context by:</p>
     call function_858                       
     ldxdw r1, [r10-0xa0]                    
     ldxdw r2, [r10-0x90]                    
-    syscall [invalid]                       
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     ldxw r1, [r10-0xa8]                     
     ldxw r2, [r10-0xa4]                     
     add64 r2, r1                                    r2 += r1   ///  r2 = r2.wrapping_add(r1)
@@ -210,15 +211,29 @@ It adds layers of audit-focused context by:</p>
     jne r2, 1337, lbb_58                            if r2 != (1337 as i32 as i64 as u64) { pc += 6 }
     lddw r1, 0x1000043e0 --&gt; b&quot;You win!&quot;            r1 load str located at 4294984672
     mov64 r2, 8                                     r2 = 8 as i32 as i64 as u64
-    syscall [invalid]                       
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     mov64 r1, 987654321                             r1 = 987654321 as i32 as i64 as u64
     ja lbb_63                                       if true { pc += 5 }
 lbb_58:
     lddw r1, 0x1000043e8 --&gt; b&quot;You lose!&quot;           r1 load str located at 4294984680
     mov64 r2, 9                                     r2 = 9 as i32 as i64 as u64
-    syscall [invalid]                       
+    syscall sol_log_                                r0 = sol_log_(r1, r2)
     mov64 r1, 123456789                             r1 = 123456789 as i32 as i64 as u64
 </code></pre>
+<hr />
+<h2 id="syscall-resolution-logic"><a class="header" href="#syscall-resolution-logic">Syscall resolution logic</a></h2>
+<p>Step 1: sol-azy registers syscall names from <code>SYSCALL_NAMES</code> with <code>register_solana_syscalls()</code>, which calls <code>loader.register_function(name, SyscallStub::vm)</code>.</p>
+<p>Step 2: in Anza SBPF, <code>BuiltinProgram::register_function</code> hashes exactly <code>name.as_bytes()</code> with <code>ebpf::hash_symbol_name</code>, then stores <code>(hash -&gt; name, function)</code> in the loader <code>FunctionRegistry</code>.</p>
+<p>Step 3: during <code>Executable::from_elf</code>, each unresolved <code>R_Bpf_64_32</code> call relocation reads the symbol name from the ELF dynamic symbol table, hashes that symbol name bytes with the same <code>ebpf::hash_symbol_name</code>, then writes the hash into <code>CALL_IMM.imm</code>.</p>
+<p>Step 4: during disassembly/execution, <code>CALL_IMM</code> is treated as syscall when <code>!static_syscalls || insn.src == 0</code>, and the immediate value (<code>insn.imm as u32</code>) is used as the lookup key in <code>loader.get_function_registry().lookup_by_key(...)</code>.</p>
+<p>Step 5: if lookup succeeds, output is <code>syscall &lt;name&gt;</code> and sol-azy appends the readable signature from <code>SYSCALL_SIGNATURES</code>; if lookup fails, output falls back to the raw immediate value.</p>
+<p>Example:</p>
+<pre><code class="language-text">syscall sol_log_                                r0 = sol_log_(r1, r2)
+syscall sol_memcpy_                             r0 = sol_memcpy_(r1, r2, r3)
+syscall abort                                   abort()
+...                                             ...
+</code></pre>
+<p><em>Special thanks to <a href="https://github.com/dimalinux">@dimalinux</a> for contributing to this add-on.</em></p>
 <hr />
 <h2 id="annotating-immediate-loads"><a class="header" href="#annotating-immediate-loads">Annotating Immediate Loads</a></h2>
 <p>Instructions like:</p>
