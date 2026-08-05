@@ -62,17 +62,6 @@ pub enum ProjectType {
     Unknown,
 }
 
-/// Attempts to determine the type of Solana project based on its configuration files.
-///
-/// Checks for presence of `Anchor.toml` or a `Cargo.toml` containing a `solana-program` dependency.
-///
-/// # Arguments
-///
-/// * `project_dir` - Path to the root of the project.
-///
-/// # Returns
-///
-/// A `ProjectType` variant (`Anchor`, `Sbf`, or `Unknown`).
 impl fmt::Display for ProjectType {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         match self {
@@ -83,19 +72,58 @@ impl fmt::Display for ProjectType {
     }
 }
 
-pub fn get_project_type(project_dir: &String) -> ProjectType {
-    let anchor_toml = Path::new(project_dir).join("Anchor.toml");
-    if anchor_toml.exists() {
-        return ProjectType::Anchor;
-    }
+const SBF_DEPENDENCIES: &[&str] = &["solana-program", "pinocchio"];
 
-    let cargo_toml = Path::new(project_dir).join("Cargo.toml");
+fn table_has_sbf_dependency(table: &Value) -> bool {
+    table.as_table().is_some_and(|deps| {
+        SBF_DEPENDENCIES
+            .iter()
+            .any(|dep| deps.contains_key(*dep))
+    })
+}
+
+/// Returns `true` when `Cargo.toml` lists an SBF marker (`solana-program` or `pinocchio`)
+/// under `[dependencies]` or `[workspace.dependencies]`.
+fn cargo_toml_has_sbf_dependency(cargo_toml: &Path) -> bool {
     fs::read_to_string(cargo_toml)
         .ok()
         .and_then(|content| content.parse::<Value>().ok())
-        .and_then(|parsed| parsed.get("dependencies").cloned())
-        .and_then(|dependencies| dependencies.get("solana-program").cloned())
-        .map_or(ProjectType::Unknown, |_| ProjectType::Sbf)
+        .is_some_and(|parsed| {
+            parsed
+                .get("dependencies")
+                .is_some_and(table_has_sbf_dependency)
+                || parsed
+                    .get("workspace")
+                    .and_then(|ws| ws.get("dependencies"))
+                    .is_some_and(table_has_sbf_dependency)
+        })
+}
+
+/// Attempts to determine the type of Solana project based on its configuration files.
+///
+/// Prefers native/pinocchio (SBF) markers in `Cargo.toml` over `Anchor.toml`, so stub
+/// `Anchor.toml` files (e.g. Trident) do not misclassify pinocchio projects. When no SBF
+/// dependency is found, presence of `Anchor.toml` yields [`ProjectType::Anchor`].
+///
+/// # Arguments
+///
+/// * `project_dir` - Path to the root of the project.
+///
+/// # Returns
+///
+/// A `ProjectType` variant (`Anchor`, `Sbf`, or `Unknown`).
+pub fn get_project_type(project_dir: &String) -> ProjectType {
+    let project_path = Path::new(project_dir);
+
+    if cargo_toml_has_sbf_dependency(&project_path.join("Cargo.toml")) {
+        return ProjectType::Sbf;
+    }
+
+    if project_path.join("Anchor.toml").exists() {
+        return ProjectType::Anchor;
+    }
+
+    ProjectType::Unknown
 }
 
 /// Represents a single pre-check step before a build or analysis,
