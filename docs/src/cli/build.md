@@ -22,7 +22,7 @@ sol-azy automatically detects the project type based on its contents:
 | Type      | Detection Criteria                    |
 |-----------|----------------------------------------|
 | Anchor    | Presence of `Anchor.toml`              |
-| Native SBF| `Cargo.toml` includes `solana-program` |
+| Native SBF| `Cargo.toml` includes `solana-program` or `pinocchio` |
 
 Depending on the project type, it runs one of:
 
